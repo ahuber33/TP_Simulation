@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../XML schemas/gdml.xsd">
+	<define>
+		<position name="v0" unit="mm" x="-19.431" y="-23.950" z="18.647"/>
+		<position name="v1" unit="mm" x="-33.045" y="-23.950" z="-11.225"/>
+		<position name="v2" unit="mm" x="26.821" y="-23.950" z="-2.432"/>
+		<position name="v3" unit="mm" x="13.206" y="-23.950" z="-32.305"/>
+		<position name="v4" unit="mm" x="-19.431" y="-22.450" z="18.647"/>
+		<position name="v5" unit="mm" x="-19.431" y="-22.450" z="18.647"/>
+		<position name="v6" unit="mm" x="26.821" y="-22.450" z="-2.432"/>
+		<position name="v7" unit="mm" x="13.206" y="-23.950" z="-32.305"/>
+		<position name="v8" unit="mm" x="26.821" y="-22.450" z="-2.432"/>
+		<position name="v9" unit="mm" x="26.821" y="-22.450" z="-2.432"/>
+		<position name="v10" unit="mm" x="13.206" y="-23.950" z="-32.305"/>
+		<position name="v11" unit="mm" x="13.206" y="-22.450" z="-32.305"/>
+		<position name="v12" unit="mm" x="13.206" y="-23.950" z="-32.305"/>
+		<position name="v13" unit="mm" x="13.206" y="-22.450" z="-32.305"/>
+		<position name="v14" unit="mm" x="13.206" y="-22.450" z="-32.305"/>
+		<position name="v15" unit="mm" x="-33.045" y="-22.450" z="-11.225"/>
+		<position name="v16" unit="mm" x="-33.045" y="-22.450" z="-11.225"/>
+		<position name="v17" unit="mm" x="-33.045" y="-22.450" z="-11.225"/>
+		<position name="v18" unit="mm" x="-19.431" y="-22.450" z="18.647"/>
+		<position name="v19" unit="mm" x="13.206" y="-22.450" z="-32.305"/>
+		<position name="v20" unit="mm" x="-33.045" y="-22.450" z="-11.225"/>
+		<position name="v21" unit="mm" x="26.821" y="-22.450" z="-2.432"/>
+		<position name="v22" unit="mm" x="26.821" y="-22.450" z="-2.432"/>
+		<position name="v23" unit="mm" x="-33.045" y="-22.450" z="-11.225"/>
+		<position name="v24" unit="mm" x="-19.431" y="-22.450" z="18.647"/>
+	</define>
+	<materials>
+	</materials>
+	<solids>
+		<tessellated aunit="deg" lunit="mm" name="Dolphy Béta - Fenêtre-1Solid">
+			<triangular vertex1="v0" vertex2="v1" vertex3="v2"/>
+			<triangular vertex1="v2" vertex2="v1" vertex3="v3"/>
+			<triangular vertex1="v0" vertex2="v2" vertex3="v4"/>
+			<triangular vertex1="v5" vertex2="v2" vertex3="v6"/>
+			<triangular vertex1="v2" vertex2="v7" vertex3="v8"/>
+			<triangular vertex1="v9" vertex2="v10" vertex3="v11"/>
+			<triangular vertex1="v12" vertex2="v1" vertex3="v13"/>
+			<triangular vertex1="v14" vertex2="v1" vertex3="v15"/>
+			<triangular vertex1="v1" vertex2="v0" vertex3="v16"/>
+			<triangular vertex1="v17" vertex2="v0" vertex3="v18"/>
+			<triangular vertex1="v19" vertex2="v20" vertex3="v21"/>
+			<triangular vertex1="v22" vertex2="v23" vertex3="v24"/>
+		</tessellated>
+	</solids>
+	<structure>
+		<volume name="Dolphy Béta - Fenêtre-1">
+			<solidref ref="Dolphy Béta - Fenêtre-1Solid"/>
+		</volume>
+	</structure>
+	<setup name="Default" version="1.0">
+		<world ref="cad_logical01465DE8"/>
+	</setup>
+</gdml>
