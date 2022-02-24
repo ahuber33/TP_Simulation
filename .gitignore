@@ -10,8 +10,11 @@
 *.lo
 *.o
 *.obj
+<<<<<<< HEAD
 *.make
 *.cmake
+=======
+>>>>>>> 1c2523d2a80fa97ab2c39702a40581c367a626ab
 
 # Precompiled Headers
 *.gch
