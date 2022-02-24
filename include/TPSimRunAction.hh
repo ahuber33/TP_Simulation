@@ -31,7 +31,7 @@ class TPSimRunAction : public G4UserRunAction
   void UpdateStatisticsbis(RunTallybis);
   void UpdateStatisticsEmitted(RunTallyEmitted);
   void UpdateStatisticsPosition(RunTallyPosition);
-  void UpdateStatisticsSphere(RunTallySphere);
+  void UpdateStatisticsElectron(RunTallyElectron);
 
 
 
@@ -43,13 +43,13 @@ class TPSimRunAction : public G4UserRunAction
   RunTallybis Statsbis;
   RunTallyEmitted Statsemitted;
   RunTallyPosition Statsposition;
-  RunTallySphere Statssphere;
+  RunTallyElectron Statselectron;
   TFile *f;
   TTree *theRunTree;
   TTree *theRunTree_bis;
   TTree *Tree_emitted;
   TTree *Tree_position;
-  TTree *Tree_sphere;
+  TTree *Tree_electron;
   TBranch *RunBranch;
   time_t start;
 

@@ -1,9 +1,6 @@
 #----------------------------------------------------------------------------
 # Setup the project
 #
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 cmake_minimum_required(VERSION 3.16...3.21)
 #set (CMAKE_CXX_STANDARD 11)
 
@@ -62,16 +59,16 @@ set(PROJECT_SRC
 	#${CMAKE_CURRENT_SOURCE_DIR}/src/Coupling.cc
 	#${CMAKE_CURRENT_SOURCE_DIR}/src/PMT.cc
 	#${CMAKE_CURRENT_SOURCE_DIR}/src/GdL.cc
-	${CMAKE_CURRENT_SOURCE_DIR}/src/GM.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/src/Scintillator.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimEventAction.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimTrackingAction.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimVisManager.cc
-	#${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry.cc
 	#${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry_SIGAM_MF.cc
 	#${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry_SIGAM_HF_Carmelec.cc
 	#${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry_SIGAM_HF.cc
 	#${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry_SIGAM_BF.cc
-	${CMAKE_CURRENT_SOURCE_DIR}/src/GMSimGeometry_Dolphy_Beta.cc
+	#${CMAKE_CURRENT_SOURCE_DIR}/src/GMSimGeometry_Dolphy_Beta.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimMaterials.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimPhysics.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimPrimaryGeneratorAction.cc
@@ -84,7 +81,7 @@ set(PROJECT_HEADER
 	#${CMAKE_CURRENT_SOURCE_DIR}/include/Coupling.hh
 	#${CMAKE_CURRENT_SOURCE_DIR}/include/PMT.hh
 	#${CMAKE_CURRENT_SOURCE_DIR}/include/GdL.hh
-	${CMAKE_CURRENT_SOURCE_DIR}/include/GM.hh
+	${CMAKE_CURRENT_SOURCE_DIR}/include/Scintillator.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimEventAction.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimTrackingAction.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimVisManager.hh
