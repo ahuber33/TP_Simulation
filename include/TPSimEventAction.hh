@@ -86,25 +86,14 @@ struct RunTallyPosition {
 };
 
 
-struct RunTallySphere {
+struct RunTallyElectron {
   float E_start;
-  std::vector<float> E_dep_Gamma;
-  std::vector<float> Gamma_Interaction_X;
-  std::vector<float> Gamma_Interaction_Y;
-  std::vector<float> Gamma_Interaction_Z;
-  std::vector<int> Interaction_Location;
+  float E_dep;
   float TotalLength;
-  float E_dep_Electron;
-  int N_Electron_Gaz;
-  int TrackID;
-  float Rmin;
-  float Rmax;
-  float DeltaR;
-  // float PosX;
-  // float PosY;
-  // float PosZ;
+  float InteractionDepth;
+  //std::vector<float> E_dep_Gamma;
 
-  inline int operator ==(const RunTallySphere& right) const
+  inline int operator ==(const RunTallyElectron& right) const
     {return (this==&right);}
 };
 
@@ -154,33 +143,20 @@ public:
 
 
 
-  void Fill_E_dep_Gamma (G4float E) {Statssphere.E_dep_Gamma.push_back(E);};
-  void Fill_Gamma_Interaction_X (G4float x) {Statssphere.Gamma_Interaction_X.push_back(x);};
-  void Fill_Gamma_Interaction_Y (G4float y) {Statssphere.Gamma_Interaction_Y.push_back(y);};
-  void Fill_Gamma_Interaction_Z (G4float z) {Statssphere.Gamma_Interaction_Z.push_back(z);};
-  void Fill_Interaction_Location (G4float a) {Statssphere.Interaction_Location.push_back(a);};
-  void AddTrackLength(G4double d){Statssphere.TotalLength+=d;}
-  float GetTotalTrackLength(){return Statssphere.TotalLength;}
-  void AddEdepElectron(G4double d){Statssphere.E_dep_Electron+=d;}
-  float GetEdepElectron(){return Statssphere.E_dep_Electron;}
-  void AddElectronGaz(){Statssphere.N_Electron_Gaz++;}
-  int GetElectronGaz(){return Statssphere.N_Electron_Gaz;}
-  void SetTrackID(int a){Statssphere.TrackID = a;}
-  int GetTrackID(){return Statssphere.TrackID;}
-  void SetRmin(float a){Statssphere.Rmin = a;}
-  float GetRmin(){return Statssphere.Rmin;}
-  void SetRmax(float a){Statssphere.Rmax = a;}
-  float GetRmax(){return Statssphere.Rmax;}
-  void SetDeltaR(float a){Statssphere.DeltaR = a;}
-  float GetDeltaR(){return Statssphere.DeltaR;}
-  void SetEstart(float a){Statssphere.E_start = a;}
-  float GetEstart(){return Statssphere.E_start;}
-  // void SetPosX(float a){Statssphere.PosX = a;}
-  // float GetPosX(){return Statssphere.PosX;}
-  // void SetPosY(float a){Statssphere.PosX = a;}
-  // float GetPosY(){return Statssphere.PosX;}
-  // void SetPosZ(float a){Statssphere.PosZ = a;}
-  // float GetPosZ(){return Statssphere.PosZ;}
+  // void Fill_E_dep_Gamma (G4float E) {Statselectron.E_dep_Gamma.push_back(E);};
+  // void Fill_Gamma_Interaction_X (G4float x) {Statselectron.Gamma_Interaction_X.push_back(x);};
+  // void Fill_Gamma_Interaction_Y (G4float y) {Statselectron.Gamma_Interaction_Y.push_back(y);};
+  // void Fill_Gamma_Interaction_Z (G4float z) {Statselectron.Gamma_Interaction_Z.push_back(z);};
+
+  void AddTrackLength(G4double d){Statselectron.TotalLength+=d;}
+  float GetTotalTrackLength(){return Statselectron.TotalLength;}
+  void AddEdepElectron(G4double d){Statselectron.E_dep+=d;}
+  float GetEdepElectron(){return Statselectron.E_dep;}
+  void SetEstartElectron(G4double d){Statselectron.E_start+=d;}
+  float GetEstartElectron(){return Statselectron.E_start;}
+  //Use only for a test protocole (if not change the definition in Stepping)
+  void SetInteractionDepthElectron(G4double d){Statselectron.InteractionDepth+=d;}
+  float GetInteractionDepthElectron(){return Statselectron.InteractionDepth;}
 
 
   //Keeps track of the incident energy of the primary particle
@@ -196,7 +172,7 @@ private:
   RunTallybis Statsbis;
   RunTallyEmitted Statsemitted;
   RunTallyPosition Statsposition;
-  RunTallySphere Statssphere;
+  RunTallyElectron Statselectron;
   G4int cpt_without_CU;
   G4int cpt_with_CU;
   G4int cpt_photons_lost;

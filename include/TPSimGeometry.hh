@@ -7,7 +7,7 @@
 
 #include "G4MaterialPropertiesTable.hh"
 
-class GM;
+class Scintillator;
 class Coupling;
 class PMT;
 class GdL;
@@ -36,7 +36,7 @@ class  TPSimGeometry:  public G4VUserDetectorConstruction
      // Classes for building various components
      //     LogicalHolder *holder;
      TPSimMaterials *scintProp;
-     GM *theScint;
+     Scintillator *theScint;
      G4Material *Vacuum;
      G4Material *VacuumWorld;
      G4Material *Air;
@@ -62,300 +62,43 @@ class  TPSimGeometry:  public G4VUserDetectorConstruction
      G4LogicalVolume *LogicalWorld;
      G4LogicalVolume *LogicalHolder;
      G4LogicalVolume *LogicalGM_LND;
-     G4LogicalVolume *LogicalGM_Filtre1;
-     G4LogicalVolume *LogicalGM_Filtre3;
-     G4LogicalVolume *LogicalGM_Rondelle;
-     G4LogicalVolume *LogicalGM_Isolant;
-     G4LogicalVolume *LogicalGM_Gaine;
-     G4LogicalVolume *LogicalGM_Gaz;
-     G4LogicalVolume *LogicalGM_Plastique;
-
-     G4LogicalVolume *LogicalSIGAM_MF_GM;
-     G4LogicalVolume *LogicalSIGAM_MF_GM_Anode;
-     G4LogicalVolume *LogicalSIGAM_MF_Gaz;
-     G4LogicalVolume *LogicalSIGAM_MF_GM_Filtre1;
-     G4LogicalVolume *LogicalSIGAM_MF_GM_Filtre2;
-     G4LogicalVolume *LogicalSIGAM_MF_GM_Rondelle;
-     G4LogicalVolume *LogicalSIGAM_MF_GM_Isolant;
-     G4LogicalVolume *LogicalSIGAM_MF_GM_Gaine;
-     G4LogicalVolume *LogicalSIGAM_MF_Gaine;
-     G4LogicalVolume *LogicalSIGAM_MF_Corps_Cylindrique;
-     G4LogicalVolume *LogicalSIGAM_MF_Bouchon_Cable;
-     G4LogicalVolume *LogicalSIGAM_MF_Carte_Fille;
-     G4LogicalVolume *LogicalSIGAM_MF_Connecteur;
-     G4LogicalVolume *LogicalSIGAM_MF_Hexnut;
-     G4LogicalVolume *LogicalSIGAM_MF_Joint1;
-     G4LogicalVolume *LogicalSIGAM_MF_Joint2;
-     G4LogicalVolume *LogicalSIGAM_MF_PCB;
-     G4LogicalVolume *LogicalSIGAM_MF_Transfo;
-     G4LogicalVolume *LogicalSIGAM_MF_Pile;
-     G4LogicalVolume *LogicalSIGAM_MF_Mousse1;
-     G4LogicalVolume *LogicalSIGAM_MF_Mousse2;
-     G4LogicalVolume *LogicalSIGAM_MF_Socket1;
-     G4LogicalVolume *LogicalSIGAM_MF_Socket2;
-     G4LogicalVolume *LogicalSIGAM_MF_Socket3;
-     G4LogicalVolume *LogicalSIGAM_MF_Vis;
-
-
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_GM;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Filtre1;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Filtre2;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Rondelle;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Manchon;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Gaz;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Anode;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Calque;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Bouchon_Cable;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Connecteur;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Corps_Cylindrique;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_PCB;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Transfo;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Socket1;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Socket2;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Socket3;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Hexnut;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Joint1;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Joint2;
-     G4LogicalVolume *LogicalSIGAM_HF_Carmelec_Vis;
-
-
-     G4LogicalVolume *LogicalSIGAM_HF_GM;
-     G4LogicalVolume *LogicalSIGAM_HF_Compensation;
-     G4LogicalVolume *LogicalSIGAM_HF_Gaz;
-     G4LogicalVolume *LogicalSIGAM_HF_Rondelle;
-     G4LogicalVolume *LogicalSIGAM_HF_Manchon;
-     G4LogicalVolume *LogicalSIGAM_HF_Anode;
-     G4LogicalVolume *LogicalSIGAM_HF_Corps_Cylindrique;
-     G4LogicalVolume *LogicalSIGAM_HF_Bouchon_Cable;
-     G4LogicalVolume *LogicalSIGAM_HF_Joint1;
-     G4LogicalVolume *LogicalSIGAM_HF_Joint2;
-     G4LogicalVolume *LogicalSIGAM_HF_Connecteur;
-     G4LogicalVolume *LogicalSIGAM_HF_Vis;
-     G4LogicalVolume *LogicalSIGAM_HF_PCB;
-     G4LogicalVolume *LogicalSIGAM_HF_Hexnut;
-     G4LogicalVolume *LogicalSIGAM_HF_Socket1;
-     G4LogicalVolume *LogicalSIGAM_HF_Socket2;
-     G4LogicalVolume *LogicalSIGAM_HF_Socket3;
-     G4LogicalVolume *LogicalSIGAM_HF_Transfo;
-
-
-     G4LogicalVolume *LogicalSIGAM_BF_GM;
-     G4LogicalVolume *LogicalSIGAM_BF_Bague;
-     G4LogicalVolume *LogicalSIGAM_BF_Compensation;
-     G4LogicalVolume *LogicalSIGAM_BF_Anode;
-     G4LogicalVolume *LogicalSIGAM_BF_Gaz;
-     G4LogicalVolume *LogicalSIGAM_BF_Manchon;
-     G4LogicalVolume *LogicalSIGAM_BF_Gaine;
-     G4LogicalVolume *LogicalSIGAM_BF_Mousse;
-     G4LogicalVolume *LogicalSIGAM_BF_Corps_Cylindrique;
-     G4LogicalVolume *LogicalSIGAM_BF_Bouchon_Cable;
-     G4LogicalVolume *LogicalSIGAM_BF_Connecteur;
-     G4LogicalVolume *LogicalSIGAM_BF_Carte_Fille;
-     G4LogicalVolume *LogicalSIGAM_BF_Transfo;
-     G4LogicalVolume *LogicalSIGAM_BF_Joint1;
-     G4LogicalVolume *LogicalSIGAM_BF_Joint2;
-     G4LogicalVolume *LogicalSIGAM_BF_Socket1;
-     G4LogicalVolume *LogicalSIGAM_BF_Socket2;
-     G4LogicalVolume *LogicalSIGAM_BF_Socket3;
-     G4LogicalVolume *LogicalSIGAM_BF_Hexnut;
-     G4LogicalVolume *LogicalSIGAM_BF_PCB;
-     G4LogicalVolume *LogicalSIGAM_BF_Pile;
-     G4LogicalVolume *LogicalSIGAM_BF_Vis;
-
-
-     G4LogicalVolume *LogicalDolphy_GM;
-     G4LogicalVolume *LogicalDolphy_Anode;
-     G4LogicalVolume *LogicalDolphy_Gaz;
-     G4LogicalVolume *LogicalDolphy_Membrane;
-     G4LogicalVolume *LogicalDolphy_Bague;
-     G4LogicalVolume *LogicalDolphy_Ampoule;
-     G4LogicalVolume *LogicalDolphy_Circuit_Imprime;
-     G4LogicalVolume *LogicalDolphy_Bouton_Poussoir;
-     G4LogicalVolume *LogicalDolphy_Buzzer;
-     G4LogicalVolume *LogicalDolphy_CI;
-     G4LogicalVolume *LogicalDolphy_Connecteur;
-     G4LogicalVolume *LogicalDolphy_Ecran;
-     G4LogicalVolume *LogicalDolphy_Ecrou;
-     G4LogicalVolume *LogicalDolphy_Transfo;
-     G4LogicalVolume *LogicalDolphy_Couvercle_Pile;
-     G4LogicalVolume *LogicalDolphy_Pile;
-     G4LogicalVolume *LogicalDolphy_Dessous;
-     G4LogicalVolume *LogicalDolphy_Dessus;
-     G4LogicalVolume *LogicalDolphy_Fenetre;
-     G4LogicalVolume *LogicalDolphy_Grille;
-     G4LogicalVolume *LogicalDolphy_Insert1;
-     G4LogicalVolume *LogicalDolphy_Insert2;
-     G4LogicalVolume *LogicalDolphy_Insert3;
-     G4LogicalVolume *LogicalDolphy_Protection_Grille;
-     G4LogicalVolume *LogicalDolphy_Protection_Grille_Test;
-     G4LogicalVolume *LogicalDolphy_Rondelle_Protection;
-     G4LogicalVolume *LogicalDolphy_Filtre_H10;
-     G4LogicalVolume *LogicalDolphy_Mousse_GM;
-     G4LogicalVolume *LogicalDolphy_Rondelle;
-     G4LogicalVolume *LogicalDolphy_Support_Ressort1;
-     G4LogicalVolume *LogicalDolphy_Support_Ressort2;
-     G4LogicalVolume *LogicalDolphy_Vis_1;
-     G4LogicalVolume *LogicalDolphy_Vis_2;
-     G4LogicalVolume *LogicalDolphy_Vis_3;
-     G4LogicalVolume *LogicalDolphy_Vis_4;
-     G4LogicalVolume *LogicalDolphy_Vis_5;
-     G4LogicalVolume *LogicalDolphy_Vis_6;
-     G4LogicalVolume *LogicalDolphy_Vis_7;
-     G4LogicalVolume *LogicalDolphy_Vis_8;
-     G4LogicalVolume *LogicalDolphy_Vis_9;
-     G4LogicalVolume *LogicalDolphy_Vis_10;
-     G4LogicalVolume *LogicalDolphy_Vis_11;
-     G4LogicalVolume *LogicalDolphy_Vis_12;
+     G4LogicalVolume *LogicalScTest;
 
 
      // Physical volumes
      G4VPhysicalVolume *PhysicalWorld;
      G4VPhysicalVolume *PhysicalHolder;
      G4VPhysicalVolume *PhysicalGM_LND;
-     G4VPhysicalVolume *PhysicalGM_Filtre1;
-     G4VPhysicalVolume *PhysicalGM_Filtre3;
-     G4VPhysicalVolume *PhysicalGM_Rondelle;
-     G4VPhysicalVolume *PhysicalGM_Isolant;
-     G4VPhysicalVolume *PhysicalGM_Gaine;
-     G4VPhysicalVolume *PhysicalGM_Gaz;
-     G4VPhysicalVolume *PhysicalGM_Plastique;
-
-     G4VPhysicalVolume *PhysicalSIGAM_MF_GM;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_GM_Anode;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Gaz;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_GM_Filtre1;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_GM_Filtre2;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_GM_Rondelle;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_GM_Isolant;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_GM_Gaine;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Gaine;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Corps_Cylindrique;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Bouchon_Cable;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Carte_Fille;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Connecteur;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Hexnut;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Joint1;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Joint2;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_PCB;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Transfo;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Pile;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Mousse1;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Mousse2;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Socket1;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Socket2;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Socket3;
-     G4VPhysicalVolume *PhysicalSIGAM_MF_Vis;
+     G4VPhysicalVolume *PhysicalScTest;
 
 
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_GM;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Filtre1;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Filtre2;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Rondelle;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Gaz;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Manchon;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Anode;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Calque;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Bouchon_Cable;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Connecteur;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Corps_Cylindrique;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_PCB;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Transfo;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Socket1;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Socket2;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Socket3;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Hexnut;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Joint1;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Joint2;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Carmelec_Vis;
+     G4LogicalVolume *experimentalHall_log,
+   	*MS_IP_log,*protective_MS_log,*phosphor_MS_log,*support_MS_log,*magnetic_MS_log,
+   	*SR_IP_log,*protective_SR_log,*phosphor_SR_log,*support_SR_log,*magnetic_SR_log,
+   	*TR_IP_log,*phosphor_TR_log,*support_TR_log,*magnetic_TR_log,
+   	*ND_IP_log,*phosphor_ND_log,*support_ND_log,*magnetic_ND_log,*protective_ND_log,
+   	*filtre_PEHD_log,*filtre_mylar_log,*filtre_al_log,*filtre_ti_log,*filtre_fe_log,
+   	*filtre_cu_log,*filtre_mo_log,*filtre_ag_log,*filtre_sn_log,*filtre_ta_log,
+   	*filtre_au_log,*filtre_pb1_log,*filtre_pb2_log,*filtre_pb3_log,*filtre_pb4_log,
+   	*filtre_pb5_log,*filtre_pb6_log, *filtre_al_back_log,*filtre_pb_back_log,
+   	*blindage_1_log, *blindage_2_log, *blindage_3_log, *blindage_4_log, *blindage_5_log, *blindage_6_log;
 
-
-     G4VPhysicalVolume *PhysicalSIGAM_HF_GM;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Gaz;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Compensation;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Rondelle;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Manchon;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Anode;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Corps_Cylindrique;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Bouchon_Cable;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Joint1;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Joint2;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Connecteur;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Vis;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_PCB;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Hexnut;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Socket1;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Socket2;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Socket3;
-     G4VPhysicalVolume *PhysicalSIGAM_HF_Transfo;
-
-
-     G4VPhysicalVolume *PhysicalSIGAM_BF_GM;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Bague;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Compensation;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Anode;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Gaz;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Manchon;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Gaine;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Mousse;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Corps_Cylindrique;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Bouchon_Cable;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Connecteur;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Carte_Fille;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Transfo;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Joint1;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Joint2;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Socket1;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Socket2;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Socket3;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Hexnut;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_PCB;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Pile;
-     G4VPhysicalVolume *PhysicalSIGAM_BF_Vis;
-
-
-     G4VPhysicalVolume *PhysicalDolphy_GM;
-     G4VPhysicalVolume *PhysicalDolphy_Anode;
-     G4VPhysicalVolume *PhysicalDolphy_Gaz;
-     G4VPhysicalVolume *PhysicalDolphy_Membrane;
-     G4VPhysicalVolume *PhysicalDolphy_Bague;
-     G4VPhysicalVolume *PhysicalDolphy_Ampoule;
-     G4VPhysicalVolume *PhysicalDolphy_Circuit_Imprime;
-     G4VPhysicalVolume *PhysicalDolphy_Bouton_Poussoir;
-     G4VPhysicalVolume *PhysicalDolphy_Buzzer;
-     G4VPhysicalVolume *PhysicalDolphy_CI;
-     G4VPhysicalVolume *PhysicalDolphy_Connecteur;
-     G4VPhysicalVolume *PhysicalDolphy_Ecran;
-     G4VPhysicalVolume *PhysicalDolphy_Ecrou;
-     G4VPhysicalVolume *PhysicalDolphy_Transfo;
-     G4VPhysicalVolume *PhysicalDolphy_Couvercle_Pile;
-     G4VPhysicalVolume *PhysicalDolphy_Pile;
-     G4VPhysicalVolume *PhysicalDolphy_Dessous;
-     G4VPhysicalVolume *PhysicalDolphy_Dessus;
-     G4VPhysicalVolume *PhysicalDolphy_Fenetre;
-     G4VPhysicalVolume *PhysicalDolphy_Grille;
-     G4VPhysicalVolume *PhysicalDolphy_Insert1;
-     G4VPhysicalVolume *PhysicalDolphy_Insert2;
-     G4VPhysicalVolume *PhysicalDolphy_Insert3;
-     G4VPhysicalVolume *PhysicalDolphy_Protection_Grille;
-     G4VPhysicalVolume *PhysicalDolphy_Protection_Grille_Test;
-     G4VPhysicalVolume *PhysicalDolphy_Rondelle_Protection;
-     G4VPhysicalVolume *PhysicalDolphy_Filtre_H10;
-     G4VPhysicalVolume *PhysicalDolphy_Mousse_GM;
-     G4VPhysicalVolume *PhysicalDolphy_Rondelle;
-     G4VPhysicalVolume *PhysicalDolphy_Support_Ressort1;
-     G4VPhysicalVolume *PhysicalDolphy_Support_Ressort2;
-     G4VPhysicalVolume *PhysicalDolphy_Vis_1;
-     G4VPhysicalVolume *PhysicalDolphy_Vis_2;
-     G4VPhysicalVolume *PhysicalDolphy_Vis_3;
-     G4VPhysicalVolume *PhysicalDolphy_Vis_4;
-     G4VPhysicalVolume *PhysicalDolphy_Vis_5;
-     G4VPhysicalVolume *PhysicalDolphy_Vis_6;
-     G4VPhysicalVolume *PhysicalDolphy_Vis_7;
-     G4VPhysicalVolume *PhysicalDolphy_Vis_8;
-     G4VPhysicalVolume *PhysicalDolphy_Vis_9;
-     G4VPhysicalVolume *PhysicalDolphy_Vis_10;
-     G4VPhysicalVolume *PhysicalDolphy_Vis_11;
-     G4VPhysicalVolume *PhysicalDolphy_Vis_12;
+   	G4VPhysicalVolume *experimentalHall_phys,
+   	*MS_IP_phys, *protective_MS_phys,  *phosphor_MS_phys,  *support_MS_phys,  *magnetic_MS_phys,
+   	*SR_IP_phys, *protective_SR_phys,  *phosphor_SR_phys,  *support_SR_phys,  *magnetic_SR_phys,
+   	*ND_IP_phys, *protective_ND_phys,  *phosphor_ND_phys,  *support_ND_phys,  *magnetic_ND_phys,
+   	*TR_IP_phys,  *phosphor_TR_phys,  *support_TR_phys,  *magnetic_TR_phys, *tung_phys,
+   	*filtre_PEHD_phys,*filtre_mylar_phys,*filtre_al_phys,*filtre_ti_phys,*filtre_fe_phys,
+   	*filtre_cu_phys,*filtre_mo_phys,*filtre_ag_phys,*filtre_sn_phys,*filtre_ta_phys,
+   	*filtre_au_phys,*filtre_pb1_phys,*filtre_pb2_phys,*filtre_pb3_phys,*filtre_pb4_phys,
+   	*filtre_pb5_phys,*filtre_pb6_phys, *filtre_al_back_phys,*filtre_pb_back_phys,
+   	*filtre_f1_phys, *filtre_f2_phys, *filtre_f3_phys, *filtre_f4_phys, *filtre_f5_phys, *filtre_f6_phys,
+   	*filtre_f7_phys, *filtre_f8_phys, *filtre_f9_phys, *filtre_f10_phys, *filtre_f11_phys, *filtre_f12_phys,
+   	*filtre_f13_phys, *filtre_f14_phys, *filtre_f15_phys,
+   	*filtre_b1_phys, *filtre_b2_phys, *filtre_b3_phys, *filtre_b4_phys, *filtre_b5_phys, *filtre_b6_phys,
+   	*filtre_b7_phys, *filtre_b8_phys, *filtre_b9_phys, *filtre_b10_phys, *filtre_b11_phys, *filtre_b12_phys,
+   	*filtre_b13_phys, *filtre_b14_phys, *filtre_b15_phys,
+   	*blindage_1_phys, *blindage_2_phys, *blindage_3_phys, *blindage_4_phys, *blindage_5_phys, *blindage_6av_phys, *blindage_6ar_phys;
 
 
      // // Optical surfaces

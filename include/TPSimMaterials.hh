@@ -61,6 +61,7 @@ private:
   G4Material *Fer;
   G4Material *Inox;
   G4Material *Cuivre;
+  G4Material *Carbon;
   G4Material *Kapton;
   G4Material *Acier;
   G4Material *N2;

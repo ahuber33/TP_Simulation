@@ -1,5 +1,5 @@
 // TPSimGeometry_test.cc
-//// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr> 
+//// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr>
 /// Copyright: 2017 (C) Projet BADGE - CARMELEC -P2R
 
 #include "TPSimGeometry.hh"
@@ -59,7 +59,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   Air = scintProp->GetMaterial("Air");
   theScint = new GM(path_bin+"OpticalModule.cfg");
 
-  
+
   // ***********************
   // Visualization Colors
   // ***********************
@@ -71,7 +71,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   //white->SetForceWireframe(true); // Sets to wire frame mode for coloring the volume
   white->SetForceSolid(true); // Sets to solid mode for coloring the volume
   white->SetVisibility(true); // Makes color visible in visualization
-  
+
   gray = new G4VisAttributes(G4Colour(0.5,0.5,0.5,0.5));
   //  gray->SetForceWireframe(true);
    gray->SetForceSolid(true);
@@ -81,7 +81,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   //  gray->SetForceWireframe(true);
   gray_bis->SetForceSolid(true);
   gray_bis->SetVisibility(true);
-    
+
   black = new G4VisAttributes(G4Colour(0,0,0,0.7));
   //  black->SetForceWireframe(true);
   black->SetForceSolid(true);
@@ -92,7 +92,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   //  black->SetForceWireframe(true);
   black_bis->SetForceSolid(true);
   black_bis->SetVisibility(true);
-  
+
   red = new G4VisAttributes(G4Colour(1,0,0,0.5));
   //  red->SetForceWireframe(true);
   red->SetForceSolid(true);
@@ -103,17 +103,17 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   //  red->SetForceWireframe(true);
   red_hot->SetForceSolid(true);
   red_hot->SetVisibility(true);
-  
+
   orange = new G4VisAttributes(G4Colour(1,0.5,0,0.3));
   //  orange->SetForceWireframe(true);
   orange->SetForceSolid(true);
   orange->SetVisibility(true);
-  
+
   yellow = new G4VisAttributes(G4Colour(1,1,0,0.19));
   //  yellow->SetForceWireframe(true);
   yellow->SetForceSolid(true);
-  yellow->SetVisibility(true);    
-  
+  yellow->SetVisibility(true);
+
   green = new G4VisAttributes(G4Colour(0,1,0,0.35));
   //  green->SetForceWireframe(true);
   green->SetForceSolid(true);
@@ -123,7 +123,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   //  green_hot->SetForceWireframe(true);
   green_hot->SetForceSolid(true);
   green_hot->SetVisibility(true);
-  
+
   cyan = new G4VisAttributes(G4Colour(0,1,1,0.95));
   //  cyan->SetForceWireframe(true);
   cyan->SetForceSolid(true);
@@ -133,12 +133,12 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   //  blue->SetForceWireframe(true);
   blue->SetForceSolid(true);
   blue->SetVisibility(true);
-  
+
   magenta = new G4VisAttributes(G4Colour(1,0,1,0.85));
   //  magenta->SetForceWireframe(true);
   //magenta->SetForceSolid(true);
-  magenta->SetVisibility(true);  
-  
+  magenta->SetVisibility(true);
+
   // Define common rotations
   G4RotationMatrix DontRotate;
   DontRotate.rotateX(0.0*deg);
@@ -157,10 +157,10 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalWorld = new G4LogicalVolume(SolidWorld, VacuumWorld,"LogicalWorld",0,0,0);
   LogicalWorld->SetVisAttributes(invis);
 
-  // Place the world volume: center of world at origin (0,0,0)    
+  // Place the world volume: center of world at origin (0,0,0)
   PhysicalWorld = new G4PVPlacement(G4Transform3D
 				    (DontRotate,G4ThreeVector(0,0,0)),
-				    "PhysicalWorld",LogicalWorld,NULL,false,0); 
+				    "PhysicalWorld",LogicalWorld,NULL,false,0);
 
 
 
@@ -168,17 +168,17 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   // This is just a big box to count the escaped photons
   //G4Box *s_holder;
   G4Orb *s_holder;
-  s_holder = new G4Orb("s_holder",29.9*cm) ; 
+  s_holder = new G4Orb("s_holder",29.9*cm) ;
 
    LogicalHolder = new G4LogicalVolume(s_holder,Air,"logical_holder",0,0,0); //Replace Air with Vacuum (init)
 
-  // Place the holder volume: center of world at origin (0,0,0)    
+  // Place the holder volume: center of world at origin (0,0,0)
   PhysicalHolder = new G4PVPlacement(G4Transform3D
 				    (DontRotate,G4ThreeVector(0,0,0)),
-				    LogicalHolder, "Air",LogicalWorld,false,0); 
+				    LogicalHolder, "Air",LogicalWorld,false,0);
 
   LogicalHolder->SetVisAttributes(invis);
- 
+
 
   //*********************************
   // Build scint et wrapping volumes*
@@ -227,17 +227,17 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalDolphy_Vis_10 = theScint->GetDolphy_Vis10();
   LogicalDolphy_Vis_11 = theScint->GetDolphy_Vis11();
   LogicalDolphy_Vis_12 = theScint->GetDolphy_Vis12();
-    
+
   // Set colors of various block materials
-  LogicalDolphy_GM->SetVisAttributes(red); 
-  LogicalDolphy_Anode->SetVisAttributes(yellow); 
-  LogicalDolphy_Gaz->SetVisAttributes(green); 
-  LogicalDolphy_Membrane->SetVisAttributes(black); 
-  LogicalDolphy_Bague->SetVisAttributes(gray); 
-  LogicalDolphy_Ampoule->SetVisAttributes(gray); 
-  LogicalDolphy_Circuit_Imprime->SetVisAttributes(yellow); 
-  LogicalDolphy_Bouton_Poussoir->SetVisAttributes(orange); 
-  LogicalDolphy_Buzzer->SetVisAttributes(cyan); 
+  LogicalDolphy_GM->SetVisAttributes(red);
+  LogicalDolphy_Anode->SetVisAttributes(yellow);
+  LogicalDolphy_Gaz->SetVisAttributes(green);
+  LogicalDolphy_Membrane->SetVisAttributes(black);
+  LogicalDolphy_Bague->SetVisAttributes(gray);
+  LogicalDolphy_Ampoule->SetVisAttributes(gray);
+  LogicalDolphy_Circuit_Imprime->SetVisAttributes(yellow);
+  LogicalDolphy_Bouton_Poussoir->SetVisAttributes(orange);
+  LogicalDolphy_Buzzer->SetVisAttributes(cyan);
   LogicalDolphy_CI->SetVisAttributes(blue);
   LogicalDolphy_Connecteur->SetVisAttributes(blue);
   LogicalDolphy_Ecran->SetVisAttributes(magenta);
@@ -439,7 +439,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
 
   PhysicalDolphy_Rondelle_Protection = new G4PVPlacement(G4Transform3D
-  				    (Flip,G4ThreeVector(0*mm,9.25*mm,0.*mm)), // 10.75 pour 4mm Nylon; 10.25 pour 3mm Nylon; 
+  				    (Flip,G4ThreeVector(0*mm,9.25*mm,0.*mm)), // 10.75 pour 4mm Nylon; 10.25 pour 3mm Nylon;
   				    LogicalDolphy_Rondelle_Protection,"Rondelle_Protection",
   				    LogicalHolder,false,0);
 
@@ -558,10 +558,10 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
 #endif
 
- 
 
 
-  
+
+
   // Returns world with everything in it and all properties set
   return PhysicalWorld;
 }

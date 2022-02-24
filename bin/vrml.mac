@@ -13,7 +13,7 @@
 
 /tracking/verbose 0
 /run/verbose 1
-/run/printProgress 1000000
+/run/printProgress 100000
 
 
 # /vis/scene/endOfEventAction accumulate 10
@@ -106,12 +106,13 @@
 # /gps/particle ion
 # /gps/ion 55 137 0 0  
 # /grdm/nucleusLimits 137 137 55 55
-/gps/particle gamma
+/gps/particle e-
 /gps/pos/type Point
 #/gps/pos/centre 0 0. -300.0 mm
-/gps/pos/centre 0.0 300 0. mm
-/gps/ang/type iso
-/gps/energy 15.0 keV
+/gps/pos/centre 0.0 0.0 -100.0 mm
+#/gps/ang/type iso
+/gps/energy 5000.0 keV
+/gps/direction 0.0 0.0 1.0
 
 
 # #/gps/pos/type Point

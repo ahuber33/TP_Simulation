@@ -67,22 +67,11 @@ void TPSimEventAction::BeginOfEventAction(const G4Event* evt){
   Statsemitted.E_emitted_Elec =0;
   Statsemitted.E_emitted_Alpha =0;
 
-  Statssphere.E_dep_Gamma.clear();
-  Statssphere.Gamma_Interaction_X.clear();
-  Statssphere.Gamma_Interaction_Y.clear();
-  Statssphere.Gamma_Interaction_Z.clear();
-  Statssphere.Interaction_Location.clear();
-  Statssphere.TotalLength =0;
-  Statssphere.E_dep_Electron =0.;
-  Statssphere.N_Electron_Gaz =0;
-  Statssphere.TrackID =0;
-  Statssphere.Rmin =1000.;
-  Statssphere.Rmax =-10.;
-  Statssphere.DeltaR =-10.;
-  Statssphere.E_start =0.;
-  // Statssphere.PosX =-1000.;
-  // Statssphere.PosY =-1000.;
-  // Statssphere.PosZ =-1000.;
+  Statselectron.E_start=0;
+  Statselectron.E_dep=0;
+  Statselectron.TotalLength =0;
+  Statselectron.InteractionDepth =0;
+  //Statselectron.E_dep_Gamma.clear();
 
 }
 
@@ -93,10 +82,10 @@ void TPSimEventAction::EndOfEventAction(const G4Event* evt){
 
   TPSimRunAction *runac = (TPSimRunAction*)(G4RunManager::GetRunManager()->GetUserRunAction());
 
-  //if (Statssphere.E_dep_Gamma.size() != 0)
-  if (Statssphere.E_dep_Electron != 0)
-    {
-      runac->UpdateStatisticsSphere(Statssphere);
-    }
+  //if (Statselectron.E_dep_Gamma.size() != 0)
+    if (Statselectron.E_dep == Statselectron.E_start)
+      {
+      runac->UpdateStatisticsElectron(Statselectron);
+      }
 
 }

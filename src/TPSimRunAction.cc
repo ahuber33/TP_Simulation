@@ -40,7 +40,7 @@ void TPSimRunAction::BeginOfRunAction(const G4Run* aRun){
     //Tree_emitted = new TTree("Tree_emitted","Emitted Information");  //Tree to access energy emitted (except gammas)
     //Tree_position = new TTree("Tree_position","Position Information");  //Tree to access position of energy deposition
 
-    Tree_sphere = new TTree("Tree_sphere","Sphere Information");  //Tree to access position of energy deposition
+    Tree_electron = new TTree("Tree_electron","Electron Information");  //Tree to access position of energy deposition
 
 
     // create the branch for each event.
@@ -53,24 +53,12 @@ void TPSimRunAction::BeginOfRunAction(const G4Run* aRun){
 
     //RunBranch = Tree_position->Branch("Position_Interaction",&Statsposition.Position_x,"Position_x/F:Position_y/F:Position_z/F");
 
-    // RunBranch = Tree_sphere->Branch("Sphere_Interaction",&Statssphere.Position_x,"Position_x/F:Position_y/F:Position_z/F:TotalLength/F");
-    //
-    RunBranch = Tree_sphere->Branch("E_start", &Statssphere.E_start, "E_start/F" );
-    RunBranch = Tree_sphere->Branch("E_dep_Gamma", "vector<float>", &Statssphere.E_dep_Gamma );
-    // RunBranch = Tree_sphere->Branch("Gamma_Interaction_X", "vector<float>", &Statssphere.Gamma_Interaction_X );
-    // RunBranch = Tree_sphere->Branch("Gamma_Interaction_Y", "vector<float>", &Statssphere.Gamma_Interaction_Y );
-    // RunBranch = Tree_sphere->Branch("Gamma_Interaction_Z", "vector<float>", &Statssphere.Gamma_Interaction_Z );
-    RunBranch = Tree_sphere->Branch("Interaction_Location", "vector<int>", &Statssphere.Interaction_Location );
-    RunBranch = Tree_sphere->Branch("TotalLength", &Statssphere.TotalLength, "TotalLength/F" );
-    RunBranch = Tree_sphere->Branch("E_dep_Electron", &Statssphere.E_dep_Electron, "E_dep_Electron/F" );
-    RunBranch = Tree_sphere->Branch("Rmin", &Statssphere.Rmin, "Rmin/F" );
-    RunBranch = Tree_sphere->Branch("Rmax", &Statssphere.Rmax, "Rmax/F" );
-    RunBranch = Tree_sphere->Branch("DeltaR", &Statssphere.DeltaR, "DeltaR/F" );
-    // RunBranch = Tree_sphere->Branch("PosX", &Statssphere.PosX, "PosX/F" );
-    // RunBranch = Tree_sphere->Branch("PosY", &Statssphere.PosX, "PosY/F" );
-    // RunBranch = Tree_sphere->Branch("PosZ", &Statssphere.PosX, "PosZ/F" );
-    // RunBranch = Tree_sphere->Branch("N_Electron_Gaz", &Statssphere.N_Electron_Gaz, "N_Electron_Gaz/I" );
 
+    RunBranch = Tree_electron->Branch("E_start", &Statselectron.E_start, "E_start/F" );
+    RunBranch = Tree_electron->Branch("E_dep", &Statselectron.E_dep, "E_dep/F" );
+    RunBranch = Tree_electron->Branch("TotalLength", &Statselectron.TotalLength, "TotalLength/F" );
+    RunBranch = Tree_electron->Branch("InteractionDepth", &Statselectron.InteractionDepth, "InteractionDepth/F" );
+    //RunBranch = Tree_electron->Branch("E_dep_Gamma", "vector<float>", &Statselectron.E_dep_Gamma );
 
     //set the random seed to the CPU clock
   //G4Random::setTheEngine(new CLHEP::HepJamesRandom);
@@ -108,7 +96,7 @@ void TPSimRunAction::EndOfRunAction(const G4Run*aRun){
     //theRunTree_bis->Write();
     //Tree_emitted->Write();
     //Tree_position->Write();
-    Tree_sphere->Write();
+    Tree_electron->Write();
   //   MakePMTHisto(f);   NOTE:  Use this for multiple PMTs!
     f->Close();
 
@@ -161,7 +149,7 @@ void TPSimRunAction::UpdateStatisticsPosition(RunTallyPosition aRunTallyPosition
 }
 
 
-void TPSimRunAction::UpdateStatisticsSphere(RunTallySphere aRunTallySphere){
-    Statssphere = aRunTallySphere;
-    Tree_sphere->Fill();
+void TPSimRunAction::UpdateStatisticsElectron(RunTallyElectron aRunTallyElectron){
+    Statselectron = aRunTallyElectron;
+    Tree_electron->Fill();
 }
