@@ -244,7 +244,7 @@ Scintillator::~Scintillator(){
 G4LogicalVolume *Scintillator::GetScTest(){
 
   scintillator = scintProp->GetMaterial("scintillator");
-  //scintillator = scintProp->GetMaterial("Carbon");
+  //scintillator = scintProp->GetMaterial("Alu");
 
   G4Box *Box = new G4Box   ("Box",             //its name
   			    ScintillatorLength/2, ScintillatorLength/2, ScintillatorThickness/2);    //its size

@@ -15,5 +15,5 @@
 /gps/particle proton
 /gps/pos/type Point
 /gps/pos/centre 0.0 0.0 -400.0 mm
-/gps/energy %energy keV
+/gps/energy 750 keV
 /gps/direction 0.0 0.0 1.0

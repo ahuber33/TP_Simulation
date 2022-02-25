@@ -26,7 +26,7 @@ float Mean(const char* filename, const char* TreeName, const char* VariableName)
   Tree->SetBranchAddress(VariableName, &a);
   float Entries = Tree->GetEntries();
   float Mean=0;
-  double Sum=0;
+  float Sum=0;
 
   for(int i=0; i<Entries; i++)
   {
@@ -50,7 +50,7 @@ float Sigma(const char* filename, const char* TreeName, const char* VariableName
   TTree *Tree = (TTree*)file->Get(TreeName);
   Tree->SetBranchAddress(VariableName, &a);
   int Entries = Tree->GetEntries();
-  double Sum=0;
+  float Sum=0;
   float Sigma=0;
 
   for(int i=0; i<Entries; i++)
