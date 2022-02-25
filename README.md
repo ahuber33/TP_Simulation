@@ -15,6 +15,7 @@
 #-Mise au point d'un code d'analyse Plot.C et Plot.hh afin de comparer les CSDA des électrons dans plusieurs matériaux (Lecture fichier txt, lecture Tree, création TGraph)
 #-Nettoyage du dossier bin (Scripts, macros et fichiers txt correspondants à la simulation GMSim)
 #-De nombreux tests avec .gitignore pour faciliter l'utilisation
+<<<<<<< HEAD
 
 #commit #3 le 25/02/2022 (Validation G4EM-protons)
 #-Changement taille scintillateur pour pouvoir suivre le proton de 500 MeV sur toute sa trajectoire dans le Scintillateur
@@ -25,3 +26,5 @@
 #Changement de valeur du Cut dans la PhysicsList (passage de 1mm à 1µm) afin de pouvoir suivre correctement le proton dans les différents matériaux
 #-Le tree electrons est juste utilisé ici pour avoir les informations sur les protons -> Nécessité de faire attention par la suite et de surement créer un autre tree pour les protons
 #-Du aux nombreux gammas crées, la condition de remplissage du tree (Estart=Edep) a été enlevé.
+=======
+>>>>>>> fcbeba0809f06263ab22aca37a89b1b4cd500450
