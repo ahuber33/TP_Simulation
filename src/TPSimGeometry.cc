@@ -167,10 +167,9 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   // Create Holder Volume
   // This is just a big box to count the escaped photons
   //G4Box *s_holder;
-  G4Orb *s_holder;
-  s_holder = new G4Orb("s_holder",100.0*cm) ;
+  G4Box *s_holder = new G4Box("s_holder", 100*cm, 100*cm, 100*cm );
 
-   LogicalHolder = new G4LogicalVolume(s_holder,Vacuum,"logical_holder",0,0,0); //Replace Air with Vacuum (init)
+  LogicalHolder = new G4LogicalVolume(s_holder,Vacuum,"logical_holder",0,0,0); //Replace Air with Vacuum (init)
 
   // Place the holder volume: center of world at origin (0,0,0)
   PhysicalHolder = new G4PVPlacement(G4Transform3D

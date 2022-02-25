@@ -83,9 +83,9 @@ void TPSimEventAction::EndOfEventAction(const G4Event* evt){
   TPSimRunAction *runac = (TPSimRunAction*)(G4RunManager::GetRunManager()->GetUserRunAction());
 
   //if (Statselectron.E_dep_Gamma.size() != 0)
-    if (Statselectron.E_dep == Statselectron.E_start)
-      {
+    //if (Statselectron.E_dep == Statselectron.E_start)
+      //{
       runac->UpdateStatisticsElectron(Statselectron);
-      }
+      //}
 
 }

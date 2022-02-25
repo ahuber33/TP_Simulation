@@ -116,7 +116,7 @@ RunTallybis Statssphere;
 G4int StepNo = aStep->GetTrack()->GetCurrentStepNumber();
 
 
-if(partname == "e-"){
+if(partname == "proton"){
   if ((aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator")
   && (aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator")){
     //G4cout << "Step Length = " << aStep->GetTrack()->GetStepLength()/mm << " mm" << G4endl;
@@ -218,11 +218,11 @@ if (Parent_ID ==0 && StepNo==1)
 
 
 //
-// if(partname == "e-" && aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "PhysicalWorld")
-//   {
-//     //G4cout << "Ici" << G4endl
-//     theTrack->SetTrackStatus(fStopAndKill);
-//   }
+if(Parent_ID>0)// && aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "PhysicalWorld")
+  {
+    //G4cout << "Ici" << G4endl
+    theTrack->SetTrackStatus(fStopAndKill);
+  }
 
 
 }

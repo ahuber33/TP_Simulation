@@ -55,20 +55,6 @@ void Plot()
   file_Cu.close();
 
 
-  ifstream file_Wa("Water_electron.txt");
-  float density_Wa = 1.0;
-  std::vector<float> vEnergy_Wa;
-  std::vector<float> vCSDA_Wa;
-  vEnergy_Wa.clear();
-  vCSDA_Wa.clear();
-  for (int i =0; i<81; i++){
-    file_Wa >> c >> d;
-    vEnergy_Wa.push_back(c);
-    vCSDA_Wa.push_back(d/density_Wa);
-  }
-  file_Wa.close();
-
-
   ifstream file_C("Carbon_electron.txt");
   float density_C = 2.0;
   std::vector<float> vEnergy_C;
@@ -86,20 +72,17 @@ void Plot()
   TGraph *gCSDA_Alu = new TGraph(vEnergy_Alu.size(), &vEnergy_Alu[0], &vCSDA_Alu[0]);
   TGraph *gCSDA_Sc = new TGraph(vEnergy_Sc.size(), &vEnergy_Sc[0], &vCSDA_Sc[0]);
   TGraph *gCSDA_Cu = new TGraph(vEnergy_Cu.size(), &vEnergy_Cu[0], &vCSDA_Cu[0]);
-  TGraph *gCSDA_Wa = new TGraph(vEnergy_Wa.size(), &vEnergy_Wa[0], &vCSDA_Wa[0]);
   TGraph *gCSDA_C = new TGraph(vEnergy_C.size(), &vEnergy_C[0], &vCSDA_C[0]);
 
   new TCanvas;
   gCSDA_Alu->SetLineColor(kGray);
   gCSDA_Sc->SetLineColor(kCyan);
   gCSDA_Cu->SetLineColor(kOrange);
-  gCSDA_Wa->SetLineColor(kBlue);
   gCSDA_C->SetLineColor(kBlack);
   gCSDA_Sc->Draw("");
   gCSDA_Alu->Draw("same");
   gCSDA_Cu->Draw("same");
-  //gCSDA_Wa->Draw("same");
-  gCSDA_C->Draw("same");
+  //gCSDA_C->Draw("same");
 
 
   //  float Mean_Alu_1000keV = Mean("Scintillateur_1000keV.root", "Tree_electron","TotalLength");
@@ -158,22 +141,6 @@ void Plot()
      "Cuivre_50000keV.root"
     };
 
-    const char* filenames_Wa[nfiles]=
-    {
-     "Water_10keV.root",
-     "Water_100keV.root",
-     "Water_250keV.root",
-     "Water_500keV.root",
-     "Water_750keV.root",
-     "Water_1000keV.root",
-     "Water_1500keV.root",
-     "Water_2000keV.root",
-     "Water_3000keV.root",
-     "Water_4000keV.root",
-     "Water_5000keV.root",
-     "Water_10000keV.root",
-     "Water_50000keV.root"
-    };
 
     const char* filenames_C[nfiles]=
     {
@@ -197,7 +164,6 @@ void Plot()
   TGraphErrors* f_Alu = ge(filenames_Alu, "Tree_electron", "E_start", "TotalLength", nfiles);
   TGraphErrors* f_Sc = ge(filenames_Sc, "Tree_electron", "E_start", "TotalLength", nfiles);
   TGraphErrors* f_Cu = ge(filenames_Cu, "Tree_electron", "E_start", "TotalLength", nfiles);
-  TGraphErrors* f_Wa = ge(filenames_Wa, "Tree_electron", "E_start", "TotalLength", nfiles);
   TGraphErrors* f_C = ge(filenames_C, "Tree_electron", "E_start", "TotalLength", nfiles);
     
   //new TCanvas;
@@ -216,16 +182,11 @@ void Plot()
   f_Cu->SetMarkerColor(kOrange);
   f_Cu->SetFillColor(kOrange);
   f_Cu->SetFillStyle(3005);
-  // f_Wa->Draw("PE3Same");
-  // f_Wa->SetMarkerStyle(8);
-  // f_Wa->SetMarkerColor(kBlue);
-  // f_Wa->SetFillColor(kBlue);
-  // f_Wa->SetFillStyle(3005);
-  f_C->Draw("PE3Same");
-  f_C->SetMarkerStyle(8);
-  f_C->SetMarkerColor(kBlack);
-  f_C->SetFillColor(kBlack);
-  f_C->SetFillStyle(3005);
+  // f_C->Draw("PE3Same");
+  // f_C->SetMarkerStyle(8);
+  // f_C->SetMarkerColor(kBlack);
+  // f_C->SetFillColor(kBlack);
+  // f_C->SetFillStyle(3005);
   
   
 }

@@ -45,10 +45,10 @@
 
 
 # PART TO SIMULATE 1 MEV ELECTRON !!!!!!!!
-/gps/particle e-
+/gps/particle geantino
 #/gps/particle geantino
 /gps/pos/type Point
-/gps/pos/centre 0.0 0.0 -100. mm
+/gps/pos/centre 0.0 0.0 -900. mm
 /gps/energy 1000.0 keV
 /gps/direction 0.0 0.0 1.0
 

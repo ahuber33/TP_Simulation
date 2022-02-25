@@ -106,13 +106,13 @@
 # /gps/particle ion
 # /gps/ion 55 137 0 0  
 # /grdm/nucleusLimits 137 137 55 55
-/gps/particle e-
-/gps/pos/type Point
+#/gps/particle e-
+#/gps/pos/type Point
 #/gps/pos/centre 0 0. -300.0 mm
-/gps/pos/centre 0.0 0.0 -100.0 mm
+#/gps/pos/centre 0.0 0.0 -100.0 mm
 #/gps/ang/type iso
-/gps/energy 5000.0 keV
-/gps/direction 0.0 0.0 1.0
+#/gps/energy 5000.0 keV
+#/gps/direction 0.0 0.0 1.0
 
 
 # #/gps/pos/type Point
@@ -121,3 +121,15 @@
 # /gps/ang/type iso
 # /gps/energy 667.0 keV
 
+
+
+
+######################################################
+### PART TO SIMULATE PARTICLE WITH GPS (no setgun) ###
+######################################################
+/gps/number 1
+/gps/particle proton
+/gps/pos/type Point
+/gps/pos/centre 0.0 0.0 -900.0 mm
+/gps/energy 500 MeV
+/gps/direction 0.0 0.0 1.0
