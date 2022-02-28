@@ -128,8 +128,8 @@
 ### PART TO SIMULATE PARTICLE WITH GPS (no setgun) ###
 ######################################################
 /gps/number 1
-/gps/particle proton
+/gps/particle e-
 /gps/pos/type Point
-/gps/pos/centre 0.0 0.0 -900.0 mm
-/gps/energy 500 MeV
+/gps/pos/centre 0.0 0.0 -100.0 mm
+/gps/energy 1 MeV
 /gps/direction 0.0 0.0 1.0

@@ -37,6 +37,8 @@ class  TPSimGeometry:  public G4VUserDetectorConstruction
      //     LogicalHolder *holder;
      TPSimMaterials *scintProp;
      Scintillator *theScint;
+     Coupling *CouplingGlue;
+     PMT *R6594;
      G4Material *Vacuum;
      G4Material *VacuumWorld;
      G4Material *Air;
@@ -62,14 +64,24 @@ class  TPSimGeometry:  public G4VUserDetectorConstruction
      G4LogicalVolume *LogicalWorld;
      G4LogicalVolume *LogicalHolder;
      G4LogicalVolume *LogicalGM_LND;
-     G4LogicalVolume *LogicalScTest;
+     G4LogicalVolume *LogicalSc;
+     G4LogicalVolume *LogicalTeflon;
+     G4LogicalVolume *LogicalMylar;
+     G4LogicalVolume *LogicalGlue;
+     G4LogicalVolume *LogicalPM;
+     G4LogicalVolume *LogicalPhotocathode;
 
 
      // Physical volumes
      G4VPhysicalVolume *PhysicalWorld;
      G4VPhysicalVolume *PhysicalHolder;
      G4VPhysicalVolume *PhysicalGM_LND;
-     G4VPhysicalVolume *PhysicalScTest;
+     G4VPhysicalVolume *PhysicalSc;
+     G4VPhysicalVolume *PhysicalTeflon;
+     G4VPhysicalVolume *PhysicalMylar;
+     G4VPhysicalVolume *PhysicalGlue;
+     G4VPhysicalVolume *PhysicalPM;
+     G4VPhysicalVolume *PhysicalPhotocathode;
 
 
      G4LogicalVolume *experimentalHall_log,
@@ -101,27 +113,44 @@ class  TPSimGeometry:  public G4VUserDetectorConstruction
    	*blindage_1_phys, *blindage_2_phys, *blindage_3_phys, *blindage_4_phys, *blindage_5_phys, *blindage_6av_phys, *blindage_6ar_phys;
 
 
+    // Dimension values
+    // scint SuperNEMO
+    G4double SNMW_ScintStepWidth;
+    G4double SNMW_ScintStepHeight;
+    G4double SNMW_ScintBodyWidth;
+    G4double SNMW_ScintBodyHeight;
+    G4double SNMW_CouplingSphereRadius;
+    G4double SNMW_CouplingSphereDepth;
+    G4double SNMW_FullScintHeight;
+    // wrapping
+    G4double TeflonGap;
+    G4double TeflonThickness;
+    G4double MylarGap;
+    G4double MylarThickness;
+    // glue
+    G4double GlueThickness;
+
      // // Optical surfaces
-     // G4OpticalSurface *OpticalTeflon;
+     G4OpticalSurface *OpticalTeflon;
      // G4OpticalSurface *OpticalSc;
-     // G4OpticalSurface *OpticalMylar;
+     G4OpticalSurface *OpticalMylar;
      // G4OpticalSurface *OpticalVikuiti;
-     // G4OpticalSurface *OpticalPMT;
+     G4OpticalSurface *OpticalPMT;
 
      // // Skin surfaces
-     // G4LogicalSkinSurface *SSTeflon;
-     // G4LogicalSkinSurface *SSMylar;
+     G4LogicalSkinSurface *SSTeflon;
+     G4LogicalSkinSurface *SSMylar;
      // G4LogicalSkinSurface *SSWrapLightGuide;
      // G4LogicalSkinSurface *SSWrapInterfaceLightGuide;
-     // G4LogicalSkinSurface *SSPhotocathode;
+     G4LogicalSkinSurface *SSPhotocathode;
      // G4LogicalSkinSurface *SSScintillateur;
 
 
      // // Material properties tables
-     // G4MaterialPropertiesTable *TeflonMPT;
-     // G4MaterialPropertiesTable *MylarMPT;
+     G4MaterialPropertiesTable *TeflonMPT;
+     G4MaterialPropertiesTable *MylarMPT;
      // G4MaterialPropertiesTable *VikuitiMPT;
-     // G4MaterialPropertiesTable *PMT_MPT;
+     G4MaterialPropertiesTable *PMT_MPT;
 
   };
 #endif

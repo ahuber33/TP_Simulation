@@ -1,5 +1,5 @@
 /// PMT.hh
-//// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr> 
+//// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr>
 //// Copyright: 2022 (C) Projet RATP - ENL [LP2IB] - CELIA
 
 
@@ -23,11 +23,14 @@ public:
   PMT();
   ~PMT();
   void Construct();
-  
+
 public:
 
   G4LogicalVolume *GetBADGE_PMTGlass();
   G4LogicalVolume *GetBADGE_Photocathode();
+  G4LogicalVolume *Get8InchesPMTGlass();
+  G4LogicalVolume *Get8InchesPhotocathode();
+
 
 private:
   TPSimMaterials* scintProp;
@@ -39,6 +42,8 @@ private:
 
   G4LogicalVolume *LogicalPMTGlass;
   G4LogicalVolume *LogicalPhotocathode;
+  G4LogicalVolume *Logical8InchesPMTGlass;
+  G4LogicalVolume *Logical8InchesPhotocathode;
 
 };
 #endif

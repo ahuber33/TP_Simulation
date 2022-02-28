@@ -56,8 +56,8 @@ include_directories(${PROJECT_SOURCE_DIR}/include
 
 
 set(PROJECT_SRC
-	#${CMAKE_CURRENT_SOURCE_DIR}/src/Coupling.cc
-	#${CMAKE_CURRENT_SOURCE_DIR}/src/PMT.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/src/Coupling.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/src/PMT.cc
 	#${CMAKE_CURRENT_SOURCE_DIR}/src/GdL.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/Scintillator.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimEventAction.cc
@@ -78,8 +78,8 @@ set(PROJECT_SRC
     )
 
 set(PROJECT_HEADER
-	#${CMAKE_CURRENT_SOURCE_DIR}/include/Coupling.hh
-	#${CMAKE_CURRENT_SOURCE_DIR}/include/PMT.hh
+	${CMAKE_CURRENT_SOURCE_DIR}/include/Coupling.hh
+	${CMAKE_CURRENT_SOURCE_DIR}/include/PMT.hh
 	#${CMAKE_CURRENT_SOURCE_DIR}/include/GdL.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/Scintillator.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimEventAction.hh

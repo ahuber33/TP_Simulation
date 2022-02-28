@@ -46,8 +46,10 @@ G4Track* theTrack = aStep->GetTrack();
 G4double x = aStep->GetTrack()->GetPosition().x();
 G4double y = aStep->GetTrack()->GetPosition().y();
 G4double z = aStep->GetTrack()->GetPosition().z();
+G4double z_origine = 90. -z; // Limits of photocathode in z plane => Define origine for determine cathode uniformity !!!!
 //G4double r = sqrt(x*x + y*y +z*z);
 G4double r = sqrt(x*x + y*y);
+G4double theta = acos((z_origine)/r)/deg;
 //G4double d = sqrt(x*x + y*y + pow(z-116,2));
 //G4cout << "x = " << x << G4endl;
 //G4cout << "y = " << y << G4endl;
@@ -69,7 +71,7 @@ trackInformation = (TPSimTrackInformation*)theTrack->GetUserInformation();
 //  G4VPhysicalVolume* thePostPV = thePostPoint->GetPhysicalVolume();
 
 
-if(1){                       //set to 1 to ignore generated photons
+if(0){                       //set to 1 to ignore generated photons
   if(theTrack->GetDefinition()->GetParticleName()=="opticalphoton")
     theTrack->SetTrackStatus(fStopAndKill);
 }
@@ -79,6 +81,7 @@ if(1){                       //set to 1 to ignore generated photons
 
 //The following lines are for debugging purposes
 G4String partname = aStep->GetTrack()->GetDefinition()->GetParticleName();
+ if(partname == "opticalphoton" && aStep->GetTrack()->GetUserInformation() ==0) G4cout << "WARNING! No user info attached to photon" << G4endl;
 
 //Get the Event manager
 G4EventManager *evtman = G4EventManager::GetEventManager();
@@ -90,26 +93,184 @@ TPSimRunAction *runac = (TPSimRunAction*)(G4RunManager::GetRunManager()->GetUser
 
 
 
-//TPSimTrackInformation* info = (TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation());
+TPSimTrackInformation* info = (TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation());
+
+//if more than 1 secondary is generated, update scintillation statistics
+
+// if(fpSteppingManager->GetfN2ndariesPostStepDoIt()>0) {
+//
+//   //these two will give you the number of wls photons
+//   //if(theTrack->GetDefinition()->GetParticleName()=="opticalphoton"){
+//    //evtac->AddGenerated(fpSteppingManager->GetfN2ndariesPostStepDoIt());}
+//
+//   //evtac->AddGenerated(fpSteppingManager->GetfN2ndariesPostStepDoIt());
+//   evtac->AddTrackLength(aStep->GetTrack()->GetStepLength()/mm);
+//   //G4cout << " Track Length = " << aStep->GetTrack()->GetTrackLength()/mm << G4endl;
+//   //G4cout << "Count ph" << G4endl;
+// }
+
 
 G4double my_dist_after = aStep->GetTrack()->GetTrackLength()/mm;
 
 //check for bulk absorption
 G4String endproc = aStep->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName();
 
+if(endproc == "OpAbsorption")
+  {
+    evtac->CountBulkAbs();
+
+    //G4cout << "Photon BulkAbsorbed" << G4endl;
+  }
+
+else if (endproc == "OpWLS"){
+  evtac->CountWLS();
+  my_dist_after = my_dist_after + aStep->GetTrack()->GetTrackLength()/mm;
+  //G4cout << "Count WLS true = " << info->GetWLSCount() << G4endl;
+  //G4cout << "Distance d = " << d << G4endl;
+
+
+  if (info->GetWLSCount() == 0)
+    {
+Length_Track = aStep->GetTrack()->GetTrackLength()/mm;
+//G4cout << "Count WLS = " << info->GetWLSCount() << G4endl;
+    }
+
+  if (info->GetWLSCount() > 0)
+    {
+Length_Track += aStep->GetTrack()->GetTrackLength()/mm;
+//G4cout << "Count WLS = " << info->GetWLSCount() << G4endl;
+    }
+
+  //G4cout << "Track Length = " << aStep->GetTrack()->GetTrackLength()/mm << G4endl;
+  //G4cout << "Total Length Track (for different OpWLS) = " << Total_Length_Track << G4endl;
+
+}
+else if(partname == "opticalphoton" && endproc != "Transportation")
+  G4cout << endproc << G4endl;
+
+
+  G4OpBoundaryProcessStatus boundaryStatus=Undefined;
+  static G4OpBoundaryProcess* boundary=NULL;
+
+  //find the boundary process only once
+if(!boundary){
+  G4ProcessManager* pm = aStep->GetTrack()->GetDefinition()->GetProcessManager();
+  G4int nprocesses = pm->GetProcessListLength();
+  G4ProcessVector* pv = pm->GetProcessList();
+  G4int i;
+  for( i = 0; i < nprocesses; i++){
+    if((*pv)[i]->GetProcessName()=="OpBoundary"){
+boundary = (G4OpBoundaryProcess*)(*pv)[i];
+break;
+    }
+  }
+}
+
+
 //RunTally Statistics;
 RunTallybis Statisticsbis;
 RunTallybis Statssphere;
 //RunTallyter Statisticster;
 
+//#######################################################################
+//#######################################################################
+//##########################DEBUT CODE OPTIQUE###########################
+//#######################################################################
+//#######################################################################
 
-  Statisticsbis.Angle = 0;
-  Statisticsbis.PositionX = 0;
-  Statisticsbis.PositionY = 0;
-  Statisticsbis.PositionZ = 0;
-  Statisticsbis.DeathLambda = 0;
-  Statisticsbis.BirthLambda = 0;
-  //Statisticsbis.Theta = 0;
+  if(partname =="opticalphoton"){ //ALL the code in relation with Optical needs to be here !!!!
+    boundaryStatus = boundary->GetStatus();
+    //G4cout << "BirthLambda = " << info->GetBirthLambda() << G4endl;
+
+    Statisticsbis.Angle = theta;
+    Statisticsbis.PositionX = x;
+    Statisticsbis.PositionY = y;
+    Statisticsbis.PositionZ = z;
+    Statisticsbis.DeathLambda = 1240*eV/(aStep->GetTrack()->GetTotalEnergy());
+    Statisticsbis.BirthLambda = info->GetBirthLambda();
+
+    if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
+
+  switch(boundaryStatus){
+  case Detection:
+{
+  evtac->CountDetected();
+  //G4cout << "Photon detecté" << G4endl;
+  //  evtac->CountDetected_without_CU();
+  //evtac->CountDetected(aTally);
+  runac->UpdateStatisticsbis(Statisticsbis);
+
+break;
+  case Absorption:    // used to get the number TRANSMITTED!!
+
+if (theTrack->GetNextVolume()->GetName()!="Scintillateur" &&
+  theTrack->GetNextVolume()->GetName()!="Mylar" &&
+  theTrack->GetNextVolume()->GetName()!="Teflon" &&
+  theTrack->GetNextVolume()->GetName()!="Glue" &&
+  theTrack->GetNextVolume()->GetName()!="PM")
+
+{
+  evtac->CountFailed();
+  Statisticsbis.Total_Reflections = ((TPSimTrackInformation*) (aStep->GetTrack()->GetUserInformation()))->GetTotalInternalReflections();
+  //G4cout << "N reflexions Total = " << ((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->GetTotalInternalReflections() << G4endl;
+  Statisticsbis.Wrap_Reflections = ((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->GetReflections();
+  //G4cout << "N Wrap reflection = " << ((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->GetReflections() << G4endl;
+  //runac->UpdateStatisticsbis(Statisticsbis);
+
+  //  Note that currently it is not set up to root output...see void CountDetected();
+	  //G4cout << "Photon failed" << G4endl;
+}
+else{  // if not bulk, transmitted, or detected...it must be surface!
+evtac->CountAbsorbed();
+
+  //G4cout << "Photon surface absorbed" << G4endl;
+}
+
+break;
+  case Undefined: G4cout<<"Undefined Boundary Process!"<<G4endl;
+break;
+  case NoRINDEX:
+{
+evtac->CountEscaped();
+//G4cout << "count escaped" << G4endl;
+
+}
+break;
+
+// if we have any kind of reflections, count them
+  case LambertianReflection:
+  case LobeReflection:
+  case SpikeReflection:
+{
+((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->CountReflections();
+//G4cout << "Reflection" << G4endl;
+break;}
+  case TotalInternalReflection:
+{
+((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->CountTotalInternalReflections();
+//G4cout << "Reflection totale" << G4endl;
+break;
+}
+  default:
+break;
+  }
+}
+}
+//G4cout << "Total Boundary = " <<  evtac->Getcpt() << G4endl;
+//G4cout << "Total Generated = " <<  evtac->Getcpt_tot() << G4endl;
+
+
+
+  }
+
+  //#######################################################################
+  //#######################################################################
+  //############################FIN CODE OPTIQUE###########################
+  //#######################################################################
+  //#######################################################################
+
+
+
 
 
 
@@ -210,19 +371,47 @@ if(partname == "proton"){
 //   }
 
 
-if (Parent_ID ==0 && StepNo==1)
+if (Parent_ID ==0)
   {
+  if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator") {evtac->AddEdep(aStep->GetTotalEnergyDeposit()/keV);}
+    if(StepNo==1)
+    {
     evtac->SetEstartElectron(aStep->GetPreStepPoint()->GetKineticEnergy()/keV);
-    //G4cout << "Estart = " << aStep->GetPreStepPoint()->GetKineticEnergy()/keV << G4endl;
+    evtac->SetIncidentE(aStep->GetPreStepPoint()->GetKineticEnergy()/keV);
+    }
   }
 
 
 //
-if(Parent_ID>0)// && aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "PhysicalWorld")
+// if(Parent_ID>0)// && aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "PhysicalWorld")
+//   {
+//     //G4cout << "Ici" << G4endl
+//     theTrack->SetTrackStatus(fStopAndKill);
+//   }
+
+
+
+
+
+if(partname == "opticalphoton" && aStep->GetTrack()->GetCreatorProcess()->GetProcessName() == "Scintillation" && StepNo ==1)
   {
-    //G4cout << "Ici" << G4endl
-    theTrack->SetTrackStatus(fStopAndKill);
+    //G4cout << " Photon Scintillation!!!" << G4endl;
+    evtac->CountScintillation();
+    //G4cout << "n sc = " << evtac->GetCountScintillation() << G4endl;
+    //runac->UpdateStatisticsbis(Statisticsbis);
+
   }
+
+if(partname == "opticalphoton" && aStep->GetTrack()->GetCreatorProcess()->GetProcessName() == "Cerenkov" && StepNo ==1)
+  {
+    //G4cout << " Photon Cerenkov !!!" << G4endl;
+    evtac->CountCerenkov();
+    //G4cout << "n cerenkov = " << evtac->GetCountCerenkov() << G4endl;
+    //G4cout << " Birth = " << info->GetBirthLambda() << G4endl;
+    //Statisticsbis.BirthLambda = info->GetBirthLambda();
+    //runac->UpdateStatisticsbis(Statisticsbis);
+  }
+
 
 
 }

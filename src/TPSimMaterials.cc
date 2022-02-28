@@ -129,8 +129,9 @@ void TPSimMaterials::Construct()
 
   elementH = new G4Element( "Hydrogen", "H", 1, 1.00794*g/mole );
   elementC = new G4Element( "Carbon", "C", 6, 12.011*g/mole );
-  elementCl = new G4Element( "Chlore", "Cl", 6, 35.453*g/mole );
+  elementCl = new G4Element( "Chlore", "Cl", 17, 35.453*g/mole );
   elementO = new G4Element( "Oxygen", "O", 8, 15.9994*g/mole );
+	elementF = new G4Element ("Fluor", "F", 9., 18.9984032*g/mole);
   elementTi = new G4Element( "Titanium","Ti", 22, 47.88*g/mole);
   elementSi = new G4Element("Silicon","Si",14,28.0855*g/mole);
   elementB = new G4Element("Boron","B",5,10.811*g/mole);
@@ -323,88 +324,58 @@ void TPSimMaterials::Construct()
  //scintillator->AddElement( elementC, 0.5 );
 
 
- // G4int absorbEntries = 0;
- // G4int wlsAbEntries  = 0;
- // G4int wlsEmEntries  = 0;
- // G4double varabsorblength;
- // G4double absorbEnergy[500];
- // G4double Absorb[500];
- // G4double wlsEnergy[500];
- // G4double wlsEmit[500];
- // G4double wlsAbsorb[500];
- // G4double scintEnergy[500];
- // G4double scintEmit[500];
- // G4double scintAbsorb[500];
- // G4double scintSlow[500];
- // G4double ref_index_Energy[500];
- // G4double ref_index_value[500];
- // G4double wlsabsorblength;
- //
- // for (int i = 0; i < 500; i++){
-	//  wlsEnergy[i] = 0;
-	//  wlsEmit[i] = 0;
-	//  wlsAbsorb[i] = 0;
-	//  scintEnergy[i] = 0;
-	//  scintEmit[i] = 0;
-	//  scintAbsorb[i] = 0;
-	//  scintSlow[i] = 0;
-	//  ref_index_Energy[i]  =  0;
-	//  ref_index_value[i] = 0;
- // }
- //
- // // Read primary emission spectrum
- //
- // G4int scintEntries = 0;
- // std::ifstream ReadScint;
- //
- // G4String Scint_file = path+"pTP_emission.dat";
- //
- //
- // ReadScint.open(Scint_file);
- // if(ReadScint.is_open()){
-	//  while(!ReadScint.eof()){
-	// 	 G4String filler;
-	// 	 ReadScint >> pWavelength >> filler >> scintEmit[scintEntries];
-	// 	 scintEnergy[scintEntries] = (1240/pWavelength)*eV;         //convert wavelength to eV
-	// 	 // scintIndex[scintEntries] = scintIndexconst;                //read from Scintillator.cfg if you want constant.
-	// 	 // scintAbsorb[scintEntries] = scintAbsorbconst;              //read from Scintillator.cfg or check bulk absorb below
-	// 	 scintSlow[scintEntries] = 0.0;
-	// 	 scintEntries++;
-	//  }
- // }
- // else
-	//  {
-	// 	 G4cout << "Error opening file: " << Scint_file << G4endl;
-	//  }
- // ReadScint.close();
- //
+ G4double varabsorblength;
+ G4double indexvalue;
+
+ // Read primary emission spectrum
+
+ std::ifstream ReadScint;
+
+ G4String Scint_file = path+"EJ-212.cfg";
+ std::vector<G4double> Sc_Emission_Energy;
+ std::vector<G4double> Sc_Emission_Ratio;
+
+ ReadScint.open(Scint_file);
+ if(ReadScint.is_open()){
+	 while(!ReadScint.eof()){
+		 G4String filler;
+		 ReadScint >> pWavelength >> filler >> ratio;
+		 //G4cout << "Wavelength = " << 1240./pWavelength << " & emission = "<< ratio << G4endl;
+	 	 Sc_Emission_Energy.push_back((1240./pWavelength)*eV);         //convert wavelength to eV
+		 Sc_Emission_Ratio.push_back(ratio);
+	 }
+ }
+ else
+	 {
+		 G4cout << "Error opening file: " << Scint_file << G4endl;
+	 }
+ ReadScint.close();
+
  // // Read primary bulk absorption
- //
- // absorbEntries = 0;
- // std::ifstream Readabsorb;
-	//  G4String Readabsorblength = path+"PSTBulkAbsorb.cfg";
- //
- //
- // Readabsorb.open(Readabsorblength);
- // if (Readabsorb.is_open()){
-	//  while(!Readabsorb.eof()){
-	// 	 G4String filler;
-	// 	 Readabsorb >> pWavelength >> filler >> varabsorblength;
-	// 	 absorbEnergy[absorbEntries] = (1240/pWavelength)*eV;
-	// 	 Absorb[absorbEntries] = 1*1.3*varabsorblength*m; //MW
-	// 	 //Absorb[absorbEntries] = 0.31*varabsorblength*m; //XW 0.31
- //
- //
-	// 	 absorbEntries++;
-	//  }
- // }
- // else
- //
-	// 	 G4cout << "Error opening file: "<< Readabsorblength << G4endl;
- //
- // Readabsorb.close();
- //
- // // Read WLS absorption
+
+ 	std::ifstream Readabsorb;
+	 G4String Readabsorblength = path+"PSTBulkAbsorb_reverse.cfg";
+	 std::vector<G4double> Sc_Absorption_Energy;
+	 std::vector<G4double> Sc_Absorption_Long;
+
+ Readabsorb.open(Readabsorblength);
+ if (Readabsorb.is_open()){
+	 while(!Readabsorb.eof()){
+		 G4String filler;
+		 Readabsorb >> pWavelength >> filler >> varabsorblength;
+		 //G4cout << "Wavelength = " << pWavelength << " & absorption = "<< varabsorblength << G4endl;
+		 Sc_Absorption_Energy.push_back((1240./pWavelength)*eV);
+		 Sc_Absorption_Long.push_back(1.*varabsorblength*m);
+	 }
+ }
+ else
+
+ 		 G4cout << "Error opening file: "<< Readabsorblength << G4endl;
+
+ Readabsorb.close();
+
+
+ // Read WLS absorption
  //
  // wlsAbEntries = 0;
  // std::ifstream ReadWLSa;
@@ -434,9 +405,9 @@ void TPSimMaterials::Construct()
 	//  }
  //
  // ReadWLSa.close();
- //
- // // Read WLS emission
- //
+
+
+ // Read WLS emission
  // wlsEmEntries = 0;
  // std::ifstream ReadWLSe;
  // G4String WLSemit = path+"full_popop_emission.cfg";
@@ -452,58 +423,62 @@ void TPSimMaterials::Construct()
  // else
 	//  G4cout << "Error opening file: " << WLSemit << G4endl;
  // ReadWLSe.close();
- //
- // // Read scintillator refractive index
- //
- // G4int ref_index_Entries = 0;
- //
- // std::ifstream Read_ref_index;
- // //G4String ref_index_emit = path+"PST_ref_index.dat";
- // G4String ref_index_emit = path+"PS_index_geant.dat";
- // Read_ref_index.open(ref_index_emit);
- // if(Read_ref_index.is_open()){
-	//  while(!Read_ref_index.eof()){
-	// 	 G4String filler;
-	// 	 Read_ref_index >> pWavelength >> filler >> ref_index_value[ref_index_Entries];
-	// 	 //ref_index_value[ref_index_Entries]=1.59;
-	// 	 ref_index_Energy[ref_index_Entries] = (1240/pWavelength)*eV;
-	// 	 ref_index_Entries++;
-	//  }
- // }
- // else
-	//  G4cout << "Error opening file: " << ref_index_emit << G4endl;
- // Read_ref_index.close();
- //
- //
- // // Now apply the properties table
- //
+
+ // Read scintillator refractive index
+
+ std::ifstream Read_ref_index;
+ //G4String ref_index_emit = path+"PST_ref_index.dat";
+ G4String ref_index_emit = path+"PS_index_geant_reverse.cfg";
+ std::vector<G4double> Sc_Index_Energy;
+ std::vector<G4double> Sc_Index_Value;
+
+ Read_ref_index.open(ref_index_emit);
+ if(Read_ref_index.is_open()){
+	 while(!Read_ref_index.eof()){
+		 G4String filler;
+		 Read_ref_index >> pWavelength >> filler >> indexvalue;
+		 //ref_index_value[ref_index_Entries]=1.59;
+		 Sc_Index_Energy.push_back((1240/pWavelength)*eV);
+		 Sc_Index_Value.push_back(indexvalue);
+ 	 	}
+ }
+ else
+	 G4cout << "Error opening file: " << ref_index_emit << G4endl;
+ Read_ref_index.close();
+
+
+ // Now apply the properties table
+
  // scintMPT->AddProperty("WLSCOMPONENT",wlsEnergy,wlsEmit,wlsEmEntries);
  // scintMPT->AddProperty("WLSABSLENGTH",wlsEnergy,wlsAbsorb,wlsAbEntries);   // the WLS absorption spectrum
  // scintMPT->AddConstProperty("WLSTIMECONSTANT",12*ns);
- // scintMPT->AddProperty("RINDEX",ref_index_Energy,ref_index_value,ref_index_Entries);
- //
- // scintMPT->AddProperty("ABSLENGTH",absorbEnergy,Absorb,absorbEntries);    // the bulk absorption spectrum
- // scintMPT->AddProperty("FASTCOMPONENT",scintEnergy,scintEmit,scintEntries);  // not needed in sim
- // scintMPT->AddProperty("SLOWCOMPONENT",scintEnergy,scintSlow,scintEntries);  // not needed in sim
- //
- // G4double efficiency = 1.0;
- // scintMPT->AddConstProperty("EFFICIENCY",efficiency);
- //
- // scintMPT->AddConstProperty("SCINTILLATIONYIELD",lightyield/MeV);
- // //scintMPT->AddConstProperty("ALPHASCINTILLATIONYIELD",0.01*lightyield/MeV);
- // G4double scintRes = 1;
- // scintMPT->AddConstProperty("RESOLUTIONSCALE",scintRes);
- // G4double scintFastconst = 2.1*ns;
- // scintMPT->AddConstProperty("FASTTIMECONSTANT",scintFastconst);
- // G4double scintSlowconst = 10*ns;
- // scintMPT->AddConstProperty("SLOWTIMECONSTANT",scintSlowconst);
- // scintMPT->AddConstProperty("YIELDRATIO",1.0);
- //
- // scintillator->SetMaterialPropertiesTable(scintMPT);
- // //scintillator->GetIonisation()->SetBirksConstant(0.0872*mm/MeV); //0.126->base; 0.0872->article BiPO
- // scintillator->GetIonisation()->SetBirksConstant(0.25*mm/MeV); // Choisi pour validation modÃ¨le avec LY 11737!!!
- // //scintillator->GetIonisation()->SetBirksConstant(0.22*mm/MeV);
- // //scintillator->GetIonisation()->SetBirksConstant(0.01*mm/MeV); // TEST ELECTRONS !!! => Maxime
+ scintMPT->AddProperty("RINDEX",Sc_Index_Energy, Sc_Index_Value);
+
+ scintMPT->AddProperty("ABSLENGTH", Sc_Absorption_Energy, Sc_Absorption_Long);    // the bulk absorption spectrum
+ scintMPT->AddProperty("SCINTILLATIONCOMPONENT1", Sc_Emission_Energy, Sc_Emission_Ratio);
+ //scintMPT->AddProperty("SCINTILLATIONCOMPONENT1",scintEnergy,scintEmit,scintEntries);
+ //scintMPT->AddProperty("SCINTILLATIONCOMPONENT2",scintEnergy,scintEmit,scintEntries);  // if slow component
+
+
+ //G4double efficiency = 1.0;
+ //scintMPT->AddConstProperty("EFFICIENCY",efficiency);
+
+ scintMPT->AddConstProperty("SCINTILLATIONYIELD",lightyield/MeV);
+ //scintMPT->AddConstProperty("ALPHASCINTILLATIONYIELD",0.01*lightyield/MeV);
+ G4double scintRes = 1;
+ scintMPT->AddConstProperty("RESOLUTIONSCALE",scintRes);
+ G4double scintFastconst = 2.1*ns;
+ scintMPT->AddConstProperty("SCINTILLATIONTIMECONSTANT1",scintFastconst);
+ G4double scintSlowconst = 10*ns;
+ scintMPT->AddConstProperty("SCINTILLATIONTIMECONSTANT2",scintSlowconst); //if slow component
+ scintMPT->AddConstProperty("SCINTILLATIONYIELD1",1.0);
+ scintMPT->AddConstProperty("SCINTILLATIONYIELD2",0.0);
+
+ scintillator->SetMaterialPropertiesTable(scintMPT);
+ //scintillator->GetIonisation()->SetBirksConstant(0.0872*mm/MeV); //0.126->base; 0.0872->article BiPO
+ //scintillator->GetIonisation()->SetBirksConstant(0.25*mm/MeV); // Choisi pour validation modÃ¨le avec LY 11737!!!
+ //scintillator->GetIonisation()->SetBirksConstant(0.22*mm/MeV);
+ //scintillator->GetIonisation()->SetBirksConstant(0.01*mm/MeV); // TEST ELECTRONS !!! => Maxime
 
   //Vacuum *************************************************************
 
@@ -518,25 +493,23 @@ void TPSimMaterials::Construct()
 			   3.e-18*pascal, //3.e-18*pascal
 			   2.73*kelvin);  //2.73*kelvin
 
-  G4int vacEntries = 0;
-  G4double vacEmit[500];
-  G4double vacIndex[500];
-  G4double vacAbsorb[500];
-  G4double vacEnergy[500];
-  G4double vacAbsorbconst = 100*m;
+  G4double y;
+	std::vector<G4double> Vacuum_Energy;
+  std::vector<G4double> Vacuum_Absorption_Long;
+	std::vector<G4double> Vacuum_Index_Value;
+	G4double vacAbsorbconst = 100*m;
 
   std::ifstream ReadVac;
-  G4String Vac = path+"pTP_emission.dat";  // simply index filler values...not pTP values
+  G4String Vac = path+"EJ-212.cfg";  // simply index filler values...not EJ-212 values
   ReadVac.open(Vac);
   if(ReadVac.is_open()){
     while(!ReadVac.eof()){
       G4String filler;
-      ReadVac >> pWavelength >> filler >> vacEmit[vacEntries];
-      vacEnergy[vacEntries] = (1240/pWavelength)*eV; //convert wavelength to eV
-      vacIndex[vacEntries] = 1.0;
-      vacAbsorb[vacEntries] = vacAbsorbconst;
+      ReadVac >> pWavelength >> filler >> y;
+      Vacuum_Energy.push_back((1240/pWavelength)*eV); //convert wavelength to eV
+      Vacuum_Absorption_Long.push_back(vacAbsorbconst);
+			Vacuum_Index_Value.push_back(1.0);
       //    G4cout<<vacEntries<<" "<<vacEnergy[vacEntries]<<" "<<vacIndex[vacEntries]<<G4endl;
-      vacEntries++;
     }
   }
   else
@@ -544,9 +517,10 @@ void TPSimMaterials::Construct()
   ReadVac.close();
 
   vacMPT = new G4MaterialPropertiesTable();
-  vacMPT->AddProperty("RINDEX",vacEnergy,vacIndex,vacEntries);
-  vacMPT->AddProperty("ABSLENGTH",vacEnergy,vacAbsorb,vacEntries);
-  //Air->SetMaterialPropertiesTable(vacMPT);
+  //vacMPT->AddProperty("RINDEX", Vacuum_Energy, Vacuum_Index_Value);
+	vacMPT->AddProperty("RINDEX", "Air");
+  vacMPT->AddProperty("ABSLENGTH", Vacuum_Energy, Vacuum_Absorption_Long);
+  Air->SetMaterialPropertiesTable(vacMPT);
   Vacuum->SetMaterialPropertiesTable(vacMPT);
 
   //Fake Vacuum *************************************************************
@@ -564,6 +538,162 @@ void TPSimMaterials::Construct()
 
 
   //G4cout << *(G4Material::GetMaterialTable()) << G4endl;
+
+
+
+
+	//Borosilicate Glass  ******************************************************
+
+//  G4cout << "starting borosilicate glass... " << G4endl;
+
+// Silicon Dioxide
+SiO2 = new G4Material("SiO2",2.6*g/cm3,2,kStateSolid);
+SiO2->AddElement(elementO,2);
+SiO2->AddElement(elementSi,1);
+
+// DiBoron TriOxide
+B2O3 = new G4Material("B2O3",2.46*g/cm3,2,kStateSolid);
+B2O3->AddElement(elementB,2);
+B2O3->AddElement(elementO,3);
+
+// DiSodium Monoxide
+Na2O = new G4Material("Na2O",2.27*g/cm3,2,kStateSolid);
+Na2O->AddElement(elementNa,2);
+Na2O->AddElement(elementO,1);
+
+// Aluminum Peroxide
+Al2O3 = new G4Material("Al2O3",3.97*g/cm3,2,kStateSolid);
+Al2O3->AddElement(elementAl,2);
+Al2O3->AddElement(elementO,3);
+
+bs_glass = new G4Material("bs_glass",
+						2.23*g/cm3,
+						4,
+						kStateSolid,
+						273.15*kelvin,
+						1.0*atmosphere );
+
+bs_glassMPT = new G4MaterialPropertiesTable();
+
+bs_glass->AddMaterial(SiO2, 0.81);
+bs_glass->AddMaterial(B2O3, 0.13);
+bs_glass->AddMaterial(Na2O, 0.04);
+bs_glass->AddMaterial(Al2O3, 0.02);
+
+G4double glassabsorblength;
+G4double glassrefindex = 1.49;
+
+std::ifstream ReadGlassBulk;
+G4String GlassBulk = path+"Borosilicate_GlassBulkAbsorb_reverse.cfg";
+ReadGlassBulk.open(GlassBulk);
+ReadGlassBulk.clear();
+std::vector<G4double> PM_Energy;
+std::vector<G4double> PM_Absorption_Long;
+if(ReadGlassBulk.is_open()){
+	while(!ReadGlassBulk.eof()){
+		G4String filler;
+		ReadGlassBulk >> pWavelength >> filler >> glassabsorblength;
+		PM_Energy.push_back((1240/pWavelength)*eV);
+		PM_Absorption_Long.push_back(glassabsorblength*m);
+		//   G4cout << "Energy = " << glassEnergy[glassEntries]
+		//<< "    BulkAbsorb = " << glassbulkAbsorb[glassEntries] << G4endl;
+	}
+}
+else
+	G4cout << "Error opening file: " << GlassBulk << G4endl;
+
+ReadGlassBulk.close();
+
+
+std::ifstream ReadGlassIndex;
+G4String GlassIndexFile = path+"BSG_ref_index_reverse.dat";
+G4double bsgindexvalue;
+std::vector<G4double> PM_Index_Energy;
+std::vector<G4double> PM_Index_Value;
+ReadGlassIndex.open(GlassIndexFile);
+ReadGlassIndex.clear();
+if(ReadGlassIndex.is_open()){
+	while(!ReadGlassIndex.eof()){
+		G4String filler;
+		ReadGlassIndex >> pWavelength >> filler >> bsgindexvalue;
+		PM_Index_Energy.push_back((1240/pWavelength)*eV);
+		PM_Index_Value.push_back(bsgindexvalue);
+		//      G4cout << " Energy = " << bsgindexEnergy[bsgindexEntries] << "    Index = " << bsgindexvalue[bsgindexEntries] << G4endl;
+	}
+}
+
+else
+	    G4cout << "Error opening file: " << GlassIndexFile << G4endl;
+
+ReadGlassIndex.close();
+
+bs_glassMPT->AddProperty("ABSLENGTH",PM_Energy, PM_Absorption_Long);
+//  bs_glassMPT->AddProperty("RINDEX",glassEnergy,bsgindexvalue,glassEntries);
+bs_glassMPT->AddProperty("RINDEX",PM_Index_Energy, PM_Index_Value);
+bs_glass->SetMaterialPropertiesTable(bs_glassMPT);
+
+
+
+//Cargille**************************************************************
+
+cargille = new G4Material("cargille",
+				0.99*g/cm3,
+				4,
+				kStateSolid,
+				273.15*kelvin,
+				1.0*atmosphere );
+
+cargille->AddElement( elementH, 6 );
+cargille->AddElement( elementC, 2 );
+cargille->AddElement( elementO, 1 );
+cargille->AddElement( elementSi, 1 );
+
+
+G4double cargille_absorblength;
+G4double cargilleIndexconst = 1.406;//1.49 1.406 RTV
+
+std::ifstream ReadCargille_Bulk;
+G4String Cargille_Bulk = path+"CargilleBulkAbsorb_reverse.cfg";
+std::vector<G4double> Glue_Energy;
+std::vector<G4double> Glue_Index_Value;
+std::vector<G4double> Glue_Absorption_Long;
+ReadCargille_Bulk.open(Cargille_Bulk);
+if(ReadCargille_Bulk.is_open()){
+	while(!ReadCargille_Bulk.eof()){
+		G4String filler;
+		ReadCargille_Bulk>>pWavelength>>filler>>cargille_absorblength;
+		Glue_Energy.push_back((1240./pWavelength)*eV);
+		Glue_Absorption_Long.push_back(cargille_absorblength*m);
+		Glue_Index_Value.push_back(cargilleIndexconst);
+	}
+}
+else
+	G4cout << "Error opening file: " << Cargille_Bulk << G4endl;
+ReadCargille_Bulk.close();
+
+
+// std::ifstream Read_cargille_ref_index;
+// G4String cargille_ref_index_emit = path+"Cargille_ref_index.dat";
+// Read_cargille_ref_index.open(cargille_ref_index_emit);
+// if(Read_cargille_ref_index.is_open()){
+// 	while(!Read_cargille_ref_index.eof()){
+// 		G4String filler;
+// 		Read_cargille_ref_index >> pWavelength >> filler >> ref_index_value[cargille_ref_index_Entries];
+// 		ref_index_Energy[cargille_ref_index_Entries] = (1240/pWavelength)*eV;
+// 		cargille_ref_index_Entries++;
+// 	}
+// }
+// else
+// 	G4cout << "Error opening file: " << cargille_ref_index_emit << G4endl;
+// Read_cargille_ref_index.close();
+
+cargilleMPT = new G4MaterialPropertiesTable();
+cargilleMPT->AddProperty("RINDEX", Glue_Energy, Glue_Index_Value);
+//cargilleMPT->AddProperty("RINDEX",ref_index_Energy,ref_index_value,cargille_ref_index_Entries);
+cargilleMPT->AddProperty("ABSLENGTH",Glue_Energy, Glue_Absorption_Long);
+cargille->SetMaterialPropertiesTable(cargilleMPT);
+
+//end of Cargille
 
 
 

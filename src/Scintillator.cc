@@ -65,19 +65,35 @@ Scintillator::Scintillator(G4String buildfile){
   	config >> value >> unit;
   	ScintillatorThickness = value*G4UnitDefinition::GetValueOf(unit);
       }
-    //   else if(variable == "MylarThickness"){
-  	// config >> value >> unit;
-  	// MylarThickness = value*G4UnitDefinition::GetValueOf(unit);
-    //   }
-    //   else if(variable == "AirGapMylar"){
-  	// config >> value >> unit;
-  	// AirGapMylar = value*G4UnitDefinition::GetValueOf(unit);
-    //   }
-    //   else if(variable == "GlueThickness"){
-  	// config >> value >> unit;
-  	// GlueThickness = value*G4UnitDefinition::GetValueOf(unit);
-    //   }
-    //   // PMT 5 inches Dimensions
+      if(variable == "TeflonThickness"){
+        config >> value >> unit;
+        TeflonThickness = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      else if(variable == "AirGapTeflon"){
+        config >> value >> unit;
+        AirGapTeflon = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      else if(variable == "MylarThickness"){
+        config >> value >> unit;
+        MylarThickness = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      else if(variable == "AirGapMylar"){
+        config >> value >> unit;
+        AirGapMylar = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      else if(variable == "MylarThickness"){
+  	config >> value >> unit;
+  	MylarThickness = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      else if(variable == "AirGapMylar"){
+  	config >> value >> unit;
+  	AirGapMylar = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      else if(variable == "GlueThickness"){
+  	config >> value >> unit;
+  	GlueThickness = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      // PMT 5 inches Dimensions
     //   else if(variable == "PMTGlassRadius"){
   	// config >> value >> unit;
   	// PMTGlassRadius = value*G4UnitDefinition::GetValueOf(unit);
@@ -103,32 +119,32 @@ Scintillator::Scintillator(G4String buildfile){
   	// PMTGlassTubeHeight = value*G4UnitDefinition::GetValueOf(unit);
     //   }
     //   //####################### SuperNEMO Main Wall variables ###########################
-    //   // Scint Block Dimensions
-    //   else if (variable == "SNMW_ScintStepWidth"){
-  	// config >> value >> unit;
-  	// SNMW_ScintStepWidth = value*G4UnitDefinition::GetValueOf(unit);
-    //   }
-    //   else if(variable == "SNMW_ScintStepHeight"){
-  	// config >> value >> unit;
-  	// SNMW_ScintStepHeight = value*G4UnitDefinition::GetValueOf(unit);
-    //   }
-    //   else if(variable == "SNMW_ScintBodyWidth"){
-  	// config >> value >> unit;
-  	// SNMW_ScintBodyWidth = value*G4UnitDefinition::GetValueOf(unit);
-    //   }
-    //   else if(variable == "SNMW_ScintBodyHeight"){
-  	// config >> value >> unit;
-  	// SNMW_ScintBodyHeight = value*G4UnitDefinition::GetValueOf(unit);
-    //   }
-    //   else if(variable == "SNMW_CouplingSphereRadius"){
-  	// config >> value >> unit;
-  	// SNMW_CouplingSphereRadius = value*G4UnitDefinition::GetValueOf(unit);
-    //   }
-    //   else if(variable == "SNMW_CouplingSphereDepth"){
-  	// config >> value >> unit;
-  	// SNMW_CouplingSphereDepth = value*G4UnitDefinition::GetValueOf(unit);
-    //   }
-    //
+      // Scint Block Dimensions
+      else if (variable == "SNMW_ScintStepWidth"){
+  	config >> value >> unit;
+  	SNMW_ScintStepWidth = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      else if(variable == "SNMW_ScintStepHeight"){
+  	config >> value >> unit;
+  	SNMW_ScintStepHeight = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      else if(variable == "SNMW_ScintBodyWidth"){
+  	config >> value >> unit;
+  	SNMW_ScintBodyWidth = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      else if(variable == "SNMW_ScintBodyHeight"){
+  	config >> value >> unit;
+  	SNMW_ScintBodyHeight = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      else if(variable == "SNMW_CouplingSphereRadius"){
+  	config >> value >> unit;
+  	SNMW_CouplingSphereRadius = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      else if(variable == "SNMW_CouplingSphereDepth"){
+  	config >> value >> unit;
+  	SNMW_CouplingSphereDepth = value*G4UnitDefinition::GetValueOf(unit);
+      }
+
     //   //####################### NEMO 3 EC  variables ###########################
     //   // GM Dimensions
     //   else if(variable == "N3EC_ScintWidth"){
@@ -226,6 +242,17 @@ Scintillator::Scintillator(G4String buildfile){
     G4cout << "\n The Variables that we read in are: "
     << "\n ScintillatorLength = " << ScintillatorLength
     << "\n ScintillatorThickness = " << ScintillatorThickness
+    << "\n SNMW_ScintStepWidth = " << SNMW_ScintStepWidth
+    << "\n SNMW_ScintStepHeight = " << SNMW_ScintStepHeight
+    << "\n SNMW_cintBodyWidth = " << SNMW_ScintBodyWidth
+    << "\n SNMW_ScintBodyHeight = " << SNMW_ScintBodyHeight
+    << "\n SNMW_CouplingSphereRadius = " << SNMW_CouplingSphereRadius
+    << "\n SNMW_CouplingSphereDepth = " << SNMW_CouplingSphereDepth
+    << "\n Teflon thickness = " << TeflonThickness
+    << "\n Air gap Teflon = " << AirGapTeflon
+    << "\n Mylar thickness = " << MylarThickness
+    << "\n Air gap Mylar = " << AirGapMylar
+    << "\n Glue Thickness = " << GlueThickness
     << "\n " << G4endl;
 
 }
@@ -275,6 +302,251 @@ G4LogicalVolume *Scintillator::GetGM_LND(){
 #endif
 
   return LogicalGM_LND;
+}
+
+//************************************************************************************
+//************************************************************************************
+//********************** SUPERNEMO MAIN WALL 8 INCHES(SNMW) **************************
+//************************************************************************************
+//************************************************************************************
+
+// ***********************
+// Builds Scintitllator Block
+// ***********************
+G4LogicalVolume *Scintillator::GetSNMW_8InchesScint(){
+  // Material Properties for scint
+  scintillator = scintProp->GetMaterial("scintillator");
+
+  // Define some translations used for joining or subtracting
+   Step_BodyUnion = SNMW_ScintStepHeight/2 + SNMW_ScintBodyHeight/2;
+   Block_SphereSubtraction = SNMW_ScintStepHeight/2 + SNMW_ScintBodyHeight + SNMW_CouplingSphereRadius - SNMW_CouplingSphereDepth; // Center of union will be center of step
+
+
+  // Define some rotations
+  G4RotationMatrix DontRotate;
+  DontRotate.rotateX(0*deg);
+  G4RotationMatrix Rotate;
+  Rotate.rotateX(180*deg);
+
+  // ####################### SCINT BLOCK #######################
+  // Scintillator Step
+  G4Box *Step8Inches = new G4Box("Step8Inches",
+			  SNMW_ScintStepWidth/2, SNMW_ScintStepWidth/2,
+			  SNMW_ScintStepHeight/2);
+
+  // Scintillator Main Body
+  G4Box *MainBody8Inches = new G4Box("MainBody8Inches",
+			      SNMW_ScintBodyWidth/2, SNMW_ScintBodyWidth/2,
+			      SNMW_ScintBodyHeight/2);
+
+  // Union of two volumes: Center will be at the center of first volume defined in union -> Step center
+  // Last argument diplaces the body center relative to step center before joining
+  G4UnionSolid* SolidScint8Inches = new G4UnionSolid("Step+MainBody",Step8Inches,MainBody8Inches,G4Transform3D(DontRotate,G4ThreeVector(0,0,Step_BodyUnion)));
+
+  // ####################### COUPLING SPHERE #######################
+G4int N_z_plane_glue_extrusion = 36;
+G4double Phi_start = 0.*deg;
+G4double Phi_end = 2*180*deg;
+
+const G4double z_plane_glue_extrusion[] = {-110.*mm, -109.829*mm, -108.647*mm, -108.65*mm, -107.416*mm, -106.481*mm, -103.084*mm, -98.6401*mm, -43.6458*mm, -33.8076*mm, -27.3606*mm, -22.9623*mm, -18.0893*mm, -12.2671*mm, -5.65007*mm, 2.09728*mm, 10.6724*mm, 20.0733*mm, 29.9204*mm, 39.9182*mm, 49.8607*mm, 59.4345*mm, 68.3814*mm, 76.581*mm, 83.5154*mm, 89.9187*mm, 95.2918*mm, 99.6867*mm, 103.405*mm, 106.303*mm, 107.669*mm, 108.556*mm, 108.658*mm, 109.334*mm, 109.825*mm, 110.*mm};
+
+const G4double r_inner_glue_extrusion[]= {0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm};
+
+
+const G4double r_outer_glue_extrusion[]= {2.*mm, 34.0648*mm, 37.6705*mm, 37.6705*mm, 39.4533*mm, 40.4624*mm, 42.5955*mm, 43.5084*mm, 43.9043*mm, 47.2687*mm, 56.2783*mm, 65.2852*mm, 73.4126*mm, 81.2565*mm, 88.3265*mm, 94.3066*mm, 98.803*mm, 101.5055*mm, 102.905*mm, 102.846*mm, 101.3918*mm, 97.9735*mm, 92.7321*mm, 86.4727*mm, 78.9557*mm, 70.9368*mm, 62.0639*mm, 52.8971*mm, 43.1194*mm, 32.596*mm, 27.291*mm, 22.8952*mm, 22.3897*mm, 15.4348*mm, 10.53213*mm, 2.*mm};
+
+  G4Polycone *GlueExtrusion = new G4Polycone("Glue extrusion",
+			Phi_start,
+			Phi_end,
+			N_z_plane_glue_extrusion,
+			z_plane_glue_extrusion,
+			r_inner_glue_extrusion,
+			r_outer_glue_extrusion);
+
+
+  // ####################### FINAL BLOCK #######################
+  // Subtract 2nd volume from the 1st
+  // SphereBlockTranslation = dist. from step center to center of sphere position where subtraction will occur
+
+  G4SubtractionSolid* FinalScint8Inches = new G4SubtractionSolid("FinalScint_8inches",SolidScint8Inches,GlueExtrusion,G4Transform3D(Rotate,G4ThreeVector(0,0,+220.*mm)));
+
+
+
+
+  // Logical volume for FinalScint: material = scintillator
+
+  LogicalSNMW_8InchesFinalScint = new G4LogicalVolume(FinalScint8Inches, scintillator, "LogicalFinalScint8Inches",0,0,0);
+
+  //G4VisAttributes * clear;
+  //clear = new G4VisAttributes( G4Colour(255/255. ,255/255. ,255/255. ));
+
+  return LogicalSNMW_8InchesFinalScint;
+}
+
+
+// ***********************
+// Builds Mylar wrapping
+// ***********************
+G4LogicalVolume *Scintillator::GetSNMW_8InchesMylar(){
+  // Define materials
+  Mylar = scintProp->GetMaterial("mylar");
+
+  // Define some translations used for joining or subtracting
+  MylarStep_BodyUnion = (MylarThickness+AirGapMylar+SNMW_ScintStepHeight+AirGapTeflon+TeflonThickness+AirGapMylar+MylarThickness)/2 + (MylarThickness+AirGapMylar+SNMW_ScintBodyHeight-AirGapTeflon-TeflonThickness-AirGapMylar-MylarThickness)/2 ;
+  TeflonStep_BodyUnion = (AirGapMylar+SNMW_ScintStepHeight+AirGapTeflon+TeflonThickness+AirGapMylar)/2 + (AirGapMylar+SNMW_ScintBodyHeight-AirGapTeflon-TeflonThickness-AirGapMylar)/2 ;
+  //  G4double Mylar_TeflonSubtraction = (SNMW_ScintStepHeight+AirGapMylar+TeflonThickness+AirGapTeflon)/2 - SNMW_ScintStepHeight/2;
+  Mylar_SphereSubtraction = MylarThickness+AirGapMylar+SNMW_ScintStepHeight+SNMW_ScintBodyHeight+SNMW_CouplingSphereRadius-SNMW_CouplingSphereDepth-(MylarThickness+AirGapMylar+SNMW_ScintStepHeight+AirGapTeflon+TeflonThickness+AirGapMylar+MylarThickness)/2;
+   G4cout << "Mylar step + body union translation = " << MylarStep_BodyUnion
+          << "\nTeflon step + body union translation = " << TeflonStep_BodyUnion
+     //          << "\nMylar - teflon subtraction translation = " << Mylar_TeflonSubtraction
+          << "\nMylar - sphere subtraction translation = " << Mylar_SphereSubtraction << G4endl;
+
+  G4RotationMatrix DontRotate;
+  DontRotate.rotateX(0*deg);
+  G4RotationMatrix Rotate;
+  Rotate.rotateX(180*deg);
+
+  // ####################### MYLAR SOLID #######################
+  // Mylar step
+  G4Box *MylarStep8Inches = new G4Box("MylarStep8Inches",
+			       (MylarThickness+AirGapMylar+TeflonThickness+AirGapTeflon+SNMW_ScintStepWidth+AirGapTeflon+TeflonThickness+AirGapMylar+MylarThickness)/2, // 2 air gaps & Teflon & Mlyar thickness EACH side
+			       (MylarThickness+AirGapMylar+TeflonThickness+AirGapTeflon+SNMW_ScintStepWidth+AirGapTeflon+TeflonThickness+AirGapMylar+MylarThickness)/2,
+			       (MylarThickness+AirGapMylar+SNMW_ScintStepHeight+AirGapTeflon+TeflonThickness+AirGapMylar+MylarThickness)/2);  // Bottom to top layers
+
+  // Mylar Main Body
+  G4Box *MylarMainBody8Inches = new G4Box("MylarMainBody8Inches",
+				   (MylarThickness+AirGapMylar+TeflonThickness+AirGapTeflon+SNMW_ScintBodyWidth+AirGapTeflon+TeflonThickness+AirGapMylar+MylarThickness)/2,
+				   (MylarThickness+AirGapMylar+TeflonThickness+AirGapTeflon+SNMW_ScintBodyWidth+AirGapTeflon+TeflonThickness+AirGapMylar+MylarThickness)/2,
+				   (MylarThickness+AirGapMylar+SNMW_ScintBodyHeight-AirGapTeflon-TeflonThickness-AirGapMylar-MylarThickness)/2); //Now accounts for BOTH Teflon and Mylar and all air gaps: top to bottom
+
+  // Union of two volumes: Just as with Teflon above
+  G4UnionSolid* SolidMylar8Inches = new G4UnionSolid("MylarStep+MylarMainBody",MylarStep8Inches,MylarMainBody8Inches,G4Transform3D(DontRotate,G4ThreeVector(0,0,MylarStep_BodyUnion)));
+
+  // Easy way again is to subtract a Teflon solid (and air gaps)... but we need to remake it
+  // ####################### TEFLON SOLID #######################
+  // Teflon step
+  G4Box *TeflonStep8Inches = new G4Box("TeflonStep8Inches",
+				(AirGapMylar+TeflonThickness+AirGapTeflon+SNMW_ScintStepWidth+AirGapTeflon+TeflonThickness+AirGapMylar)/2,
+				(AirGapMylar+TeflonThickness+AirGapTeflon+SNMW_ScintStepWidth+AirGapTeflon+TeflonThickness+AirGapMylar)/2,
+				(AirGapMylar+SNMW_ScintStepHeight+AirGapTeflon+TeflonThickness+AirGapMylar)/2);  // Teflon doesn't cover top and bottom BUT needs to cover top of step
+
+  // Teflon Main Body
+  G4Box *TeflonMainBody8Inches = new G4Box("TeflonMainBody8Inches",
+				    (AirGapMylar+TeflonThickness+AirGapTeflon+SNMW_ScintBodyWidth+AirGapTeflon+TeflonThickness+AirGapMylar)/2,
+				    (AirGapMylar+TeflonThickness+AirGapTeflon+SNMW_ScintBodyWidth+AirGapTeflon+TeflonThickness+AirGapMylar)/2,
+				    (AirGapMylar+SNMW_ScintBodyHeight-AirGapTeflon-TeflonThickness-AirGapMylar)/2);
+
+  // Union of two Teflon volumes
+  G4UnionSolid* SolidTeflon8Inches = new G4UnionSolid("TeflonStep+TeflonMainBody",TeflonStep8Inches,TeflonMainBody8Inches,G4Transform3D(DontRotate,G4ThreeVector(0,0,TeflonStep_BodyUnion)));
+
+  // ####################### MYLAR WRAP #######################
+  // Now we just need to subract the Teflon to leave the Mylar wrap on all sides
+  G4SubtractionSolid* MylarWrap8Inches = new G4SubtractionSolid("MylarWrap8Inches",
+							 SolidMylar8Inches,
+							 SolidTeflon8Inches,
+							 //							 G4Transform3D(Rotate,G4ThreeVector(0,0,Mylar_TeflonSubtraction)));
+							 G4Transform3D(DontRotate,G4ThreeVector(0,0,0)));
+
+  // Lastly, since there is Mylar on top we need to subtract the coupling sphere to leave an opening for the PMT
+G4int N_z_plane_glue_extrusion = 36;
+G4double Phi_start = 0.*deg;
+G4double Phi_end = 2*180*deg;
+
+const G4double z_plane_glue_extrusion[] = {-110.*mm, -109.829*mm, -108.647*mm, -108.65*mm, -107.416*mm, -106.481*mm, -103.084*mm, -98.6401*mm, -43.6458*mm, -33.8076*mm, -27.3606*mm, -22.9623*mm, -18.0893*mm, -12.2671*mm, -5.65007*mm, 2.09728*mm, 10.6724*mm, 20.0733*mm, 29.9204*mm, 39.9182*mm, 49.8607*mm, 59.4345*mm, 68.3814*mm, 76.581*mm, 83.5154*mm, 89.9187*mm, 95.2918*mm, 99.6867*mm, 103.405*mm, 106.303*mm, 107.669*mm, 108.556*mm, 108.658*mm, 109.334*mm, 109.825*mm, 110.*mm};
+
+const G4double r_inner_glue_extrusion[]= {0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm, 0.*mm};
+
+
+const G4double r_outer_glue_extrusion[]= {2.*mm, 34.0648*mm, 37.6705*mm, 37.6705*mm, 39.4533*mm, 40.4624*mm, 42.5955*mm, 43.5084*mm, 43.9043*mm, 47.2687*mm, 56.2783*mm, 65.2852*mm, 73.4126*mm, 81.2565*mm, 88.3265*mm, 94.3066*mm, 98.803*mm, 101.5055*mm, 102.905*mm, 102.846*mm, 101.3918*mm, 97.9735*mm, 92.7321*mm, 86.4727*mm, 78.9557*mm, 70.9368*mm, 62.0639*mm, 52.8971*mm, 43.1194*mm, 32.596*mm, 27.291*mm, 22.8952*mm, 22.3897*mm, 15.4348*mm, 10.53213*mm, 2.*mm};
+
+  G4Polycone *GlueExtrusion = new G4Polycone("Glue extrusion",
+			Phi_start,
+			Phi_end,
+			N_z_plane_glue_extrusion,
+			z_plane_glue_extrusion,
+			r_inner_glue_extrusion,
+			r_outer_glue_extrusion);
+
+  // Subtracting the coupling sphere
+  G4SubtractionSolid* FinalMylarWrap8Inches = new G4SubtractionSolid("FinalMylarWrap8Inches", MylarWrap8Inches,GlueExtrusion,G4Transform3D(Rotate,G4ThreeVector(0,0,+219.706*mm)));
+
+  // Logical volume for Mylar: material = coating?
+
+  LogicalSNMW_8InchesMylarWrap = new G4LogicalVolume(FinalMylarWrap8Inches, Mylar, "LogicalMylarWrap8inches",0,0,0);
+
+
+  return LogicalSNMW_8InchesMylarWrap;
+}
+
+
+// ***********************
+// Builds Teflon wrapping
+// ***********************
+G4LogicalVolume *Scintillator::GetSNMW_Teflon(){
+  // Define materials
+  teflon = scintProp->GetMaterial("teflon"); // Why is this plastic? Need to add Teflon?
+
+  // Define some translations used for joining or subtracting
+  TeflonStep_BodyUnion = SNMW_ScintStepHeight/2 + SNMW_ScintBodyHeight/2;
+  Teflon_ScintSubtraction = (SNMW_ScintStepHeight + AirGapTeflon + TeflonThickness)/2 - SNMW_ScintStepHeight/2;
+   G4cout << "Teflon step + body union translation = " << TeflonStep_BodyUnion
+          << "\nTeflon - scint subtraction translation = " << Teflon_ScintSubtraction << G4endl;
+
+  G4RotationMatrix DontRotate;
+  DontRotate.rotateX(0*deg);
+  G4RotationMatrix Rotate;
+  Rotate.rotateX(180*deg);
+
+  // ####################### TEFLON SOLID #######################
+  // Teflon step
+  G4Box *TeflonStep = new G4Box("TeflonStep",
+				(TeflonThickness+AirGapTeflon+SNMW_ScintStepWidth+AirGapTeflon+TeflonThickness)/2, // Add air gap and teflon thickness to EACH side (x2)
+				(TeflonThickness+AirGapTeflon+SNMW_ScintStepWidth+AirGapTeflon+TeflonThickness)/2, // Length = Width
+				(SNMW_ScintStepHeight+AirGapTeflon+TeflonThickness)/2);  // Teflon doesn't cover top and bottom BUT needs to cover top of step
+
+  // Teflon main body
+  G4Box *TeflonMainBody = new G4Box("TeflonMainBody",
+				    (TeflonThickness+AirGapTeflon+SNMW_ScintBodyWidth+AirGapTeflon+TeflonThickness)/2,
+				    (TeflonThickness+AirGapTeflon+SNMW_ScintBodyWidth+AirGapTeflon+TeflonThickness)/2,
+				    (SNMW_ScintBodyHeight-AirGapTeflon-TeflonThickness)/2); //Overall height must equal Scint block to leave no teflon above or below
+
+  // Union of two volumes: Just as with scintillator
+  G4UnionSolid* SolidTeflon = new G4UnionSolid("TeflonStep+TeflonMainBody",TeflonStep,TeflonMainBody,G4Transform3D(DontRotate,G4ThreeVector(0,0,TeflonStep_BodyUnion)));
+
+  // ####################### SCINT SOLID #######################
+  // Easy way now is to subtract scint block (and any air gaps) to leave only wrap... be we need to remake it
+  // Scintillator Step
+  G4Box *Step = new G4Box("Step",
+			  (AirGapTeflon+SNMW_ScintStepWidth+AirGapTeflon)/2,
+			  (AirGapTeflon+SNMW_ScintStepWidth+AirGapTeflon)/2,
+			  SNMW_ScintStepHeight/2+AirGapTeflon);
+
+  // Scintillator Main Body
+  G4Box *MainBody = new G4Box("MainBody",
+			      (AirGapTeflon+SNMW_ScintBodyWidth+AirGapTeflon)/2,
+			      (AirGapTeflon+SNMW_ScintBodyWidth+AirGapTeflon)/2,
+			      SNMW_ScintBodyHeight/2+AirGapTeflon);
+
+  // Union of two volumes: Center will be at the center of first volume defined in union -> Step center
+  G4UnionSolid* SolidScint = new G4UnionSolid("Step+MainBody",Step,MainBody,G4Transform3D(DontRotate,G4ThreeVector(0,0,TeflonStep_BodyUnion)));
+
+  // ####################### TEFLON WRAP #######################
+  // Now we just need to subract the scintillator to leave the Teflon wrap on just the sides
+  // Displace solid scint so top and bottom edges match up
+  G4SubtractionSolid* TeflonWrap = new G4SubtractionSolid("TeflonWrap",
+							  SolidTeflon,
+							  SolidScint,
+							  G4Transform3D(DontRotate,G4ThreeVector(0,0,-Teflon_ScintSubtraction)));
+
+  // Logical volume for Teflon: material = plastic?
+
+  LogicalSNMW_TeflonWrap = new G4LogicalVolume(TeflonWrap, teflon, "LogicalTeflonWrap",0,0,0);
+
+  G4VisAttributes *white;
+  white = new G4VisAttributes(G4Color(1,1,1));
+  //  LogicalTeflonWrap->SetVisAttributes(scinti);
+
+  return LogicalSNMW_TeflonWrap;
 }
 
 

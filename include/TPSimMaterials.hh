@@ -34,6 +34,7 @@ private:
   G4Element* elementH;
   G4Element* elementC;
   G4Element* elementO;
+  G4Element* elementF;
   G4Element* elementTi;
   G4Element* elementSi;
   G4Element* elementB;
@@ -77,6 +78,7 @@ private:
   G4Material *Mica;
   G4Material *Plomb_Antimoine;
 
+
   G4MaterialPropertiesTable *bs_glassMPT;
   G4MaterialPropertiesTable *vacMPT;
   G4MaterialPropertiesTable *scintMPT;
@@ -112,6 +114,7 @@ private:
   G4double paint_ref_coeff;
   G4double mylar_ref_coeff;
   G4double pWavelength;
+  G4double ratio;
 
 
 };

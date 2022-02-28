@@ -48,7 +48,8 @@ TPSimPhysics::TPSimPhysics():  G4VModularPhysicsList()
 {
 // Here used the default cut value you have typed in
 
-  defaultCutValue = 0.001*mm; //0.001
+  //defaultCutValue = 0.001*mm; //0.001
+  defaultCutValue = 1*mm; //0.001
   //was 0.5*mm
 
   SetVerboseLevel(1);
@@ -124,7 +125,7 @@ void TPSimPhysics::ConstructProcess()
   emPhysicsList->ConstructProcess();
   particleList->ConstructProcess();
   raddecayList->ConstructProcess();
-  //ConstructOp();
+  ConstructOp();
 
 }
 
@@ -193,12 +194,12 @@ void TPSimPhysics::ConstructOp()
     	pmanager->SetProcessOrderingToLast(theQuenchingScintillationProcess, idxPostStep);
       }
 
-    // else if (theScintillationProcess->IsApplicable(*particle))
-    //   {
-    // 	pmanager->AddProcess(theScintillationProcess);
-    // 	pmanager->SetProcessOrderingToLast(theScintillationProcess, idxAtRest);
-    // 	pmanager->SetProcessOrderingToLast(theScintillationProcess, idxPostStep);
-    //   }
+    else if (theScintillationProcess->IsApplicable(*particle))
+      {
+    	pmanager->AddProcess(theScintillationProcess);
+    	pmanager->SetProcessOrderingToLast(theScintillationProcess, idxAtRest);
+    	pmanager->SetProcessOrderingToLast(theScintillationProcess, idxPostStep);
+      }
 
 
   }

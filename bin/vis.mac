@@ -3,7 +3,7 @@
 #/vis/viewer/set/style wireframe
 /vis/viewer/set/viewpointThetaPhi -90 0
 /vis/viewer/zoom 1.
-#/vis/viewer/set/auxiliaryEdge true
+/vis/viewer/set/auxiliaryEdge true
 #/vis/set/lineWidth 2
 /vis/viewer/set/hiddenMarker true
 /vis/scene/add/trajectories smooth
@@ -45,10 +45,10 @@
 
 
 # PART TO SIMULATE 1 MEV ELECTRON !!!!!!!!
-/gps/particle geantino
+/gps/particle e-
 #/gps/particle geantino
 /gps/pos/type Point
-/gps/pos/centre 0.0 0.0 -900. mm
+/gps/pos/centre 0.0 0.0 -100. mm
 /gps/energy 1000.0 keV
 /gps/direction 0.0 0.0 1.0
 

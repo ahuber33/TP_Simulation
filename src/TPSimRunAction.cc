@@ -36,7 +36,7 @@ void TPSimRunAction::BeginOfRunAction(const G4Run* aRun){
     start = time(NULL);     //start the timer clock to calculate run times
 
     theRunTree = new TTree("theRunTree","Optical_Information");
-    //theRunTree_bis = new TTree("theRunTree_bis","Photocathode_Information_Transmitted");
+    theRunTree_bis = new TTree("theRunTree_bis","Photocathode_Information_Transmitted");
     //Tree_emitted = new TTree("Tree_emitted","Emitted Information");  //Tree to access energy emitted (except gammas)
     //Tree_position = new TTree("Tree_position","Position Information");  //Tree to access position of energy deposition
 
@@ -45,9 +45,9 @@ void TPSimRunAction::BeginOfRunAction(const G4Run* aRun){
 
     // create the branch for each event.
     // Be careful of the data structure here!  /F is a float  /I is an integer
-    RunBranch = theRunTree->Branch("Optical_Information",&Stats.IncidentE,"IncidentE/F:Deposit/F:Generated/I:Absorbed:BulkAbs:Escaped:Failed:Detected_without_CU:Lost:WLS:Detected:FWHM/F:FWHM_Final/F:Frac_Detected/F:Frac_Transmitted/F:Total_Track_Length_e/F:Count_Scintillation/I:Count_Cerenkov/I");
+    RunBranch = theRunTree->Branch("Optical_Information",&Stats.IncidentE,"IncidentE/F:Deposit/F:Generated/I:Absorbed:BulkAbs:Escaped:Failed:WLS:Detected:FWHM/F:Count_Scintillation/I:Count_Cerenkov/I");
 
-    //RunBranch = theRunTree_bis->Branch("Photocathode_Information",&Statsbis.Angle,"Angle/F:PositionX/F:PositionY/F:PositionZ/F:DeathLambda/F:BirthLambda/F:Total_Reflections/I:Wrap_Reflections/I:Total_Length/F");
+    RunBranch = theRunTree_bis->Branch("Photocathode_Information",&Statsbis.Angle,"Angle/F:PositionX/F:PositionY/F:PositionZ/F:DeathLambda/F:BirthLambda/F:Total_Reflections/I:Wrap_Reflections/I:Total_Length/F");
 
     //RunBranch = Tree_emitted->Branch("Energy_Emitted",&Statsemitted.E_emitted_Elec,"E_emitted_Elec/F:E_emitted_Alpha/F");
 
@@ -92,8 +92,8 @@ void TPSimRunAction::EndOfRunAction(const G4Run*aRun){
     //update the temp root file
     G4String fileName = suffixe+".root";
     f = new TFile(fileName,"update");
-    //theRunTree->Write();
-    //theRunTree_bis->Write();
+    theRunTree->Write();
+    theRunTree_bis->Write();
     //Tree_emitted->Write();
     //Tree_position->Write();
     Tree_electron->Write();
@@ -129,13 +129,13 @@ void TPSimRunAction::EndOfRunAction(const G4Run*aRun){
 
 void TPSimRunAction::UpdateStatistics(RunTally aRunTally){
     Stats = aRunTally;
-    //theRunTree->Fill();
+    theRunTree->Fill();
 }
 
 
 void TPSimRunAction::UpdateStatisticsbis(RunTallybis aRunTallybis){
     Statsbis = aRunTallybis;
-    //theRunTree_bis->Fill();
+    theRunTree_bis->Fill();
 }
 
 void TPSimRunAction::UpdateStatisticsEmitted(RunTallyEmitted aRunTallyEmitted){

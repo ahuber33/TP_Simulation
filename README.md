@@ -15,7 +15,6 @@
 #-Mise au point d'un code d'analyse Plot.C et Plot.hh afin de comparer les CSDA des électrons dans plusieurs matériaux (Lecture fichier txt, lecture Tree, création TGraph)
 #-Nettoyage du dossier bin (Scripts, macros et fichiers txt correspondants à la simulation GMSim)
 #-De nombreux tests avec .gitignore pour faciliter l'utilisation
-<<<<<<< HEAD
 
 #commit #3 le 25/02/2022 (Validation G4EM-protons)
 #-Changement taille scintillateur pour pouvoir suivre le proton de 500 MeV sur toute sa trajectoire dans le Scintillateur
@@ -23,8 +22,16 @@
 #-Ajout d'un StopandKill pour gagner du temps sur les particules secondaires générées
 #-Ajout des données de pstar pour comparaison avec simulation
 #-Ajout d'un script (Script_rapide) permettant de lancer la même simulation sur plusieurs coeurs utilisant la même macro
-#Changement de valeur du Cut dans la PhysicsList (passage de 1mm à 1µm) afin de pouvoir suivre correctement le proton dans les différents matériaux
+#-Changement de valeur du Cut dans la PhysicsList (passage de 1mm à 1µm) afin de pouvoir suivre correctement le proton dans les différents matériaux
 #-Le tree electrons est juste utilisé ici pour avoir les informations sur les protons -> Nécessité de faire attention par la suite et de surement créer un autre tree pour les protons
 #-Du aux nombreux gammas crées, la condition de remplissage du tree (Estart=Edep) a été enlevé.
-=======
->>>>>>> fcbeba0809f06263ab22aca37a89b1b4cd500450
+
+#commit #4 le 28/02/2022 (Mise en place partie Optique)
+#-Ajout des fichiers Coupling et PMT (temporairement ou non) afin de pouvoir vérifier la partie optique sur les scintillateurs SuperNEMO
+#- Ajout de l'ensemble des fonctions, géométries, matériaux et variables liés à SuperNEMO (temporaire ou non) nécessaire pour la vérification de la partie optique
+#- Ajout propriétés optique du scintillateur, mylar, teflon, colle, photocathode et PM
+#- Lecture des fichiers config à base de vecteurs et plus de tableau (a nécessité la mise au point d'un petit code Reverse_file.C permettant de changer l'ordre de lecture du fichier. Précédemment de la plus petite à la plus grande longueur d'onde, maintenant c'est l'inverse d'où la présence des fichiers reverse).
+#-Accès à l'ensemble des informations liéss à la scintillation et/ou Cerenkov puis transfert dans un Tree (pris en grande partie du code de SuperNEMO mais nettoyé et mis à jour).
+#-Possibilité d'activer ou de désactiver la scintillation et/ou Cerenkov
+#-Possibilité de considérer uniquement les photons détectés et/ou transmis 
+#-Changement du Cut dans la PhysicsList à 1mm pour faciliter/accélerer l'analyse optique avec électrons

@@ -28,15 +28,9 @@ struct RunTally {
   int    BulkAbs;
   int    Escaped;
   int    Failed;
-  int    Detected_without_CU;
-  int    Lost;
   int    WLS;
   int    Detected;
   float  FWHM;
-  float  FWHM_final;
-  float  Frac_Detected;
-  float  Frac_Transmitted;
-  float Total_Track_Length_e;
   int Count_Scintillation;
   int Count_Cerenkov;
 
@@ -111,10 +105,10 @@ public:
   //Keeps track of the total number of generated photons
   void AddGenerated(G4int numgenerated){Statistics.Generated+=numgenerated;}
   //Keeps track of the total energy deposited in the scintillator
-  void AddEdep(G4double edep){Statistics.Deposit+=edep;}
+  void AddEdep(G4float edep){Statistics.Deposit+=edep;}
 
   //void CountDetected(Tally);
-  void CountDetected_without_CU(){Statistics.Detected_without_CU++;}
+  //void CountDetected_without_CU(){Statistics.Detected_without_CU++;}
   void CountDetected(){Statistics.Detected++;}
   void CountWLS(){Statistics.WLS++;}
   void CountAbsorbed(){Statistics.Absorbed++;}
