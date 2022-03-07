@@ -7,6 +7,6 @@ do
     do
 	sleep 10
     done
-    ./TPSim a_${i} 10000 vrml.mac &
+    ./TPSim a_${i} 1000000 vrml.mac &
     sleep 10
     done

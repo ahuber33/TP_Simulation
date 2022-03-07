@@ -33,5 +33,16 @@
 #- Lecture des fichiers config à base de vecteurs et plus de tableau (a nécessité la mise au point d'un petit code Reverse_file.C permettant de changer l'ordre de lecture du fichier. Précédemment de la plus petite à la plus grande longueur d'onde, maintenant c'est l'inverse d'où la présence des fichiers reverse).
 #-Accès à l'ensemble des informations liéss à la scintillation et/ou Cerenkov puis transfert dans un Tree (pris en grande partie du code de SuperNEMO mais nettoyé et mis à jour).
 #-Possibilité d'activer ou de désactiver la scintillation et/ou Cerenkov
-#-Possibilité de considérer uniquement les photons détectés et/ou transmis 
+#-Possibilité de considérer uniquement les photons détectés et/ou transmis
 #-Changement du Cut dans la PhysicsList à 1mm pour faciliter/accélerer l'analyse optique avec électrons
+
+#commit #5 le 07/03/2022 (Ajout partie LaBr3 + nettoyage)
+#-Ajout des fichiers géométries correspondant à la configuration HPD et PMT (fichiers de config inclus pour le scintillateur LaBr3 et le PM)
+#-Ajout des spectres réels de flash X issues de l'expérience de Emmanuel au CELIA dans Geant4
+#-Ajout de fonctions pour ploter les résultats dans Plot.hh
+#-Création code LaBr3 attenuation pour vérification que Labs est bien pris en compte dans la simulation
+#-Création code rapide permettant d'obtenir un étalonnage entre énergie et photons générés/détectés (etalonnage_LaBr3.C)
+#-Remise en forme de l'ensemble des fichiers hh et cc avec l'indentation automatique
+#-Ajout de commentaires sur certaines parties du code
+#-Mise en forme du code plus propre avec déclarations des variables et fonctions en début de fichier pour faciliter la lecture
+#-Ajout de la données "Time" dans le root de sortie permettant de connaitre la répartition temporelle des photons sur la photocathode

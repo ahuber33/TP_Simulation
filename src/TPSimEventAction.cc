@@ -119,7 +119,7 @@ if (Statistics.Generated >0)
   G4cout << "Photons Surface Absorbed  :         " << Statistics.Absorbed      << "        " << Absfrac << " % " << G4endl;
   G4cout << "Photons Bulk Absorbed:              " << Statistics.BulkAbs       << "        " << Bulkfrac << " % " << G4endl;
   G4cout << "Photons Escaped:                    " << Statistics.Escaped       << "        " << Escfrac << " % " << G4endl;
-  G4cout << "Photons Transmitted to PMT:         " << Statistics.Failed        << "        " << Failfrac << " % " << G4endl;
+  G4cout << "Photons only Transmitted to PMT:    " << Statistics.Failed        << "        " << Failfrac << " % " << G4endl;
   G4cout << "Photons Collected in PMT (QE):      " << Statistics.Detected      << "        " << efficiency << " % " << G4endl;
   G4cout << "Total Photons Considered:           " << Statistics.Absorbed + Statistics.BulkAbs + Statistics.Escaped + Statistics.Failed + Statistics.Detected  << "        " << Absfrac + Bulkfrac + Escfrac + Failfrac + efficiency << " % " << G4endl;
   G4cout << "Photons WL Shifted:                 " << Statistics.WLS           << "        " << WLSfrac << " % " << G4endl;
@@ -129,8 +129,8 @@ if (Statistics.Generated >0)
   G4cout << ""  <<  G4endl;
   G4cout << ""  <<  G4endl;
 
-  runac->UpdateStatistics(Statistics);
+  //runac->UpdateStatistics(Statistics);
     }
-
+runac->UpdateStatistics(Statistics);
 
 }

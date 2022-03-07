@@ -30,20 +30,17 @@ public:
 public:
 
 
-  G4LogicalVolume *GetBADGE_Coupling_Sc();
-  G4LogicalVolume *GetBADGE_Coupling_PMT();
+  G4LogicalVolume *GetHPDGrease();
   G4LogicalVolume *GetSNMW_8InchesSphericalCoupling();
 
 private:
   TPSimMaterials* scintProp;
   Scintillator *theScint;
   static const G4String path_bin;
-  G4Material* Cargille;
-  G4Material* grease;
 
-  G4LogicalVolume *LogicalBADGE_Coupling_Sc;
-  G4LogicalVolume *LogicalBADGE_Coupling_PMT;
-  G4LogicalVolume *LogicalSNMW_8InchesCouplingSphere;
+  G4Material* Material;
+
+  G4LogicalVolume *LogicalVolume;
 
   G4double AirGapMylar;
   G4double GlueThickness;

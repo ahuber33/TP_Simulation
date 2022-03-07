@@ -24,7 +24,7 @@ public:
   ~TPSimSteppingAction();
 public:
   void UserSteppingAction(const G4Step*);
-int Boundary;
+  int Boundary;
   void Count(){Boundary++;}
 
   void SetTheta (double e) { NRJ1 = e;};

@@ -102,3 +102,68 @@ TGraphErrors* ge(const char* filenames[], const char* TreeName, const char* Vari
   return graph;
 }
 
+vector<float> Labs(float Wavelength)
+{
+  TFile* file = new TFile("Study_LaBr3_attenuation.root");
+  float a,b;
+  vector<float> c;
+  c.clear();
+  TTree *Tree = (TTree*)file->Get("theRunTree_bis");
+  float Entries = Tree->GetEntries();
+  TH1F* h = new TH1F("h","h", 100, 0, 1000);
+
+  for (int i=0; i<Entries; i++)
+    {
+      a = Tree->GetLeaf("BirthLambda")->GetValue();
+      b = Tree->GetLeaf("Total_Length")->GetValue();
+      Tree->GetEntry(i);
+      if (a<Wavelength+0.5 && a > (Wavelength-0.5)){ h->Fill(b);}
+    }
+
+  h->Fit("expo");
+  TF1* g = (TF1*)h->GetListOfFunctions()->FindObject("expo");
+  c.push_back(-1/g->GetParameter(1));
+  c.push_back(g->GetParError(1)/(pow(g->GetParameter(1),2)));
+
+  //  cout << "c(1)=" << c.at(1) << endl;
+
+
+  file->Close();
+
+  return c;
+  c.clear();
+}
+
+TGraphErrors* geLabs(int start, int end, int step)
+{
+  int n_step = (end-start)/step;
+  float x[n_step];
+  float y[n_step];
+  float e_x[n_step];
+  float e_y[n_step];
+  int n=0;
+  vector<float> v;
+  
+  for(int i=start; i<end; i+= step)
+    {
+      v=Labs(i);
+      x[n] = i; //conv keV to MeV
+      y[n] = v.at(0); //conv mm to cm
+      e_x[n]=step;
+      e_y[n] = v.at(1); //conv mm to cm
+      n++;
+      //cout << "x[" << i << "] = " << x[i] << endl;
+      //cout << "y[" << i << "] = " << y[i] << endl;
+      //cout << "ey[" << i << "] = " << e_y[i] << endl;
+    }
+  
+
+  TGraphErrors* graph = new TGraphErrors(n_step, x, y, e_x, e_y);
+      
+  v.clear();
+  
+  //cout << "test = " << filenames[5] << endl;
+  //const char* test = filenames[3];
+  
+  return graph;
+}

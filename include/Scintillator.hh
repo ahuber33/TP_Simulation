@@ -29,6 +29,10 @@ public:
   // Functions to call this geometry in x_blockGeometry.cc
 
   G4LogicalVolume *GetScTest();
+  G4LogicalVolume *GetLaBr3();
+  G4LogicalVolume *GetLaBr3PMMA();
+  G4LogicalVolume *GetBoitierAluHPD();
+  G4LogicalVolume *GetBoitierAluPM();
   G4LogicalVolume *GetGM_LND();
   G4LogicalVolume *GetGM_Plastique();
   G4LogicalVolume *GetSNMW_8InchesScint();
@@ -47,21 +51,21 @@ public:
   // glue
   G4double GetGlueThickness(){return GlueThickness;}
   // *******SuperNEMO Main Wall*********
-// scint
-G4double GetSNMW_ScintStepWidth(){return SNMW_ScintStepWidth;}
-G4double GetSNMW_ScintStepHeight(){return SNMW_ScintStepHeight;}
-G4double GetSNMW_ScintBodyWidth(){return SNMW_ScintBodyWidth;}
-G4double GetSNMW_ScintBodyHeight(){return SNMW_ScintBodyHeight;}
-G4double GetSNMW_CouplingRadius(){return SNMW_CouplingSphereRadius;}
-G4double GetSNMW_CouplingDepth(){return SNMW_CouplingSphereDepth;}
-G4double GetSNMW_FullScintHeight(){return SNMW_ScintStepHeight+SNMW_ScintBodyHeight;}
-// PMT
-G4double GetPMTGlassRadius(){return PMTGlassRadius;}
-G4double GetPMTGlassThickness(){return PMTGlassThickness;}
-G4double GetPMTRearGlassRadius(){return PMTRearGlassRadius;}
-G4double GetPMTPhotocathodeThickness(){return PMTPhotocathodeThickness;}
-G4double GetPMTGlassTubeRadius(){return PMTGlassTubeRadius;}
-G4double GetPMTGlassTubeHeight(){return PMTGlassTubeHeight;}
+  // scint
+  G4double GetSNMW_ScintStepWidth(){return SNMW_ScintStepWidth;}
+  G4double GetSNMW_ScintStepHeight(){return SNMW_ScintStepHeight;}
+  G4double GetSNMW_ScintBodyWidth(){return SNMW_ScintBodyWidth;}
+  G4double GetSNMW_ScintBodyHeight(){return SNMW_ScintBodyHeight;}
+  G4double GetSNMW_CouplingRadius(){return SNMW_CouplingSphereRadius;}
+  G4double GetSNMW_CouplingDepth(){return SNMW_CouplingSphereDepth;}
+  G4double GetSNMW_FullScintHeight(){return SNMW_ScintStepHeight+SNMW_ScintBodyHeight;}
+  // PMT
+  G4double GetPMTGlassRadius(){return PMTGlassRadius;}
+  G4double GetPMTGlassThickness(){return PMTGlassThickness;}
+  G4double GetPMTRearGlassRadius(){return PMTRearGlassRadius;}
+  G4double GetPMTPhotocathodeThickness(){return PMTPhotocathodeThickness;}
+  G4double GetPMTGlassTubeRadius(){return PMTGlassTubeRadius;}
+  G4double GetPMTGlassTubeHeight(){return PMTGlassTubeHeight;}
 
 private:
 
@@ -73,74 +77,44 @@ private:
 
 
   // Materials
-  G4Material *scintillator;
-  G4Material *Plastic;
-  G4Material *Mylar;
-  G4Material *Fer;
-  G4Material *Polystyrene;
-  G4Material *coating;
-  G4Material *Vacuum;
-  G4Material *PMMA;
-  G4Material *Acier;
-  G4Material *Inox;
-  G4Material *N2;
-  G4Material *Cuivre;
-  G4Material *Kapton;
-  G4Material *Air;
-  G4Material *Polypropylene;
-  G4Material *Papier;
-  G4Material *Compensation;
-  G4Material *Nylon;
-  G4Material *Alu_Coque_Cylindrique;
-  G4Material *Alu;
-  G4Material *teflon;
-  G4Material *mousse;
-  G4Material *Neoprene;
-  G4Material *Mica;
-  G4Material *Plomb_Antimoine;
+  G4Material *Material;
 
   // Logical Volumes
-  G4LogicalVolume *LogicalScTest;
-  G4LogicalVolume *LogicalGM_LND;
-  G4LogicalVolume *LogicalGM_Plastique;
-  G4LogicalVolume *LogicalSNMW_8InchesFinalScint;
-  G4LogicalVolume *LogicalSNMW_8InchesMylarWrap;
-  G4LogicalVolume *LogicalSNMW_TeflonWrap;
-
+  G4LogicalVolume *LogicalVolume;
 
   G4double ScintillatorLength;
   G4double ScintillatorThickness;
   // Physical Dimensions
-// scint SuperNEMO
-G4double SNMW_ScintStepWidth;
-G4double SNMW_ScintStepHeight;
-G4double SNMW_ScintBodyWidth;
-G4double SNMW_ScintBodyHeight;
-G4double SNMW_CouplingSphereRadius;
-G4double SNMW_CouplingSphereDepth;
-// wrapping
-G4double AirGapTeflon;
-G4double TeflonThickness;
-G4double AirGapMylar;
-G4double MylarThickness;
-// glue
-G4double GlueThickness;
-// PMT
-G4double PMTGlassRadius;
-G4double PMTGlassThickness;
-G4double PMTRearGlassRadius;
-G4double PMTPhotocathodeThickness;
-G4double PMTGlassTubeRadius;
-G4double PMTGlassTubeHeight;
+  // scint SuperNEMO
+  G4double SNMW_ScintStepWidth;
+  G4double SNMW_ScintStepHeight;
+  G4double SNMW_ScintBodyWidth;
+  G4double SNMW_ScintBodyHeight;
+  G4double SNMW_CouplingSphereRadius;
+  G4double SNMW_CouplingSphereDepth;
+  // wrapping
+  G4double AirGapTeflon;
+  G4double TeflonThickness;
+  G4double AirGapMylar;
+  G4double MylarThickness;
+  // glue
+  G4double GlueThickness;
+  // PMT
+  G4double PMTGlassRadius;
+  G4double PMTGlassThickness;
+  G4double PMTRearGlassRadius;
+  G4double PMTPhotocathodeThickness;
+  G4double PMTGlassTubeRadius;
+  G4double PMTGlassTubeHeight;
 
-// Translations for unions/subtractions
-G4double Step_BodyUnion;
-G4double Block_SphereSubtraction;
-G4double TeflonStep_BodyUnion;
-G4double Teflon_ScintSubtraction;
-G4double MylarStep_BodyUnion;
-G4double Mylar_TeflonSubtraction;
-G4double Mylar_SphereSubtraction;
+  // Translations for unions/subtractions
+  G4double Step_BodyUnion;
+  G4double Block_SphereSubtraction;
+  G4double TeflonStep_BodyUnion;
+  G4double Teflon_ScintSubtraction;
+  G4double MylarStep_BodyUnion;
+  G4double Mylar_TeflonSubtraction;
+  G4double Mylar_SphereSubtraction;
 
 
 

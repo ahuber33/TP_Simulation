@@ -1,5 +1,5 @@
 /// TPSimTrackInformation.hh
-//// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr> 
+//// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr>
 //// Copyright: 2022 (C) Projet RATP - ENL [LP2IB] - CELIA
 
 //This class stores the statistics for each photon
@@ -16,15 +16,15 @@
 
 class TPSimTrackInformation : public G4VUserTrackInformation
 {
- public:
+public:
   TPSimTrackInformation();
   TPSimTrackInformation(const G4Track *aTrack);
   ~TPSimTrackInformation();
-  
+
   inline void *operator new(size_t);
   inline void operator delete(void *aTrackInfo);
-  
- private:
+
+private:
   G4ThreeVector BirthPosition;
   G4double BirthLambda;
   G4int Reflections;
@@ -38,8 +38,8 @@ class TPSimTrackInformation : public G4VUserTrackInformation
   G4double TimeBeforeWLS;
   G4double my_time;
   G4double my_time2;
-  
- public:
+
+public:
 
   G4ThreeVector GetBirthPosition() const {return BirthPosition;}
   G4double GetBirthLambda() const {return BirthLambda;}

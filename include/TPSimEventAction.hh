@@ -35,7 +35,7 @@ struct RunTally {
   int Count_Cerenkov;
 
   inline int operator ==(const RunTally& right) const
-    {return (this==&right);}
+  {return (this==&right);}
 };
 
 
@@ -47,6 +47,7 @@ struct RunTallybis {
   float  PositionZ;
   float  DeathLambda;
   float  BirthLambda;
+  float Time;
   //float  Theta;
   //float  Phi;
   int Total_Reflections;
@@ -54,7 +55,7 @@ struct RunTallybis {
   float TotalLength;
 
   inline int operator ==(const RunTallybis& right) const
-    {return (this==&right);}
+  {return (this==&right);}
 };
 
 
@@ -65,7 +66,7 @@ struct RunTallyEmitted {
   float E_emitted_Gamma;
 
   inline int operator ==(const RunTallyEmitted& right) const
-    {return (this==&right);}
+  {return (this==&right);}
 };
 
 
@@ -76,7 +77,7 @@ struct RunTallyPosition {
   float Position_z;
 
   inline int operator ==(const RunTallyPosition& right) const
-    {return (this==&right);}
+  {return (this==&right);}
 };
 
 
@@ -88,16 +89,16 @@ struct RunTallyElectron {
   //std::vector<float> E_dep_Gamma;
 
   inline int operator ==(const RunTallyElectron& right) const
-    {return (this==&right);}
+  {return (this==&right);}
 };
 
 
 
 class TPSimEventAction : public G4UserEventAction
 {
-  public:
-    TPSimEventAction(char*);
-   ~TPSimEventAction();
+public:
+  TPSimEventAction(char*);
+  ~TPSimEventAction();
 
 public:
   void BeginOfEventAction(const G4Event*);

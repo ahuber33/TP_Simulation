@@ -1,5 +1,5 @@
 /// TPSimPhysics.hh
-//// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr> 
+//// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr>
 //// Copyright: 2022 (C) Projet RATP - ENL [LP2IB] - CELIA
 
 #ifndef  TPSimPhysics_h
@@ -14,7 +14,7 @@ class  TPSimPhysics:  public G4VModularPhysicsList
 {      public:
   TPSimPhysics();
   virtual ~TPSimPhysics();
-  
+
 protected:
   virtual void ConstructParticle();
   virtual void ConstructProcess();
@@ -31,9 +31,8 @@ protected:
   //virtual void ConstructAllShortLiveds();
 
 private:
-    G4VPhysicsConstructor*  emPhysicsList;
-    G4VPhysicsConstructor*  particleList;
-    G4VPhysicsConstructor*  raddecayList;
+  G4VPhysicsConstructor*  emPhysicsList;
+  G4VPhysicsConstructor*  particleList;
+  G4VPhysicsConstructor*  raddecayList;
 };
 #endif
-

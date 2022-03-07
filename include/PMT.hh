@@ -30,6 +30,8 @@ public:
   G4LogicalVolume *GetBADGE_Photocathode();
   G4LogicalVolume *Get8InchesPMTGlass();
   G4LogicalVolume *Get8InchesPhotocathode();
+  G4LogicalVolume *GetHPDGlass();
+  G4LogicalVolume *GetHPDPhotocathode();
 
 
 private:
@@ -37,13 +39,9 @@ private:
   Scintillator *theScint;
   static const G4String path_bin;
 
-  G4Material *Vacuum;
-  G4Material *Borosilicate_Glass;
+  G4Material *Material;
 
-  G4LogicalVolume *LogicalPMTGlass;
-  G4LogicalVolume *LogicalPhotocathode;
-  G4LogicalVolume *Logical8InchesPMTGlass;
-  G4LogicalVolume *Logical8InchesPhotocathode;
+  G4LogicalVolume *LogicalVolume;
 
 };
 #endif

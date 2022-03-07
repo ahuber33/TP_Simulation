@@ -261,24 +261,121 @@ Scintillator::Scintillator(G4String buildfile){
 // ***********************
 Scintillator::~Scintillator(){
   if(scintProp) { delete scintProp; scintProp = 0; }
-  if(Polystyrene) { delete Polystyrene; Polystyrene = 0; }
-  if(coating) { delete coating; coating = 0; }
-  if(Vacuum) { delete Vacuum; Vacuum = 0; }
   if(clear) { delete clear; clear = 0; }
 }
 
 
 G4LogicalVolume *Scintillator::GetScTest(){
 
-  scintillator = scintProp->GetMaterial("scintillator");
+  Material = scintProp->GetMaterial("scintillator");
   //scintillator = scintProp->GetMaterial("Alu");
 
   G4Box *Box = new G4Box   ("Box",             //its name
   			    ScintillatorLength/2, ScintillatorLength/2, ScintillatorThickness/2);    //its size
 
-  LogicalScTest = new G4LogicalVolume(Box, scintillator, "Sc_Test",0,0,0);
+  LogicalVolume = new G4LogicalVolume(Box, Material, "Sc_Test",0,0,0);
 
-  return LogicalScTest;
+  return LogicalVolume;
+}
+
+
+
+G4LogicalVolume *Scintillator::GetLaBr3(){
+
+  Material = scintProp->GetMaterial("LaBr3");
+
+  G4Tubs *Tubs = new G4Tubs   ("Tubs",             //its name
+  			    //0., (38.1/2)*mm, (38.1/2)*mm, 0, 360*deg);    //its size
+            0., (38.1/2)*mm, (38.1/2)*mm, 0, 360*deg);    //its size
+  LogicalVolume = new G4LogicalVolume(Tubs, Material, "LaBr3",0,0,0);
+
+  return LogicalVolume;
+}
+
+
+
+G4LogicalVolume *Scintillator::GetLaBr3PMMA(){
+
+  Material = scintProp->GetMaterial("PMMA");
+
+  G4Tubs *Tubs = new G4Tubs   ("Tubs",             //its name
+  			    0., (38.1/2)*mm, (5./2)*mm, 0, 360*deg);    //its size
+
+  LogicalVolume = new G4LogicalVolume(Tubs, Material, "LaBr3PMMA",0,0,0);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Scintillator::GetBoitierAluHPD(){
+
+  G4RotationMatrix DontRotate;
+  DontRotate.rotateX(0*deg);
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4Tubs *Tubs1 = new G4Tubs   ("Tubs1",             //its name
+  			    0., (41.5/2)*mm, (45.5/2)*mm, 0, 360*deg);    //its size
+
+  G4Tubs *Tubs2 = new G4Tubs   ("Tubs2",             //its name
+  			    0., (40.5/2)*mm, (45.5/2)*mm, 0, 360*deg);    //its size
+
+ G4SubtractionSolid* Tubs = new G4SubtractionSolid("Tubs", Tubs1, Tubs2, G4Transform3D(DontRotate,G4ThreeVector(0,0,0.5*mm)));
+
+  LogicalVolume = new G4LogicalVolume(Tubs, Material, "BoitierAluHPD",0,0,0);
+
+  return LogicalVolume;
+
+
+}
+
+
+
+G4LogicalVolume *Scintillator::GetBoitierAluPM(){
+
+  G4RotationMatrix DontRotate;
+  DontRotate.rotateX(0*deg);
+
+  Material = scintProp->GetMaterial("Alu");
+
+G4int N_z_plane = 5;
+G4double Phi_start = 0.*deg;
+G4double Phi_end = 2*180*deg;
+
+const G4double z_plane[] = {0*mm, 92.5*mm, 97.5*mm, 131*mm, 131.5*mm};
+
+const G4double r_inner[]= {(0/2)*mm, (0/2)*mm, (0/2)*mm, 0*mm, 0*mm};
+
+
+const G4double r_outer[]= {(58.7/2)*mm, (58.7/2)*mm, (43./2)*mm, (43./2)*mm, 21.5*mm};
+
+  G4Polycone *Polycone1 = new G4Polycone("Polycone1",
+			Phi_start,
+			Phi_end,
+			N_z_plane,
+			z_plane,
+			r_inner,
+			r_outer);
+
+const G4double z_plane2[] = {0*mm, 92.5*mm, 97.5*mm, 131*mm, 131*mm};
+
+const G4double r_inner2[]= {0*mm, 0*mm, 0*mm, 0*mm, 0*mm};
+
+const G4double r_outer2[]= {(57.7/2)*mm, (57.7/2)*mm, (42./2)*mm, (42./2)*mm, (42./2)*mm};
+
+G4Polycone *Polycone2 = new G4Polycone("Polycone2",
+    Phi_start,
+    Phi_end,
+    N_z_plane,
+    z_plane2,
+    r_inner2,
+    r_outer2);
+
+G4SubtractionSolid* Polycone = new G4SubtractionSolid("Polycone", Polycone1, Polycone2, G4Transform3D(DontRotate,G4ThreeVector(0,0,0*mm)));
+
+  LogicalVolume = new G4LogicalVolume(Polycone, Material, "BoitierAluPM",0,0,0);
+
+  return LogicalVolume;
 }
 
 
@@ -287,7 +384,7 @@ G4LogicalVolume *Scintillator::GetScTest(){
 G4LogicalVolume *Scintillator::GetGM_LND(){
   // Material Properties for scint
   //scintProp = new TPSimMaterials(path_bin+"Materials.cfg");
-  Inox = scintProp->GetMaterial("Inox");
+  Material = scintProp->GetMaterial("Inox");
 
 #ifndef disable_gdm
   //G4NistManager* nist = G4NistManager::Instance();
@@ -295,13 +392,13 @@ G4LogicalVolume *Scintillator::GetGM_LND(){
   //Create Tesselated volume of "Bouchon"
   parser->Clear();
   parser->Read("../gdml_models/GM_Dolphy_complet_GM_LND_71-324.gdml", false);
-  LogicalGM_LND = parser->GetVolume("GM Dolphy complet - GM LND 71-324-1");
-  LogicalGM_LND->SetMaterial(Inox);
+  LogicalVolume = parser->GetVolume("GM Dolphy complet - GM LND 71-324-1");
+  LogicalVolume->SetMaterial(Material);
 #else
   //
 #endif
 
-  return LogicalGM_LND;
+  return LogicalVolume;
 }
 
 //************************************************************************************
@@ -315,7 +412,8 @@ G4LogicalVolume *Scintillator::GetGM_LND(){
 // ***********************
 G4LogicalVolume *Scintillator::GetSNMW_8InchesScint(){
   // Material Properties for scint
-  scintillator = scintProp->GetMaterial("scintillator");
+  //scintillator = scintProp->GetMaterial("scintillator");
+  Material = scintProp->GetMaterial("LaBr3");
 
   // Define some translations used for joining or subtracting
    Step_BodyUnion = SNMW_ScintStepHeight/2 + SNMW_ScintBodyHeight/2;
@@ -375,12 +473,12 @@ const G4double r_outer_glue_extrusion[]= {2.*mm, 34.0648*mm, 37.6705*mm, 37.6705
 
   // Logical volume for FinalScint: material = scintillator
 
-  LogicalSNMW_8InchesFinalScint = new G4LogicalVolume(FinalScint8Inches, scintillator, "LogicalFinalScint8Inches",0,0,0);
+  LogicalVolume = new G4LogicalVolume(FinalScint8Inches, Material, "LogicalFinalScint8Inches",0,0,0);
 
   //G4VisAttributes * clear;
   //clear = new G4VisAttributes( G4Colour(255/255. ,255/255. ,255/255. ));
 
-  return LogicalSNMW_8InchesFinalScint;
+  return LogicalVolume;
 }
 
 
@@ -389,7 +487,7 @@ const G4double r_outer_glue_extrusion[]= {2.*mm, 34.0648*mm, 37.6705*mm, 37.6705
 // ***********************
 G4LogicalVolume *Scintillator::GetSNMW_8InchesMylar(){
   // Define materials
-  Mylar = scintProp->GetMaterial("mylar");
+  Material = scintProp->GetMaterial("mylar");
 
   // Define some translations used for joining or subtracting
   MylarStep_BodyUnion = (MylarThickness+AirGapMylar+SNMW_ScintStepHeight+AirGapTeflon+TeflonThickness+AirGapMylar+MylarThickness)/2 + (MylarThickness+AirGapMylar+SNMW_ScintBodyHeight-AirGapTeflon-TeflonThickness-AirGapMylar-MylarThickness)/2 ;
@@ -472,10 +570,10 @@ const G4double r_outer_glue_extrusion[]= {2.*mm, 34.0648*mm, 37.6705*mm, 37.6705
 
   // Logical volume for Mylar: material = coating?
 
-  LogicalSNMW_8InchesMylarWrap = new G4LogicalVolume(FinalMylarWrap8Inches, Mylar, "LogicalMylarWrap8inches",0,0,0);
+  LogicalVolume = new G4LogicalVolume(FinalMylarWrap8Inches, Material, "LogicalMylarWrap8inches",0,0,0);
 
 
-  return LogicalSNMW_8InchesMylarWrap;
+  return LogicalVolume;
 }
 
 
@@ -484,7 +582,7 @@ const G4double r_outer_glue_extrusion[]= {2.*mm, 34.0648*mm, 37.6705*mm, 37.6705
 // ***********************
 G4LogicalVolume *Scintillator::GetSNMW_Teflon(){
   // Define materials
-  teflon = scintProp->GetMaterial("teflon"); // Why is this plastic? Need to add Teflon?
+  Material = scintProp->GetMaterial("teflon"); // Why is this plastic? Need to add Teflon?
 
   // Define some translations used for joining or subtracting
   TeflonStep_BodyUnion = SNMW_ScintStepHeight/2 + SNMW_ScintBodyHeight/2;
@@ -540,41 +638,15 @@ G4LogicalVolume *Scintillator::GetSNMW_Teflon(){
 
   // Logical volume for Teflon: material = plastic?
 
-  LogicalSNMW_TeflonWrap = new G4LogicalVolume(TeflonWrap, teflon, "LogicalTeflonWrap",0,0,0);
+  LogicalVolume = new G4LogicalVolume(TeflonWrap, Material, "LogicalTeflonWrap",0,0,0);
 
-  G4VisAttributes *white;
-  white = new G4VisAttributes(G4Color(1,1,1));
-  //  LogicalTeflonWrap->SetVisAttributes(scinti);
-
-  return LogicalSNMW_TeflonWrap;
+  return LogicalVolume;
 }
-
-
-
-// G4LogicalVolume *GM::GetGM_Gaz(){
-//   // Material Properties for scint
-//   //scintProp = new TPSimMaterials(path_bin+"Materials.cfg");
-
-//   G4Tubs *Tubs = new G4Tubs   ("Tubs",		                           //its name
-// 			    0*cm, 7.77/2.*mm, 26.5/2.*mm, 0*deg, 360*deg);    //its size
-
-
-//   LogicalGM_Gaz = new G4LogicalVolume(Tubs, Air, "GM_Gaz",0,0,0);
-
-
-//   return LogicalGM_Gaz;
-// }
-
 
 
 G4LogicalVolume *Scintillator::GetGM_Plastique(){
   // Material Properties for scint
-  //scintProp = new TPSimMaterials(path_bin+"Materials.cfg");
-  Plastic = scintProp->GetMaterial("plastic");
-
-  // G4Box *Box = new G4Box   ("Box",             //its name
-  // 			    2.25/2.*cm, 6.5/2.*cm, 0.3/2.*cm);    //its size
-
+  Material = scintProp->GetMaterial("plastic");
 
   G4Box *Box_FULL = new G4Box   ("Box_FULL",             //its name
   			    2.25/2.*cm, 6.5/2.*cm, 11.8/2.*cm);    //its size
@@ -593,7 +665,7 @@ G4LogicalVolume *Scintillator::GetGM_Plastique(){
 
 
 
-  LogicalGM_Plastique = new G4LogicalVolume(Box, Plastic, "GM_Plastique",0,0,0);
+  LogicalVolume = new G4LogicalVolume(Box, Material, "GM_Plastique",0,0,0);
 
-  return LogicalGM_Plastique;
+  return LogicalVolume;
 }

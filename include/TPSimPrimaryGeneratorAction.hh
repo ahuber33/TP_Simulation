@@ -1,5 +1,5 @@
 /// TPSimPrimaryGeneratorAction.hh
-//// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr> 
+//// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr>
 //// Copyright: 2022 (C) Projet RATP - ENL [LP2IB] - CELIA
 
 #ifndef TPSimPrimaryGeneratorAction_h
@@ -14,22 +14,20 @@ class G4Event;
 
 class TPSimPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
-  public:
-    TPSimPrimaryGeneratorAction();
+public:
+  TPSimPrimaryGeneratorAction();
   ~TPSimPrimaryGeneratorAction();
 
-  public:
+public:
   void GeneratePrimaries(G4Event* anEvent);
   void SetEnergy(G4double en){particleGun->SetParticleEnergy(en);};
-  
+
   G4double GetEnergy(){return particleGun->GetParticleEnergy();};
 
-  private:
+private:
   G4ParticleGun* particleGun;
   G4GeneralParticleSource *particleSource;
   G4double IncidentE;
 };
 
 #endif
-
-

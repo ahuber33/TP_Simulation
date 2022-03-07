@@ -162,7 +162,7 @@ void TPSimPhysics::ConstructOp()
   theQuenchingScintillationProcess->SetTrackSecondariesFirst(true);
 
   G4EmSaturation* emSaturation = G4LossTableManager::Instance()->EmSaturation();
-  //theQuenchingScintillationProcess->AddSaturation(emSaturation);
+  theQuenchingScintillationProcess->AddSaturation(emSaturation);
 
   //G4OpticalSurfaceModel themodel = unified;
   //theBoundaryProcess->SetModel(themodel);
@@ -181,11 +181,11 @@ void TPSimPhysics::ConstructOp()
     G4ProcessManager* pmanager = particle->GetProcessManager();
     G4String particleName = particle->GetParticleName();
 
-    // if (theCerenkovProcess->IsApplicable(*particle))
-    //   {
-    // 	pmanager->AddProcess(theCerenkovProcess);
-    // 	pmanager->SetProcessOrdering(theCerenkovProcess, idxPostStep);
-    //   }
+    if (theCerenkovProcess->IsApplicable(*particle))
+      {
+    	pmanager->AddProcess(theCerenkovProcess);
+    	pmanager->SetProcessOrdering(theCerenkovProcess, idxPostStep);
+      }
 
     if(particle->GetParticleName() == "e-")
       {

@@ -63,12 +63,9 @@ set(PROJECT_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimEventAction.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimTrackingAction.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimVisManager.cc
-	#${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry_SIGAM_MF.cc
-	#${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry_SIGAM_HF_Carmelec.cc
-	#${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry_SIGAM_HF.cc
-	#${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry_SIGAM_BF.cc
 	#${CMAKE_CURRENT_SOURCE_DIR}/src/GMSimGeometry_Dolphy_Beta.cc
-	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry.cc
+	#${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry_PMT.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry_HPD.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimMaterials.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimPhysics.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimPrimaryGeneratorAction.cc

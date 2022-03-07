@@ -47,7 +47,7 @@ void TPSimRunAction::BeginOfRunAction(const G4Run* aRun){
     // Be careful of the data structure here!  /F is a float  /I is an integer
     RunBranch = theRunTree->Branch("Optical_Information",&Stats.IncidentE,"IncidentE/F:Deposit/F:Generated/I:Absorbed:BulkAbs:Escaped:Failed:WLS:Detected:FWHM/F:Count_Scintillation/I:Count_Cerenkov/I");
 
-    RunBranch = theRunTree_bis->Branch("Photocathode_Information",&Statsbis.Angle,"Angle/F:PositionX/F:PositionY/F:PositionZ/F:DeathLambda/F:BirthLambda/F:Total_Reflections/I:Wrap_Reflections/I:Total_Length/F");
+    RunBranch = theRunTree_bis->Branch("Photocathode_Information",&Statsbis.Angle,"Angle/F:PositionX/F:PositionY/F:PositionZ/F:DeathLambda/F:BirthLambda/F:Time/F:Total_Reflections/I:Wrap_Reflections/I:Total_Length/F");
 
     //RunBranch = Tree_emitted->Branch("Energy_Emitted",&Statsemitted.E_emitted_Elec,"E_emitted_Elec/F:E_emitted_Alpha/F");
 

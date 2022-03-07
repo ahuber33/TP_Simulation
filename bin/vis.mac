@@ -45,12 +45,21 @@
 
 
 # PART TO SIMULATE 1 MEV ELECTRON !!!!!!!!
-/gps/particle e-
+/gps/particle gamma
 #/gps/particle geantino
 /gps/pos/type Point
-/gps/pos/centre 0.0 0.0 -100. mm
-/gps/energy 1000.0 keV
+/gps/pos/centre 0.0 0.0 -100 mm
+/gps/energy 20.0 keV
 /gps/direction 0.0 0.0 1.0
+
+#/gps/ene/type Arb
+#/gps/hist/type arb
+#/gps/hist/file Spectre_CELIA_Mo.txt
+#/gps/hist/inter Lin
+
+#/gps/particle ion
+#/gps/ion 11 22 0 0  
+#/grdm/nucleusLimits 60 60 27 27
 
 
 

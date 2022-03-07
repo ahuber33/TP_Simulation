@@ -1,5 +1,5 @@
 /// GdL.hh
-//// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr> 
+//// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr>
 //// Copyright: 2022 (C) Projet RATP - ENL [LP2IB] - CELIA
 
 /*This class is used to create Light Guide Geometry.
@@ -25,7 +25,7 @@ public:
   GdL();
   ~GdL();
   void Construct();
-  
+
 public:
 
   G4LogicalVolume *Get_GdL();
@@ -33,9 +33,9 @@ public:
 private:
   TPSimMaterials* scintProp;
   static const G4String path_bin;
-  G4Material *PMMA;
+  G4Material *Material;
 
-  G4LogicalVolume *LogicalGdL;
+  G4LogicalVolume *LogicalVolume;
 
 
 

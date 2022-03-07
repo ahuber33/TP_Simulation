@@ -18,11 +18,11 @@ class G4Run;
 class TPSimRunAction : public G4UserRunAction
 {
 
-  public:
-    TPSimRunAction(char*);
-   ~TPSimRunAction();
+public:
+  TPSimRunAction(char*);
+  ~TPSimRunAction();
 
-  public:
+public:
   void BeginOfRunAction(const G4Run*);
   void EndOfRunAction(const G4Run*);
 
@@ -35,7 +35,7 @@ class TPSimRunAction : public G4UserRunAction
 
 
 
-  private:
+private:
   G4String suffixe;
   G4int NumPMTs;
   G4int NumFibers;

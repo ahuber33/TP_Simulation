@@ -189,12 +189,10 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   //*********************** *********
   //Simply calls functions from Scintillator() class
   LogicalSc = theScint->GetLaBr3();
-  LogicalPMMA = theScint->GetLaBr3PMMA();
-  LogicalBoitierAlu = theScint->GetBoitierAluHPD();
+  LogicalBoitierAlu = theScint->GetBoitierAluPM();
 
   // Set colors of various block materials
   LogicalSc->SetVisAttributes(cyan);
-  LogicalPMMA->SetVisAttributes(green);
   LogicalBoitierAlu->SetVisAttributes(gray_bis);
 
 
@@ -290,8 +288,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   // Geometrical implementation of boundary surface
   OpticalMylar->SetMaterialPropertiesTable(MylarMPT);
 
-  //SSMylar = new G4LogicalSkinSurface("SSMylar", LogicalMylar,OpticalMylar); // Applies Mylar properties to logical mylar surface
-  SSAlu = new G4LogicalSkinSurface("SSAlu", LogicalBoitierAlu,OpticalMylar); // Applies Mylar properties to logical Alu surface
+  SSMylar = new G4LogicalSkinSurface("SSMylar", LogicalBoitierAlu,OpticalMylar); // Applies Mylar properties to logical mylar surface
 
 
   //***********************
@@ -315,7 +312,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   std::ifstream ReadPMT;
   //G4String PMTfile = path+"QE_ham_GA0124.txt";
   //G4String PMTfile = path+"9102B_ET_reverse.txt";
-  G4String PMTfile = path+"Photonis_S20UV_reverse.cfg";
+  G4String PMTfile = path+"R6231_reverse.cfg";
   std::vector<G4double> Photocathode_Energy;
   std::vector<G4double> Photocathode_Value;
   std::vector<G4double> Photocathode_Index;
@@ -374,45 +371,40 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
     LogicalSc,"Scintillator",
     LogicalHolder,false,0);
 
-    PhysicalPMMA = new G4PVPlacement(G4Transform3D
-      (DontRotate,G4ThreeVector(0*mm,0.*mm,21.55*mm)), // Set at origin as basis of everything else
-      LogicalPMMA,"PMMA",
+    PhysicalBoitierAlu = new G4PVPlacement(G4Transform3D
+      (Flip,G4ThreeVector(0*mm,0.*mm,111.8*mm)), // FOR THE PM !!!!
+      //(DontRotate,G4ThreeVector(0*mm,0.*mm, 1.3*mm)), // FOR THE HPD !!!!
+      LogicalBoitierAlu,"Boitier_Alu",
       LogicalHolder,false,0);
 
-      PhysicalBoitierAlu = new G4PVPlacement(G4Transform3D
-        //(Flip,G4ThreeVector(0*mm,0.*mm,111.8*mm)), // FOR THE PM !!!!
-        (DontRotate,G4ThreeVector(0*mm,0.*mm, 1.3*mm)), // FOR THE HPD !!!!
-        LogicalBoitierAlu,"Boitier_Alu",
+      // Glue placement
+      PhysicalGlue = new G4PVPlacement(G4Transform3D
+        (DontRotate,G4ThreeVector(0,0,19.1*mm)),
+        LogicalGlue,"BC-631",
         LogicalHolder,false,0);
-
-        // PMT placement
-        PhysicalGlue = new G4PVPlacement(G4Transform3D
-          (DontRotate,G4ThreeVector(0,0,24.1*mm)),
-          LogicalGlue,"BC-631",
-          LogicalHolder,false,0);
 
           // PMT placement
           PhysicalPM = new G4PVPlacement(G4Transform3D
-            (DontRotate,G4ThreeVector(0,0,24.65*mm)),
+            (DontRotate,G4ThreeVector(0,0,19.65*mm)),
             LogicalPM,"PM",
             LogicalHolder,false,0);
 
             // PMT photocathode placement
             PhysicalPhotocathode = new G4PVPlacement(G4Transform3D
-              (DontRotate,G4ThreeVector(0,0,25.2*mm)),
+              (DontRotate,G4ThreeVector(0,0,19.2*mm)),
               LogicalPhotocathode,"Photocathode",
               LogicalHolder,true,0);
 
 
 
-              #else
+        #else
 
-              #endif
-
-
+        #endif
 
 
 
-              // Returns world with everything in it and all properties set
-              return PhysicalWorld;
-            }
+
+
+        // Returns world with everything in it and all properties set
+        return PhysicalWorld;
+      }

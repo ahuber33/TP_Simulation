@@ -5,8 +5,8 @@ using namespace std;
 
 void Reverse_file()
 {
-  ifstream file("CargilleBulkAbsorb.cfg");
-  const int nlines =400;
+  ifstream file("R6231.cfg");
+  const int nlines =9;
   
   float c,d;
   std::vector<float> vx;
@@ -24,7 +24,7 @@ void Reverse_file()
   file.close();
 
 
-  ofstream ofile("CargilleBulkAbsorb_reverse.cfg");
+  ofstream ofile("R6231_reverse.cfg");
 
   for(int i =0; i<nlines; i++)
     {

@@ -11,6 +11,7 @@
 #include "G4MaterialPropertiesTable.hh"
 #include "G4Material.hh"
 #include "G4NistManager.hh"
+#include "G4OpticalSurface.hh"
 #include "CLHEP/Units/SystemOfUnits.h"
 
 class G4Material;
@@ -53,6 +54,8 @@ private:
   G4Element* elementCl;
   G4Element* elementK;
   G4Element* elementPb;
+  G4Element* elementLa;
+  G4Element* elementBr;
 
   G4Material *SiO2;
   G4Material *B2O3;
@@ -71,27 +74,16 @@ private:
   G4Material *Compensation;
   G4Material *Papier;
   G4Material *Nylon;
-  G4Material *Alu_Coque_SIGAM;
   G4Material *teflon;
   G4Material *mousse;
   G4Material *Neoprene;
   G4Material *Mica;
   G4Material *Plomb_Antimoine;
-
-
-  G4MaterialPropertiesTable *bs_glassMPT;
-  G4MaterialPropertiesTable *vacMPT;
-  G4MaterialPropertiesTable *scintMPT;
-  G4MaterialPropertiesTable *wlsMPT;
-  G4MaterialPropertiesTable *plasticMPT;
-  G4MaterialPropertiesTable *greaseMPT;
-  G4MaterialPropertiesTable *cargilleMPT;
-
+  G4Material *LaBr3;
   G4Material *bs_glass;
   G4Material *polysty;
   G4Material *Ti02;
   G4Material *coating;
-
   G4Material *scintillator;
   G4Material *Vacuum;
   G4Material *VacuumWorld;
@@ -102,6 +94,16 @@ private:
   G4Material *PMMA;
   G4Material *Alu;
   G4Material *RTV;
+
+  G4MaterialPropertiesTable *bs_glassMPT;
+  G4MaterialPropertiesTable *vacMPT;
+  G4MaterialPropertiesTable *scintMPT;
+  G4MaterialPropertiesTable *wlsMPT;
+  G4MaterialPropertiesTable *plasticMPT;
+  G4MaterialPropertiesTable *greaseMPT;
+  G4MaterialPropertiesTable *cargilleMPT;
+  G4MaterialPropertiesTable *LaBr3MPT;
+  G4MaterialPropertiesTable *PMMAMPT;
 
 
   G4double scintAbsorbconst;
