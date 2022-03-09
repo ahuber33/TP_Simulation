@@ -50,6 +50,7 @@ struct RunTallybis {
   float Time;
   //float  Theta;
   //float  Phi;
+  int Rayleigh;
   int Total_Reflections;
   int Wrap_Reflections;
   float TotalLength;

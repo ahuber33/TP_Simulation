@@ -1,13 +1,13 @@
 # TPSim for Thomson Parabola Simulation
 
 
-#commit #1 le 23/02/2022 :
+#commit #1 le 23/02/2022 [TPSim.0.0.0]:
 #-Reprise en main du code GMSim de la version G4-9.6p02 pour le mettre sur la version G4-11.0
 #-Changement de l'intégralité des noms GMSim en TPSim
 #-Premier nettoyage rapide du code sur certaines fonctions
 #-Création Tree electrons + fonctions en vue de vérifier les PhysicsList
 
-#commit #2 le 24/02/2022 (Validation G4EM-electrons):
+#commit #2 le 24/02/2022 (Validation G4EM-electrons) [TPSim.0.1.0]:
 #-Changement de la définition du Scintillateur pour coller aux données de ESTAR
 #-Création matériau Carbon pour tests avec ESTAR
 #-Géométrie basique pour le moment pour tests G4EM
@@ -16,7 +16,7 @@
 #-Nettoyage du dossier bin (Scripts, macros et fichiers txt correspondants à la simulation GMSim)
 #-De nombreux tests avec .gitignore pour faciliter l'utilisation
 
-#commit #3 le 25/02/2022 (Validation G4EM-protons)
+#commit #3 le 25/02/2022 (Validation G4EM-protons) [TPSim.0.1.1]
 #-Changement taille scintillateur pour pouvoir suivre le proton de 500 MeV sur toute sa trajectoire dans le Scintillateur
 #-Changement définition holder de Orb en Box
 #-Ajout d'un StopandKill pour gagner du temps sur les particules secondaires générées
@@ -26,7 +26,7 @@
 #-Le tree electrons est juste utilisé ici pour avoir les informations sur les protons -> Nécessité de faire attention par la suite et de surement créer un autre tree pour les protons
 #-Du aux nombreux gammas crées, la condition de remplissage du tree (Estart=Edep) a été enlevé.
 
-#commit #4 le 28/02/2022 (Mise en place partie Optique)
+#commit #4 le 28/02/2022 (Mise en place partie Optique) [TPSim.0.2.0]
 #-Ajout des fichiers Coupling et PMT (temporairement ou non) afin de pouvoir vérifier la partie optique sur les scintillateurs SuperNEMO
 #- Ajout de l'ensemble des fonctions, géométries, matériaux et variables liés à SuperNEMO (temporaire ou non) nécessaire pour la vérification de la partie optique
 #- Ajout propriétés optique du scintillateur, mylar, teflon, colle, photocathode et PM
@@ -36,7 +36,7 @@
 #-Possibilité de considérer uniquement les photons détectés et/ou transmis
 #-Changement du Cut dans la PhysicsList à 1mm pour faciliter/accélerer l'analyse optique avec électrons
 
-#commit #5 le 07/03/2022 (Ajout partie LaBr3 + nettoyage)
+#commit #5 le 07/03/2022 (Ajout partie LaBr3 + nettoyage) [TPSim.0.3.0]
 #-Ajout des fichiers géométries correspondant à la configuration HPD et PMT (fichiers de config inclus pour le scintillateur LaBr3 et le PM)
 #-Ajout des spectres réels de flash X issues de l'expérience de Emmanuel au CELIA dans Geant4
 #-Ajout de fonctions pour ploter les résultats dans Plot.hh
@@ -46,3 +46,8 @@
 #-Ajout de commentaires sur certaines parties du code
 #-Mise en forme du code plus propre avec déclarations des variables et fonctions en début de fichier pour faciliter la lecture
 #-Ajout de la données "Time" dans le root de sortie permettant de connaitre la répartition temporelle des photons sur la photocathode
+
+#commit #6 le 09/03/2022 [TPSim.0.3.1]
+# - Ajout de la propriété Rayleigh scattering et donc split de l'attenuation length en absorption length et scattering length selon [https://www.researchgate.net/publication/254060762_Optical_Absorption_Length_Scattering_Length_and_Refractive_Index_of_LaBr3Ce3]
+# - Selon cette référence, l'absorption entraine quasi à chaque fois la réémission d'un photon derrière donc à investiguer dans le futur !!!
+# - Changement de position de certaines lignes de code pour plus de clarté

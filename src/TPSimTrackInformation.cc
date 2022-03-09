@@ -1,5 +1,5 @@
 /// TPSimTrackInformation.cc
-//// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr> 
+//// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr>
 //// Copyright: 2022 (C) Projet RATP - ENL [LP2IB] - CELIA
 
 #include "TPSimTrackInformation.hh"
@@ -22,6 +22,7 @@ TPSimTrackInformation::TPSimTrackInformation(const G4Track *aTrack)
     Reflections = 0;
     WLSCount = 0;
     TotalInternalReflections = 0;
+    Rayleigh =0;
   }
 
   else{
@@ -48,14 +49,14 @@ TPSimTrackInformation::TPSimTrackInformation(const G4Track *aTrack)
 
 void TPSimTrackInformation::CountReflections(){
   Reflections++;
-      
+
   if(WLSCount==0)
     ReflectBeforeWLS++;
   else
     if(WLSCount > 0){
       ReflectAfterWLS++;
     }
-  
+
 }
 
 void TPSimTrackInformation::CountTotalInternalReflections(){
@@ -63,5 +64,10 @@ void TPSimTrackInformation::CountTotalInternalReflections(){
     TotalInternalReflections++;
 }
 
-TPSimTrackInformation::~TPSimTrackInformation(){}
+void TPSimTrackInformation::CountRayleighScattering(){
 
+    Rayleigh++;
+}
+
+
+TPSimTrackInformation::~TPSimTrackInformation(){}

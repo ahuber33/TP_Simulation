@@ -135,6 +135,9 @@ TPSimSteppingAction::TPSimSteppingAction()
       Statisticsbis.BirthLambda = info->GetBirthLambda();
       Statisticsbis.TotalLength = aStep->GetTrack()->GetTrackLength()/mm;
       Statisticsbis.Time = aStep->GetPostStepPoint()->GetGlobalTime()/ns;
+      Statisticsbis.Rayleigh = ((TPSimTrackInformation*) (aStep->GetTrack()->GetUserInformation()))->GetRayleigh();
+      Statisticsbis.Total_Reflections = ((TPSimTrackInformation*) (aStep->GetTrack()->GetUserInformation()))->GetTotalInternalReflections();
+      Statisticsbis.Wrap_Reflections = ((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->GetReflections();
 
       //G4cout << "Time =" << aStep->GetPostStepPoint()->GetGlobalTime()/ns << G4endl;
 
@@ -143,6 +146,14 @@ TPSimSteppingAction::TPSimSteppingAction()
         evtac->CountBulkAbs();
         //G4cout << "Photon BulkAbsorbed" << G4endl;
         //runac->UpdateStatisticsbis(Statisticsbis);
+      }
+
+
+      if(endproc == "OpRayleigh")
+      {
+        ((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->CountRayleighScattering();
+        //G4cout << "Rayleigh scattering" << G4endl;
+        //G4cout << "Number of scattering = " << ((ENLOpticalSimTrackInformation*) (aStep->GetTrack()->GetUserInformation()))->GetRayleigh() << G4endl;
       }
 
       // If WLS -> Use this !!!
@@ -192,10 +203,6 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
       if (theTrack->GetNextVolume()->GetName()=="Photocathode")
       {
         evtac->CountFailed();
-        Statisticsbis.Total_Reflections = ((TPSimTrackInformation*) (aStep->GetTrack()->GetUserInformation()))->GetTotalInternalReflections();
-        //G4cout << "N reflexions Total = " << ((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->GetTotalInternalReflections() << G4endl;
-        Statisticsbis.Wrap_Reflections = ((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->GetReflections();
-        //G4cout << "N Wrap reflection = " << ((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->GetReflections() << G4endl;
         //runac->UpdateStatisticsbis(Statisticsbis);
 
         //  Note that currently it is not set up to root output...see void CountDetected();
@@ -381,7 +388,7 @@ if (Parent_ID ==0)
     evtac->SetIncidentE(aStep->GetPreStepPoint()->GetKineticEnergy()/keV);
   }
 }
-  if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator") {evtac->AddEdep(aStep->GetTotalEnergyDeposit()/keV);}
+if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator" && partname != "opticalphoton") {evtac->AddEdep(aStep->GetTotalEnergyDeposit()/keV);}
 
 //
 // if(Parent_ID>0)// && aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "PhysicalWorld")
