@@ -110,20 +110,23 @@ TPSimSteppingAction::TPSimSteppingAction()
     static G4OpBoundaryProcess* boundary=NULL;
 
     //find the boundary process only once
-    if(!boundary){
+    if(!boundary)
+    {
       G4ProcessManager* pm = aStep->GetTrack()->GetDefinition()->GetProcessManager();
       G4int nprocesses = pm->GetProcessListLength();
       G4ProcessVector* pv = pm->GetProcessList();
       G4int i;
       for( i = 0; i < nprocesses; i++){
-        if((*pv)[i]->GetProcessName()=="OpBoundary"){
+        if((*pv)[i]->GetProcessName()=="OpBoundary")
+        {
           boundary = (G4OpBoundaryProcess*)(*pv)[i];
           break;
         }
       }
     }
 
-    if(partname =="opticalphoton"){ //ALL the code in relation with Optical needs to be here !!!!
+    if(partname =="opticalphoton")
+    { //ALL the code in relation with Optical needs to be here !!!!
       boundaryStatus = boundary->GetStatus();
       //G4cout << "BirthLambda = " << info->GetBirthLambda() << G4endl;
 
@@ -286,21 +289,37 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
 //#######################################################################
 
 
-if(partname == "proton"){
+if(partname == "proton")
+{
   if ((aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator")
-  && (aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator")){
+  &&(aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator"))
+  {
     //G4cout << "Step Length = " << aStep->GetTrack()->GetStepLength()/mm << " mm" << G4endl;
     evtac->AddTrackLength(aStep->GetTrack()->GetStepLength()/mm);
     //G4cout << "Track Length dans Scintillateur = " << evtac->GetTotalTrackLength() << " mm"<< G4endl;
     evtac->AddEdepElectron(aStep->GetTotalEnergyDeposit()/keV);
     //G4cout << "E deposée = " << aStep->GetTotalEnergyDeposit()/keV << " keV" << G4endl;
     //G4cout << "E deposée totale = " << evtac->GetEdepElectron() << " keV" << G4endl;
-    if(aStep->GetPostStepPoint()->GetKineticEnergy()/keV==0 && evtac->GetEdepElectron() == evtac->GetEstartElectron()){
-      evtac->SetInteractionDepthElectron(50+z);
-      //G4cout << "Interaction Depth = " << evtac->GetInteractionDepthElectron() << G4endl;
-    }
+    // if(aStep->GetPostStepPoint()->GetKineticEnergy()/keV==0 && evtac->GetEdepElectron() == evtac->GetEstartElectron()){
+    //   evtac->SetInteractionDepthElectron(50+z);
+    //G4cout << "Interaction Depth = " << evtac->GetInteractionDepthElectron() << G4endl;
   }
+
+  if(aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator" && evtac->GetElectronPositionZ()==0)
+  {
+    evtac->SetElectronPositionX(x);
+    evtac->SetElectronPositionY(y);
+    evtac->SetElectronPositionZ(z);
+    //G4cout << "Position X = " << evtac->GetElectronPositionX() << G4endl;
+    // G4cout << "Position Y = " << evtac->GetElectronPositionY() << G4endl;
+    // G4cout << "Position Z = " << evtac->GetElectronPositionZ() << G4endl;
+  }
+
 }
+
+
+G4cout << "Charge = " << aStep->GetPostStepPoint()->GetCharge() << G4endl;
+G4cout<< "Charge 2 = " << aStep->GetTrack()->GetDefinition()->GetPDGCharge()<<G4endl; 
 
 //
 // if(partname == "e-")
@@ -397,8 +416,7 @@ if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator" &&
 //     theTrack->SetTrackStatus(fStopAndKill);
 //   }
 
-
-
+if(aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "PhysicalWorld") {theTrack->SetTrackStatus(fStopAndKill);}
 
 
 

@@ -65,6 +65,9 @@ void TPSimEventAction::BeginOfEventAction(const G4Event* evt){
   Statselectron.E_dep=0;
   Statselectron.TotalLength =0;
   Statselectron.InteractionDepth =0;
+  Statselectron.PositionX =0;
+  Statselectron.PositionY =0;
+  Statselectron.PositionZ =0;
   //Statselectron.E_dep_Gamma.clear();
 
 }

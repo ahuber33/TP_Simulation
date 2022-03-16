@@ -549,9 +549,6 @@ void TPSimMaterials::Construct()
 
 	//Fake Vacuum *************************************************************
 
-	// Be careful of this vacuum definition.  This is only used to define
-	// a refractive index so that the detector boundaries are defined.
-
 	VacuumWorld = new G4Material ("VacuumWorld",
 	1.0,
 	1.01*g/mole,

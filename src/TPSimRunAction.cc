@@ -54,11 +54,11 @@ void TPSimRunAction::BeginOfRunAction(const G4Run* aRun){
 
     //RunBranch = Tree_position->Branch("Position_Interaction",&Statsposition.Position_x,"Position_x/F:Position_y/F:Position_z/F");
 
-
-    RunBranch = Tree_electron->Branch("E_start", &Statselectron.E_start, "E_start/F" );
-    RunBranch = Tree_electron->Branch("E_dep", &Statselectron.E_dep, "E_dep/F" );
-    RunBranch = Tree_electron->Branch("TotalLength", &Statselectron.TotalLength, "TotalLength/F" );
-    RunBranch = Tree_electron->Branch("InteractionDepth", &Statselectron.InteractionDepth, "InteractionDepth/F" );
+    RunBranch = Tree_electron->Branch("Electron_Information", &Statselectron.E_start, "E_start/F:E_dep/F:TotalLength/F:InteractionDepth/F:PositionX/F:PositionY/F:PositionZ/F");
+    // RunBranch = Tree_electron->Branch("E_start", &Statselectron.E_start, "E_start/F" );
+    // RunBranch = Tree_electron->Branch("E_dep", &Statselectron.E_dep, "E_dep/F" );
+    // RunBranch = Tree_electron->Branch("TotalLength", &Statselectron.TotalLength, "TotalLength/F" );
+    // RunBranch = Tree_electron->Branch("InteractionDepth", &Statselectron.InteractionDepth, "InteractionDepth/F" );
     //RunBranch = Tree_electron->Branch("E_dep_Gamma", "vector<float>", &Statselectron.E_dep_Gamma );
 
     //set the random seed to the CPU clock
@@ -93,8 +93,8 @@ void TPSimRunAction::EndOfRunAction(const G4Run*aRun){
     //update the temp root file
     G4String fileName = suffixe+".root";
     f = new TFile(fileName,"update");
-    theRunTree->Write();
-    theRunTree_bis->Write();
+    //theRunTree->Write();
+    //theRunTree_bis->Write();
     //Tree_emitted->Write();
     //Tree_position->Write();
     Tree_electron->Write();
@@ -130,13 +130,13 @@ void TPSimRunAction::EndOfRunAction(const G4Run*aRun){
 
 void TPSimRunAction::UpdateStatistics(RunTally aRunTally){
     Stats = aRunTally;
-    theRunTree->Fill();
+    //theRunTree->Fill();
 }
 
 
 void TPSimRunAction::UpdateStatisticsbis(RunTallybis aRunTallybis){
     Statsbis = aRunTallybis;
-    theRunTree_bis->Fill();
+    //theRunTree_bis->Fill();
 }
 
 void TPSimRunAction::UpdateStatisticsEmitted(RunTallyEmitted aRunTallyEmitted){

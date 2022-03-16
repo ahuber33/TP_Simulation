@@ -21,7 +21,7 @@
 # To superimpose all of the events from a given run:
 /vis/scene/endOfEventAction accumulate
 
-/tracking/verbose 1
+/tracking/verbose 2
 /run/verbose 1
 
 
@@ -33,6 +33,9 @@
 
 /geometry/test/run
 #/geometry/test/line_test
+/vis/scene/add/trajectories smooth
+#/vis/scene/add/magneticField
+#/vis/scene/add/electricField
 
 
 
@@ -45,11 +48,11 @@
 
 
 # PART TO SIMULATE 1 MEV ELECTRON !!!!!!!!
-/gps/particle gamma
+#/gps/particle proton
 #/gps/particle geantino
 /gps/pos/type Point
-/gps/pos/centre 0.0 0.0 -100 mm
-/gps/energy 20.0 keV
+/gps/pos/centre 0.0 0.0 -300. mm
+/gps/energy 1000.0 keV
 /gps/direction 0.0 0.0 1.0
 
 #/gps/ene/type Arb
@@ -57,8 +60,8 @@
 #/gps/hist/file Spectre_CELIA_Mo.txt
 #/gps/hist/inter Lin
 
-#/gps/particle ion
-#/gps/ion 11 22 0 0  
+/gps/particle ion
+/gps/ion 6 12 0
 #/grdm/nucleusLimits 60 60 27 27
 
 

@@ -74,6 +74,11 @@ private:
   G4LogicalVolume *LogicalLaBr3;
   G4LogicalVolume *LogicalPMMA;
   G4LogicalVolume *LogicalBoitierAlu;
+  G4LogicalVolume *LogicalEFPlates;
+  G4LogicalVolume *LogicalVolumeEFPlates;
+  G4LogicalVolume *LogicalMFPlates;
+  G4LogicalVolume *LogicalVolumeMFPlates;
+  G4LogicalVolume *LogicalPinhole;
 
 
   // Physical volumes
@@ -88,6 +93,11 @@ private:
   G4VPhysicalVolume *PhysicalPhotocathode;
   G4VPhysicalVolume *PhysicalPMMA;
   G4VPhysicalVolume *PhysicalBoitierAlu;
+  G4VPhysicalVolume *PhysicalEFPlates;
+  G4VPhysicalVolume *PhysicalVolumeEFPlates;
+  G4VPhysicalVolume *PhysicalMFPlates;
+  G4VPhysicalVolume *PhysicalVolumeMFPlates;
+  G4VPhysicalVolume *PhysicalPinhole;
 
 
   G4LogicalVolume *experimentalHall_log,
@@ -139,6 +149,26 @@ private:
   // G4LogicalSkinSurface *SSScintillateur;
 
   // Dimension values
+  G4double EF_Value;
+  G4double EF_Dist_between_plates;
+  G4double EF_Thickness_plates;
+  G4double EF_Length_plates;
+  G4double EF_Width_plates;
+  G4double MF_Value;
+  G4double MF_Dist_between_plates;
+  G4double MF_Thickness_plates;
+  G4double MF_Length_plates;
+  G4double MF_Width_plates;
+  G4double Dist_between_plates;
+  G4double Dist_EFPlates_Detector;
+  G4double Dist_pinhole_MFPlates;
+  G4double translation_pinhole;
+  G4double ScintillatorThickness;
+
+  // Dimensions PLACEMENTS
+  G4double Z_Position_MFPlates;
+  G4double Z_Position_EFPlates;
+  G4double Z_Position_Detector;
   // scint SuperNEMO
   G4double SNMW_ScintStepWidth;
   G4double SNMW_ScintStepHeight;

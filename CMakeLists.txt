@@ -64,8 +64,7 @@ set(PROJECT_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimTrackingAction.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimVisManager.cc
 	#${CMAKE_CURRENT_SOURCE_DIR}/src/GMSimGeometry_Dolphy_Beta.cc
-	#${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry_PMT.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry_HPD.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimMaterials.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimPhysics.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimPrimaryGeneratorAction.cc

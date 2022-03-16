@@ -34,5 +34,6 @@ private:
   G4VPhysicsConstructor*  emPhysicsList;
   G4VPhysicsConstructor*  particleList;
   G4VPhysicsConstructor*  raddecayList;
+  std::vector<G4VPhysicsConstructor*>  hadronPhys;
 };
 #endif

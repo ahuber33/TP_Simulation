@@ -87,6 +87,9 @@ struct RunTallyElectron {
   float E_dep;
   float TotalLength;
   float InteractionDepth;
+  float PositionX;
+  float PositionY;
+  float PositionZ;
   //std::vector<float> E_dep_Gamma;
 
   inline int operator ==(const RunTallyElectron& right) const
@@ -153,6 +156,12 @@ public:
   //Use only for a test protocole (if not change the definition in Stepping)
   void SetInteractionDepthElectron(G4double d){Statselectron.InteractionDepth+=d;}
   float GetInteractionDepthElectron(){return Statselectron.InteractionDepth;}
+  void SetElectronPositionX(G4double d){Statselectron.PositionX+=d;}
+  float GetElectronPositionX(){return Statselectron.PositionX;}
+  void SetElectronPositionY(G4double d){Statselectron.PositionY+=d;}
+  float GetElectronPositionY(){return Statselectron.PositionY;}
+  void SetElectronPositionZ(G4double d){Statselectron.PositionZ+=d;}
+  float GetElectronPositionZ(){return Statselectron.PositionZ;}
 
 
   //Keeps track of the incident energy of the primary particle

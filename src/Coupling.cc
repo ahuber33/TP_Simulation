@@ -43,8 +43,7 @@ G4LogicalVolume *Coupling::GetSNMW_8InchesSphericalCoupling(){
   // Read in and define dimensions
   SNMW_CouplingSphereRadius = theScint->GetSNMW_CouplingRadius();
   SNMW_CouplingSphereDepth = theScint->GetSNMW_CouplingDepth();
-  PMTGlassRadius = theScint->GetPMTGlassRadius();
-  GlueThickness = theScint->GetGlueThickness();
+    GlueThickness = theScint->GetGlueThickness();
   //  G4cout << " Coupling angle = " << acos((CouplingSphereRadius-CouplingDepth)/CouplingSphereRadius) << G4endl;
 
   // Define translations used for adding or subtracting volumes

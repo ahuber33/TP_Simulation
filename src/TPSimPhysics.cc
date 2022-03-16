@@ -24,6 +24,7 @@
 #include "G4GenericIon.hh"
 #include "G4Decay.hh"
 #include "G4IonConstructor.hh"
+#include "G4EmStandardPhysics.hh"
 #include "G4EmStandardPhysics_option3.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4Gamma.hh"
@@ -40,13 +41,15 @@
 #include "G4LossTableManager.hh"
 #include "G4EmSaturation.hh"
 
+
+
 using namespace CLHEP;
 
 // Taken from N06 and LXe examples in GEANT4
 
 TPSimPhysics::TPSimPhysics():  G4VModularPhysicsList()
 {
-// Here used the default cut value you have typed in
+  // Here used the default cut value you have typed in
 
   //defaultCutValue = 0.001*mm; //0.001
   defaultCutValue = 1*mm; //0.001
@@ -54,7 +57,7 @@ TPSimPhysics::TPSimPhysics():  G4VModularPhysicsList()
 
   SetVerboseLevel(1);
 
- //default physics
+  //default physics
   particleList = new G4DecayPhysics();
 
   //default physics
@@ -62,6 +65,9 @@ TPSimPhysics::TPSimPhysics():  G4VModularPhysicsList()
 
   // EM physics
   emPhysicsList = new G4EmStandardPhysics_option3();
+  //emPhysicsList = new G4EmStandardPhysics();
+
+
 }
 
 TPSimPhysics::~TPSimPhysics(){
@@ -71,52 +77,18 @@ TPSimPhysics::~TPSimPhysics(){
 
 void TPSimPhysics::ConstructParticle()
 {
-// Here are constructed all particles you have chosen
+  // Here are constructed all particles you have chosen
   particleList->ConstructParticle();
-  //ConstructBosons();
-  //ConstructLeptons();
-  //ConstructMesons();
-  //ConstructBaryons();
-  //ConstructAllShortLiveds();
-  //G4GenericIon::GenericIonDefinition();
+
+  //  ions
   //G4IonConstructor iConstructor;
   //iConstructor.ConstructParticle();
 }
 
-// In this method, static member functions should
-// be called for ALL particles to be used.
-/*
-void TPSimPhysics::ConstructBosons()
-{
-  G4Geantino::GeantinoDefinition();
-  G4Gamma::GammaDefinition();
-  G4OpticalPhoton::OpticalPhotonDefinition();
-}
 
-void TPSimPhysics::ConstructLeptons()
-{
-  G4Electron::ElectronDefinition();
-  G4Positron::PositronDefinition();
-  G4MuonMinus::MuonMinusDefinition();
-  G4MuonPlus::MuonPlusDefinition();
-}
-
-void TPSimPhysics::ConstructMesons(){}
-
-void TPSimPhysics::ConstructBaryons()
-{
-
-  G4Proton::ProtonDefinition();
-  G4AntiProton::AntiProtonDefinition();
-  G4Neutron::NeutronDefinition();
-  G4AntiNeutron::AntiNeutronDefinition();
-}
-
-void TPSimPhysics::ConstructAllShortLiveds(){}
-*/
 void TPSimPhysics::ConstructProcess()
 {
-// Transportation, electromagnetic and general processes
+  // Transportation, electromagnetic and general processes
 
   AddTransportation();
   //ConstructEM();
@@ -126,9 +98,7 @@ void TPSimPhysics::ConstructProcess()
   particleList->ConstructProcess();
   raddecayList->ConstructProcess();
   ConstructOp();
-
 }
-
 
 void TPSimPhysics::ConstructOp()
 {
@@ -174,32 +144,32 @@ void TPSimPhysics::ConstructOp()
   pManager->AddDiscreteProcess(theBoundaryProcess);
   pManager->AddDiscreteProcess(theWLSProcess);
 
-	auto theParticleIterator = GetParticleIterator();
+  auto theParticleIterator = GetParticleIterator();
   theParticleIterator->reset();
   while( (*theParticleIterator)() ){
     G4ParticleDefinition* particle = theParticleIterator->value();
     G4ProcessManager* pmanager = particle->GetProcessManager();
     G4String particleName = particle->GetParticleName();
 
-    if (theCerenkovProcess->IsApplicable(*particle))
-      {
-    	pmanager->AddProcess(theCerenkovProcess);
-    	pmanager->SetProcessOrdering(theCerenkovProcess, idxPostStep);
-      }
+    // if (theCerenkovProcess->IsApplicable(*particle))
+    //   {
+    // 	pmanager->AddProcess(theCerenkovProcess);
+    // 	pmanager->SetProcessOrdering(theCerenkovProcess, idxPostStep);
+    //   }
 
     if(particle->GetParticleName() == "e-")
-      {
-    	pmanager->AddProcess(theQuenchingScintillationProcess);
-    	pmanager->SetProcessOrderingToLast(theQuenchingScintillationProcess, idxAtRest);
-    	pmanager->SetProcessOrderingToLast(theQuenchingScintillationProcess, idxPostStep);
-      }
+    {
+      pmanager->AddProcess(theQuenchingScintillationProcess);
+      pmanager->SetProcessOrderingToLast(theQuenchingScintillationProcess, idxAtRest);
+      pmanager->SetProcessOrderingToLast(theQuenchingScintillationProcess, idxPostStep);
+    }
 
     else if (theScintillationProcess->IsApplicable(*particle))
-      {
-    	pmanager->AddProcess(theScintillationProcess);
-    	pmanager->SetProcessOrderingToLast(theScintillationProcess, idxAtRest);
-    	pmanager->SetProcessOrderingToLast(theScintillationProcess, idxPostStep);
-      }
+    {
+      pmanager->AddProcess(theScintillationProcess);
+      pmanager->SetProcessOrderingToLast(theScintillationProcess, idxAtRest);
+      pmanager->SetProcessOrderingToLast(theScintillationProcess, idxPostStep);
+    }
 
 
   }
@@ -208,7 +178,7 @@ void TPSimPhysics::ConstructOp()
 
 void TPSimPhysics::SetCuts()
 {
-// defaultCutValue you have typed in is used
+  // defaultCutValue you have typed in is used
 
   if (verboseLevel >1){
     G4cout << "opticalPhysics::SetCuts:";

@@ -29,6 +29,11 @@ public:
   // Functions to call this geometry in x_blockGeometry.cc
 
   G4LogicalVolume *GetScTest();
+  G4LogicalVolume *GetEFPlates();
+  G4LogicalVolume *GetVolumeEFPlates();
+  G4LogicalVolume *GetMFPlates();
+  G4LogicalVolume *GetVolumeMFPlates();
+  G4LogicalVolume *GetPinhole();
   G4LogicalVolume *GetLaBr3();
   G4LogicalVolume *GetLaBr3PMMA();
   G4LogicalVolume *GetBoitierAluHPD();
@@ -59,13 +64,26 @@ public:
   G4double GetSNMW_CouplingRadius(){return SNMW_CouplingSphereRadius;}
   G4double GetSNMW_CouplingDepth(){return SNMW_CouplingSphereDepth;}
   G4double GetSNMW_FullScintHeight(){return SNMW_ScintStepHeight+SNMW_ScintBodyHeight;}
-  // PMT
-  G4double GetPMTGlassRadius(){return PMTGlassRadius;}
-  G4double GetPMTGlassThickness(){return PMTGlassThickness;}
-  G4double GetPMTRearGlassRadius(){return PMTRearGlassRadius;}
-  G4double GetPMTPhotocathodeThickness(){return PMTPhotocathodeThickness;}
-  G4double GetPMTGlassTubeRadius(){return PMTGlassTubeRadius;}
-  G4double GetPMTGlassTubeHeight(){return PMTGlassTubeHeight;}
+  // ElectricField Plates
+  G4double GetEFValue(){return EF_Value;}
+  G4double GetEFDistBetweenPlates(){return EF_Dist_between_plates;}
+  G4double GetEFPlatesThickness(){return EF_Thickness_plates;}
+  G4double GetEFPlatesLength(){return EF_Length_plates;}
+  G4double GetEFPlatesWidth(){return EF_Width_plates;}
+  // MagneticField Plates
+  G4double GetMFValue(){return MF_Value;}
+  G4double GetMFDistBetweenPlates(){return MF_Dist_between_plates;}
+  G4double GetMFPlatesThickness(){return MF_Thickness_plates;}
+  G4double GetMFPlatesLength(){return MF_Length_plates;}
+  G4double GetMFPlatesWidth(){return MF_Width_plates;}
+  // Position of Plates
+  G4double GetDistBetweenPlates(){return Dist_between_plates;}
+  G4double GetEFPlatesDetector(){return Dist_EFPlates_Detector;}
+  G4double GetPinholeMFPlates(){return Dist_pinhole_MFPlates;}
+  G4double GetTranslationPinhole(){return translation_pinhole;}
+  // Position of Detector
+  G4double GetScintillatorThickness(){return ScintillatorThickness;}
+
 
 private:
 
@@ -106,6 +124,31 @@ private:
   G4double PMTPhotocathodeThickness;
   G4double PMTGlassTubeRadius;
   G4double PMTGlassTubeHeight;
+
+  //ElectricField Plates
+  G4double EF_Value;
+  G4double EF_Dist_between_plates;
+  G4double EF_Thickness_plates;
+  G4double EF_Length_plates;
+  G4double EF_Width_plates;
+
+  //MagneticField Plates
+  G4double MF_Value;
+  G4double MF_Dist_between_plates;
+  G4double MF_Thickness_plates;
+  G4double MF_Length_plates;
+  G4double MF_Width_plates;
+
+  //Pinhole
+  G4double Pinhole_radius_ext;
+  G4double Pinhole_radius_int;
+  G4double Pinhole_thickness;
+
+  //Position of Plates
+  G4double Dist_between_plates;
+  G4double Dist_EFPlates_Detector;
+  G4double Dist_pinhole_MFPlates;
+  G4double translation_pinhole;
 
   // Translations for unions/subtractions
   G4double Step_BodyUnion;

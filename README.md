@@ -51,3 +51,11 @@
 # - Ajout de la propriété Rayleigh scattering et donc split de l'attenuation length en absorption length et scattering length selon [https://www.researchgate.net/publication/254060762_Optical_Absorption_Length_Scattering_Length_and_Refractive_Index_of_LaBr3Ce3]
 # - Selon cette référence, l'absorption entraine quasi à chaque fois la réémission d'un photon derrière donc à investiguer dans le futur !!!
 # - Changement de position de certaines lignes de code pour plus de clarté
+
+#commit #7 le 16/03/2022 [TPSim0.4.0]
+# - Ajout des longueurs de référence de la TP dans le fichier de config. L'ensemble des distances pour le placement des éléments dépend de ces paramètres. Ensemble des liens effectués
+# - Ajout dans le vis.mac des lignes permettant d'afficher la direction des champs magnétiques et électriques
+# - Création de l'ensemble des volumes principaux de la TP. La zone de champ magnétique est électrique est crée et englobe la partie créant le champ.
+# - Ajout des fonctions permettant d'obtenir et de stocker les positions d'interaction des particules dans le détecteur.
+# - Ajout des élements permettant de générer un champ magnétique et électrique uniforme dans le TPSimGeometry.cc. ATTENTION : La vérification des déviations pour le champ magnétique laissé apparaitre des écarts de plus en plus important entre la simu et les équations pour les trajectoires très déviées. A suivre et investiguer !!!!!!!!!! Ok pour le champ électrique !!!!
+# - PROBLEME AVEC LA GENERATION DES IONS AVEC Z>2. NE PREND PAS EN COMPTE LA CHARGE IONIQUE DANS LE GPS/ION. INVESTIGATION EN COURS !!!!
