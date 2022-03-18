@@ -56,6 +56,7 @@ private:
   G4Element* elementPb;
   G4Element* elementLa;
   G4Element* elementBr;
+  G4Element* elementS;
 
   G4Material *SiO2;
   G4Material *B2O3;
@@ -94,6 +95,7 @@ private:
   G4Material *PMMA;
   G4Material *Alu;
   G4Material *RTV;
+  G4Material *ZnS;
 
   G4MaterialPropertiesTable *bs_glassMPT;
   G4MaterialPropertiesTable *vacMPT;
@@ -104,6 +106,7 @@ private:
   G4MaterialPropertiesTable *cargilleMPT;
   G4MaterialPropertiesTable *LaBr3MPT;
   G4MaterialPropertiesTable *PMMAMPT;
+  G4MaterialPropertiesTable *ZnSMPT;
 
 
   G4double scintAbsorbconst;
@@ -113,6 +116,7 @@ private:
   G4double pop_scalingfactor_low;
   G4double pop_scalingfactor_high;
   G4double lightyield;
+  G4double lightyieldZnS;
   G4double paint_ref_coeff;
   G4double mylar_ref_coeff;
   G4double pWavelength;

@@ -110,7 +110,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   invis = new G4VisAttributes( G4Colour(255/255. ,255/255. ,255/255. ));
   invis->SetVisibility(false);
 
-  white = new G4VisAttributes(G4Colour(1,1,1,0.1)); // Sets the color (can be looked up online)
+  white = new G4VisAttributes(G4Colour(1,1,1,1.)); // Sets the color (can be looked up online)
   //white->SetForceWireframe(true); // Sets to wire frame mode for coloring the volume
   white->SetForceSolid(true); // Sets to solid mode for coloring the volume
   white->SetVisibility(true); // Makes color visible in visualization
@@ -209,6 +209,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   Dist_pinhole_MFPlates = theScint->GetPinholeMFPlates();
   translation_pinhole = theScint->GetTranslationPinhole();
   ScintillatorThickness = theScint->GetScintillatorThickness();
+  ZnSThickness = theScint->GetZnSThickness();
 
 
   //#########################
@@ -248,8 +249,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalMFPlates = theScint->GetMFPlates();
   LogicalVolumeMFPlates = theScint->GetVolumeMFPlates();
   LogicalSc = theScint->GetScTest();
-  LogicalPMMA = theScint->GetLaBr3PMMA();
-  LogicalBoitierAlu = theScint->GetBoitierAluHPD();
+  LogicalZnS = theScint->GetZnS();
 
   // Set colors of various block materials
   LogicalPinhole->SetVisAttributes(black);
@@ -258,8 +258,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalMFPlates->SetVisAttributes(blue);
   LogicalVolumeMFPlates->SetVisAttributes(green);
   LogicalSc->SetVisAttributes(cyan);
-  LogicalPMMA->SetVisAttributes(green);
-  LogicalBoitierAlu->SetVisAttributes(gray_bis);
+  LogicalZnS->SetVisAttributes(white);
+
 
 
   //***********************
@@ -507,7 +507,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
         Z_Position_MFPlates = Dist_pinhole_MFPlates + MF_Length_plates/2;
         Z_Position_EFPlates = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates/2;
-        Z_Position_Detector = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ScintillatorThickness/2;
+        Z_Position_ZnS = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness/2;
+        Z_Position_Sc = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness/2;
 
         //############################
         // DEFINE GEOMETRY PLACEMENTS#
@@ -541,10 +542,15 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
                   LogicalVolumeEFPlates,false,0);
 
 
-                  PhysicalSc = new G4PVPlacement(G4Transform3D
-                    (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_Detector)), // Set at origin as basis of everything else
-                    LogicalSc,"Scintillator",
+                  PhysicalZnS = new G4PVPlacement(G4Transform3D
+                    (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_ZnS)), // Set at origin as basis of everything else
+                    LogicalZnS,"ZnS",
                     LogicalHolder,false,0);
+
+                    PhysicalSc = new G4PVPlacement(G4Transform3D
+                      (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_Sc)), // Set at origin as basis of everything else
+                      LogicalSc,"Scintillator",
+                      LogicalHolder,false,0);
 
                     //   PhysicalPMMA = new G4PVPlacement(G4Transform3D
                     //     (DontRotate,G4ThreeVector(0*mm,0.*mm,21.55*mm)), // Set at origin as basis of everything else

@@ -65,6 +65,10 @@ Scintillator::Scintillator(G4String buildfile){
         config >> value >> unit;
         ScintillatorThickness = value*G4UnitDefinition::GetValueOf(unit);
       }
+      else if(variable == "ZnSThickness"){
+        config >> value >> unit;
+        ZnSThickness = value*G4UnitDefinition::GetValueOf(unit);
+      }
       if(variable == "TeflonThickness"){
         config >> value >> unit;
         TeflonThickness = value*G4UnitDefinition::GetValueOf(unit);
@@ -172,6 +176,7 @@ Scintillator::Scintillator(G4String buildfile){
   G4cout << "\n The Variables that we read in are: "
   << "\n ScintillatorLength = " << ScintillatorLength
   << "\n ScintillatorThickness = " << ScintillatorThickness
+  << "\n ZnSThickness = " << ZnSThickness
   << "\n SNMW_ScintStepWidth = " << SNMW_ScintStepWidth
   << "\n SNMW_ScintStepHeight = " << SNMW_ScintStepHeight
   << "\n SNMW_cintBodyWidth = " << SNMW_ScintBodyWidth
@@ -338,6 +343,17 @@ G4LogicalVolume *Scintillator::GetLaBr3(){
   return LogicalVolume;
 }
 
+
+G4LogicalVolume *Scintillator::GetZnS(){
+
+  Material = scintProp->GetMaterial("ZnS");
+
+  G4Box *Box = new G4Box   ("Box",             //its name
+  ScintillatorLength/2, ScintillatorLength/2, ZnSThickness/2);    //its size
+  LogicalVolume = new G4LogicalVolume(Box, Material, "ZnS",0,0,0);
+
+  return LogicalVolume;
+}
 
 
 G4LogicalVolume *Scintillator::GetLaBr3PMMA(){

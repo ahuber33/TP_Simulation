@@ -66,6 +66,7 @@ private:
   G4LogicalVolume *LogicalHolder;
   G4LogicalVolume *LogicalGM_LND;
   G4LogicalVolume *LogicalSc;
+  G4LogicalVolume *LogicalZnS;
   G4LogicalVolume *LogicalTeflon;
   G4LogicalVolume *LogicalMylar;
   G4LogicalVolume *LogicalGlue;
@@ -86,6 +87,7 @@ private:
   G4VPhysicalVolume *PhysicalHolder;
   G4VPhysicalVolume *PhysicalGM_LND;
   G4VPhysicalVolume *PhysicalSc;
+  G4VPhysicalVolume *PhysicalZnS;
   G4VPhysicalVolume *PhysicalTeflon;
   G4VPhysicalVolume *PhysicalMylar;
   G4VPhysicalVolume *PhysicalGlue;
@@ -164,11 +166,13 @@ private:
   G4double Dist_pinhole_MFPlates;
   G4double translation_pinhole;
   G4double ScintillatorThickness;
+  G4double ZnSThickness;
 
   // Dimensions PLACEMENTS
   G4double Z_Position_MFPlates;
   G4double Z_Position_EFPlates;
-  G4double Z_Position_Detector;
+  G4double Z_Position_ZnS;
+  G4double Z_Position_Sc;
   // scint SuperNEMO
   G4double SNMW_ScintStepWidth;
   G4double SNMW_ScintStepHeight;

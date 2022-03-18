@@ -81,6 +81,10 @@ PMMA(0)
 			{
 				config_prop>>lightyield;
 			}
+			if(variable == "lightyieldZnS")
+			{
+				config_prop>>lightyieldZnS;
+			}
 			if(variable == "paint_ref_coeff")
 			{
 				config_prop>>paint_ref_coeff;
@@ -153,6 +157,7 @@ void TPSimMaterials::Construct()
 	elementPb = new G4Element ("Plomb", "Plomb", 82., 207.2*g/mole);
 	elementLa = new G4Element ("Lanthane", "Lanthane", 57., 138.90547*g/mole);
 	elementBr = new G4Element ("Brome", "Brome", 35., 79.904*g/mole);
+	elementS = new G4Element ("Soufre", "Soufre", 16., 32.065*g/mole);
 	// G4Isotope* N14 = new G4Isotope("N14", 7, 14);
 	// elementN = new G4Element("Azote", "Azote", 1);
 	// elementN->AddIsotope(N14, 100.*perCent);
@@ -902,6 +907,113 @@ LaBr3Readscatt.close();
 
 	//#######################################################################################################################################
 	//#######################################################################################################################################
+
+
+	// Start of definition ZnS scintillation
+	ZnS = new G4Material("ZnS", 4.1*g/cm3, 2);
+	ZnS->AddElement(elementZn, 1);
+	ZnS->AddElement(elementS, 1);
+
+	ZnSMPT = new G4MaterialPropertiesTable();
+
+	// Read primary emission spectrum
+
+	std::ifstream ReadZnS;
+
+	G4String ZnS_file = path+"ZnS_spectrum.dat";
+	std::vector<G4double> ZnS_Emission_Energy;
+	std::vector<G4double> ZnS_Emission_Ratio;
+
+	ReadZnS.open(ZnS_file);
+	if(ReadZnS.is_open()){
+		while(!ReadZnS.eof()){
+			G4String filler;
+			ReadZnS >> pWavelength >> filler >> ratio;
+			//G4cout << "Wavelength = " << 1240./pWavelength << " & emission = "<< ratio << G4endl;
+			ZnS_Emission_Energy.push_back((1240./pWavelength)*eV);         //convert wavelength to eV
+			ZnS_Emission_Ratio.push_back(ratio);
+		}
+	}
+	else
+	{
+		G4cout << "Error opening file: " << ZnS_file << G4endl;
+	}
+	ReadZnS.close();
+
+	// Read primary bulk absorption
+
+	std::ifstream ZnSReadabsorb;
+	G4String ZnSReadabsorblength = path+"LaBr3_absorption_reverse.cfg";
+	std::vector<G4double> ZnS_Absorption_Energy;
+	std::vector<G4double> ZnS_Absorption_Long;
+
+	ZnSReadabsorb.open(ZnSReadabsorblength);
+	if (ZnSReadabsorb.is_open()){
+		while(!ZnSReadabsorb.eof()){
+			G4String filler;
+			ZnSReadabsorb >> pWavelength >> filler >> varabsorblength;
+			//G4cout << "Wavelength = " << pWavelength << " & absorption = "<< varabsorblength << G4endl;
+			ZnS_Absorption_Energy.push_back((1240./pWavelength)*eV);
+			ZnS_Absorption_Long.push_back(0.65*mm);
+		}
+	}
+	else
+
+	G4cout << "Error opening file: "<< ZnSReadabsorblength << G4endl;
+
+	ZnSReadabsorb.close();
+
+
+
+	std::ifstream ZnSRead_ref_index;
+	//G4String ref_index_emit = path+"PST_ref_index.dat";
+	G4String ZnSref_index_emit = path+"LaBr3_index_reverse.cfg";
+	std::vector<G4double> ZnS_Index_Energy;
+	std::vector<G4double> ZnS_Index_Value;
+
+	ZnSRead_ref_index.open(ZnSref_index_emit);
+	if(ZnSRead_ref_index.is_open()){
+		while(!ZnSRead_ref_index.eof()){
+			G4String filler;
+			ZnSRead_ref_index >> pWavelength >> filler >> indexvalue;
+			//ref_index_value[ref_index_Entries]=1.59;
+			ZnS_Index_Energy.push_back((1240/pWavelength)*eV);
+			//LaBr3_Index_Value.push_back(indexvalue);
+			ZnS_Index_Value.push_back(2.36);
+		}
+	}
+	else
+	G4cout << "Error opening file: " << ZnSref_index_emit << G4endl;
+	ZnSRead_ref_index.close();
+
+
+	// Now apply the properties table
+	ZnSMPT->AddProperty("RINDEX", ZnS_Index_Energy, ZnS_Index_Value);
+	ZnSMPT->AddProperty("ABSLENGTH", ZnS_Absorption_Energy, ZnS_Absorption_Long);    // the bulk absorption spectrum
+	ZnSMPT->AddProperty("SCINTILLATIONCOMPONENT1", ZnS_Emission_Energy, ZnS_Emission_Ratio);
+	//scintMPT->AddProperty("SCINTILLATIONCOMPONENT2",scintEnergy,scintEmit,scintEntries);  // if slow component
+
+	//G4double efficiency = 1.0;
+	//LaBr3MPT->AddConstProperty("EFFICIENCY",efficiency);
+
+	ZnSMPT->AddConstProperty("SCINTILLATIONYIELD", lightyieldZnS/MeV);
+	//LaBr3MPT->AddConstProperty("ALPHASCINTILLATIONYIELD",0.01*lightyield/MeV);
+	G4double ZnSRes = 1;
+	ZnSMPT->AddConstProperty("RESOLUTIONSCALE", ZnSRes);
+	G4double ZnSFastconst = 200*ns;
+	ZnSMPT->AddConstProperty("SCINTILLATIONTIMECONSTANT1",ZnSFastconst);
+	G4double ZnSSlowconst = 1000*ns;
+	ZnSMPT->AddConstProperty("SCINTILLATIONTIMECONSTANT2", ZnSSlowconst); //if slow component
+	ZnSMPT->AddConstProperty("SCINTILLATIONYIELD1",1.0);
+	ZnSMPT->AddConstProperty("SCINTILLATIONYIELD2",0.0);
+
+	ZnS->SetMaterialPropertiesTable(ZnSMPT);
+	//ZnS->GetIonisation()->SetBirksConstant(0.03*mm/MeV); //0.126->base; 0.0872->article BiPO
+
+
+
+
+
 
 }
 

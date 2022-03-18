@@ -59,3 +59,7 @@
 # - Ajout des fonctions permettant d'obtenir et de stocker les positions d'interaction des particules dans le détecteur.
 # - Ajout des élements permettant de générer un champ magnétique et électrique uniforme dans le TPSimGeometry.cc. ATTENTION : La vérification des déviations pour le champ magnétique laissé apparaitre des écarts de plus en plus important entre la simu et les équations pour les trajectoires très déviées. A suivre et investiguer !!!!!!!!!! Ok pour le champ électrique !!!!
 # - PROBLEME AVEC LA GENERATION DES IONS AVEC Z>2. NE PREND PAS EN COMPTE LA CHARGE IONIQUE DANS LE GPS/ION. INVESTIGATION EN COURS !!!!
+
+#commit #8 le 18/03/2022 [TPSim.0.4.1]
+# - Ajout des propriétés du scintillateur ZnS et ajout dans la simulation
+# - Création des variables associées au ZnS

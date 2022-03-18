@@ -35,6 +35,7 @@ public:
   G4LogicalVolume *GetVolumeMFPlates();
   G4LogicalVolume *GetPinhole();
   G4LogicalVolume *GetLaBr3();
+  G4LogicalVolume *GetZnS();
   G4LogicalVolume *GetLaBr3PMMA();
   G4LogicalVolume *GetBoitierAluHPD();
   G4LogicalVolume *GetBoitierAluPM();
@@ -83,6 +84,7 @@ public:
   G4double GetTranslationPinhole(){return translation_pinhole;}
   // Position of Detector
   G4double GetScintillatorThickness(){return ScintillatorThickness;}
+  G4double GetZnSThickness(){return ZnSThickness;}
 
 
 private:
@@ -102,6 +104,7 @@ private:
 
   G4double ScintillatorLength;
   G4double ScintillatorThickness;
+  G4double ZnSThickness;
   // Physical Dimensions
   // scint SuperNEMO
   G4double SNMW_ScintStepWidth;
