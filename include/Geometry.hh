@@ -1,11 +1,11 @@
-/// Scintillator.hh
+/// Geometry.hh
 //// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr>
 //// Copyright: 2022 (C) Projet RATP - ENL [LP2IB] - CELIA
 
-// This class is used to create a plastic scintillator.
+// This class is used to create a plastic Geometry.
 
-#ifndef Scintillator_h
-#define Scintillator_h
+#ifndef Geometry_h
+#define Geometry_h
 
 #include "G4LogicalVolume.hh"
 #include "G4MaterialPropertiesTable.hh"
@@ -14,14 +14,14 @@
 #include "CLHEP/Units/SystemOfUnits.h"
 
 class TPSimMaterials;
-class Scintillator
+class Geometry
 
 {
 public:
 
   //constructor, builds from keys specified in buildfile
-  Scintillator(G4String buildfile);
-  ~Scintillator();
+  Geometry(G4String buildfile);
+  ~Geometry();
   //  void Construct();
 
 public:
@@ -36,14 +36,7 @@ public:
   G4LogicalVolume *GetPinhole();
   G4LogicalVolume *GetLaBr3();
   G4LogicalVolume *GetZnS();
-  G4LogicalVolume *GetLaBr3PMMA();
-  G4LogicalVolume *GetBoitierAluHPD();
-  G4LogicalVolume *GetBoitierAluPM();
-  G4LogicalVolume *GetGM_LND();
-  G4LogicalVolume *GetGM_Plastique();
-  G4LogicalVolume *GetSNMW_8InchesScint();
-  G4LogicalVolume *GetSNMW_Teflon();
-  G4LogicalVolume *GetSNMW_8InchesMylar();
+  G4LogicalVolume *GetPhotocathode();
 
 
   // Functions that can be called to return various scint dimensions
@@ -56,15 +49,6 @@ public:
   G4double GetAirGapMylar(){return AirGapMylar;}
   // glue
   G4double GetGlueThickness(){return GlueThickness;}
-  // *******SuperNEMO Main Wall*********
-  // scint
-  G4double GetSNMW_ScintStepWidth(){return SNMW_ScintStepWidth;}
-  G4double GetSNMW_ScintStepHeight(){return SNMW_ScintStepHeight;}
-  G4double GetSNMW_ScintBodyWidth(){return SNMW_ScintBodyWidth;}
-  G4double GetSNMW_ScintBodyHeight(){return SNMW_ScintBodyHeight;}
-  G4double GetSNMW_CouplingRadius(){return SNMW_CouplingSphereRadius;}
-  G4double GetSNMW_CouplingDepth(){return SNMW_CouplingSphereDepth;}
-  G4double GetSNMW_FullScintHeight(){return SNMW_ScintStepHeight+SNMW_ScintBodyHeight;}
   // ElectricField Plates
   G4double GetEFValue(){return EF_Value;}
   G4double GetEFDistBetweenPlates(){return EF_Dist_between_plates;}
@@ -90,7 +74,7 @@ public:
 private:
 
 
-  Scintillator *theScint;
+  Geometry *theScint;
   TPSimMaterials* scintProp;
 
   static const G4String path_bin;
@@ -106,13 +90,6 @@ private:
   G4double ScintillatorThickness;
   G4double ZnSThickness;
   // Physical Dimensions
-  // scint SuperNEMO
-  G4double SNMW_ScintStepWidth;
-  G4double SNMW_ScintStepHeight;
-  G4double SNMW_ScintBodyWidth;
-  G4double SNMW_ScintBodyHeight;
-  G4double SNMW_CouplingSphereRadius;
-  G4double SNMW_CouplingSphereDepth;
   // wrapping
   G4double AirGapTeflon;
   G4double TeflonThickness;
@@ -120,13 +97,6 @@ private:
   G4double MylarThickness;
   // glue
   G4double GlueThickness;
-  // PMT
-  G4double PMTGlassRadius;
-  G4double PMTGlassThickness;
-  G4double PMTRearGlassRadius;
-  G4double PMTPhotocathodeThickness;
-  G4double PMTGlassTubeRadius;
-  G4double PMTGlassTubeHeight;
 
   //ElectricField Plates
   G4double EF_Value;
@@ -152,18 +122,6 @@ private:
   G4double Dist_EFPlates_Detector;
   G4double Dist_pinhole_MFPlates;
   G4double translation_pinhole;
-
-  // Translations for unions/subtractions
-  G4double Step_BodyUnion;
-  G4double Block_SphereSubtraction;
-  G4double TeflonStep_BodyUnion;
-  G4double Teflon_ScintSubtraction;
-  G4double MylarStep_BodyUnion;
-  G4double Mylar_TeflonSubtraction;
-  G4double Mylar_SphereSubtraction;
-
-
-
 
 
   // Other

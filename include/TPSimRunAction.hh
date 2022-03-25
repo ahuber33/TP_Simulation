@@ -27,11 +27,8 @@ public:
   void EndOfRunAction(const G4Run*);
 
   //adds the photon fates from an event to the run tree
-  void UpdateStatistics(RunTally);
-  void UpdateStatisticsbis(RunTallybis);
-  void UpdateStatisticsEmitted(RunTallyEmitted);
-  void UpdateStatisticsPosition(RunTallyPosition);
-  void UpdateStatisticsElectron(RunTallyElectron);
+  void UpdateStatisticsOptical(RunTallyOptical);
+  void UpdateStatisticsTP(RunTallyTP);
 
 
 
@@ -39,17 +36,11 @@ private:
   G4String suffixe;
   G4int NumPMTs;
   G4int NumFibers;
-  RunTally Stats;
-  RunTallybis Statsbis;
-  RunTallyEmitted Statsemitted;
-  RunTallyPosition Statsposition;
-  RunTallyElectron Statselectron;
+  RunTallyOptical StatsOptical;
+  RunTallyTP StatsTP;
   TFile *f;
-  TTree *theRunTree;
-  TTree *theRunTree_bis;
-  TTree *Tree_emitted;
-  TTree *Tree_position;
-  TTree *Tree_electron;
+  TTree *Tree_Optical;
+  TTree *Tree_TP;
   TBranch *RunBranch;
   time_t start;
 

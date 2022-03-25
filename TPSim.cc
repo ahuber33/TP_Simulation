@@ -24,6 +24,7 @@
 //
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
+#include "G4SteppingVerbose.hh"
 
 
 // #ifdef G4VIS_USE
@@ -34,6 +35,10 @@ int main(int argc,char** argv){
 
 
   char* suff = argv[1];
+
+  //Use SteppingVerbose with Unit
+//G4int precision = 4;
+//G4SteppingVerbose::UseBestUnit(precision);
 
 
   // Construct the default run manager

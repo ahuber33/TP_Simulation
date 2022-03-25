@@ -40,7 +40,17 @@
 #include "G4OpBoundaryProcess.hh"
 #include "G4LossTableManager.hh"
 #include "G4EmSaturation.hh"
-
+#include "G4BraggIonGasModel.hh"
+#include "G4BetheBlochIonGasModel.hh"
+#include "G4EmConfigurator.hh"
+#include "G4IonFluctuations.hh"
+#include "G4UniversalFluctuation.hh"
+#include "G4ionIonisation.hh"
+#include "G4IonParametrisedLossModel.hh"
+#include "G4UrbanMscModel.hh"
+#include "G4BraggIonModel.hh"
+#include "G4BraggModel.hh"
+#include "G4BetheBlochModel.hh"
 
 
 using namespace CLHEP;
@@ -52,7 +62,7 @@ TPSimPhysics::TPSimPhysics():  G4VModularPhysicsList()
   // Here used the default cut value you have typed in
 
   //defaultCutValue = 0.001*mm; //0.001
-  defaultCutValue = 1*mm; //0.001
+  defaultCutValue = 0.001*mm; //0.001
   //was 0.5*mm
 
   SetVerboseLevel(1);
@@ -98,7 +108,39 @@ void TPSimPhysics::ConstructProcess()
   particleList->ConstructProcess();
   raddecayList->ConstructProcess();
   ConstructOp();
+  //AddIonGasModels();  // Be careful, use only for the TP!!! Process ionIoni not taken into account for neutral nucleus !!!
+
 }
+
+void TPSimPhysics::AddIonGasModels()
+{
+  G4EmConfigurator* em_config =
+  G4LossTableManager::Instance()->EmConfigurator();
+  auto particleIterator=GetParticleIterator();
+  particleIterator->reset();
+  while ((*particleIterator)())
+  {
+    G4ParticleDefinition* particle = particleIterator->value();
+    G4String partname = particle->GetParticleName();
+    if(partname == "alpha" || partname == "He3" || partname == "GenericIon") {
+      G4BraggIonGasModel* mod1 = new G4BraggIonGasModel();
+      G4BetheBlochIonGasModel* mod2 = new G4BetheBlochIonGasModel();
+      G4double eth = 2.*MeV*particle->GetPDGMass()/proton_mass_c2;
+      //G4double eth = 0.0001*eV;
+      //G4cout << "ETH = " << eth << G4endl;
+
+      // G4IonParametrisedLossModel* mod3 = new G4IonParametrisedLossModel();
+      // em_config->SetExtraEmModel(partname,"ionIoni",mod3,"Sc",0.0,100*TeV,new G4UniversalFluctuation());
+
+      em_config->SetExtraEmModel(partname,"ionIoni",mod1,"",0.0,eth,
+      new G4IonFluctuations());
+      em_config->SetExtraEmModel(partname,"ionIoni",mod2,"",eth,100*TeV,
+      new G4UniversalFluctuation());
+
+    }
+  }
+}
+
 
 void TPSimPhysics::ConstructOp()
 {
@@ -151,11 +193,11 @@ void TPSimPhysics::ConstructOp()
     G4ProcessManager* pmanager = particle->GetProcessManager();
     G4String particleName = particle->GetParticleName();
 
-    // if (theCerenkovProcess->IsApplicable(*particle))
-    //   {
-    // 	pmanager->AddProcess(theCerenkovProcess);
-    // 	pmanager->SetProcessOrdering(theCerenkovProcess, idxPostStep);
-    //   }
+    if (theCerenkovProcess->IsApplicable(*particle))
+      {
+    	pmanager->AddProcess(theCerenkovProcess);
+    	pmanager->SetProcessOrdering(theCerenkovProcess, idxPostStep);
+      }
 
     if(particle->GetParticleName() == "e-")
     {
@@ -174,7 +216,6 @@ void TPSimPhysics::ConstructOp()
 
   }
 }
-
 
 void TPSimPhysics::SetCuts()
 {

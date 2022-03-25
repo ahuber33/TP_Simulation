@@ -19,83 +19,56 @@
 class G4Event;
 
 
-//This struct carries statistics for the whole Run
-struct RunTally {
+//This struct carries statistics OPTICAL part
+struct RunTallyOptical {
   float  IncidentE;
-  float  Deposit;
-  int    Generated;
+  float  DepositZnS;
+  float  DepositSc;
+  int    ScintillationZnS;
+  int    CerenkovZnS;
+  int    ScintillationSc;
+  int    CerenkovSc;
+  int    BulkAbsZnS;
+  int    BulkAbsSc;
   int    Absorbed;
-  int    BulkAbs;
   int    Escaped;
   int    Failed;
-  int    WLS;
+  //int    WLS;
   int    Detected;
-  float  FWHM;
-  int Count_Scintillation;
-  int Count_Cerenkov;
+  std::vector<float>PositionX;
+  std::vector<float>PositionY;
+  std::vector<float>PositionZ;
+  std::vector<float>MomentumX;
+  std::vector<float>MomentumY;
+  std::vector<float>MomentumZ;
+  std::vector<float>BirthLambda;
+  std::vector<float>Time;
+  std::vector<float>Energy_pe;
+  std::vector<float>Rayleigh;
+  std::vector<float>Total_Reflections;
+  std::vector<float>Wrap_Reflections;
+  std::vector<float>TotalLength;
 
-  inline int operator ==(const RunTally& right) const
+  inline int operator ==(const RunTallyOptical& right) const
   {return (this==&right);}
 };
 
-
-//This struct carries statistics for the whole Run
-struct RunTallybis {
-  float  Angle;
-  float  PositionX;
-  float  PositionY;
-  float  PositionZ;
-  float  DeathLambda;
-  float  BirthLambda;
-  float Time;
-  //float  Theta;
-  //float  Phi;
-  int Rayleigh;
-  int Total_Reflections;
-  int Wrap_Reflections;
-  float TotalLength;
-
-  inline int operator ==(const RunTallybis& right) const
-  {return (this==&right);}
-};
-
-
-
-struct RunTallyEmitted {
-  float E_emitted_Elec;
-  float E_emitted_Alpha;
-  float E_emitted_Gamma;
-
-  inline int operator ==(const RunTallyEmitted& right) const
-  {return (this==&right);}
-};
-
-
-
-struct RunTallyPosition {
-  float Position_x;
-  float Position_y;
-  float Position_z;
-
-  inline int operator ==(const RunTallyPosition& right) const
-  {return (this==&right);}
-};
-
-
-struct RunTallyElectron {
+struct RunTallyTP {
+  int ParticuleID;
   float E_start;
   float E_dep;
-  float TotalLength;
-  float InteractionDepth;
+  float Charge;
   float PositionX;
   float PositionY;
   float PositionZ;
-  //std::vector<float> E_dep_Gamma;
+  float Time;
+  float TotalLength;
+  float InteractionDepth;
 
-  inline int operator ==(const RunTallyElectron& right) const
+
+  inline int operator ==(const RunTallyTP& right) const
   {return (this==&right);}
 };
-
 
 
 class TPSimEventAction : public G4UserEventAction
@@ -107,84 +80,71 @@ public:
 public:
   void BeginOfEventAction(const G4Event*);
   void EndOfEventAction(const G4Event*);
-  //Keeps track of the total number of generated photons
-  void AddGenerated(G4int numgenerated){Statistics.Generated+=numgenerated;}
-  //Keeps track of the total energy deposited in the scintillator
-  void AddEdep(G4float edep){Statistics.Deposit+=edep;}
 
-  //void CountDetected(Tally);
-  //void CountDetected_without_CU(){Statistics.Detected_without_CU++;}
-  void CountDetected(){Statistics.Detected++;}
-  void CountWLS(){Statistics.WLS++;}
-  void CountAbsorbed(){Statistics.Absorbed++;}
-  void CountBulkAbs(){Statistics.BulkAbs++;}
-  void CountEscaped(){Statistics.Escaped++;}
-  void CountFailed(){Statistics.Failed++;}
-  void E_emitted_Elec(float e) {Statsemitted.E_emitted_Elec =e;}
-  void E_emitted_Alpha(float e) {Statsemitted.E_emitted_Alpha =e;}
-  void E_emitted_Gamma(float e) {Statsemitted.E_emitted_Gamma =e;}
+  //Functions for Optical Tree
+  void SetIncidentE(G4double ince){StatsOptical.IncidentE=ince;}
+  void AddEdepSc(G4float edep){StatsOptical.DepositSc+=edep;}
+  void AddEdepZnS(G4float edep){StatsOptical.DepositZnS+=edep;}
+  void CountCerenkovZnS(){StatsOptical.CerenkovZnS++;}
+  void CountCerenkovSc(){StatsOptical.CerenkovSc++;}
+  void CountScintillationZnS(){StatsOptical.ScintillationZnS++;}
+  void CountScintillationSc(){StatsOptical.ScintillationSc++;}
+  void CountDetected(){StatsOptical.Detected++;}
+  int GetDetected(){return StatsOptical.Detected;}
+  //void CountWLS(){StatsOptical.WLS++;}
+  void CountAbsorbed(){StatsOptical.Absorbed++;}
+  int GetAbsorbed(){return StatsOptical.Absorbed;}
+  void CountBulkAbsSc(){StatsOptical.BulkAbsSc++;}
+  int GetBulkAbsSc(){return StatsOptical.BulkAbsSc;}
+  void CountBulkAbsZnS(){StatsOptical.BulkAbsZnS++;}
+  int GetBulkAbsZnS(){return StatsOptical.BulkAbsZnS;}
+  void CountEscaped(){StatsOptical.Escaped++;}
+  int GetEscaped(){return StatsOptical.Escaped;}
+  void CountFailed(){StatsOptical.Failed++;}
+  int GetFailed(){return StatsOptical.Failed;}
+  void FillPhotonPositionX(G4float e){StatsOptical.PositionX.push_back(e);}
+  void FillPhotonPositionY(G4float e){StatsOptical.PositionY.push_back(e);}
+  void FillPhotonPositionZ(G4float e){StatsOptical.PositionZ.push_back(e);}
+  void FillPhotonMomentumX(G4float e){StatsOptical.MomentumX.push_back(e);}
+  void FillPhotonMomentumY(G4float e){StatsOptical.MomentumY.push_back(e);}
+  void FillPhotonMomentumZ(G4float e){StatsOptical.MomentumZ.push_back(e);}
+  void FillBirthLambda(G4float e){StatsOptical.BirthLambda.push_back(e);}
+  void FillPhotonTime(G4float e){StatsOptical.Time.push_back(e);}
+  void FillEnergype(G4float e){StatsOptical.Energy_pe.push_back(e);}
+  void FillRayleigh(G4float e){StatsOptical.Rayleigh.push_back(e);}
+  void FillTotalReflections(G4float e){StatsOptical.Total_Reflections.push_back(e);}
+  void FillWrapReflecions(G4float e){StatsOptical.Wrap_Reflections.push_back(e);}
+  void FillPhotonTotalLength(G4float e){StatsOptical.TotalLength.push_back(e);}
 
-  void Setcpt_without_CU(G4int e){ cpt_without_CU = e;}
-  G4int Getcpt_without_CU(){return cpt_without_CU;}
-
-  void Setcpt_photons_lost(G4int d){ cpt_photons_lost = d;}
-  G4int Getcpt_photons_lost(){return cpt_photons_lost;}
-
-  void Setnph(int d){ nph = d;}
-  int Getnph() {return nph;}
-
-  void CountCerenkov(){Statistics.Count_Cerenkov++;}
-  int GetCountCerenkov(){return Statistics.Count_Cerenkov;}
-  void CountScintillation(){Statistics.Count_Scintillation++;}
-  int GetCountScintillation(){return Statistics.Count_Scintillation;}
-
-
-
-
-
-  // void Fill_E_dep_Gamma (G4float E) {Statselectron.E_dep_Gamma.push_back(E);};
-  // void Fill_Gamma_Interaction_X (G4float x) {Statselectron.Gamma_Interaction_X.push_back(x);};
-  // void Fill_Gamma_Interaction_Y (G4float y) {Statselectron.Gamma_Interaction_Y.push_back(y);};
-  // void Fill_Gamma_Interaction_Z (G4float z) {Statselectron.Gamma_Interaction_Z.push_back(z);};
-
-  void AddTrackLength(G4double d){Statselectron.TotalLength+=d;}
-  float GetTotalTrackLength(){return Statselectron.TotalLength;}
-  void AddEdepElectron(G4double d){Statselectron.E_dep+=d;}
-  float GetEdepElectron(){return Statselectron.E_dep;}
-  void SetEstartElectron(G4double d){Statselectron.E_start+=d;}
-  float GetEstartElectron(){return Statselectron.E_start;}
-  //Use only for a test protocole (if not change the definition in Stepping)
-  void SetInteractionDepthElectron(G4double d){Statselectron.InteractionDepth+=d;}
-  float GetInteractionDepthElectron(){return Statselectron.InteractionDepth;}
-  void SetElectronPositionX(G4double d){Statselectron.PositionX+=d;}
-  float GetElectronPositionX(){return Statselectron.PositionX;}
-  void SetElectronPositionY(G4double d){Statselectron.PositionY+=d;}
-  float GetElectronPositionY(){return Statselectron.PositionY;}
-  void SetElectronPositionZ(G4double d){Statselectron.PositionZ+=d;}
-  float GetElectronPositionZ(){return Statselectron.PositionZ;}
-
-
-  //Keeps track of the incident energy of the primary particle
-  void SetIncidentE(G4double ince){Statistics.IncidentE=ince;}
+  //Functions for TP Tree
+  void SetParticuleID(G4double a){StatsTP.ParticuleID =a;}
+  float GetParticuleID(){return StatsTP.ParticuleID;}
+  void SetEstartTP(G4double d){StatsTP.E_start+=d;}
+  float GetEstartTP(){return StatsTP.E_start;}
+  void AddEdepTP(G4double d){StatsTP.E_dep+=d;}
+  float GetEdepTP(){return StatsTP.E_dep;}
+  void SetCharge(G4double a){StatsTP.Charge =a;}
+  float GetCharge(){return StatsTP.Charge;}
+  void SetTPPositionX(G4double d){StatsTP.PositionX=d;}
+  float GetTPPositionX(){return StatsTP.PositionX;}
+  void SetTPPositionY(G4double d){StatsTP.PositionY=d;}
+  float GetTPPositionY(){return StatsTP.PositionY;}
+  void SetTPPositionZ(G4double d){StatsTP.PositionZ=d;}
+  float GetTPPositionZ(){return StatsTP.PositionZ;}
+  void SetTPTime(G4double d){StatsTP.Time=d;}
+  float GetTPTime(){return StatsTP.Time;}
+  void AddTrackLength(G4double d){StatsTP.TotalLength+=d;}
+  float GetTotalTrackLength(){return StatsTP.TotalLength;}
+  void SetInteractionDepthTP(G4double d){StatsTP.InteractionDepth+=d;}
+  float GetInteractionDepthTP(){return StatsTP.InteractionDepth;}
 
 
 private:
 
   TTree *EventTree;
   TBranch *EventBranch;
-  //Tally BranchFiller;
-  RunTally Statistics;
-  RunTallybis Statsbis;
-  RunTallyEmitted Statsemitted;
-  RunTallyPosition Statsposition;
-  RunTallyElectron Statselectron;
-  G4int cpt_without_CU;
-  G4int cpt_with_CU;
-  G4int cpt_photons_lost;
-  G4int nph;
-  G4int nph_cerenkov;
-  G4int nph_scintillation;
-  G4int Track;
+  RunTallyOptical StatsOptical;
+  RunTallyTP StatsTP;
   G4String suffixe;
 
 

@@ -43,8 +43,8 @@ void TPSimPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent){
   particleSource->GeneratePrimaryVertex(anEvent);
 
   //  always require these two lines
-  G4EventManager *evtman = G4EventManager::GetEventManager();
-  TPSimEventAction *evtac = (TPSimEventAction*)evtman->GetUserEventAction();
+  //G4EventManager *evtman = G4EventManager::GetEventManager();
+  //TPSimEventAction *evtac = (TPSimEventAction*)evtman->GetUserEventAction();
 
   //evtac->SetIncidentE(particleGun->GetParticleEnergy());
   //evtac->SetIncidentE(particleSource->GetParticleEnergy());

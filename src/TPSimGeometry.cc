@@ -6,10 +6,7 @@
 #include "TPSimRunAction.hh"
 #include "TPSimMaterials.hh"
 #include "TPSimSteppingAction.hh"
-#include "Scintillator.hh"
-#include "Coupling.hh"
-#include "PMT.hh"
-#include "GdL.hh"
+#include "Geometry.hh"
 #include "G4VUserDetectorConstruction.hh"
 #include "G4UnitsTable.hh"
 #include "G4Material.hh"
@@ -100,7 +97,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   VacuumWorld = scintProp->GetMaterial("VacuumWorld");
   Air = scintProp->GetMaterial("Air");
   Alu = scintProp->GetMaterial("Alu");
-  theScint = new Scintillator(path_bin+"TPSim.cfg");
+  theScint = new Geometry(path_bin+"TPSim.cfg");
 
 
   // ***********************
@@ -147,7 +144,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   red_hot->SetForceSolid(true);
   red_hot->SetVisibility(true);
 
-  orange = new G4VisAttributes(G4Colour(1,0.5,0,0.2));
+  orange = new G4VisAttributes(G4Colour(1,0.5,0,0.99));
   //  orange->SetForceWireframe(true);
   orange->SetForceSolid(true);
   orange->SetVisibility(true);
@@ -238,7 +235,6 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
   LogicalHolder->SetVisAttributes(invis);
 
-
   //*********************************
   // Build scint et wrapping volumes*
   //*********************** *********
@@ -260,14 +256,14 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalSc->SetVisAttributes(cyan);
   LogicalZnS->SetVisAttributes(white);
 
+  // G4Region* RegEM = new G4Region("EMField");
+  // //RegEM->AddRootLogicalVolume(LogicalHolder);
+  // RegEM->AddRootLogicalVolume(LogicalVolumeEFPlates);
+  // RegEM->AddRootLogicalVolume(LogicalVolumeMFPlates);
+  //
+  // G4Region* RegSc = new G4Region("Sc");
+  // RegSc->AddRootLogicalVolume(LogicalSc);
 
-
-  //***********************
-  // Build coupling medium*
-  //***********************
-  CouplingGlue = new Coupling();  // Initialize coupling class
-  LogicalGlue = CouplingGlue->GetHPDGrease();
-  LogicalGlue->SetVisAttributes(red);
 
 
   //********************************************
@@ -361,15 +357,9 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   //***********************
   // Build PMT volumes    *
   //***********************
-  // Initialize PMT class object for creating R6594-03 HPK PMT
-  R6594 = new PMT();
 
   // Build the PMT glass structure from PMT class
-  LogicalPM = R6594->GetHPDGlass(); // Call function for PMT glass
-  LogicalPM->SetVisAttributes(yellow); // Set photocathode color to orange
-
-  // Build the photocathode from PMT class
-  LogicalPhotocathode = R6594->GetHPDPhotocathode(); // Call function for PMT photocathode
+  LogicalPhotocathode = theScint->GetPhotocathode(); // Call function for PMT glass
   LogicalPhotocathode->SetVisAttributes(orange); // Set photocathode color to orange
 
 
@@ -426,19 +416,19 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
   G4double fMinStep     = 1*um; // minimal step of 1 mm is default
 
-  G4MagneticField *magField = new G4UniformMagField(G4ThreeVector(0.0*tesla, 0.*tesla, 0.0*tesla));
+  //G4MagneticField *magField = new G4UniformMagField(G4ThreeVector(0.0*tesla, 0.*tesla, 0.0*tesla));
   G4MagneticField *localmagField = new G4UniformMagField(G4ThreeVector(0., MF_Value, 0.0));
   //G4Mag_UsualEqRhs* fEquation = new G4Mag_UsualEqRhs(magField);
   G4Mag_UsualEqRhs* fEquationlocal = new G4Mag_UsualEqRhs(localmagField);
 
 
 
-  G4FieldManager* MagFieldManager = G4TransportationManager::GetTransportationManager()->GetFieldManager();
+  //G4FieldManager* MagFieldManager = G4TransportationManager::GetTransportationManager()->GetFieldManager();
   // fieldMgr->SetDetectorField(magField);
   // fieldMgr->CreateChordFinder(magField);
 
   // Update field
-  G4MagIntegratorStepper*fStepper;
+  //G4MagIntegratorStepper*fStepper;
   G4MagIntegratorStepper*localfStepperMag;
   //localfStepperMag = new G4ClassicalRK4( fEquationlocal ,8);
   localfStepperMag = new G4DormandPrince745( fEquationlocal,8 );
@@ -479,118 +469,123 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
   //G4double fMinStep     = 1*mm; // minimal step of 1 mm is default
 
-  G4ElectricField* fEMfield = new G4UniformElectricField(
-    G4ThreeVector(0.0,0*kilovolt/m,0.0));
-    G4ElectricField* LocalfEMfield = new G4UniformElectricField(
-      G4ThreeVector(0.0, EF_Value,0.0));
+  //G4ElectricField* fEMfield = new G4UniformElectricField(G4ThreeVector(0.0,0*kilovolt/m,0.0));
+  G4ElectricField* LocalfEMfield = new G4UniformElectricField(
+    G4ThreeVector(0.0, EF_Value,0.0));
 
-      G4EqMagElectricField* LocalfEquation = new G4EqMagElectricField(LocalfEMfield);
+    G4EqMagElectricField* LocalfEquation = new G4EqMagElectricField(LocalfEMfield);
 
-      G4FieldManager* fFieldManager = G4TransportationManager::GetTransportationManager()
-      ->GetFieldManager();
+    //G4FieldManager* fFieldManager = G4TransportationManager::GetTransportationManager()->GetFieldManager();
 
-      G4FieldManager* LocalFieldManager = new G4FieldManager(LocalfEMfield);
-      G4MagIntegratorStepper* localfStepper = new G4ExplicitEuler( LocalfEquation, 8 );
-      G4MagInt_Driver* fIntgrDriver = new G4MagInt_Driver(fMinStep,
-        localfStepper,
-        localfStepper->GetNumberOfVariables());
-        G4ChordFinder* fChordFinder = new G4ChordFinder(fIntgrDriver);
-        LocalFieldManager->SetChordFinder(fChordFinder);
+    G4FieldManager* LocalFieldManager = new G4FieldManager(LocalfEMfield);
+    G4MagIntegratorStepper* localfStepper = new G4ExplicitEuler( LocalfEquation, 8 );
+    G4MagInt_Driver* fIntgrDriver = new G4MagInt_Driver(fMinStep,
+      localfStepper,
+      localfStepper->GetNumberOfVariables());
+      G4ChordFinder* fChordFinder = new G4ChordFinder(fIntgrDriver);
+      LocalFieldManager->SetChordFinder(fChordFinder);
 
-        LogicalVolumeEFPlates->SetFieldManager(LocalFieldManager, true);
+      LogicalVolumeEFPlates->SetFieldManager(LocalFieldManager, true);
 
 
 
-        //***********************
-        // Various Positioning values
-        //***********************
+      //***********************
+      // Various Positioning values
+      //***********************
 
-        Z_Position_MFPlates = Dist_pinhole_MFPlates + MF_Length_plates/2;
-        Z_Position_EFPlates = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates/2;
-        Z_Position_ZnS = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness/2;
-        Z_Position_Sc = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness/2;
+      Z_Position_MFPlates = Dist_pinhole_MFPlates + MF_Length_plates/2;
+      Z_Position_EFPlates = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates/2;
+      Z_Position_ZnS = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness/2;
+      Z_Position_Sc = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness/2;
+      Z_Position_Photocathode = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness+0.05;
 
-        //############################
-        // DEFINE GEOMETRY PLACEMENTS#
-        //############################
+      //############################
+      // DEFINE GEOMETRY PLACEMENTS#
+      //############################
 
-        #ifndef disable_gdml
+      #ifndef disable_gdml
 
-        PhysicalPinhole = new G4PVPlacement(G4Transform3D
-          (DontRotate,G4ThreeVector(0*mm, 0*mm, 0*mm)), // Set at origin as basis of everything else
-          LogicalPinhole,"Pinhole",
+      PhysicalPinhole = new G4PVPlacement(G4Transform3D
+        (DontRotate,G4ThreeVector(0*mm, 0*mm, 0*mm)), // Set at origin as basis of everything else
+        LogicalPinhole,"Pinhole",
+        LogicalHolder,false,0);
+
+        PhysicalVolumeMFPlates = new G4PVPlacement(G4Transform3D
+          (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_MFPlates)), // Set at origin as basis of everything else
+          LogicalVolumeMFPlates,"Volume_MF_Plates",
           LogicalHolder,false,0);
 
-          PhysicalVolumeMFPlates = new G4PVPlacement(G4Transform3D
-            (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_MFPlates)), // Set at origin as basis of everything else
-            LogicalVolumeMFPlates,"Volume_MF_Plates",
-            LogicalHolder,false,0);
+          PhysicalMFPlates = new G4PVPlacement(G4Transform3D
+            (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+            LogicalMFPlates,"MF_Plates",
+            LogicalVolumeMFPlates,false,0);
 
-            PhysicalMFPlates = new G4PVPlacement(G4Transform3D
-              (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-              LogicalMFPlates,"MF_Plates",
-              LogicalVolumeMFPlates,false,0);
+            PhysicalVolumeEFPlates = new G4PVPlacement(G4Transform3D
+              (DontRotate,G4ThreeVector(0*mm,translation_pinhole, Z_Position_EFPlates)), // Set at origin as basis of everything else
+              LogicalVolumeEFPlates,"Volume_EF_Plates",
+              LogicalHolder,false,0);
 
-              PhysicalVolumeEFPlates = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm,translation_pinhole, Z_Position_EFPlates)), // Set at origin as basis of everything else
-                LogicalVolumeEFPlates,"Volume_EF_Plates",
-                LogicalHolder,false,0);
-
-                PhysicalEFPlates = new G4PVPlacement(G4Transform3D
-                  (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                  LogicalEFPlates,"EF_Plates",
-                  LogicalVolumeEFPlates,false,0);
+              PhysicalEFPlates = new G4PVPlacement(G4Transform3D
+                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                LogicalEFPlates,"EF_Plates",
+                LogicalVolumeEFPlates,false,0);
 
 
-                  PhysicalZnS = new G4PVPlacement(G4Transform3D
-                    (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_ZnS)), // Set at origin as basis of everything else
-                    LogicalZnS,"ZnS",
+                PhysicalZnS = new G4PVPlacement(G4Transform3D
+                  (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_ZnS)), // Set at origin as basis of everything else
+                  LogicalZnS,"ZnS",
+                  LogicalHolder,false,0);
+
+                  PhysicalSc = new G4PVPlacement(G4Transform3D
+                    (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_Sc)), // Set at origin as basis of everything else
+                    LogicalSc,"Scintillator",
                     LogicalHolder,false,0);
 
-                    PhysicalSc = new G4PVPlacement(G4Transform3D
-                      (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_Sc)), // Set at origin as basis of everything else
-                      LogicalSc,"Scintillator",
-                      LogicalHolder,false,0);
+                    // PMT photocathode placement
+                    PhysicalPhotocathode = new G4PVPlacement(G4Transform3D
+                      (DontRotate,G4ThreeVector(0, translation_pinhole, Z_Position_Photocathode)),
+                      LogicalPhotocathode,"Photocathode",
+                      LogicalHolder,true,0);
 
-                    //   PhysicalPMMA = new G4PVPlacement(G4Transform3D
-                    //     (DontRotate,G4ThreeVector(0*mm,0.*mm,21.55*mm)), // Set at origin as basis of everything else
-                    //     LogicalPMMA,"PMMA",
-                    //     LogicalHolder,false,0);
-                    //
-                    //     PhysicalBoitierAlu = new G4PVPlacement(G4Transform3D
-                    //       //(Flip,G4ThreeVector(0*mm,0.*mm,111.8*mm)), // FOR THE PM !!!!
-                    //       (DontRotate,G4ThreeVector(0*mm,0.*mm, 1.3*mm)), // FOR THE HPD !!!!
-                    //       LogicalBoitierAlu,"Boitier_Alu",
-                    //       LogicalHolder,false,0);
-                    //
-                    //       // PMT placement
-                    //       PhysicalGlue = new G4PVPlacement(G4Transform3D
-                    //         (DontRotate,G4ThreeVector(0,0,24.1*mm)),
-                    //         LogicalGlue,"BC-631",
-                    //         LogicalHolder,false,0);
-                    //
-                    //         // PMT placement
-                    //         PhysicalPM = new G4PVPlacement(G4Transform3D
-                    //           (DontRotate,G4ThreeVector(0,0,24.65*mm)),
-                    //           LogicalPM,"PM",
-                    //           LogicalHolder,false,0);
-                    //
-                    //           // PMT photocathode placement
-                    //           PhysicalPhotocathode = new G4PVPlacement(G4Transform3D
-                    //             (DontRotate,G4ThreeVector(0,0,25.2*mm)),
-                    //             LogicalPhotocathode,"Photocathode",
-                    //             LogicalHolder,true,0);
-                    //
-
-
-                    #else
-
-                    #endif
+                      //   PhysicalPMMA = new G4PVPlacement(G4Transform3D
+                      //     (DontRotate,G4ThreeVector(0*mm,0.*mm,21.55*mm)), // Set at origin as basis of everything else
+                      //     LogicalPMMA,"PMMA",
+                      //     LogicalHolder,false,0);
+                      //
+                      //     PhysicalBoitierAlu = new G4PVPlacement(G4Transform3D
+                      //       //(Flip,G4ThreeVector(0*mm,0.*mm,111.8*mm)), // FOR THE PM !!!!
+                      //       (DontRotate,G4ThreeVector(0*mm,0.*mm, 1.3*mm)), // FOR THE HPD !!!!
+                      //       LogicalBoitierAlu,"Boitier_Alu",
+                      //       LogicalHolder,false,0);
+                      //
+                      //       // PMT placement
+                      //       PhysicalGlue = new G4PVPlacement(G4Transform3D
+                      //         (DontRotate,G4ThreeVector(0,0,24.1*mm)),
+                      //         LogicalGlue,"BC-631",
+                      //         LogicalHolder,false,0);
+                      //
+                      //         // PMT placement
+                      //         PhysicalPM = new G4PVPlacement(G4Transform3D
+                      //           (DontRotate,G4ThreeVector(0,0,24.65*mm)),
+                      //           LogicalPM,"PM",
+                      //           LogicalHolder,false,0);
+                      //
+                      //           // PMT photocathode placement
+                      //           PhysicalPhotocathode = new G4PVPlacement(G4Transform3D
+                      //             (DontRotate,G4ThreeVector(0,0,25.2*mm)),
+                      //             LogicalPhotocathode,"Photocathode",
+                      //             LogicalHolder,true,0);
+                      //
 
 
+                      #else
+
+                      #endif
 
 
 
-                    // Returns world with everything in it and all properties set
-                    return PhysicalWorld;
-                  }
+
+
+                      // Returns world with everything in it and all properties set
+                      return PhysicalWorld;
+                    }

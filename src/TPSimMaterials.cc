@@ -526,7 +526,7 @@ void TPSimMaterials::Construct()
 	std::vector<G4double> Vacuum_Energy;
 	std::vector<G4double> Vacuum_Absorption_Long;
 	std::vector<G4double> Vacuum_Index_Value;
-	G4double vacAbsorbconst = 100*m;
+	G4double vacAbsorbconst = 10000*m;
 
 	std::ifstream ReadVac;
 	G4String Vac = path+"EJ-212.cfg";  // simply index filler values...not EJ-212 values
@@ -602,7 +602,6 @@ void TPSimMaterials::Construct()
 	bs_glass->AddMaterial(Al2O3, 0.02);
 
 	G4double glassabsorblength;
-	G4double glassrefindex = 1.49;
 
 	std::ifstream ReadGlassBulk;
 	G4String GlassBulk = path+"Borosilicate_GlassBulkAbsorb_reverse.cfg";
@@ -778,26 +777,26 @@ void TPSimMaterials::Construct()
 
 
 	// Read primary Rayleigh scattering
-std::ifstream LaBr3Readscatt;
-G4String LaBr3Readscattering = path+"LaBr3_scattering_reverse.cfg";
-std::vector<G4double> LaBr3_Scattering_Energy;
-std::vector<G4double> LaBr3_Scattering_Long;
+	std::ifstream LaBr3Readscatt;
+	G4String LaBr3Readscattering = path+"LaBr3_scattering_reverse.cfg";
+	std::vector<G4double> LaBr3_Scattering_Energy;
+	std::vector<G4double> LaBr3_Scattering_Long;
 
-LaBr3Readscatt.open(LaBr3Readscattering);
-if (LaBr3Readscatt.is_open()){
-	while(!LaBr3Readscatt.eof()){
-		G4String filler;
-		LaBr3Readscatt >> pWavelength >> filler >> varabsorblength;
-		//G4cout << "Wavelength = " << pWavelength << " & absorption = "<< varabsorblength << G4endl;
-		LaBr3_Scattering_Energy.push_back((1240./pWavelength)*eV);
-		LaBr3_Scattering_Long.push_back(1.*varabsorblength*mm);
+	LaBr3Readscatt.open(LaBr3Readscattering);
+	if (LaBr3Readscatt.is_open()){
+		while(!LaBr3Readscatt.eof()){
+			G4String filler;
+			LaBr3Readscatt >> pWavelength >> filler >> varabsorblength;
+			//G4cout << "Wavelength = " << pWavelength << " & absorption = "<< varabsorblength << G4endl;
+			LaBr3_Scattering_Energy.push_back((1240./pWavelength)*eV);
+			LaBr3_Scattering_Long.push_back(1.*varabsorblength*mm);
+		}
 	}
-}
-else
+	else
 
-G4cout << "Error opening file: "<< LaBr3Readscattering << G4endl;
+	G4cout << "Error opening file: "<< LaBr3Readscattering << G4endl;
 
-LaBr3Readscatt.close();
+	LaBr3Readscatt.close();
 
 
 
@@ -967,7 +966,7 @@ LaBr3Readscatt.close();
 
 	std::ifstream ZnSRead_ref_index;
 	//G4String ref_index_emit = path+"PST_ref_index.dat";
-	G4String ZnSref_index_emit = path+"LaBr3_index_reverse.cfg";
+	G4String ZnSref_index_emit = path+"ZnS_index_reverse.cfg";
 	std::vector<G4double> ZnS_Index_Energy;
 	std::vector<G4double> ZnS_Index_Value;
 
@@ -978,8 +977,8 @@ LaBr3Readscatt.close();
 			ZnSRead_ref_index >> pWavelength >> filler >> indexvalue;
 			//ref_index_value[ref_index_Entries]=1.59;
 			ZnS_Index_Energy.push_back((1240/pWavelength)*eV);
-			//LaBr3_Index_Value.push_back(indexvalue);
-			ZnS_Index_Value.push_back(2.36);
+			ZnS_Index_Value.push_back(indexvalue);
+			//ZnS_Index_Value.push_back(1.36);
 		}
 	}
 	else

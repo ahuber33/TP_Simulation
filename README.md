@@ -49,7 +49,7 @@
 
 #commit #6 le 09/03/2022 [TPSim.0.3.1]
 # - Ajout de la propriété Rayleigh scattering et donc split de l'attenuation length en absorption length et scattering length selon [https://www.researchgate.net/publication/254060762_Optical_Absorption_Length_Scattering_Length_and_Refractive_Index_of_LaBr3Ce3]
-# - Selon cette référence, l'absorption entraine quasi à chaque fois la réémission d'un photon derrière donc à investiguer dans le futur !!!
+# - Selon cette référence, l'absorption entraine quasi à chaque fois la réémission d'un photon derrière pour le LaBr3 donc à investiguer dans le futur !!!
 # - Changement de position de certaines lignes de code pour plus de clarté
 
 #commit #7 le 16/03/2022 [TPSim0.4.0]
@@ -63,3 +63,13 @@
 #commit #8 le 18/03/2022 [TPSim.0.4.1]
 # - Ajout des propriétés du scintillateur ZnS et ajout dans la simulation
 # - Création des variables associées au ZnS
+
+#commit #9 le 25/03/2022 [TPSim.0.5.0]
+# - Problème du commit #7 avec la génération des ions avec Z>2 et une charge Q géré par la macro en partie réglé. Il est dorénavant possible de générer un noyau de Carbone avec une charge ionique allant de +1 à +6 pour le suivi dans la TP. Cela a été rendu possible avec l'ajout des G4BraggIonGasModel et G4BetheBlochIonGasModel permettant de suivre correctement les ions dans un milieu gazeux. Ainsi l'ion ne se retrouve pas automatiquement en équilibre avec le milieu dans lequel il se propage comme cela est le cas en règle générale dans GEANT4.
+# - NEANMOINS, LA PRISE EN COMPTE DE CES FONCTIONS INDUIT UN BIAIS LORS DE L'INTERACTION DE CES IONS AVEC LE SCINTILLATEUR QUI ONT UN PARCOURS PLUS IMPORTANT CAR LE MODELE PRIS EST CELUI D'UN GAZ. EN COURS D'INVESTIGATION POUR RÉSOUDRE CE PROBLEME.
+# - En attendant, le modèle AddIonGasModels() est désactivé et l'étude optique se portera uniquement sur des protons et alpha dans un premier temps. Néanmoins, pour juste suivre la déviation sans la production de photons, il est possible d'étudier ces ions en activant le modèle AddIonGasModels().
+# - Simplification du code en regroupant l'ensemble des volumes crées dans un même fichier Geometry.cc. Les fichiers Scintillator.cc, PMT.cc, Coupling.cc et GdL.cc ont été effacés.
+# - Simplification des Trees de résultats. Mise au point d'un Tree avec l'ensemble des résultats liés à l'optique (introduction des vecteurs pour l'accès aux informations liées aux photons détectés) et un Tree pour l'ensemble des informations issues de la TP.
+# - Création des fonctions Set et Get pour chaque variable des Trees
+# - Nettoyage des parties de code non nécessaires
+# - Ajout des informations sur l'ID de la particule, son temps de vol (particule et photons) ainsi que sa charge.

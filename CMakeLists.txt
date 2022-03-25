@@ -56,17 +56,14 @@ include_directories(${PROJECT_SOURCE_DIR}/include
 
 
 set(PROJECT_SRC
-	${CMAKE_CURRENT_SOURCE_DIR}/src/Coupling.cc
-	${CMAKE_CURRENT_SOURCE_DIR}/src/PMT.cc
-	#${CMAKE_CURRENT_SOURCE_DIR}/src/GdL.cc
-	${CMAKE_CURRENT_SOURCE_DIR}/src/Scintillator.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimPhysics.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/src/Geometry.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimEventAction.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimTrackingAction.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimVisManager.cc
 	#${CMAKE_CURRENT_SOURCE_DIR}/src/GMSimGeometry_Dolphy_Beta.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimMaterials.cc
-	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimPhysics.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimPrimaryGeneratorAction.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimRunAction.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimSteppingAction.cc
@@ -74,16 +71,13 @@ set(PROJECT_SRC
     )
 
 set(PROJECT_HEADER
-	${CMAKE_CURRENT_SOURCE_DIR}/include/Coupling.hh
-	${CMAKE_CURRENT_SOURCE_DIR}/include/PMT.hh
-	#${CMAKE_CURRENT_SOURCE_DIR}/include/GdL.hh
-	${CMAKE_CURRENT_SOURCE_DIR}/include/Scintillator.hh
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimPhysics.hh
+	${CMAKE_CURRENT_SOURCE_DIR}/include/Geometry.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimEventAction.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimTrackingAction.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimVisManager.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimGeometry.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimMaterials.hh
-	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimPhysics.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimPrimaryGeneratorAction.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimRunAction.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimSteppingAction.hh

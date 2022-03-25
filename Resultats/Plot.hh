@@ -23,7 +23,7 @@ float Mean(const char* filename, const char* TreeName, const char* VariableName)
   TFile* file = new TFile(filename);
   float a;
   TTree *Tree = (TTree*)file->Get(TreeName);
-  Tree->SetBranchAddress(VariableName, &a);
+  //Tree->SetBranchAddress(VariableName, &a);
   float Entries = Tree->GetEntries();
   float Mean=0;
   float Sum=0;
@@ -31,6 +31,7 @@ float Mean(const char* filename, const char* TreeName, const char* VariableName)
   for(int i=0; i<Entries; i++)
   {
     Tree->GetEntry(i);
+    a = Tree->GetLeaf(VariableName)->GetValue();
     Sum+=a;
   }
 
@@ -48,7 +49,7 @@ float Sigma(const char* filename, const char* TreeName, const char* VariableName
   TFile* file = new TFile(filename);
   float a;
   TTree *Tree = (TTree*)file->Get(TreeName);
-  Tree->SetBranchAddress(VariableName, &a);
+  //Tree->SetBranchAddress(VariableName, &a);
   int Entries = Tree->GetEntries();
   float Sum=0;
   float Sigma=0;
@@ -56,6 +57,7 @@ float Sigma(const char* filename, const char* TreeName, const char* VariableName
   for(int i=0; i<Entries; i++)
   {
     Tree->GetEntry(i);
+    a = Tree->GetLeaf(VariableName)->GetValue();
     Sigma+=pow(a-Mean, 2);
   }
 

@@ -32,108 +32,112 @@ TPSimEventAction::~TPSimEventAction(){}
 // filling histograms with ROOT
 void TPSimEventAction::BeginOfEventAction(const G4Event* evt){
 
-  G4int event_id = evt->GetEventID();
+  StatsOptical.IncidentE = 0;
+  StatsOptical.DepositZnS = 0;
+  StatsOptical.DepositSc = 0;
+  StatsOptical.ScintillationZnS = 0;
+  StatsOptical.CerenkovZnS = 0;
+  StatsOptical.ScintillationSc = 0;
+  StatsOptical.CerenkovSc = 0;
+  StatsOptical.Absorbed = 0;
+  StatsOptical.BulkAbsZnS = 0;
+  StatsOptical.BulkAbsSc = 0;
+  StatsOptical.Escaped = 0;
+  StatsOptical.Failed = 0;
+  //StatsOptical.WLS = 0;
+  StatsOptical.Detected = 0;
+  StatsOptical.PositionX.clear();
+  StatsOptical.PositionY.clear();
+  StatsOptical.PositionZ.clear();
+  StatsOptical.MomentumX.clear();
+  StatsOptical.MomentumY.clear();
+  StatsOptical.MomentumZ.clear();
+  StatsOptical.BirthLambda.clear();
+  StatsOptical.Time.clear();
+  StatsOptical.Energy_pe.clear();
+  StatsOptical.Rayleigh.clear();
+  StatsOptical.Total_Reflections.clear();
+  StatsOptical.Wrap_Reflections.clear();
+  StatsOptical.TotalLength.clear();
 
-  // if(event_id %100 ==1)
-  // {
-  //   G4cout << "Event " << event_id << " Start" << G4endl;
-  //   //G4cout << "Starting EventAction..." << G4endl;
-  // }
-
-  Statistics.IncidentE = 0;
-  Statistics.Deposit = 0;
-  Statistics.Generated = 0;
-  Statistics.WLS = 0;
-  Statistics.Absorbed = 0;
-  Statistics.BulkAbs = 0;
-  Statistics.Escaped = 0;
-  Statistics.Failed = 0;
-  Statistics.Detected = 0;
-  Statistics.FWHM = 0;
-  Statistics.Count_Scintillation = 0;
-  Statistics.Count_Cerenkov = 0;
-  cpt_without_CU =0;
-  cpt_with_CU = 0;
-  cpt_photons_lost =0;
-  nph =0;
-  nph_cerenkov =0;
-  nph_scintillation =0;
-  Statsemitted.E_emitted_Elec =0;
-  Statsemitted.E_emitted_Alpha =0;
-
-  Statselectron.E_start=0;
-  Statselectron.E_dep=0;
-  Statselectron.TotalLength =0;
-  Statselectron.InteractionDepth =0;
-  Statselectron.PositionX =0;
-  Statselectron.PositionY =0;
-  Statselectron.PositionZ =0;
-  //Statselectron.E_dep_Gamma.clear();
+  StatsTP.ParticuleID=0;
+  StatsTP.E_start=0;
+  StatsTP.E_dep=0;
+  StatsTP.Charge=0;
+  StatsTP.PositionX =0;
+  StatsTP.PositionY =0;
+  StatsTP.PositionZ =0;
+  StatsTP.Time =0;
+  StatsTP.TotalLength =0;
+  StatsTP.InteractionDepth =0;
 
 }
 
 
 // Get the number of stored trajectories and calculate the statistics
 void TPSimEventAction::EndOfEventAction(const G4Event* evt){
-    G4int event_id = evt->GetEventID();
+  //G4int event_id = evt->GetEventID();
 
   TPSimRunAction *runac = (TPSimRunAction*)(G4RunManager::GetRunManager()->GetUserRunAction());
 
-
-
-  //if (Statselectron.E_dep_Gamma.size() != 0)
-    //if (Statselectron.E_dep == Statselectron.E_start)
-      //{
-      runac->UpdateStatisticsElectron(Statselectron);
-      //}
-
-
   G4double Absfrac = 0;
-  G4double Bulkfrac = 0;
+  G4double BulkfracZnS = 0;
+  G4double BulkfracSc = 0;
   G4double Escfrac = 0;
   G4double Failfrac = 0;
-  G4double WLSfrac = 0;
-  G4double Catfrac = 0;
+  //G4double WLSfrac = 0;
+  //G4double Catfrac = 0;
   G4double efficiency = 0;
-  G4double efficiency_final = 0;
-  Statistics.Generated = GetCountScintillation() + GetCountCerenkov();
+  G4int GeneratedSc = StatsOptical.ScintillationSc + StatsOptical.CerenkovSc;
+  G4int GeneratedZnS = StatsOptical.ScintillationZnS + StatsOptical.CerenkovZnS;
+  G4int Generated = GeneratedSc + GeneratedZnS;
+  G4int Scintillation = StatsOptical.ScintillationSc + StatsOptical.ScintillationZnS;
+  G4int Cerenkov = StatsOptical.CerenkovSc + StatsOptical.CerenkovZnS;
+  G4float Deposit = StatsOptical.DepositSc +  StatsOptical.DepositZnS;
 
 
-if (Statistics.Generated >0)
-{
-  efficiency = 100*(1.0*Statistics.Detected)/(1.0*Statistics.Generated);
-  Absfrac = 100*(1.0*Statistics.Absorbed)/(1.0*Statistics.Generated);
-  Bulkfrac = 100*(1.0*Statistics.BulkAbs)/(1.0*Statistics.Generated);
-  Escfrac = 100*(1.0*Statistics.Escaped)/(1.0*Statistics.Generated);
-  Failfrac = 100*(1.0*Statistics.Failed)/(1.0*Statistics.Generated);
-  WLSfrac = 100*(1.0*Statistics.WLS)/(1.0*Statistics.Generated);
-  Catfrac = 100 * (cpt_photons_lost/(1.0*Statistics.Detected));
-  efficiency_final = 100 * (Statistics.Detected/(1.0*Statistics.Generated));
-  Statistics.FWHM = 100*2.35/sqrt(Statistics.Detected);
+  if (Generated >0)
+  {
+    efficiency = 100*(1.0*StatsOptical.Detected)/(1.0*Generated);
+    Absfrac = 100*(1.0*StatsOptical.Absorbed)/(1.0*Generated);
+    BulkfracZnS = 100*(1.0*StatsOptical.BulkAbsZnS)/(1.0*Generated);
+    BulkfracSc = 100*(1.0*StatsOptical.BulkAbsSc)/(1.0*Generated);
+    Escfrac = 100*(1.0*StatsOptical.Escaped)/(1.0*Generated);
+    Failfrac = 100*(1.0*StatsOptical.Failed)/(1.0*Generated);
+    //WLSfrac = 100*(1.0*StatsOptical.WLS)/(1.0*Generated);
+    //Catfrac = 100 * (cpt_photons_lost/(1.0*Detected));
+    efficiency = 100 * (StatsOptical.Detected/(1.0*Generated));
 
-  // Output the results
-  G4cout  << "\n\nRun " << G4RunManager::GetRunManager()->GetCurrentRun()->GetRunID() <<  " >>> Event " << evt->GetEventID() << G4endl;
-  G4cout << "Incident Energy:                    " << Statistics.IncidentE << " keV " << G4endl;
-  G4cout << "Energy Deposited:                   " << Statistics.Deposit   << " keV " << G4endl;
-  G4cout << "Photons Generated:                  " << Statistics.Generated     << G4endl;
-  G4cout << "     from Scintillation :           " << Statistics.Count_Scintillation << "   (" << (float(Statistics.Count_Scintillation))/(float(Statistics.Generated))*100 << " %)"     << G4endl;
-  G4cout << "     from Cerenkov :                " << Statistics.Count_Cerenkov     << "    (" << (float(Statistics.Count_Cerenkov))/(float(Statistics.Generated))*100 << " %)"     << G4endl;
+    // Output the results
+    G4cout  << "\n\nRun " << G4RunManager::GetRunManager()->GetCurrentRun()->GetRunID() <<  " >>> Event " << evt->GetEventID() << G4endl;
+    G4cout << "Incident Energy:                             " << StatsOptical.IncidentE << " keV " << G4endl;
+    G4cout << "Energy Deposited TOTAL:                      " << Deposit   << " keV " << G4endl;
+    G4cout << "     in ZnS:                                 " << StatsOptical.DepositZnS   << " keV " << G4endl;
+    G4cout << "     in EJ-212:                              " << StatsOptical.DepositSc   << " keV " << G4endl;
+    G4cout << "Photons Generated in ZnS:                    " << GeneratedZnS     << G4endl;
+    G4cout << "     from Scintillation :                    " << StatsOptical.ScintillationZnS << "   (" << (float(StatsOptical.ScintillationZnS))/(float(GeneratedZnS))*100 << " %)"     << G4endl;
+    G4cout << "     from Cerenkov :                         " << StatsOptical.CerenkovZnS     << "    (" << (float(StatsOptical.CerenkovZnS))/(float(GeneratedZnS))*100 << " %)"     << G4endl;
+    G4cout << "Photons Generated in EJ-212:                 " << GeneratedSc     << G4endl;
+    G4cout << "     from Scintillation :                    " << StatsOptical.ScintillationSc << "   (" << (float(StatsOptical.ScintillationSc))/(float(GeneratedSc))*100 << " %)"     << G4endl;
+    G4cout << "     from Cerenkov :                         " << StatsOptical.CerenkovSc     << "    (" << (float(StatsOptical.CerenkovSc))/(float(GeneratedSc))*100 << " %)"     << G4endl;
+    G4cout << "TOTAL Photons Generated:                     " << Generated      << G4endl;
+    G4cout << "     from Scintillation :                    " << Scintillation << "   (" << (float(Scintillation))/(float(Generated))*100 << " %)"     << G4endl;
+    G4cout << "     from Cerenkov :                         " << Cerenkov     << "    (" << (float(Cerenkov))/(float(Generated))*100 << " %)"     << G4endl;
 
-  G4cout << "Photons Surface Absorbed  :         " << Statistics.Absorbed      << "        " << Absfrac << " % " << G4endl;
-  G4cout << "Photons Bulk Absorbed:              " << Statistics.BulkAbs       << "        " << Bulkfrac << " % " << G4endl;
-  G4cout << "Photons Escaped:                    " << Statistics.Escaped       << "        " << Escfrac << " % " << G4endl;
-  G4cout << "Photons only Transmitted to PMT:    " << Statistics.Failed        << "        " << Failfrac << " % " << G4endl;
-  G4cout << "Photons Collected in PMT (QE):      " << Statistics.Detected      << "        " << efficiency << " % " << G4endl;
-  G4cout << "Total Photons Considered:           " << Statistics.Absorbed + Statistics.BulkAbs + Statistics.Escaped + Statistics.Failed + Statistics.Detected  << "        " << Absfrac + Bulkfrac + Escfrac + Failfrac + efficiency << " % " << G4endl;
-  G4cout << "Photons WL Shifted:                 " << Statistics.WLS           << "        " << WLSfrac << " % " << G4endl;
-  G4cout << ""  <<  G4endl;
-  G4cout << "FWHM resolution :                   " << Statistics.FWHM << "% " << G4endl;
-  //G4cout << "FWHM resolution (with cathode uniformity):    " << Statistics.FWHM_final << "% " << G4endl;
-  G4cout << ""  <<  G4endl;
-  G4cout << ""  <<  G4endl;
+    G4cout << "Photons Surface Absorbed  :                  " << StatsOptical.Absorbed      << "        " << Absfrac << " % " << G4endl;
+    G4cout << "Photons Bulk Absorbed in ZnS :               " << StatsOptical.BulkAbsZnS       << "        " << BulkfracZnS << " % " << G4endl;
+    G4cout << "Photons Bulk Absorbed in EJ-212 :            " << StatsOptical.BulkAbsSc       << "        " << BulkfracSc << " % " << G4endl;
+    G4cout << "Photons Escaped:                             " << StatsOptical.Escaped       << "        " << Escfrac << " % " << G4endl;
+    G4cout << "Photons only Transmitted to Photocathode:    " << StatsOptical.Failed        << "        " << Failfrac << " % " << G4endl;
+    G4cout << "Photons Collected in PMT (QE):               " << StatsOptical.Detected      << "        " << efficiency << " % " << G4endl;
+    G4cout << "Total Photons Considered:                    " << StatsOptical.Absorbed + StatsOptical.BulkAbsZnS + StatsOptical.BulkAbsSc + StatsOptical.Escaped + StatsOptical.Failed + StatsOptical.Detected  << "        " << Absfrac + BulkfracZnS + BulkfracSc + Escfrac + Failfrac + efficiency << " % " << G4endl;
+    //G4cout << "Photons WL Shifted:                          " << StatsOptical.WLS           << "        " << WLSfrac << " % " << G4endl;
+    G4cout << ""  <<  G4endl;
+    G4cout << ""  <<  G4endl;
 
-  //runac->UpdateStatistics(Statistics);
-    }
-runac->UpdateStatistics(Statistics);
+  }
+
+
+  runac->UpdateStatisticsOptical(StatsOptical);
 
 }

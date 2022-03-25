@@ -51,6 +51,20 @@ void Plot_proton()
   file_Cu.close();
 
 
+  ifstream file_Si("Silicone_proton.txt");
+  float density_Si = 2.33;
+  std::vector<float> vEnergy_Si;
+  std::vector<float> vCSDA_Si;
+  vEnergy_Si.clear();
+  vCSDA_Si.clear();
+  for (int i =0; i<132; i++){
+    file_Si >> c >> d;
+    vEnergy_Si.push_back(c);
+    vCSDA_Si.push_back(d/density_Si);
+  }
+  file_Si.close();
+
+
   // ifstream file_C("Carbon_electron.txt");
   // float density_C = 2.0;
   // std::vector<float> vEnergy_C;
@@ -68,7 +82,7 @@ void Plot_proton()
   TGraph *gCSDA_Alu = new TGraph(vEnergy_Alu.size(), &vEnergy_Alu[0], &vCSDA_Alu[0]);
   TGraph *gCSDA_Sc = new TGraph(vEnergy_Sc.size(), &vEnergy_Sc[0], &vCSDA_Sc[0]);
   TGraph *gCSDA_Cu = new TGraph(vEnergy_Cu.size(), &vEnergy_Cu[0], &vCSDA_Cu[0]);
-  //TGraph *gCSDA_C = new TGraph(vEnergy_C.size(), &vEnergy_C[0], &vCSDA_C[0]);
+  TGraph *gCSDA_Si = new TGraph(vEnergy_Si.size(), &vEnergy_Si[0], &vCSDA_Si[0]);
 
   TCanvas* c1 = new TCanvas;
   c1->SetLogy();
@@ -77,118 +91,142 @@ void Plot_proton()
   gCSDA_Sc->SetLineColor(kCyan);
   gCSDA_Sc->SetMarkerColor(kCyan);
   gCSDA_Cu->SetLineColor(kOrange);
-  //gCSDA_C->SetLineColor(kBlack);
+  gCSDA_Si->SetLineColor(kGreen);
   gCSDA_Sc->Draw("");
-  gCSDA_Alu->Draw("same");
+  //gCSDA_Alu->Draw("same");
   gCSDA_Cu->Draw("same");
-  //gCSDA_C->Draw("same");
+  gCSDA_Si->Draw("same");
 
 
-  const int nfiles=14;
-  const char* filenames_Sc[nfiles]=
+  const int nfiles=13;
+  const char* filenames_Sc[14]=
     {
-     "Scintillateur_proton_10keV.root",
-     "Scintillateur_proton_100keV.root",
-     "Scintillateur_proton_250keV.root",
-     "Scintillateur_proton_500keV.root",
-     "Scintillateur_proton_750keV.root",
-     "Scintillateur_proton_1000keV.root",
-     "Scintillateur_proton_1500keV.root",
-     "Scintillateur_proton_2000keV.root",
-     "Scintillateur_proton_3000keV.root",
-     "Scintillateur_proton_4000keV.root",
-     "Scintillateur_proton_5000keV.root",
-     "Scintillateur_proton_10000keV.root",
-     "Scintillateur_proton_50000keV.root",
-     "Scintillateur_proton_500000keV.root"
+     "data/Scintillateur_proton_10keV.root",
+     "data/Scintillateur_proton_100keV.root",
+     "data/Scintillateur_proton_250keV.root",
+     "data/Scintillateur_proton_500keV.root",
+     "data/Scintillateur_proton_750keV.root",
+     "data/Scintillateur_proton_1000keV.root",
+     "data/Scintillateur_proton_1500keV.root",
+     "data/Scintillateur_proton_2000keV.root",
+     "data/Scintillateur_proton_3000keV.root",
+     "data/Scintillateur_proton_4000keV.root",
+     "data/Scintillateur_proton_5000keV.root",
+     "data/Scintillateur_proton_10000keV.root",
+     "data/Scintillateur_proton_50000keV.root",
+     "data/Scintillateur_proton_100000keV.root",
+    };
+
+
+    const char* filenames_Sc_new[13]=
+    {
+     "data/Scintillateur_proton_new_model_10keV.root",
+     "data/Scintillateur_proton_new_model_100keV.root",
+     "data/Scintillateur_proton_new_model_250keV.root",
+     "data/Scintillateur_proton_new_model_500keV.root",
+     "data/Scintillateur_proton_new_model_750keV.root",
+     "data/Scintillateur_proton_new_model_1000keV.root",
+     "data/Scintillateur_proton_new_model_1500keV.root",
+     "data/Scintillateur_proton_new_model_2000keV.root",
+     "data/Scintillateur_proton_new_model_3000keV.root",
+     "data/Scintillateur_proton_new_model_4000keV.root",
+     "data/Scintillateur_proton_new_model_5000keV.root",
+     "data/Scintillateur_proton_new_model_10000keV.root",
+     "data/Scintillateur_proton_new_model_50000keV.root",
+     //"data/Scintillateur_proton_new_model_100000keV.root",
     };
 
   const char* filenames_Alu[nfiles]=
     {
-     "Alu_proton_10keV.root",
-     "Alu_proton_100keV.root",
-     "Alu_proton_250keV.root",
-     "Alu_proton_500keV.root",
-     "Alu_proton_750keV.root",
-     "Alu_proton_1000keV.root",
-     "Alu_proton_1500keV.root",
-     "Alu_proton_2000keV.root",
-     "Alu_proton_3000keV.root",
-     "Alu_proton_4000keV.root",
-     "Alu_proton_5000keV.root",
-     "Alu_proton_10000keV.root",
-     "Alu_proton_50000keV.root",
-     "Alu_proton_500000keV.root"
+     "data/Alu_proton_10keV.root",
+     "data/Alu_proton_100keV.root",
+     "data/Alu_proton_250keV.root",
+     "data/Alu_proton_500keV.root",
+     "data/Alu_proton_750keV.root",
+     "data/Alu_proton_1000keV.root",
+     "data/Alu_proton_1500keV.root",
+     "data/Alu_proton_2000keV.root",
+     "data/Alu_proton_3000keV.root",
+     "data/Alu_proton_4000keV.root",
+     "data/Alu_proton_5000keV.root",
+     "data/Alu_proton_10000keV.root",
+     "data/Alu_proton_50000keV.root",
     };
 
 
   const char* filenames_Cu[nfiles]=
     {
-     "Cuivre_proton_10keV.root",
-     "Cuivre_proton_100keV.root",
-     "Cuivre_proton_250keV.root",
-     "Cuivre_proton_500keV.root",
-     "Cuivre_proton_750keV.root",
-     "Cuivre_proton_1000keV.root",
-     "Cuivre_proton_1500keV.root",
-     "Cuivre_proton_2000keV.root",
-     "Cuivre_proton_3000keV.root",
-     "Cuivre_proton_4000keV.root",
-     "Cuivre_proton_5000keV.root",
-     "Cuivre_proton_10000keV.root",
-     "Cuivre_proton_50000keV.root",
-     "Cuivre_proton_500000keV.root"
+     "data/Cuivre_proton_10keV.root",
+     "data/Cuivre_proton_100keV.root",
+     "data/Cuivre_proton_250keV.root",
+     "data/Cuivre_proton_500keV.root",
+     "data/Cuivre_proton_750keV.root",
+     "data/Cuivre_proton_1000keV.root",
+     "data/Cuivre_proton_1500keV.root",
+     "data/Cuivre_proton_2000keV.root",
+     "data/Cuivre_proton_3000keV.root",
+     "data/Cuivre_proton_4000keV.root",
+     "data/Cuivre_proton_5000keV.root",
+     "data/Cuivre_proton_10000keV.root",
+     "data/Cuivre_proton_50000keV.root",
     };
    
 
-  // const char* filenames_C[nfiles]=
-  // {
-  //  "Carbon_10keV.root",
-  //  "Carbon_100keV.root",
-  //  "Carbon_250keV.root",
-  //  "Carbon_500keV.root",
-  //  "Carbon_750keV.root",
-  //  "Carbon_1000keV.root",
-  //  "Carbon_1500keV.root",
-  //  "Carbon_2000keV.root",
-  //  "Carbon_3000keV.root",
-  //  "Carbon_4000keV.root",
-  //  "Carbon_5000keV.root",
-  //  "Carbon_10000keV.root",
-  //  "Carbon_50000keV.root"
-  // };
+   const char* filenames_ZnS[nfiles]=
+   {
+    "data/ZnS_proton_10keV.root",
+    "data/ZnS_proton_100keV.root",
+    "data/ZnS_proton_250keV.root",
+    "data/ZnS_proton_500keV.root",
+    "data/ZnS_proton_750keV.root",
+    "data/ZnS_proton_1000keV.root",
+    "data/ZnS_proton_1500keV.root",
+    "data/ZnS_proton_2000keV.root",
+    "data/ZnS_proton_3000keV.root",
+    "data/ZnS_proton_4000keV.root",
+    "data/ZnS_proton_5000keV.root",
+    "data/ZnS_proton_10000keV.root",
+    "data/ZnS_proton_50000keV.root"
+   };
 
     
   //TGraphErrors* test = ge(filenames, "Tree_electron", "E_start", nfiles);
-  TGraphErrors* f_Alu = ge(filenames_Alu, "Tree_electron", "E_start", "TotalLength", nfiles);
-  TGraphErrors* f_Sc = ge(filenames_Sc, "Tree_electron", "E_start", "TotalLength", nfiles);
-  TGraphErrors* f_Cu = ge(filenames_Cu, "Tree_electron", "E_start", "TotalLength", nfiles);
-  //TGraphErrors* f_C = ge(filenames_C, "Tree_electron", "E_start", "TotalLength", nfiles);
+  // TGraphErrors* f_Silicone = ge(filenames_Silicone, "Tree_electron", "E_start", "TotalLength", nfiles);
+   TGraphErrors* f_Sc = ge(filenames_Sc, "Tree_electron", "E_start", "TotalLength", 14);
+   TGraphErrors* f_Sc_new = ge(filenames_Sc_new, "Tree_electron", "E_start", "TotalLength", 13);
+  // TGraphErrors* f_Cu = ge(filenames_Cu, "Tree_electron", "E_start", "TotalLength", nfiles);
+  TGraphErrors* f_ZnS = ge(filenames_ZnS, "Tree_electron", "E_start", "TotalLength", nfiles);
     
   //new TCanvas;
-  f_Alu->Draw("PE3Same");
-  f_Alu->SetMarkerStyle(8);
-  f_Alu->SetMarkerSize(0.7);
-  f_Alu->SetMarkerColor(kGray);
-  f_Alu->SetFillColor(kGray);
-  f_Alu->SetFillStyle(3002);
+  // f_Silicone->Draw("PE3Same");
+  // f_Silicone->SetMarkerStyle(8);
+  // f_Silicone->SetMarkerSize(0.7);
+  // f_Silicone->SetMarkerColor(kGray);
+  // f_Silicone->SetFillColor(kGray);
+  // f_Silicone->SetFillStyle(3002);
   f_Sc->Draw("PE3Same");
   f_Sc->SetMarkerStyle(8);
   f_Sc->SetMarkerSize(0.7);
   f_Sc->SetMarkerColor(kCyan);
   f_Sc->SetFillColor(kCyan);
   f_Sc->SetFillStyle(3002);
-  f_Cu->Draw("PE3Same");
-  f_Cu->SetMarkerStyle(8);
-  f_Cu->SetMarkerSize(0.7);
-  f_Cu->SetMarkerColor(kOrange);
-  f_Cu->SetFillColor(kOrange);
-  f_Cu->SetFillStyle(3002);
-  // f_C->Draw("PE3Same");
-  // f_C->SetMarkerStyle(8);
-  // f_C->SetMarkerColor(kBlack);
-  // f_C->SetFillColor(kBlack);
-  // f_C->SetFillStyle(3005);
+  f_Sc_new->Draw("PE3Same");
+  f_Sc_new->SetMarkerStyle(8);
+  f_Sc_new->SetMarkerSize(0.7);
+  f_Sc_new->SetMarkerColor(kBlue);
+  f_Sc_new->SetFillColor(kBlue);
+  f_Sc_new->SetFillStyle(3002);
+  // f_Cu->Draw("PE3Same");
+  // f_Cu->SetMarkerStyle(8);
+  // f_Cu->SetMarkerSize(0.7);
+  // f_Cu->SetMarkerColor(kOrange);
+  // f_Cu->SetFillColor(kOrange);
+  // f_Cu->SetFillStyle(3002);
+  f_ZnS->Draw("PE3Same");
+  f_ZnS->SetMarkerStyle(8);
+  f_ZnS->SetMarkerColor(kBlack);
+  f_ZnS->SetFillColor(kBlack);
+  f_ZnS->SetFillStyle(3005);
   
   
 }
