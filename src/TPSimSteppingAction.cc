@@ -282,15 +282,16 @@ if (Parent_ID ==0 && StepNo==1)
 }
 
 
-if ((aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator")
-&&(aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator")
+if (((aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator") || (aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "ZnS"))
+&& ((aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator") || (aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "ZnS"))
 && partname != "opticalphoton")
 {
   evtac->AddTrackLength(aStep->GetTrack()->GetStepLength()/mm);
   evtac->AddEdepTP(aStep->GetTotalEnergyDeposit()/keV);
 }
 
-if(aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator" && evtac->GetTPPositionZ()==0)
+//Be careful here !!! If Zns in here, put ZnS. If not, put Scintillator !!!!
+if(Parent_ID ==0 && aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "ZnS" && evtac->GetTPPositionZ()==0)
 {
   evtac->SetTPPositionX(x);
   evtac->SetTPPositionY(y);

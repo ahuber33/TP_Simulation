@@ -57,25 +57,25 @@ void TPSimRunAction::BeginOfRunAction(const G4Run* aRun){
   // RunBranch = Tree_Optical->Branch("MomentumX", "vector<float>", &StatsOptical.MomentumX);
   // RunBranch = Tree_Optical->Branch("MomentumY", "vector<float>", &StatsOptical.MomentumY);
   // RunBranch = Tree_Optical->Branch("MomentumZ", "vector<float>", &StatsOptical.MomentumZ);
-  RunBranch = Tree_Optical->Branch("BirthLambda", "vector<float>", &StatsOptical.BirthLambda);
+  //RunBranch = Tree_Optical->Branch("BirthLambda", "vector<float>", &StatsOptical.BirthLambda);
   RunBranch = Tree_Optical->Branch("Time", "vector<float>", &StatsOptical.Time);
-  RunBranch = Tree_Optical->Branch("Energy_pe", "vector<float>", &StatsOptical.Energy_pe);
+  //RunBranch = Tree_Optical->Branch("Energy_pe", "vector<float>", &StatsOptical.Energy_pe);
   // RunBranch = Tree_Optical->Branch("Rayleigh", "vector<float>", &StatsOptical.Rayleigh);
   // RunBranch = Tree_Optical->Branch("Total_Reflections", "vector<float>", &StatsOptical.Total_Reflections);
   // RunBranch = Tree_Optical->Branch("Wrap_Reflections", "vector<float>", &StatsOptical.Wrap_Reflections);
-  RunBranch = Tree_Optical->Branch("TotalLength", "vector<float>", &StatsOptical.TotalLength);
+  //RunBranch = Tree_Optical->Branch("TotalLength", "vector<float>", &StatsOptical.TotalLength);
 
 
   //*****************************INFORMATION FROM THE TP**************************************
-  RunBranch = Tree_TP->Branch("ParticuleID", &StatsTP.ParticuleID, "ParticuleID/I" );
+  //RunBranch = Tree_TP->Branch("ParticuleID", &StatsTP.ParticuleID, "ParticuleID/I" );
   RunBranch = Tree_TP->Branch("E_start", &StatsTP.E_start, "E_start/F" );
   RunBranch = Tree_TP->Branch("E_dep", &StatsTP.E_dep, "E_dep/F" );
-  RunBranch = Tree_TP->Branch("Charge", &StatsTP.Charge, "Charge/F" );
+  //RunBranch = Tree_TP->Branch("Charge", &StatsTP.Charge, "Charge/F" );
   RunBranch = Tree_TP->Branch("PositionX", &StatsTP.PositionX, "PositionX/F" );
   RunBranch = Tree_TP->Branch("PositionY", &StatsTP.PositionY, "PositionY/F" );
   //RunBranch = Tree_TP->Branch("PositionZ", &StatsTP.PositionZ, "PositionZ/F" );
-  RunBranch = Tree_TP->Branch("Time", &StatsTP.Time, "Time/F" );
-  RunBranch = Tree_TP->Branch("TotalLength", &StatsTP.TotalLength, "TotalLength/F" );
+  //RunBranch = Tree_TP->Branch("Time", &StatsTP.Time, "Time/F" );
+  //RunBranch = Tree_TP->Branch("TotalLength", &StatsTP.TotalLength, "TotalLength/F" );
   //RunBranch = Tree_TP->Branch("InteractionDepth", &StatsTP.InteractionDepth, "InteractionDepth/F" );
 
 
@@ -106,7 +106,7 @@ void TPSimRunAction::EndOfRunAction(const G4Run*aRun){
   //update the temp root file
   G4String fileName = suffixe+".root";
   f = new TFile(fileName,"update");
-  Tree_Optical->Write();
+  //Tree_Optical->Write();
   Tree_TP->Write();
   f->Close();
 

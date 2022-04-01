@@ -37,32 +37,32 @@
 #-Changement du Cut dans la PhysicsList à 1mm pour faciliter/accélerer l'analyse optique avec électrons
 
 #commit #5 le 07/03/2022 (Ajout partie LaBr3 + nettoyage) [TPSim.0.3.0]
-#-Ajout des fichiers géométries correspondant à la configuration HPD et PMT (fichiers de config inclus pour le scintillateur LaBr3 et le PM)
-#-Ajout des spectres réels de flash X issues de l'expérience de Emmanuel au CELIA dans Geant4
-#-Ajout de fonctions pour ploter les résultats dans Plot.hh
-#-Création code LaBr3 attenuation pour vérification que Labs est bien pris en compte dans la simulation
-#-Création code rapide permettant d'obtenir un étalonnage entre énergie et photons générés/détectés (etalonnage_LaBr3.C)
-#-Remise en forme de l'ensemble des fichiers hh et cc avec l'indentation automatique
-#-Ajout de commentaires sur certaines parties du code
-#-Mise en forme du code plus propre avec déclarations des variables et fonctions en début de fichier pour faciliter la lecture
-#-Ajout de la données "Time" dans le root de sortie permettant de connaitre la répartition temporelle des photons sur la photocathode
+#- Ajout des fichiers géométries correspondant à la configuration HPD et PMT (fichiers de config inclus pour le scintillateur LaBr3 et le PM)
+#- Ajout des spectres réels de flash X issues de l'expérience de Emmanuel au CELIA dans Geant4
+#- Ajout de fonctions pour ploter les résultats dans Plot.hh
+#- Création code LaBr3 attenuation pour vérification que Labs est bien pris en compte dans la simulation
+#- Création code rapide permettant d'obtenir un étalonnage entre énergie et photons générés/détectés (etalonnage_LaBr3.C)
+#- Remise en forme de l'ensemble des fichiers hh et cc avec l'indentation automatique
+#- Ajout de commentaires sur certaines parties du code
+#- Mise en forme du code plus propre avec déclarations des variables et fonctions en début de fichier pour faciliter la lecture
+#- Ajout de la données "Time" dans le root de sortie permettant de connaitre la répartition temporelle des photons sur la photocathode
 
 #commit #6 le 09/03/2022 [TPSim.0.3.1]
-# - Ajout de la propriété Rayleigh scattering et donc split de l'attenuation length en absorption length et scattering length selon [https://www.researchgate.net/publication/254060762_Optical_Absorption_Length_Scattering_Length_and_Refractive_Index_of_LaBr3Ce3]
-# - Selon cette référence, l'absorption entraine quasi à chaque fois la réémission d'un photon derrière pour le LaBr3 donc à investiguer dans le futur !!!
-# - Changement de position de certaines lignes de code pour plus de clarté
+#- Ajout de la propriété Rayleigh scattering et donc split de l'attenuation length en absorption length et scattering length selon [https://www.researchgate.net/publication/254060762_Optical_Absorption_Length_Scattering_Length_and_Refractive_Index_of_LaBr3Ce3]
+#- Selon cette référence, l'absorption entraine quasi à chaque fois la réémission d'un photon derrière pour le LaBr3 donc à investiguer dans le futur !!!
+#- Changement de position de certaines lignes de code pour plus de clarté
 
 #commit #7 le 16/03/2022 [TPSim0.4.0]
-# - Ajout des longueurs de référence de la TP dans le fichier de config. L'ensemble des distances pour le placement des éléments dépend de ces paramètres. Ensemble des liens effectués
-# - Ajout dans le vis.mac des lignes permettant d'afficher la direction des champs magnétiques et électriques
-# - Création de l'ensemble des volumes principaux de la TP. La zone de champ magnétique est électrique est crée et englobe la partie créant le champ.
-# - Ajout des fonctions permettant d'obtenir et de stocker les positions d'interaction des particules dans le détecteur.
-# - Ajout des élements permettant de générer un champ magnétique et électrique uniforme dans le TPSimGeometry.cc. ATTENTION : La vérification des déviations pour le champ magnétique laissé apparaitre des écarts de plus en plus important entre la simu et les équations pour les trajectoires très déviées. A suivre et investiguer !!!!!!!!!! Ok pour le champ électrique !!!!
+#- Ajout des longueurs de référence de la TP dans le fichier de config. L'ensemble des distances pour le placement des éléments dépend de ces paramètres. Ensemble des liens effectués
+#- Ajout dans le vis.mac des lignes permettant d'afficher la direction des champs magnétiques et électriques
+#- Création de l'ensemble des volumes principaux de la TP. La zone de champ magnétique est électrique est crée et englobe la partie créant le champ.
+#- Ajout des fonctions permettant d'obtenir et de stocker les positions d'interaction des particules dans le détecteur.
+#- Ajout des élements permettant de générer un champ magnétique et électrique uniforme dans le TPSimGeometry.cc. ATTENTION : La vérification des déviations pour le champ magnétique laissé apparaitre des écarts de plus en plus important entre la simu et les équations pour les trajectoires très déviées. A suivre et investiguer !!!!!!!!!! Ok pour le champ électrique !!!!
 # - PROBLEME AVEC LA GENERATION DES IONS AVEC Z>2. NE PREND PAS EN COMPTE LA CHARGE IONIQUE DANS LE GPS/ION. INVESTIGATION EN COURS !!!!
 
 #commit #8 le 18/03/2022 [TPSim.0.4.1]
-# - Ajout des propriétés du scintillateur ZnS et ajout dans la simulation
-# - Création des variables associées au ZnS
+#- Ajout des propriétés du scintillateur ZnS et ajout dans la simulation
+#- Création des variables associées au ZnS
 
 #commit #9 le 25/03/2022 [TPSim.0.5.0]
 # - Problème du commit #7 avec la génération des ions avec Z>2 et une charge Q géré par la macro en partie réglé. Il est dorénavant possible de générer un noyau de Carbone avec une charge ionique allant de +1 à +6 pour le suivi dans la TP. Cela a été rendu possible avec l'ajout des G4BraggIonGasModel et G4BetheBlochIonGasModel permettant de suivre correctement les ions dans un milieu gazeux. Ainsi l'ion ne se retrouve pas automatiquement en équilibre avec le milieu dans lequel il se propage comme cela est le cas en règle générale dans GEANT4.
@@ -70,6 +70,12 @@
 # - En attendant, le modèle AddIonGasModels() est désactivé et l'étude optique se portera uniquement sur des protons et alpha dans un premier temps. Néanmoins, pour juste suivre la déviation sans la production de photons, il est possible d'étudier ces ions en activant le modèle AddIonGasModels().
 # - Simplification du code en regroupant l'ensemble des volumes crées dans un même fichier Geometry.cc. Les fichiers Scintillator.cc, PMT.cc, Coupling.cc et GdL.cc ont été effacés.
 # - Simplification des Trees de résultats. Mise au point d'un Tree avec l'ensemble des résultats liés à l'optique (introduction des vecteurs pour l'accès aux informations liées aux photons détectés) et un Tree pour l'ensemble des informations issues de la TP.
-# - Création des fonctions Set et Get pour chaque variable des Trees
-# - Nettoyage des parties de code non nécessaires
-# - Ajout des informations sur l'ID de la particule, son temps de vol (particule et photons) ainsi que sa charge.
+#- Création des fonctions Set et Get pour chaque variable des Trees
+#- Nettoyage des parties de code non nécessaires
+#- Ajout des informations sur l'ID de la particule, son temps de vol (particule et photons) ainsi que sa charge.
+#- L'ensemble des éléments de la géométrie bouge en fonction des paramètres de chacun des éléments de la configuration. Toutes les distances sont liées dans le TPSimGeometry.cc lors du placement des éléments.
+
+#commit #10 le 01/04/2022 [TPSim.0.5.1]
+#-Quelques changements mineurs sur le code pour ne pas avoir des ficheirs de résultats trop gros (Branches non prises en compte et donc commentées)
+#-Quelques petits bugs fixés.
+#-Ajout des programmes d'analyse (Anlayse_TP.cc et Analyse_TP.hh)

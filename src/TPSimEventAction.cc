@@ -96,7 +96,7 @@ void TPSimEventAction::EndOfEventAction(const G4Event* evt){
   G4float Deposit = StatsOptical.DepositSc +  StatsOptical.DepositZnS;
 
 
-  if (Generated >0)
+  if (Scintillation >0)
   {
     efficiency = 100*(1.0*StatsOptical.Detected)/(1.0*Generated);
     Absfrac = 100*(1.0*StatsOptical.Absorbed)/(1.0*Generated);
@@ -109,35 +109,39 @@ void TPSimEventAction::EndOfEventAction(const G4Event* evt){
     efficiency = 100 * (StatsOptical.Detected/(1.0*Generated));
 
     // Output the results
-    G4cout  << "\n\nRun " << G4RunManager::GetRunManager()->GetCurrentRun()->GetRunID() <<  " >>> Event " << evt->GetEventID() << G4endl;
-    G4cout << "Incident Energy:                             " << StatsOptical.IncidentE << " keV " << G4endl;
-    G4cout << "Energy Deposited TOTAL:                      " << Deposit   << " keV " << G4endl;
-    G4cout << "     in ZnS:                                 " << StatsOptical.DepositZnS   << " keV " << G4endl;
-    G4cout << "     in EJ-212:                              " << StatsOptical.DepositSc   << " keV " << G4endl;
-    G4cout << "Photons Generated in ZnS:                    " << GeneratedZnS     << G4endl;
-    G4cout << "     from Scintillation :                    " << StatsOptical.ScintillationZnS << "   (" << (float(StatsOptical.ScintillationZnS))/(float(GeneratedZnS))*100 << " %)"     << G4endl;
-    G4cout << "     from Cerenkov :                         " << StatsOptical.CerenkovZnS     << "    (" << (float(StatsOptical.CerenkovZnS))/(float(GeneratedZnS))*100 << " %)"     << G4endl;
-    G4cout << "Photons Generated in EJ-212:                 " << GeneratedSc     << G4endl;
-    G4cout << "     from Scintillation :                    " << StatsOptical.ScintillationSc << "   (" << (float(StatsOptical.ScintillationSc))/(float(GeneratedSc))*100 << " %)"     << G4endl;
-    G4cout << "     from Cerenkov :                         " << StatsOptical.CerenkovSc     << "    (" << (float(StatsOptical.CerenkovSc))/(float(GeneratedSc))*100 << " %)"     << G4endl;
-    G4cout << "TOTAL Photons Generated:                     " << Generated      << G4endl;
-    G4cout << "     from Scintillation :                    " << Scintillation << "   (" << (float(Scintillation))/(float(Generated))*100 << " %)"     << G4endl;
-    G4cout << "     from Cerenkov :                         " << Cerenkov     << "    (" << (float(Cerenkov))/(float(Generated))*100 << " %)"     << G4endl;
-
-    G4cout << "Photons Surface Absorbed  :                  " << StatsOptical.Absorbed      << "        " << Absfrac << " % " << G4endl;
-    G4cout << "Photons Bulk Absorbed in ZnS :               " << StatsOptical.BulkAbsZnS       << "        " << BulkfracZnS << " % " << G4endl;
-    G4cout << "Photons Bulk Absorbed in EJ-212 :            " << StatsOptical.BulkAbsSc       << "        " << BulkfracSc << " % " << G4endl;
-    G4cout << "Photons Escaped:                             " << StatsOptical.Escaped       << "        " << Escfrac << " % " << G4endl;
-    G4cout << "Photons only Transmitted to Photocathode:    " << StatsOptical.Failed        << "        " << Failfrac << " % " << G4endl;
-    G4cout << "Photons Collected in PMT (QE):               " << StatsOptical.Detected      << "        " << efficiency << " % " << G4endl;
-    G4cout << "Total Photons Considered:                    " << StatsOptical.Absorbed + StatsOptical.BulkAbsZnS + StatsOptical.BulkAbsSc + StatsOptical.Escaped + StatsOptical.Failed + StatsOptical.Detected  << "        " << Absfrac + BulkfracZnS + BulkfracSc + Escfrac + Failfrac + efficiency << " % " << G4endl;
-    //G4cout << "Photons WL Shifted:                          " << StatsOptical.WLS           << "        " << WLSfrac << " % " << G4endl;
-    G4cout << ""  <<  G4endl;
-    G4cout << ""  <<  G4endl;
+    // G4cout  << "\n\nRun " << G4RunManager::GetRunManager()->GetCurrentRun()->GetRunID() <<  " >>> Event " << evt->GetEventID() << G4endl;
+    // G4cout << "Incident Energy:                             " << StatsOptical.IncidentE << " keV " << G4endl;
+    // G4cout << "Energy Deposited TOTAL:                      " << Deposit   << " keV " << G4endl;
+    // G4cout << "     in ZnS:                                 " << StatsOptical.DepositZnS   << " keV " << G4endl;
+    // G4cout << "     in EJ-212:                              " << StatsOptical.DepositSc   << " keV " << G4endl;
+    // G4cout << "Photons Generated in ZnS:                    " << GeneratedZnS     << G4endl;
+    // G4cout << "     from Scintillation :                    " << StatsOptical.ScintillationZnS << "   (" << (float(StatsOptical.ScintillationZnS))/(float(GeneratedZnS))*100 << " %)"     << G4endl;
+    // G4cout << "     from Cerenkov :                         " << StatsOptical.CerenkovZnS     << "    (" << (float(StatsOptical.CerenkovZnS))/(float(GeneratedZnS))*100 << " %)"     << G4endl;
+    // G4cout << "Photons Generated in EJ-212:                 " << GeneratedSc     << G4endl;
+    // G4cout << "     from Scintillation :                    " << StatsOptical.ScintillationSc << "   (" << (float(StatsOptical.ScintillationSc))/(float(GeneratedSc))*100 << " %)"     << G4endl;
+    // G4cout << "     from Cerenkov :                         " << StatsOptical.CerenkovSc     << "    (" << (float(StatsOptical.CerenkovSc))/(float(GeneratedSc))*100 << " %)"     << G4endl;
+    // G4cout << "TOTAL Photons Generated:                     " << Generated      << G4endl;
+    // G4cout << "     from Scintillation :                    " << Scintillation << "   (" << (float(Scintillation))/(float(Generated))*100 << " %)"     << G4endl;
+    // G4cout << "     from Cerenkov :                         " << Cerenkov     << "    (" << (float(Cerenkov))/(float(Generated))*100 << " %)"     << G4endl;
+    //
+    // G4cout << "Photons Surface Absorbed  :                  " << StatsOptical.Absorbed      << "        " << Absfrac << " % " << G4endl;
+    // G4cout << "Photons Bulk Absorbed in ZnS :               " << StatsOptical.BulkAbsZnS       << "        " << BulkfracZnS << " % " << G4endl;
+    // G4cout << "Photons Bulk Absorbed in EJ-212 :            " << StatsOptical.BulkAbsSc       << "        " << BulkfracSc << " % " << G4endl;
+    // G4cout << "Photons Escaped:                             " << StatsOptical.Escaped       << "        " << Escfrac << " % " << G4endl;
+    // G4cout << "Photons only Transmitted to Photocathode:    " << StatsOptical.Failed        << "        " << Failfrac << " % " << G4endl;
+    // G4cout << "Photons Collected in PMT (QE):               " << StatsOptical.Detected      << "        " << efficiency << " % " << G4endl;
+    // G4cout << "Total Photons Considered:                    " << StatsOptical.Absorbed + StatsOptical.BulkAbsZnS + StatsOptical.BulkAbsSc + StatsOptical.Escaped + StatsOptical.Failed + StatsOptical.Detected  << "        " << Absfrac + BulkfracZnS + BulkfracSc + Escfrac + Failfrac + efficiency << " % " << G4endl;
+    // //G4cout << "Photons WL Shifted:                          " << StatsOptical.WLS           << "        " << WLSfrac << " % " << G4endl;
+    // G4cout << ""  <<  G4endl;
+    // G4cout << ""  <<  G4endl;
 
   }
 
-
+if(Deposit>0)
+{
   runac->UpdateStatisticsOptical(StatsOptical);
+  runac->UpdateStatisticsTP(StatsTP);
+}
+
 
 }
