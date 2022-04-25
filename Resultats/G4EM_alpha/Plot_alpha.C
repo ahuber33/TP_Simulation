@@ -1,4 +1,4 @@
-#include "/home/local1/Simulations/TP_Simulation/Resultats/Plot.hh"
+#include "/mnt/hgfs/Partage/Simulations/TP_Simulation/Resultats/Plot.hh"
 #include <iostream>
 #include <fstream>
 
@@ -112,7 +112,7 @@ void Plot_alpha()
   f_Sc->SetFillColor(kCyan);
   f_Sc->SetFillStyle(3002);
 
-  f_Sc_Gas->Draw("PE3Same");
+  //f_Sc_Gas->Draw("PE3Same");
   f_Sc_Gas->SetMarkerStyle(8);
   f_Sc_Gas->SetMarkerSize(0.5);
   f_Sc_Gas->SetMarkerColor(kBlue);
@@ -128,8 +128,8 @@ void Plot_alpha()
 
    auto legend = new TLegend(0.1,0.7,0.48,0.9);
    legend->AddEntry(gCSDA_Sc,"Data from astar","l");
-   legend->AddEntry(f_Sc,"Sim without IonGasModel","p");
-   legend->AddEntry(f_Sc_Gas,"Sim with IonGasModel","p");
+   legend->AddEntry(f_Sc,"Simulation","p");
+   //legend->AddEntry(f_Sc_Gas,"Sim with IonGasModel","p");
    legend->Draw();
   
   

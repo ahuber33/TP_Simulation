@@ -42,15 +42,15 @@ void TPSimRunAction::BeginOfRunAction(const G4Run* aRun){
   RunBranch = Tree_Optical->Branch("DepositSc", &StatsOptical.DepositSc, "DepositSc/F");
   // RunBranch = Tree_Optical->Branch("ScintillationZnS", &StatsOptical.ScintillationZnS, "ScintillationZnS/I");
   // RunBranch = Tree_Optical->Branch("CerenkovZnS", &StatsOptical.CerenkovZnS, "CerenkovZnS/I");
-  // RunBranch = Tree_Optical->Branch("ScintillationSc", &StatsOptical.ScintillationSc, "ScintillationSc/I");
+  RunBranch = Tree_Optical->Branch("ScintillationSc", &StatsOptical.ScintillationSc, "ScintillationSc/I");
   // RunBranch = Tree_Optical->Branch("CerenkovSc", &StatsOptical.CerenkovSc, "CerenkovSc/I");
   // RunBranch = Tree_Optical->Branch("BulkAbsZnS", &StatsOptical.BulkAbsZnS, "BulkAbsZnS/I");
-  // RunBranch = Tree_Optical->Branch("BulkAbsSc", &StatsOptical.BulkAbsSc, "BulkAbsSc/I");
+   RunBranch = Tree_Optical->Branch("BulkAbsSc", &StatsOptical.BulkAbsSc, "BulkAbsSc/I");
   // RunBranch = Tree_Optical->Branch("Absorbed", &StatsOptical.Absorbed, "Absorbed/I");
-  // RunBranch = Tree_Optical->Branch("Escaped", &StatsOptical.Escaped, "Escaped/I");
-  // RunBranch = Tree_Optical->Branch("Failed", &StatsOptical.Failed, "Failed/I");
+   RunBranch = Tree_Optical->Branch("Escaped", &StatsOptical.Escaped, "Escaped/I");
+   RunBranch = Tree_Optical->Branch("Failed", &StatsOptical.Failed, "Failed/I");
   //RunBranch = Tree_Optical->Branch("WLS", &StatsOptical.WLS, "WLS/I");
-  //RunBranch = Tree_Optical->Branch("Detected", &StatsOptical.Detected, "Detected/I");
+  RunBranch = Tree_Optical->Branch("Detected", &StatsOptical.Detected, "Detected/I");
   RunBranch = Tree_Optical->Branch("PositionX", "vector<float>", &StatsOptical.PositionX);
   RunBranch = Tree_Optical->Branch("PositionY", "vector<float>", &StatsOptical.PositionY);
   //RunBranch = Tree_Optical->Branch("PositionZ", "vector<float>", &StatsOptical.PositionZ);
@@ -106,7 +106,7 @@ void TPSimRunAction::EndOfRunAction(const G4Run*aRun){
   //update the temp root file
   G4String fileName = suffixe+".root";
   f = new TFile(fileName,"update");
-  //Tree_Optical->Write();
+  Tree_Optical->Write();
   Tree_TP->Write();
   f->Close();
 

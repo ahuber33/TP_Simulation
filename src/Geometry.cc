@@ -213,8 +213,9 @@ Geometry::~Geometry(){
 
 G4LogicalVolume *Geometry::GetScTest(){
 
-  Material = scintProp->GetMaterial("scintillator");
-  //Material = scintProp->GetMaterial("ZnS");
+  //Material = scintProp->GetMaterial("scintillator");
+  //Material = scintProp->GetMaterial("NoWaSH");
+  Material = scintProp->GetMaterial("ZnS");
 
   //scintillator = scintProp->GetMaterial("Alu");
 

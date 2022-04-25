@@ -291,7 +291,7 @@ if (((aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator"
 }
 
 //Be careful here !!! If Zns in here, put ZnS. If not, put Scintillator !!!!
-if(Parent_ID ==0 && aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "ZnS" && evtac->GetTPPositionZ()==0)
+if(Parent_ID ==0 && aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator" && evtac->GetTPPositionZ()==0)
 {
   evtac->SetTPPositionX(x);
   evtac->SetTPPositionY(y);

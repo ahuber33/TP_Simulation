@@ -78,4 +78,9 @@
 #commit #10 le 01/04/2022 [TPSim.0.5.1]
 #-Quelques changements mineurs sur le code pour ne pas avoir des ficheirs de résultats trop gros (Branches non prises en compte et donc commentées)
 #-Quelques petits bugs fixés.
-#-Ajout des programmes d'analyse (Anlayse_TP.cc et Analyse_TP.hh)
+#-Ajout des programmes d'analyse (Analyse_TP.cc et Analyse_TP.hh)
+
+#commit #11 le 24/04/2022 [TPSim.0.5.2]
+#- Ajout des propriétés optiques du scintillateur NoWaSH de Liquido.
+#- Ajout de l'efficacité quantique de la caméra CCD ORCA II
+#- Code analyse ayant servi à la première étude projet RATP du 2 mai 2022 [Analyse_TP.cc & Analyse_Optique.cc]

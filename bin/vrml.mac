@@ -131,19 +131,19 @@
 #/gps/particle proton
 /gps/pos/type Point
 /gps/pos/centre 0.0 0.0 -300.0 mm
-#/gps/energy 10000 keV
+/gps/energy 30000 keV
 #/gps/direction 0.0 0.0 1.0
 /gps/ang/type cos
 /gps/ang/rot1 -1 0 0
-/gps/ang/maxtheta 0.0007 rad #200µm
-#/gps/ang/maxtheta 0.0005 rad #100µm pin 0.000327 for 100%
+#/gps/ang/maxtheta 0.0007 rad #200µm
+/gps/ang/maxtheta 0.0005 rad #100µm pin 0.000327 for 100%
 
 
-/gps/ene/type Lin
-/gps/ene/min 1000 keV
-/gps/ene/max 100000 keV
-/gps/ene/gradient 0
-/gps/ene/intercept 1
+#/gps/ene/type Lin
+#/gps/ene/min 1000 keV
+#/gps/ene/max 100000 keV
+#/gps/ene/gradient 0
+#/gps/ene/intercept 1
 
 #/gps/ene/type Arb
 #/gps/hist/type arb
@@ -151,5 +151,5 @@
 #/gps/hist/inter Lin
 
 /gps/particle ion
-/gps/ion 1 1 1
+/gps/ion 2 4 1
 #/grdm/nucleusLimits 60 60 27 27

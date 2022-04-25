@@ -91,72 +91,72 @@ void Plot_electron()
   const int nfiles=13;
   const char* filenames_Sc[nfiles]=
     {
-     "Scintillateur_10keV.root",
-     "Scintillateur_100keV.root",
-     "Scintillateur_250keV.root",
-     "Scintillateur_500keV.root",
-     "Scintillateur_750keV.root",
-     "Scintillateur_1000keV.root",
-     "Scintillateur_1500keV.root",
-     "Scintillateur_2000keV.root",
-     "Scintillateur_3000keV.root",
-     "Scintillateur_4000keV.root",
-     "Scintillateur_5000keV.root",
-     "Scintillateur_10000keV.root",
-     "Scintillateur_50000keV.root"
+     "data/Scintillateur_10keV.root",
+     "data/Scintillateur_100keV.root",
+     "data/Scintillateur_250keV.root",
+     "data/Scintillateur_500keV.root",
+     "data/Scintillateur_750keV.root",
+     "data/Scintillateur_1000keV.root",
+     "data/Scintillateur_1500keV.root",
+     "data/Scintillateur_2000keV.root",
+     "data/Scintillateur_3000keV.root",
+     "data/Scintillateur_4000keV.root",
+     "data/Scintillateur_5000keV.root",
+     "data/Scintillateur_10000keV.root",
+     "data/Scintillateur_50000keV.root"
     };
 
     const char* filenames_Alu[nfiles]=
     {
-     "Alu_10keV.root",
-     "Alu_100keV.root",
-     "Alu_250keV.root",
-     "Alu_500keV.root",
-     "Alu_750keV.root",
-     "Alu_1000keV.root",
-     "Alu_1500keV.root",
-     "Alu_2000keV.root",
-     "Alu_3000keV.root",
-     "Alu_4000keV.root",
-     "Alu_5000keV.root",
-     "Alu_10000keV.root",
-     "Alu_50000keV.root"
+     "data/Alu_10keV.root",
+     "data/Alu_100keV.root",
+     "data/Alu_250keV.root",
+     "data/Alu_500keV.root",
+     "data/Alu_750keV.root",
+     "data/Alu_1000keV.root",
+     "data/Alu_1500keV.root",
+     "data/Alu_2000keV.root",
+     "data/Alu_3000keV.root",
+     "data/Alu_4000keV.root",
+     "data/Alu_5000keV.root",
+     "data/Alu_10000keV.root",
+     "data/Alu_50000keV.root"
     };
 
 
     const char* filenames_Cu[nfiles]=
     {
-     "Cuivre_10keV.root",
-     "Cuivre_100keV.root",
-     "Cuivre_250keV.root",
-     "Cuivre_500keV.root",
-     "Cuivre_750keV.root",
-     "Cuivre_1000keV.root",
-     "Cuivre_1500keV.root",
-     "Cuivre_2000keV.root",
-     "Cuivre_3000keV.root",
-     "Cuivre_4000keV.root",
-     "Cuivre_5000keV.root",
-     "Cuivre_10000keV.root",
-     "Cuivre_50000keV.root"
+     "data/Cuivre_10keV.root",
+     "data/Cuivre_100keV.root",
+     "data/Cuivre_250keV.root",
+     "data/Cuivre_500keV.root",
+     "data/Cuivre_750keV.root",
+     "data/Cuivre_1000keV.root",
+     "data/Cuivre_1500keV.root",
+     "data/Cuivre_2000keV.root",
+     "data/Cuivre_3000keV.root",
+     "data/Cuivre_4000keV.root",
+     "data/Cuivre_5000keV.root",
+     "data/Cuivre_10000keV.root",
+     "data/Cuivre_50000keV.root"
     };
 
 
     const char* filenames_C[nfiles]=
     {
-     "Carbon_10keV.root",
-     "Carbon_100keV.root",
-     "Carbon_250keV.root",
-     "Carbon_500keV.root",
-     "Carbon_750keV.root",
-     "Carbon_1000keV.root",
-     "Carbon_1500keV.root",
-     "Carbon_2000keV.root",
-     "Carbon_3000keV.root",
-     "Carbon_4000keV.root",
-     "Carbon_5000keV.root",
-     "Carbon_10000keV.root",
-     "Carbon_50000keV.root"
+     "data/Carbon_10keV.root",
+     "data/Carbon_100keV.root",
+     "data/Carbon_250keV.root",
+     "data/Carbon_500keV.root",
+     "data/Carbon_750keV.root",
+     "data/Carbon_1000keV.root",
+     "data/Carbon_1500keV.root",
+     "data/Carbon_2000keV.root",
+     "data/Carbon_3000keV.root",
+     "data/Carbon_4000keV.root",
+     "data/Carbon_5000keV.root",
+     "data/Carbon_10000keV.root",
+     "data/Carbon_50000keV.root"
     };
 
     
@@ -187,6 +187,16 @@ void Plot_electron()
   // f_C->SetMarkerColor(kBlack);
   // f_C->SetFillColor(kBlack);
   // f_C->SetFillStyle(3005);
+
+
+  auto legend = new TLegend(0.1,0.7,0.48,0.9);
+  legend->AddEntry(gCSDA_Sc,"Scintillator data from estar","l");
+  legend->AddEntry(f_Sc,"Scintillator Simulation","p");
+  legend->AddEntry(gCSDA_Alu,"Aluminium data from estar","l");
+  legend->AddEntry(f_Alu,"Aluminium Simulation","p");
+  legend->AddEntry(gCSDA_Cu,"Copper data from estar","l");
+  legend->AddEntry(f_Cu,"Copper Simulation","p");
+  legend->Draw();
   
   
 }

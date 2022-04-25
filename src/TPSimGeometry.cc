@@ -245,7 +245,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalMFPlates = theScint->GetMFPlates();
   LogicalVolumeMFPlates = theScint->GetVolumeMFPlates();
   LogicalSc = theScint->GetScTest();
-  LogicalZnS = theScint->GetZnS();
+  //LogicalZnS = theScint->GetZnS();
 
   // Set colors of various block materials
   LogicalPinhole->SetVisAttributes(black);
@@ -254,7 +254,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalMFPlates->SetVisAttributes(blue);
   LogicalVolumeMFPlates->SetVisAttributes(green);
   LogicalSc->SetVisAttributes(cyan);
-  LogicalZnS->SetVisAttributes(white);
+  //LogicalZnS->SetVisAttributes(white);
 
   // G4Region* RegEM = new G4Region("EMField");
   // //RegEM->AddRootLogicalVolume(LogicalHolder);
@@ -369,7 +369,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   std::ifstream ReadPMT;
   //G4String PMTfile = path+"QE_ham_GA0124.txt";
   //G4String PMTfile = path+"9102B_ET_reverse.txt";
-  G4String PMTfile = path+"Photonis_S20UV_reverse.cfg";
+  G4String PMTfile = path+"ORCA_II_reverse.cfg";
   std::vector<G4double> Photocathode_Energy;
   std::vector<G4double> Photocathode_Value;
   std::vector<G4double> Photocathode_Index;
@@ -531,15 +531,15 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
                 LogicalVolumeEFPlates,false,0);
 
 
-                PhysicalZnS = new G4PVPlacement(G4Transform3D
-                  (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_ZnS)), // Set at origin as basis of everything else
-                  LogicalZnS,"ZnS",
-                  LogicalHolder,false,0);
+                // PhysicalZnS = new G4PVPlacement(G4Transform3D
+                //   (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_ZnS)), // Set at origin as basis of everything else
+                //   LogicalZnS,"ZnS",
+                //   LogicalHolder,false,0);
 
-                  PhysicalSc = new G4PVPlacement(G4Transform3D
-                    (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_Sc)), // Set at origin as basis of everything else
-                    LogicalSc,"Scintillator",
-                    LogicalHolder,false,0);
+                PhysicalSc = new G4PVPlacement(G4Transform3D
+                  (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_Sc)), // Set at origin as basis of everything else
+                  LogicalSc,"Scintillator",
+                  LogicalHolder,false,0);
 
                     // PMT photocathode placement
                     PhysicalPhotocathode = new G4PVPlacement(G4Transform3D

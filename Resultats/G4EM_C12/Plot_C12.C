@@ -1,4 +1,4 @@
-#include "/home/local1/Simulations/TP_Simulation/Resultats/Plot.hh"
+#include "/mnt/hgfs/Partage/Simulations/TP_Simulation/Resultats/Plot.hh"
 #include <iostream>
 #include <fstream>
 

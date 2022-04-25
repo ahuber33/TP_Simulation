@@ -1,4 +1,4 @@
-#include "/home/local1/Simulations/TP_Simulation/Resultats/Plot.hh"
+#include "../Plot.hh"
 #include <iostream>
 #include <fstream>
 
@@ -93,9 +93,9 @@ void Plot_proton()
   gCSDA_Cu->SetLineColor(kOrange);
   gCSDA_Si->SetLineColor(kGreen);
   gCSDA_Sc->Draw("");
-  //gCSDA_Alu->Draw("same");
+  gCSDA_Alu->Draw("same");
   gCSDA_Cu->Draw("same");
-  gCSDA_Si->Draw("same");
+  //gCSDA_Si->Draw("same");
 
 
   const int nfiles=13;
@@ -192,10 +192,10 @@ void Plot_proton()
     
   //TGraphErrors* test = ge(filenames, "Tree_electron", "E_start", nfiles);
   // TGraphErrors* f_Silicone = ge(filenames_Silicone, "Tree_electron", "E_start", "TotalLength", nfiles);
-   TGraphErrors* f_Sc = ge(filenames_Sc, "Tree_electron", "E_start", "TotalLength", 14);
-   TGraphErrors* f_Sc_new = ge(filenames_Sc_new, "Tree_electron", "E_start", "TotalLength", 13);
-  // TGraphErrors* f_Cu = ge(filenames_Cu, "Tree_electron", "E_start", "TotalLength", nfiles);
-  TGraphErrors* f_ZnS = ge(filenames_ZnS, "Tree_electron", "E_start", "TotalLength", nfiles);
+   TGraphErrors* f_Alu = ge(filenames_Alu, "Tree_electron", "E_start", "TotalLength", 13);
+   TGraphErrors* f_Sc_new = ge(filenames_Sc, "Tree_electron", "E_start", "TotalLength", 13);
+   TGraphErrors* f_Cu = ge(filenames_Cu, "Tree_electron", "E_start", "TotalLength", 13);
+   //TGraphErrors* f_ZnS = ge(filenames_ZnS, "Tree_electron", "E_start", "TotalLength", nfiles);
     
   //new TCanvas;
   // f_Silicone->Draw("PE3Same");
@@ -204,29 +204,40 @@ void Plot_proton()
   // f_Silicone->SetMarkerColor(kGray);
   // f_Silicone->SetFillColor(kGray);
   // f_Silicone->SetFillStyle(3002);
-  f_Sc->Draw("PE3Same");
-  f_Sc->SetMarkerStyle(8);
-  f_Sc->SetMarkerSize(0.7);
-  f_Sc->SetMarkerColor(kCyan);
-  f_Sc->SetFillColor(kCyan);
-  f_Sc->SetFillStyle(3002);
+  f_Alu->Draw("PE3Same");
+  f_Alu->SetMarkerStyle(8);
+  f_Alu->SetMarkerSize(0.7);
+  f_Alu->SetMarkerColor(kCyan);
+  f_Alu->SetFillColor(kCyan);
+  f_Alu->SetFillStyle(3002);
   f_Sc_new->Draw("PE3Same");
   f_Sc_new->SetMarkerStyle(8);
   f_Sc_new->SetMarkerSize(0.7);
   f_Sc_new->SetMarkerColor(kBlue);
   f_Sc_new->SetFillColor(kBlue);
   f_Sc_new->SetFillStyle(3002);
-  // f_Cu->Draw("PE3Same");
-  // f_Cu->SetMarkerStyle(8);
-  // f_Cu->SetMarkerSize(0.7);
-  // f_Cu->SetMarkerColor(kOrange);
-  // f_Cu->SetFillColor(kOrange);
-  // f_Cu->SetFillStyle(3002);
-  f_ZnS->Draw("PE3Same");
-  f_ZnS->SetMarkerStyle(8);
-  f_ZnS->SetMarkerColor(kBlack);
-  f_ZnS->SetFillColor(kBlack);
-  f_ZnS->SetFillStyle(3005);
+  f_Cu->Draw("PE3Same");
+  f_Cu->SetMarkerStyle(8);
+  f_Cu->SetMarkerSize(0.7);
+  f_Cu->SetMarkerColor(kOrange);
+  f_Cu->SetFillColor(kOrange);
+  f_Cu->SetFillStyle(3002);
+  //f_ZnS->Draw("PE3Same");
+  //f_ZnS->SetMarkerStyle(8);
+  //f_ZnS->SetMarkerColor(kBlack);
+  //f_ZnS->SetFillColor(kBlack);
+  //f_ZnS->SetFillStyle(3005);
+
+
+    auto legend = new TLegend(0.1,0.7,0.48,0.9);
+  legend->AddEntry(gCSDA_Sc,"Scintillator data from estar","l");
+  legend->AddEntry(f_Sc_new,"Scintillator Simulation","p");
+  legend->AddEntry(gCSDA_Alu,"Aluminium data from estar","l");
+  legend->AddEntry(f_Alu,"Aluminium Simulation","p");
+  legend->AddEntry(gCSDA_Cu,"Copper data from estar","l");
+  legend->AddEntry(f_Cu,"Copper Simulation","p");
+  legend->Draw();
+
   
   
 }
