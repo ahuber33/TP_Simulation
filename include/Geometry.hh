@@ -36,6 +36,7 @@ public:
   G4LogicalVolume *GetPinhole();
   G4LogicalVolume *GetLaBr3();
   G4LogicalVolume *GetZnS();
+  G4LogicalVolume *GetZnSLG();
   G4LogicalVolume *GetPhotocathode();
 
 
@@ -69,6 +70,8 @@ public:
   // Position of Detector
   G4double GetScintillatorThickness(){return ScintillatorThickness;}
   G4double GetZnSThickness(){return ZnSThickness;}
+  G4double GetZnSLGThickness(){return ZnSLGThickness;}
+  G4double GetDetectorThickness(){return DetectorThickness;}
 
 
 private:
@@ -89,6 +92,8 @@ private:
   G4double ScintillatorLength;
   G4double ScintillatorThickness;
   G4double ZnSThickness;
+  G4double ZnSLGThickness;
+  G4double DetectorThickness;
   // Physical Dimensions
   // wrapping
   G4double AirGapTeflon;

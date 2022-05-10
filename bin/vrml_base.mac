@@ -19,8 +19,8 @@
 #/gps/direction 0.0 0.0 1.0
 
 #/gps/ene/type Lin
-#/gps/ene/min 10000 keV
-#/gps/ene/max 100000 keV
+#/gps/ene/min 1000 keV
+#/gps/ene/max 10000 keV
 #/gps/ene/gradient 0
 #/gps/ene/intercept 1
 
@@ -30,4 +30,4 @@
 
 /gps/particle ion
 #/gps/ion %ion
-/gps/ion 2 4 2	
+/gps/ion 2 4 2

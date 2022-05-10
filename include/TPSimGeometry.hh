@@ -62,6 +62,7 @@ private:
   G4LogicalVolume *LogicalGM_LND;
   G4LogicalVolume *LogicalSc;
   G4LogicalVolume *LogicalZnS;
+  G4LogicalVolume *LogicalZnSLG;
   G4LogicalVolume *LogicalTeflon;
   G4LogicalVolume *LogicalMylar;
   G4LogicalVolume *LogicalGlue;
@@ -83,6 +84,7 @@ private:
   G4VPhysicalVolume *PhysicalGM_LND;
   G4VPhysicalVolume *PhysicalSc;
   G4VPhysicalVolume *PhysicalZnS;
+  G4VPhysicalVolume *PhysicalZnSLG;
   G4VPhysicalVolume *PhysicalTeflon;
   G4VPhysicalVolume *PhysicalMylar;
   G4VPhysicalVolume *PhysicalGlue;
@@ -132,13 +134,16 @@ private:
   G4double translation_pinhole;
   G4double ScintillatorThickness;
   G4double ZnSThickness;
+  G4double ZnSLGThickness;
+  G4double DetectorThickness;
 
   // Dimensions PLACEMENTS
   G4double Z_Position_MFPlates;
   G4double Z_Position_EFPlates;
   G4double Z_Position_ZnS;
   G4double Z_Position_Sc;
-  G4double Z_Position_Photocathode; 
+  G4double Z_Position_ZnSLG;
+  G4double Z_Position_Photocathode;
   // wrapping
   G4double TeflonGap;
   G4double TeflonThickness;

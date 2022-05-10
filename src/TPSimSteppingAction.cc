@@ -297,6 +297,9 @@ if(Parent_ID ==0 && aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() ==
   evtac->SetTPPositionY(y);
   evtac->SetTPPositionZ(z);
   evtac->SetTPTime(aStep->GetPostStepPoint()->GetGlobalTime()/ns);
+
+  //if(x <-25){G4cout << "HERE X" << G4endl;}
+  //if(y <-10){G4cout << "HERE Y" << G4endl;}
 }
 
 if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "ZnS" && partname != "opticalphoton") {evtac->AddEdepZnS(aStep->GetTotalEnergyDeposit()/keV);}

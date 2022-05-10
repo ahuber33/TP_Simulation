@@ -59,6 +59,7 @@ private:
   G4Element* elementS;
 
   G4Material *SiO2;
+  G4Material *Silicium;
   G4Material *B2O3;
   G4Material *Na2O;
   G4Material *Al2O3;

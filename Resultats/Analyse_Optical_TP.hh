@@ -44,7 +44,7 @@ TH2F *Histo_2D(TTree* Tree, const char* name)
   Tree->SetBranchAddress("PositionX", &x);
   Tree->SetBranchAddress("PositionY", &y);
   const int Entries = Tree->GetEntries();
-  TH2F* h = new TH2F(name, name, 4500, -40, 5, 6100, -1, 60);  
+  TH2F* h = new TH2F(name, name, 6500, -60, 5, 6100, -1, 60);  
 
   for(int i=0; i<Entries; i++)
   {
@@ -75,14 +75,14 @@ vector<float> Nph_part_surface(TTree* Tree1, float nsigma)
   vector<int> Bin_Max = GetMaximumBin(hh, hh->GetNbinsX(), hh->GetNbinsY());
   //cout << "Max Value = " << h->GetBinContent(Bin_Max.at(0), Bin_Max.at(1)) << endl;
 
-  float Position_X = -40+0.1*Bin_Max.at(0);
+  float Position_X = -60+0.1*Bin_Max.at(0);
   float Position_Y = -1+0.1*Bin_Max.at(1);
 
-  float Bin_X = (Position_X+40)*100;
+  float Bin_X = (Position_X+60)*100;
   float Bin_Y = (Position_Y+1)*100;
 
   TH1D *ProjY = new TH1D("ProjY", "ProjY", 6100, -1, 60);
-  TH1D *ProjX = new TH1D("ProjX", "ProjX", 4500, -40, 5);
+  TH1D *ProjX = new TH1D("ProjX", "ProjX", 6500, -60, 5);
 
   h->ProjectionY("ProjY", Bin_X, Bin_X, "");
   h->ProjectionX("ProjX", Bin_Y, Bin_Y, "");
@@ -118,7 +118,7 @@ vector<float> Nph_part_surface(TTree* Tree1, float nsigma)
   ProjX->Fit(test_fit4, "QR");
 
   
-  TF2* f2 = new TF2("f2", "[0]*TMath::Gaus(x, [1], [2])*TMath::Gaus(y, [3], [4])", -40, 0, 0,60);
+  TF2* f2 = new TF2("f2", "[0]*TMath::Gaus(x, [1], [2])*TMath::Gaus(y, [3], [4])", -60, 0, 0,60);
   f2->SetNpy(1000);
   f2->SetNpx(1000);
   f2->SetParameter(0, test_fit4->GetParameter(0));
@@ -163,8 +163,15 @@ vector<float> Nph_part_surface(TTree* Tree1, float nsigma)
 
   float Nsim = Tree1->GetEntries();
   float DeltaN = sqrt(h2->Integral());
-  float Surface = TMath::Pi()*nsigma*SigmaX*nsigma*SigmaY;
-  float DeltaSurface = TMath::Pi()*(nsigma*SigmaX*ErrorSigmaY + nsigma*SigmaY*ErrorSigmaX);
+  float Pixel = 0.013*0.013;
+  float Surface = (TMath::Pi()*nsigma*SigmaX*nsigma*SigmaY)/Pixel;
+  float DeltaSurface = (TMath::Pi()*(nsigma*SigmaX*ErrorSigmaY + nsigma*SigmaY*ErrorSigmaX))/Pixel;
+
+
+  //Pour plot la surface !!!!!!
+  //Nph.push_back(Surface);
+  //Nph.push_back(DeltaSurface);
+
 
   
   Nph.push_back((h2->Integral()/Nsim)/Surface);
@@ -192,8 +199,8 @@ vector<float> Nph_part_surface(TTree* Tree1, float nsigma)
 
   Nsim = Tree1->GetEntries();
   DeltaN = sqrt(h2->Integral());
-  Surface = TMath::Pi()*nsigma*(SigmaX+ErrorSigmaX)*nsigma*(SigmaY+ErrorSigmaY);
-  DeltaSurface = TMath::Pi()*(nsigma*SigmaX*ErrorSigmaY + nsigma*SigmaY*ErrorSigmaX);
+  Surface = (TMath::Pi()*nsigma*(SigmaX+ErrorSigmaX)*nsigma*(SigmaY+ErrorSigmaY))/Pixel;
+  DeltaSurface = (TMath::Pi()*(nsigma*SigmaX*ErrorSigmaY + nsigma*SigmaY*ErrorSigmaX))/Pixel;
 
   
   Nph.push_back((h2->Integral()/Nsim)/Surface);
@@ -220,16 +227,12 @@ vector<float> Nph_part_surface(TTree* Tree1, float nsigma)
 
   Nsim = Tree1->GetEntries();
   DeltaN = sqrt(h2->Integral());
-  Surface = TMath::Pi()*nsigma*(SigmaX-ErrorSigmaX)*nsigma*(SigmaY-ErrorSigmaY);
-  DeltaSurface = TMath::Pi()*(nsigma*SigmaX*ErrorSigmaY + nsigma*SigmaY*ErrorSigmaX);
+  Surface = (TMath::Pi()*nsigma*(SigmaX-ErrorSigmaX)*nsigma*(SigmaY-ErrorSigmaY))/Pixel;
+  DeltaSurface = (TMath::Pi()*(nsigma*SigmaX*ErrorSigmaY + nsigma*SigmaY*ErrorSigmaX))/Pixel;
 
   
   Nph.push_back((h2->Integral()/Nsim)/Surface);
 
-
-  //Pour plot la surface !!!!!!
-  //Nph.push_back(Surface);
-  //Nph.push_back(DeltaSurface);
   
 
   return Nph;
@@ -251,7 +254,7 @@ void Nph_vs_E(const char* cfile, TMultiGraph* mg, Color_t kColor, float nsigma)
   float err1=0;
   float err2=0;
   
-  for(int i =10; i<=100; i+=10)
+  for(int i =1; i<=10; i+=1)
     {
       string sfile = Form(cfile, i);
       cout << sfile.c_str() << endl;
@@ -260,6 +263,7 @@ void Nph_vs_E(const char* cfile, TMultiGraph* mg, Color_t kColor, float nsigma)
       Nph = Nph_part_surface(Tree, nsigma);
       err1 = abs(Nph.at(0)-Nph.at(2));
       err2 = abs(Nph.at(0)-Nph.at(3));
+      
       //cout << "Nph 0 = " << Nph.at(0) << endl;
       //cout << "Nph 1 = " << Nph.at(1) << endl;
       //cout << "Nph 2 = " << Nph.at(2) << endl;
@@ -267,9 +271,9 @@ void Nph_vs_E(const char* cfile, TMultiGraph* mg, Color_t kColor, float nsigma)
       x[n] = i;
       ex[n] = 0;
       y[n] = Nph.at(0);
-      if(err1>err2) {ey[n] =err1 + Nph.at(1);}
-      if(err1<err2) {ey[n] =err2 + Nph.at(1);}
-      //ey[n] = Nph.at(0);
+      //if(err1>err2) {ey[n] =err2 + Nph.at(1);}
+      //if(err1<err2) {ey[n] =err1 + Nph.at(1);}
+      ey[n] = Nph.at(1);
       Nph.clear();
 
       delete file;

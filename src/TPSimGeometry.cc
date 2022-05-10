@@ -207,6 +207,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   translation_pinhole = theScint->GetTranslationPinhole();
   ScintillatorThickness = theScint->GetScintillatorThickness();
   ZnSThickness = theScint->GetZnSThickness();
+  ZnSLGThickness = theScint->GetZnSLGThickness();
+  DetectorThickness = theScint->GetDetectorThickness();
 
 
   //#########################
@@ -245,16 +247,16 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalMFPlates = theScint->GetMFPlates();
   LogicalVolumeMFPlates = theScint->GetVolumeMFPlates();
   LogicalSc = theScint->GetScTest();
-  //LogicalZnS = theScint->GetZnS();
+  //  LogicalZnS = theScint->GetZnS();
 
   // Set colors of various block materials
   LogicalPinhole->SetVisAttributes(black);
   LogicalEFPlates->SetVisAttributes(red);
-  LogicalVolumeEFPlates->SetVisAttributes(green);
+  LogicalVolumeEFPlates->SetVisAttributes(gray);
   LogicalMFPlates->SetVisAttributes(blue);
-  LogicalVolumeMFPlates->SetVisAttributes(green);
+  LogicalVolumeMFPlates->SetVisAttributes(gray);
   LogicalSc->SetVisAttributes(cyan);
-  //LogicalZnS->SetVisAttributes(white);
+  //LogicalZnS->SetVisAttributes(green);
 
   // G4Region* RegEM = new G4Region("EMField");
   // //RegEM->AddRootLogicalVolume(LogicalHolder);
@@ -497,7 +499,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
       Z_Position_EFPlates = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates/2;
       Z_Position_ZnS = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness/2;
       Z_Position_Sc = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness/2;
-      Z_Position_Photocathode = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness+0.05;
+      //Z_Position_ZnSLG = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness +ZnSLGThickness/2;
+      Z_Position_Photocathode = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness+ZnSLGThickness+DetectorThickness/2;
 
       //############################
       // DEFINE GEOMETRY PLACEMENTS#
@@ -535,16 +538,21 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
                 //   (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_ZnS)), // Set at origin as basis of everything else
                 //   LogicalZnS,"ZnS",
                 //   LogicalHolder,false,0);
-
+                //
                 PhysicalSc = new G4PVPlacement(G4Transform3D
                   (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_Sc)), // Set at origin as basis of everything else
                   LogicalSc,"Scintillator",
                   LogicalHolder,false,0);
 
+                  // PhysicalZnSLG = new G4PVPlacement(G4Transform3D
+                  //   (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_ZnSLG)), // Set at origin as basis of everything else
+                  //   LogicalZnSLG,"PMMA",
+                  //   LogicalHolder,false,0);
+
                     // PMT photocathode placement
                     PhysicalPhotocathode = new G4PVPlacement(G4Transform3D
                       (DontRotate,G4ThreeVector(0, translation_pinhole, Z_Position_Photocathode)),
-                      LogicalPhotocathode,"Photocathode",
+                      LogicalPhotocathode,"CMOS",
                       LogicalHolder,true,0);
 
                       //   PhysicalPMMA = new G4PVPlacement(G4Transform3D

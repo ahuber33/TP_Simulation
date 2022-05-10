@@ -69,6 +69,14 @@ Geometry::Geometry(G4String buildfile){
         config >> value >> unit;
         ZnSThickness = value*G4UnitDefinition::GetValueOf(unit);
       }
+      else if(variable == "ZnSLGThickness"){
+        config >> value >> unit;
+        ZnSLGThickness = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      else if(variable == "DetectorThickness"){
+        config >> value >> unit;
+        DetectorThickness = value*G4UnitDefinition::GetValueOf(unit);
+      }
       if(variable == "TeflonThickness"){
         config >> value >> unit;
         TeflonThickness = value*G4UnitDefinition::GetValueOf(unit);
@@ -177,6 +185,7 @@ Geometry::Geometry(G4String buildfile){
   << "\n ScintillatorLength = " << ScintillatorLength
   << "\n ScintillatorThickness = " << ScintillatorThickness
   << "\n ZnSThickness = " << ZnSThickness
+  << "\n DetectorThickness = " << DetectorThickness
   << "\n Teflon thickness = " << TeflonThickness
   << "\n Air gap Teflon = " << AirGapTeflon
   << "\n Mylar thickness = " << MylarThickness
@@ -354,12 +363,25 @@ G4LogicalVolume *Geometry::GetZnS(){
 }
 
 
-G4LogicalVolume *Geometry::GetPhotocathode(){
-  // Materials properties for PMT
-  Material = scintProp->GetMaterial("Vacuum");
+G4LogicalVolume *Geometry::GetZnSLG(){
+
+  Material = scintProp->GetMaterial("PMMA");
 
   G4Box *Box = new G4Box   ("Box",             //its name
-  ScintillatorLength/2, ScintillatorLength/2, 0.1/2);    //its size
+  ScintillatorLength/2, ScintillatorLength/2, ZnSLGThickness/2);    //its size
+  LogicalVolume = new G4LogicalVolume(Box, Material, "PMMA",0,0,0);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetPhotocathode(){
+  // Materials properties for PMT
+    //Material = scintProp->GetMaterial("Vacuum");
+    Material = scintProp->GetMaterial("Silicium");
+
+  G4Box *Box = new G4Box   ("Box",             //its name
+  ScintillatorLength/2, ScintillatorLength/2, DetectorThickness/2);    //its size
   LogicalVolume = new G4LogicalVolume(Box, Material, "Photocathode",0,0,0);
 
   return LogicalVolume;

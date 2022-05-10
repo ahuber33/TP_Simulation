@@ -14,6 +14,24 @@
 #include <string.h>
 #include <vector>
 
+//First STUDY
+int NbinsX=700;
+int NbinsY=300;
+float PosX = -70;
+float PosY = 30;
+
+//ORCA II
+//int NbinsX=1024;
+//int NbinsY=1024;
+//float PosX = -13.312;
+//float PosY = 13.312;
+
+//ORCA Quest
+//int NbinsX=4096;
+//int NbinsY=2304;
+//float PosX = -18.841;
+//float PosY = 10.598;
+
 float Param_Parabole(float masse, float charge, float Le1, float Le2, float E, float Lb1, float Lb2, float B)
 {
   float Num = masse*E*((Le1*Le1)/2 + Le1*Le2);
@@ -52,6 +70,12 @@ TGraph *Graph_Parabole(const char* filename, const char* TreeName)
 }
 
 
+void Graph_Zoom_2D(TH2F* f)
+{
+
+}
+
+
 
 TH2F *Histo_Parabole(TTree* Tree, const char* name)
 {
@@ -60,7 +84,8 @@ TH2F *Histo_Parabole(TTree* Tree, const char* name)
   Tree->SetBranchAddress("PositionX", &x);
   Tree->SetBranchAddress("PositionY", &y);
   const int Entries = Tree->GetEntries();
-  TH2F* h = new TH2F(name, name, 450, -40, 5, 610, -1, 60);  
+  TH2F* h = new TH2F(name, name, NbinsX, PosX, 0, NbinsY, 0, PosY);
+
 
   for(int i=0; i<Entries; i++)
   {
@@ -80,7 +105,7 @@ TH2F *Histo_Parabole_Optique(TTree* Tree, const char* name)
   Tree->SetBranchAddress("PositionX", &x);
   Tree->SetBranchAddress("PositionY", &y);
   const int Entries = Tree->GetEntries();
-  TH2F* h = new TH2F(name, name, 450, -40, 5, 610, -1, 60);  
+  TH2F* h = new TH2F(name, name, NbinsX, PosX, 0, NbinsY, 0, PosY);
 
   for(int i=0; i<Entries; i++)
   {
@@ -98,20 +123,23 @@ TH2F *Histo_Parabole_Optique(TTree* Tree, const char* name)
 
 TGraphErrors* Fit_LargeurY_Parabole(TH2F* h, int parametre)
 {
-  TH1D* projj = new TH1D("projj", "projj", 610, -1, 60);
+  TH1D* projj = new TH1D("projj", "projj", NbinsY, 0, PosY);
   float Bin_Max;
   float Min;
   float Max;
-  float x[610];
-  float y[610];
-  float ex[610];
-  float ey[610];
+  float x[NbinsY];
+  float y[NbinsY];
+  float ex[NbinsY];
+  float ey[NbinsY];
   int n=0;
 
-  for (int i=0; i<450; i++)
+  for (int i=0; i<NbinsX; i++)
     {
+      cout << "i = " << i << endl;
+      if(h->ProjectionY("projj", i, i, "")!= NULL) break;
       h->ProjectionY("projj", i, i, "");
-      x[n] = -40 + i*0.1 -0.05;
+      cout << "i = " << i << endl;
+      x[n] = PosX + i*abs(PosX/NbinsX) -0.05;
       ex[n] =0.05;
       //cout << "Bin Center = " << x[i] << endl;
       Bin_Max = projj->GetMaximumBin();
@@ -161,20 +189,20 @@ float flag_resolution(TGraphErrors* g)
 
 TGraphErrors* Fit_LargeurY_Parabole_NORM(TH2F* h, int parametre)
 {
-  TH1D* proj = new TH1D("proj", "proj", 610, -1, 60);
+  TH1D* proj = new TH1D("proj", "proj", NbinsY, 0, PosY);
   float Bin_Max;
   float Min;
   float Max;
-  float x[610];
-  float y[610];
-  float ex[610];
-  float ey[610];
+  float x[NbinsY];
+  float y[NbinsY];
+  float ex[NbinsY];
+  float ey[NbinsY];
   int n=0;
 
-  for (int i=250; i<400; i++)
+  for (int i=0; i<NbinsX; i++)
     {
       h->ProjectionY("proj", i, i, "");
-      x[n] = -40 + i*0.1 -0.05;
+      x[n] = PosX + i*abs(PosX/NbinsX) -0.05;
       ex[n] =0.05;
       //cout << "Bin Center = " << x[i] << endl;
       Bin_Max = proj->GetMaximumBin();
@@ -319,13 +347,13 @@ TH2F* Plot_E_Position(TTree* Tree, const char* Position)
   Tree->SetBranchAddress(Position, &Pos);
   Tree->SetBranchAddress("E_start", &E);
   const int Entries = Tree->GetEntries();
-  TH2F* h = new TH2F("EvsX", "EvsX", 450, -40, 5, 1000, 0, 100000);
+  TH2F* h = new TH2F("EvsX", "EvsX", NbinsX, PosX, 0, 1000, 0, 100);
   //TH2F* h = new TH2F("test", "test", 1000, 0, 100000, 450, -40, 5);  
 
   for(int i=0; i<Entries; i++)
   {
     Tree->GetEntry(i);
-    h->Fill(Pos,E);
+    h->Fill(Pos,E/1000);
     //h->Fill(E,Pos);
   }
 
@@ -341,7 +369,7 @@ TH2F* Plot_E_Position_Optique(TTree* Tree, const char* Position)
   Tree->SetBranchAddress(Position, &Pos);
   Tree->SetBranchAddress("IncidentE", &E);
   const int Entries = Tree->GetEntries();
-  TH2F* h = new TH2F("test", "test", 450, -40, 5, 1000, 0, 100000);
+  TH2F* h = new TH2F("test", "test", NbinsX, PosX, 0, 1000, 0, 100);
   //TH2F* h = new TH2F("test", "test", 1000, 0, 100000, 450, -40, 5);  
 
   for(int i=0; i<Entries; i++)
@@ -350,7 +378,7 @@ TH2F* Plot_E_Position_Optique(TTree* Tree, const char* Position)
     Tree->GetEntry(i);
     for (int j =0; j<Pos->size(); j++)
       {
-	h->Fill(Pos->at(j),E);
+	h->Fill(Pos->at(j),E/1000);
       }
   }
 
@@ -376,8 +404,9 @@ Double_t fpeaks(Double_t *x, Double_t *par)
 
 int Find_bin_resolution(TH2F* h_ALL, float xmin, float xmax, int npeaks, float sigma)
 {
-  int bin_start = (xmin+40.1)*10;
-  int bin_end = (xmax+40.1)*10;
+  //x[n] = PosX + i*abs(PosX/NbinsX) -0.05;
+  int bin_start = (xmin+0.05-PosX)*abs(NbinsX/PosX); 
+  int bin_end = (xmax+0.05-PosX)*abs(NbinsX/PosX);
   double par[3000];
   int p;
   int n=bin_end;
@@ -385,7 +414,7 @@ int Find_bin_resolution(TH2F* h_ALL, float xmin, float xmax, int npeaks, float s
   double xp;
   int bin;
   double yp;
-  TH1D *proj = new TH1D("proj", "proj", 610, -1, 60);
+  TH1D *proj = new TH1D("proj", "proj", NbinsY, 0, PosY);
   int number_of_peaks = npeaks;
   cout << "bin start = " << bin_start << endl;
   cout << "bin end = " << bin_end << endl;
@@ -398,7 +427,7 @@ int Find_bin_resolution(TH2F* h_ALL, float xmin, float xmax, int npeaks, float s
       nfound = s->Search(proj,sigma,"",0.1);
       
       //estimate linear background using a fitting method
-      TF1 *fline = new TF1("fline","pol1",-1,60);
+      TF1 *fline = new TF1("fline","pol1",0,PosY);
       proj->Fit("fline","qn");
       // Loop on all found peaks. Eliminate peaks at the background level
       par[0] = fline->GetParameter(0);
@@ -436,7 +465,7 @@ int Find_bin_resolution(TH2F* h_ALL, float xmin, float xmax, int npeaks, float s
 
 
 
-void Fit_YProjection_at_Resolution(TH1D* Output_resolution, int npeaks, float a, Color_t kColor)
+float Fit_YProjection_at_Resolution(TH1D* Output_resolution, int npeaks, float a, Color_t kColor)
 {
   double par[3000];
   int p;
@@ -521,7 +550,9 @@ void Fit_YProjection_at_Resolution(TH1D* Output_resolution, int npeaks, float a,
   fitgaus3->Draw("same");
   h2->GetXaxis()->SetRangeUser(-1, test_fit3->GetParameter(1) + 20*test_fit3->GetParameter(2));
   
+  float c = test_fit3->GetParameter(1) + 20*test_fit3->GetParameter(2);
 
+  return c;
   
   // TF1 *fit = new TF1("fit",fpeaks,-1,60,2+3*npeaks);
   // // We may have more than the default 25 parameters
@@ -548,25 +579,25 @@ void Fit_YProjection_at_Resolution(TH1D* Output_resolution, int npeaks, float a,
 void Analyse(const char* file_proton, const char* file_He1, const char* file_He2, const char* TreeName, const char* CanvasName, float pinhole, float B, float E, float Lb1, float D, float Le1, float Le2, float Sc_length, float Sc_thickness, float ZnS_thickness, bool Optique, float xmin_proton, float xmin_He1, float xmax_proton, float sigma)
 {
   TCanvas *c1 = new TCanvas(CanvasName, CanvasName, 0, 10, 1600, 900);
-  TPad *pad1 = new TPad("pad1", "", 0, 0.51, 0.32, 1);
+  TPad *pad1 = new TPad("pad1", "", 0, 0.51, 0.61, 1);
   TPad *pad2 = new TPad("pad2", "", 0.34, 0.51, 0.59, 1);
   TPad *pad3 = new TPad("pad3", "", 0.60, 0.51, 0.85, 1);
-  TPad *pad4 = new TPad("pad4", "", 0., 0., 0.32, 0.24);
-  TPad *pad5 = new TPad("pad5", "", 0., 0.25, 0.32, 0.49);
-  TPad *pad6 = new TPad("pad6", "", 0.34, 0., 0.66, 0.24);
-  TPad *pad7 = new TPad("pad7", "", 0.34, 0.25, 0.66, 0.49);
-  TPad *pad8 = new TPad("pad8", "", 0.68, 0., 1, 0.49);
-  TPad *pad9 = new TPad("pad9", "", 0.86, 0.51, 1, 1);
+  TPad *pad4 = new TPad("pad4", "", 0., 0., 0.29, 0.24);
+  TPad *pad5 = new TPad("pad5", "", 0., 0.25, 0.29, 0.49);
+  TPad *pad6 = new TPad("pad6", "", 0.31, 0., 0.6, 0.24);
+  TPad *pad7 = new TPad("pad7", "", 0.31, 0.25, 0.6, 0.49);
+  TPad *pad8 = new TPad("pad8", "", 0.62, 0., 0.99, 0.48);
+  TPad *pad9 = new TPad("pad9", "", 0.7, 0.51, 1, 1);
   pad1->Draw();
-  pad1->SetLogz();
-  pad2->Draw();
-  pad3->Draw();
+  //pad1->SetLogz();
+  //pad2->Draw();
+  //pad3->Draw();
   pad4->Draw();
   pad5->Draw();
   pad6->Draw();
   pad7->Draw();
   pad8->Draw();
-  pad8->SetLogz();
+  //pad8->SetLogz();
   pad9->Draw();
 
   cout << TreeName << endl;
@@ -646,105 +677,105 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   //######################################################################
   //############################# PAD 2 ##################################
   //######################################################################
-  pad2->cd();
+  // pad2->cd();
 
-  //Declaration of graphs
-  TGraphErrors* MeanY_proton = Fit_LargeurY_Parabole(h_proton, 1);
-  TGraphErrors* MeanY_He1 = Fit_LargeurY_Parabole(h_He1, 1);
-  TGraphErrors* MeanY_He2 = Fit_LargeurY_Parabole(h_He2, 1);
-  TF1* fit_mean_proton = new TF1("fit_mean_proton", "pol2", -11, -3);
-  TF1* fit_mean_He1 = new TF1("fit_mean_He1", "pol2", -6, -1);
-  TF1* fit_mean_He2 = new TF1("fit_mean_He2", "pol2", -12, -3.5);
+  // //Declaration of graphs
+  // TGraphErrors* MeanY_proton = Fit_LargeurY_Parabole(h_proton, 1);
+  // TGraphErrors* MeanY_He1 = Fit_LargeurY_Parabole(h_He1, 1);
+  // TGraphErrors* MeanY_He2 = Fit_LargeurY_Parabole(h_He2, 1);
+  // TF1* fit_mean_proton = new TF1("fit_mean_proton", "pol2", -11, -3);
+  // TF1* fit_mean_He1 = new TF1("fit_mean_He1", "pol2", -6, -1);
+  // TF1* fit_mean_He2 = new TF1("fit_mean_He2", "pol2", -12, -3.5);
 
-  //Draw & Color
-  MeanY_proton->Draw();
-  MeanY_proton->GetYaxis()->SetRangeUser(0., 60.);
-  MeanY_He1->Draw("same");
-  MeanY_He2->Draw("same");
-  MeanY_proton->SetLineColor(kRed);
-  MeanY_He1->SetLineColor(kBlue);
-  MeanY_He2->SetLineColor(kGreen+3);
+  // //Draw & Color
+  // MeanY_proton->Draw();
+  // MeanY_proton->GetYaxis()->SetRangeUser(0., 60.);
+  // MeanY_He1->Draw("same");
+  // MeanY_He2->Draw("same");
+  // MeanY_proton->SetLineColor(kRed);
+  // MeanY_He1->SetLineColor(kBlue);
+  // MeanY_He2->SetLineColor(kGreen+3);
 
-  MeanY_proton->Fit(fit_mean_proton, "QNR");
-  fit_mean_proton->Draw("same");
-  fit_mean_proton->SetLineColor(kOrange);
-  MeanY_He1->Fit(fit_mean_He1, "QNR");
-  fit_mean_He1->Draw("same");
-  fit_mean_He1->SetLineColor(kCyan);
-  MeanY_He2->Fit(fit_mean_He2, "QNR");
-  fit_mean_He2->Draw("same");
-  fit_mean_He2->SetLineColor(kGreen);
+  // MeanY_proton->Fit(fit_mean_proton, "QNR");
+  // fit_mean_proton->Draw("same");
+  // fit_mean_proton->SetLineColor(kOrange);
+  // MeanY_He1->Fit(fit_mean_He1, "QNR");
+  // fit_mean_He1->Draw("same");
+  // fit_mean_He1->SetLineColor(kCyan);
+  // MeanY_He2->Fit(fit_mean_He2, "QNR");
+  // fit_mean_He2->Draw("same");
+  // fit_mean_He2->SetLineColor(kGreen);
 
-  //Title & Legend
-  MeanY_proton->SetTitle("Mean Value Fit");
-  MeanY_proton->GetXaxis()->SetTitle("X Position [mm]");
-  MeanY_proton->GetYaxis()->SetTitle("Y Position [mm]");
-  auto legend = new TLegend(0.65,0.6,0.9,0.9);
-  legend->AddEntry(MeanY_proton,"proton","e");
-  legend->AddEntry(MeanY_He1,"He1+","e");
-  legend->AddEntry(MeanY_He2,"He2+","e");
-  legend->AddEntry(fit_mean_proton,"fit proton","l");
-  legend->AddEntry(fit_mean_He1,"fit He1+","l");
-  legend->AddEntry(fit_mean_He2,"fit He2+","l");
-  legend->Draw();
+  // //Title & Legend
+  // MeanY_proton->SetTitle("Mean Value Fit");
+  // MeanY_proton->GetXaxis()->SetTitle("X Position [mm]");
+  // MeanY_proton->GetYaxis()->SetTitle("Y Position [mm]");
+  // auto legend = new TLegend(0.65,0.6,0.9,0.9);
+  // legend->AddEntry(MeanY_proton,"proton","e");
+  // legend->AddEntry(MeanY_He1,"He1+","e");
+  // legend->AddEntry(MeanY_He2,"He2+","e");
+  // legend->AddEntry(fit_mean_proton,"fit proton","l");
+  // legend->AddEntry(fit_mean_He1,"fit He1+","l");
+  // legend->AddEntry(fit_mean_He2,"fit He2+","l");
+  // legend->Draw();
   
 
 
   //######################################################################
   //############################# PAD 3 ##################################
   //######################################################################
-  pad3->cd();
+  // pad3->cd();
 
-  //Declaration of graphs
-  TGraphErrors* Sigma_proton = Fit_LargeurY_Parabole(h_proton, 2);
-  TGraphErrors* Sigma_He1 = Fit_LargeurY_Parabole(h_He1, 2);
-  TGraphErrors* Sigma_He2 = Fit_LargeurY_Parabole(h_He2, 2);
-  TF1* fit_sigma_proton = new TF1("fit_sigma_proton", "pol1", -30, -3);
-  TF1* fit_sigma_He1 = new TF1("fit_sigma_He1", "pol1", -12, -3);
-  TF1* fit_sigma_He2 = new TF1("fit_sigma_He2", "pol1", -30, -3);
+  // //Declaration of graphs
+  // TGraphErrors* Sigma_proton = Fit_LargeurY_Parabole(h_proton, 2);
+  // TGraphErrors* Sigma_He1 = Fit_LargeurY_Parabole(h_He1, 2);
+  // TGraphErrors* Sigma_He2 = Fit_LargeurY_Parabole(h_He2, 2);
+  // TF1* fit_sigma_proton = new TF1("fit_sigma_proton", "pol1", -30, -3);
+  // TF1* fit_sigma_He1 = new TF1("fit_sigma_He1", "pol1", -12, -3);
+  // TF1* fit_sigma_He2 = new TF1("fit_sigma_He2", "pol1", -30, -3);
 
-  //Draw & Color
-  Sigma_proton->Draw();
-  Sigma_He1->Draw("same");
-  Sigma_He2->Draw("same");
-  Sigma_proton->SetLineColor(kRed);
-  Sigma_He1->SetLineColor(kBlue);
-  Sigma_He2->SetLineColor(kGreen+3);
-  Sigma_proton->Fit(fit_sigma_proton, "QNR");
-  fit_sigma_proton->Draw("same");
-  fit_sigma_proton->SetLineColor(kOrange);
-  Sigma_He1->Fit(fit_sigma_He1, "QNR");
-  fit_sigma_He1->Draw("same");
-  fit_sigma_He1->SetLineColor(kCyan);
-  Sigma_He2->Fit(fit_sigma_He2, "QNR");
-  fit_sigma_He2->Draw("same");
-  fit_sigma_He2->SetLineColor(kGreen);
+  // //Draw & Color
+  // Sigma_proton->Draw();
+  // Sigma_He1->Draw("same");
+  // Sigma_He2->Draw("same");
+  // Sigma_proton->SetLineColor(kRed);
+  // Sigma_He1->SetLineColor(kBlue);
+  // Sigma_He2->SetLineColor(kGreen+3);
+  // Sigma_proton->Fit(fit_sigma_proton, "QNR");
+  // fit_sigma_proton->Draw("same");
+  // fit_sigma_proton->SetLineColor(kOrange);
+  // Sigma_He1->Fit(fit_sigma_He1, "QNR");
+  // fit_sigma_He1->Draw("same");
+  // fit_sigma_He1->SetLineColor(kCyan);
+  // Sigma_He2->Fit(fit_sigma_He2, "QNR");
+  // fit_sigma_He2->Draw("same");
+  // fit_sigma_He2->SetLineColor(kGreen);
 
-  TLine* l1 = new TLine(-38,pinhole, 0, pinhole);
-  l1->Draw("same");
-  l1->SetLineColor(kBlack);
-  l1->SetLineWidth(2);
-  l1->SetLineStyle(2);
+  // TLine* l1 = new TLine(-38,pinhole, 0, pinhole);
+  // l1->Draw("same");
+  // l1->SetLineColor(kBlack);
+  // l1->SetLineWidth(2);
+  // l1->SetLineStyle(2);
 
-  //Title & Legend
+  // //Title & Legend
   string s = Form("r_{pinhole} =  %g mm", pinhole);
-  TLatex *t1 = new TLatex(-42,pinhole-0.1, s.c_str());
-  t1->SetTextColor(kBlack);
-  t1->SetTextFont(43);
-  t1->SetTextSize(15);
-  t1->SetTextAngle(90);
-  t1->Draw("same");
-  Sigma_proton->SetTitle("#sigma Value Fit");
-  Sigma_proton->GetXaxis()->SetTitle("X Position [mm]");
-  Sigma_proton->GetYaxis()->SetTitle("Y Position [mm]");
-  auto legend1 = new TLegend(0.65,0.6,0.9,0.9);
-  legend1->AddEntry(Sigma_proton,"proton","e");
-  legend1->AddEntry(Sigma_He1,"He1+","e");
-  legend1->AddEntry(Sigma_He2,"He2+","e");
-  legend1->AddEntry(fit_sigma_proton,"fit proton","l");
-  legend1->AddEntry(fit_sigma_He1,"fit He1+","l");
-  legend1->AddEntry(fit_sigma_He2,"fit He2+","l");
-  legend1->Draw();
+  // TLatex *t1 = new TLatex(-42,pinhole-0.1, s.c_str());
+  // t1->SetTextColor(kBlack);
+  // t1->SetTextFont(43);
+  // t1->SetTextSize(15);
+  // t1->SetTextAngle(90);
+  // t1->Draw("same");
+  // Sigma_proton->SetTitle("#sigma Value Fit");
+  // Sigma_proton->GetXaxis()->SetTitle("X Position [mm]");
+  // Sigma_proton->GetYaxis()->SetTitle("Y Position [mm]");
+  // auto legend1 = new TLegend(0.65,0.6,0.9,0.9);
+  // legend1->AddEntry(Sigma_proton,"proton","e");
+  // legend1->AddEntry(Sigma_He1,"He1+","e");
+  // legend1->AddEntry(Sigma_He2,"He2+","e");
+  // legend1->AddEntry(fit_sigma_proton,"fit proton","l");
+  // legend1->AddEntry(fit_sigma_He1,"fit He1+","l");
+  // legend1->AddEntry(fit_sigma_He2,"fit He2+","l");
+  // legend1->Draw();
 
 
   //######################################################################
@@ -753,16 +784,16 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   pad4->cd();
   
   int npeaks = 2;
-  TH1D *Output_resolution = new TH1D("Output_resolution", "Output_resolution", 610, -1, 60);
+  TH1D *Output_resolution = new TH1D("Output_resolution", "Output_resolution", NbinsY, 0, PosY);
   TH2F *h_proton_He2_bis = (TH2F*)h_proton_He2->Clone();
   int n = Find_bin_resolution(h_proton_He2_bis, xmin_proton, xmax_proton, npeaks, sigma);
-  float a = -40+0.1*(n-1)-0.05;
+  float a = PosX + n*abs(PosX/NbinsX) -0.05;
   cout << "bin = " << n << endl;
   cout << "a = " << a << endl;
   
   h_proton_He2->ProjectionY("Output_resolution", n-1, n-1, "");
   Output_resolution->Draw();
-  Fit_YProjection_at_Resolution(Output_resolution, npeaks, -a, kRed);
+  float c = Fit_YProjection_at_Resolution(Output_resolution, npeaks, -a, kRed);
 
 
 
@@ -774,9 +805,9 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   TH2F* Parabole_zoom = (TH2F*)h_proton_He2->Clone();
   Parabole_zoom->Draw("colz");
   Parabole_zoom->GetXaxis()->SetRangeUser(a-2, a+2);
-  Parabole_zoom->GetYaxis()->SetRangeUser(-1, -a);
-  TLine* l4 = new TLine(a-0.05,-1, a-0.05, -a);
-  TLine* l5 = new TLine(a+0.05,-1, a+0.05, -a);
+  Parabole_zoom->GetYaxis()->SetRangeUser(0, c);
+  TLine* l4 = new TLine(a-0.05, 0, a-0.05, c);
+  TLine* l5 = new TLine(a+0.05, 0, a+0.05, c);
 
   //Draw & Color
   l4->SetLineColor(kRed);
@@ -795,17 +826,17 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   //############################# PAD 6 ##################################
   //######################################################################
   pad6->cd();
-  TH1D *Output_resolution_bis = new TH1D("Output_resolution_bis", "Output_resolution_bis", 610, -1, 60);
+  TH1D *Output_resolution_bis = new TH1D("Output_resolution_bis", "Output_resolution_bis", NbinsY, 0, PosY);
   h_proton_He1->Draw("colz");
   TH2F *h_proton_He1_bis = (TH2F*)h_proton_He1->Clone();
   int nbis = Find_bin_resolution(h_proton_He1_bis, xmin_He1, xmax_proton, 2, sigma);
-  float abis = -40+0.1*(nbis-1)-0.05;
+  float abis = PosX + nbis*abs(PosX/NbinsX) -0.05;
   cout << "bin bis = " << nbis << endl;
   cout << "a bis = " << abis << endl;
 
   h_proton_He1->ProjectionY("Output_resolution_bis", nbis-1, nbis-1, "");
   Output_resolution_bis->Draw();
-  Fit_YProjection_at_Resolution(Output_resolution_bis, 2, -abis, kCyan);
+  float d = Fit_YProjection_at_Resolution(Output_resolution_bis, 2, -abis, kCyan);
 
 
   //######################################################################
@@ -816,9 +847,9 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   TH2F* Parabole_zoom_bis = (TH2F*)h_proton_He1->Clone();
   Parabole_zoom_bis->Draw("colz");
   Parabole_zoom_bis->GetXaxis()->SetRangeUser(abis-2, abis+2);
-  Parabole_zoom_bis->GetYaxis()->SetRangeUser(-1, -abis);
-  TLine* l4bis = new TLine(abis-0.05,-1, abis-0.05, -abis);
-  TLine* l5bis = new TLine(abis+0.05,-1, abis+0.05, -abis);
+  Parabole_zoom_bis->GetYaxis()->SetRangeUser(0, d);
+  TLine* l4bis = new TLine(abis-0.05,0, abis-0.05, d);
+  TLine* l5bis = new TLine(abis+0.05,0, abis+0.05, d);
 
   //Draw & Color
   l4bis->SetLineColor(kCyan);
@@ -852,21 +883,24 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   
   aze->Draw("colz");
 
-  TH1D *proj2 = new TH1D("proj2", "proj2", 1000, 0, 100000);
+  TH1D *proj2 = new TH1D("proj2", "proj2", 1000, 0, 100);
   aze->ProjectionY("proj2", n-1, n-1, "");
-  TF1* fit_gaus_Energie = new TF1("fit_gaus_Energie", "gaus", 0, 100000);
+  TF1* fit_gaus_Energie = new TF1("fit_gaus_Energie", "gaus", 0, 100);
   proj2->Fit(fit_gaus_Energie, "QN");
 
-  TH1D *proj2bis = new TH1D("proj2bis", "proj2bis", 1000, 0, 100000);
+  TH1D *proj2bis = new TH1D("proj2bis", "proj2bis", 1000, 0, 100);
   aze->ProjectionY("proj2bis", nbis-1, nbis-1, "");
-  TF1* fit_gaus_Energie_bis = new TF1("fit_gaus_Energie_bis", "gaus", 0, 100000);
+  TF1* fit_gaus_Energie_bis = new TF1("fit_gaus_Energie_bis", "gaus", 0, 100);
   proj2bis->Fit(fit_gaus_Energie_bis, "QN");
+
+  cout << "n = " << n << endl;
+  cout << "Fit gaus = " << fit_gaus_Energie->GetParameter(1) << endl;
   
   TLine* l6 = new TLine(a,0, a, fit_gaus_Energie->GetParameter(1));
   l6->SetLineColor(kRed);
   l6->SetLineWidth(2);
   l6->Draw("same");
-  TLine* l7 = new TLine(-40, fit_gaus_Energie->GetParameter(1), a, fit_gaus_Energie->GetParameter(1));
+  TLine* l7 = new TLine(PosX, fit_gaus_Energie->GetParameter(1), a, fit_gaus_Energie->GetParameter(1));
   l7->SetLineColor(kRed);
   l7->SetLineWidth(2);
   l7->Draw("same");
@@ -875,20 +909,20 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   l6bis->SetLineColor(kCyan);
   l6bis->SetLineWidth(2);
   l6bis->Draw("same");
-  TLine* l7bis = new TLine(-40, fit_gaus_Energie_bis->GetParameter(1), abis, fit_gaus_Energie_bis->GetParameter(1));
+  TLine* l7bis = new TLine(PosX, fit_gaus_Energie_bis->GetParameter(1), abis, fit_gaus_Energie_bis->GetParameter(1));
   l7bis->SetLineColor(kCyan);
   l7bis->SetLineWidth(2);
   l7bis->Draw("same");
 
   //Title & Legend
-  s = Form("#bf{E_{cut} p^{+}/He^{2+} =  %d MeV}", (int)fit_gaus_Energie->GetParameter(1)/1000);
-  TLatex *t3 = new TLatex(-30.,(int)fit_gaus_Energie->GetParameter(1) +5000, s.c_str());
+  s = Form("#bf{E_{cut} p^{+}/He^{2+} =  %.1f MeV}", fit_gaus_Energie->GetParameter(1)/1);
+  TLatex *t3 = new TLatex(-30.,fit_gaus_Energie->GetParameter(1) +5, s.c_str());
   t3->SetTextColor(kRed+2);
   t3->SetTextFont(43);
   t3->SetTextSize(20);
   t3->Draw("same");
-  s = Form("#bf{E_{cut} p^{+}/He^{+} =  %d MeV}", (int)fit_gaus_Energie_bis->GetParameter(1)/1000);
-  TLatex *t3bis = new TLatex(-30.,(int)fit_gaus_Energie_bis->GetParameter(1) +3000, s.c_str());
+  s = Form("#bf{E_{cut} p^{+}/He^{+} =  %.1f MeV}", fit_gaus_Energie_bis->GetParameter(1)/1);
+  TLatex *t3bis = new TLatex(-30.,fit_gaus_Energie_bis->GetParameter(1) +3, s.c_str());
   t3bis->SetTextColor(kCyan+2);
   t3bis->SetTextFont(43);
   t3bis->SetTextSize(20);

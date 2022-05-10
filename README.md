@@ -84,3 +84,9 @@
 #- Ajout des propriétés optiques du scintillateur NoWaSH de Liquido.
 #- Ajout de l'efficacité quantique de la caméra CCD ORCA II
 #- Code analyse ayant servi à la première étude projet RATP du 2 mai 2022 [Analyse_TP.cc & Analyse_Optique.cc]
+
+#commit #12 le 10/05/2022 [TPSim.0.5.3]
+#- Ajout et prise en compte du fait que le ZnS est appliqué sur un guide de lumière ou sur un scintillateur. Création de la géometrie guide de lumière en conséquence
+#- Création du matériau Silicium
+#- Modifications mineurs aux codes d'analyse
+#- Config en cours : TP reel ENL expérience LULI

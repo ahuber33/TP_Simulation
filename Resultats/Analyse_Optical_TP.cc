@@ -3,14 +3,20 @@
 void Analyse_Optical_TP()
 {
   TMultiGraph *mg = new TMultiGraph();
+  // Nph_vs_E("He1+_Config1_ZnS_0.5_Sc_0.25_%dMeV.root", mg, kBlack, 1.);
+  // Nph_vs_E("He1+_Config2_ZnS_0.5_Sc_0.25_%dMeV.root", mg, kBlue, 1.);
+  // Nph_vs_E("He1+_Config3_ZnS_0.5_Sc_0.25_%dMeV.root", mg, kRed, 1.);
+  // Nph_vs_E("He1+_Config4_ZnS_0.5_Sc_0.25_%dMeV.root", mg, kCyan, 1.);
+  // TFile rootfile("He1+_ZnS_0.5_Sc_0.25_PIXEL_13um.root","recreate");
+  // mg->Write("mg");
 
-  Nph_vs_E("He2+_Config1_ZnS_1_%dMeV.root", mg, kBlack, 1.);
-  Nph_vs_E("He2+_Config2_ZnS_1_%dMeV.root", mg, kBlue, 1.);
-  Nph_vs_E("He2+_Config3_ZnS_1_%dMeV.root", mg, kRed, 1.);
-  Nph_vs_E("He2+_Config4_ZnS_1_%dMeV.root", mg, kCyan, 1.);
+  // Nph_vs_E("proton_Config_TP_ENL_ZnS_0.1_%dMeV.root", mg, kRed, 1.);
+  // Nph_vs_E("He1+_Config_TP_ENL_ZnS_0.1_%dMeV.root", mg, kBlue, 1.);
+  // Nph_vs_E("He2+_Config_TP_ENL_ZnS_0.1_%dMeV.root", mg, kCyan, 1.);
+  // Nph_vs_E("He2+_Config2_ZnS_0.1_%MeV.root", mg, kGreen, 1.);
+  // TFile rootfile("Config_TP_ENL_ZnS_0.1_1MeV_10MeV.root","recreate");
+  // mg->Write("mg");
 
-  TFile rootfile("He2+_ZnS_1.root","recreate");
-  mg->Write("mg");
 
   
   //Config 4 avec Sc
@@ -54,7 +60,7 @@ void Analyse_Optical_TP()
   //DEBUG
   
   
-  TFile* file = new TFile("proton_Config1_Sc_0.25_80MeV.root");
+  TFile* file = new TFile("He2+_Config2_ZnS_0.1_10MeV.root");
   TTree *Tree1 = (TTree*)file->Get("Optical");
   TH2F* h;
   h = Histo_2D(Tree1, "test");
@@ -68,16 +74,16 @@ void Analyse_Optical_TP()
   vector<int> Bin_Max = GetMaximumBin(h_bis, h_bis->GetNbinsX(), h_bis->GetNbinsY());
   cout << "Max Value = " << h_bis->GetBinContent(Bin_Max.at(0), Bin_Max.at(1)) << endl;
 
-  float Position_X = -40+0.1*Bin_Max.at(0);
+  float Position_X = -60+0.1*Bin_Max.at(0);
   float Position_Y = -1+0.1*Bin_Max.at(1);
   cout << "Position X = " << Position_X << endl;
   cout << "Position Y = " << Position_Y << endl;
 
-  float Bin_X = (Position_X+40)*100;
+  float Bin_X = (Position_X+60)*100;
   float Bin_Y = (Position_Y+1)*100;
 
   TH1D *ProjY = new TH1D("ProjY", "ProjY", 6100, -1, 60);
-  TH1D *ProjX = new TH1D("ProjX", "ProjX", 4500, -40, 5);
+  TH1D *ProjX = new TH1D("ProjX", "ProjX", 6500, -60, 5);
 
   h->ProjectionY("ProjY", Bin_X, Bin_X, "");
   h->ProjectionX("ProjX", Bin_Y, Bin_Y, "");
@@ -131,7 +137,7 @@ void Analyse_Optical_TP()
 
   new TCanvas;
   hh->Draw("colz");
-  TF2* f2 = new TF2("f2", "[0]*TMath::Gaus(x, [1], [2])*TMath::Gaus(y, [3], [4])", -40, 0, 0,60);
+  TF2* f2 = new TF2("f2", "[0]*TMath::Gaus(x, [1], [2])*TMath::Gaus(y, [3], [4])", -60, 0, 0,60);
   f2->SetNpy(1000);
   f2->SetNpx(1000);
   f2->SetParameter(0, test_fit4->GetParameter(0));
@@ -167,7 +173,7 @@ void Analyse_Optical_TP()
 
   float condition =0;
 	      
-  for(int i =0; i< 4500; i++)
+  for(int i =0; i< 6500; i++)
     {
       for(int j=0; j< 6100; j++)
 	{
@@ -190,9 +196,18 @@ void Analyse_Optical_TP()
   cout << "Rapport Aire = " << Aire_ellipse_sigma/(13e-3*13e-3) << endl;
   cout << "Integral = " << h2->Integral() << endl;
   cout << "Nph/part = " << h2->Integral()/Tree1->GetEntries() << endl;
-  float Nph = (h2->Integral()/Tree1->GetEntries())/Aire_ellipse_sigma;
-  cout << "Nphotons = " << Nph << " ph/part/mm^{2}" << endl;
+  float Nph = (h2->Integral()/Tree1->GetEntries())/(Aire_ellipse_sigma/(13e-3*13e-3));
+  cout << "Nphotons = " << Nph << " ph/part/pixel" << endl;
     
+  
+
+
+
+
+
+
+
+
   
 
   // TF2* f2 = new TF2("f2", "[0]*TMath::Gaus(x, [1], [2])*TMath::Gaus(y, [3], [4])", -40, 0, 0,60);
