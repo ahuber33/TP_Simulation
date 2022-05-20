@@ -37,8 +37,13 @@ void Analyse_TP()
   //Analyse("proton_pinhole_100um_B_0.6T.root", "He1+_pinhole_100um_B_0.6T.root", "He2+_pinhole_100um_B_0.6T.root", "TP", "pinhole 100 um - B 0.6T", 0.1, 0.6, E, 50, 5, 150, 155, 100, 1, 0.1, false, -15, -10, -3, 1.6);
   //Analyse("proton_pinhole_100um_B_0.9T.root", "He1+_pinhole_100um_B_0.9T.root", "He2+_pinhole_100um_B_0.9T.root", "TP", "pinhole 100 um - B 0.9T", 0.1, 0.9, E, 50, 5, 150, 155, 100, 1, 0.1, false, -15, -15, -9.9, 1.5);
   //Analyse("proton_Config_TP_existante.root", "He1+_Config_TP_existante.root", "He2+_Config_TP_existante.root", "TP", "Config TP existante pinhole 100um", 0.1, 0.6, E, 50.8, 8.45, 40, 108.85, 100, 1, 0.1, false, -20, -10, -3.5, 1);
-  Analyse("proton_Config_TP_ENL_1MeV_10MeV.root", "He1+_Config_TP_ENL_1MeV_10MeV.root", "He2+_Config_TP_ENL_1MeV_10MeV.root", "TP", "Config TP existante pinhole 100um", 0.1, 0.6, 630000, 50., 0, 40, 175, 200, 0, 0., false, -25, -17, -15.5, 1.1);
-  Analyse("proton_Config_TP_ENL_ZnS_0.1_1MeV_10MeV.root", "He1+_Config_TP_ENL_ZnS_0.1_1MeV_10MeV.root", "He2+_Config_TP_ENL_ZnS_0.1_1MeV_10MeV.root", "Optical", "Config TP existante pinhole 100um with ZnS 0.1mm", 0.1, 0.6, 630000, 50., 0, 40, 175, 200, 0., 0.1, true, -25, -17, -15.8, 1.3);
+  //Analyse("proton_Config_TP_ENL_1MeV_10MeV.root", "He1+_Config_TP_ENL_1MeV_10MeV.root", "He2+_Config_TP_ENL_1MeV_10MeV.root", "TP", "Config TP existante pinhole 100um", 0.1, 0.6, 630000, 50., 0, 40, 175, 200, 0, 0., false, -25, -17, -15.5, 1.1);
+  //Analyse("proton_Config_TP_ENL_ZnS_0.1_1MeV_10MeV.root", "He1+_Config_TP_ENL_ZnS_0.1_1MeV_10MeV.root", "He2+_Config_TP_ENL_ZnS_0.1_1MeV_10MeV.root", "Optical", "Config TP existante pinhole 100um with ZnS 0.1mm", 0.1, 0.6, 630000, 50., 0, 40, 175, 200, 0., 0.1, true, -25, -17, -15.8, 1.3);
+  Analyse("proton_Config_TP_ELFEX_new.root", "He1+_Config_TP_ELFEX_new.root", "He2+_Config_TP_ELFEX_new.root", "TP", "Config TP ELFEX new", 0.3, 0.8, 1200000, 150., 20, 175, 200, 400, 0, 0., false, -100, -70, -52, 3.5);
+  Analyse("proton_Config_TP_PETAL.root", "He1+_Config_TP_PETAL.root", "He2+_Config_TP_PETAL.root", "TP", "Config TP PETAL", 0.5, 0.5, 1400000, 62.5, 20.75, 262.1, 745.9, 400, 0, 0., false, -28, -25, -14.8, 6);
+  Analyse("proton_Config_TP_PETAL_Exp.root", "He1+_Config_TP_PETAL_Exp.root", "He2+_Config_TP_PETAL_Exp.root", "TP", "Config TP PETAL Exp", 0.5, 0.5, 1400000, 62.5, 20.75, 262.1, 745.9, 400, 0, 0., false, -40, -40, -25, 6);
+  Analyse("proton_Config_TP_PETAL_Exp_pinhole_1mm.root", "He1+_Config_TP_PETAL_Exp_pinhole_1mm.root", "He2+_Config_TP_PETAL_Exp_pinhole_1mm.root", "TP", "Config TP PETAL Exp pinhole 1mm", 1, 0.5, 1400000, 62.5, 20.75, 262.1, 745.9, 400, 0, 0., false, -40, -40, -25, 6);
+  Analyse("proton_Config_TP_PETAL_pinhole_1mm.root", "He1+_Config_TP_PETAL_pinhole_1mm.root", "He2+_Config_TP_PETAL_pinhole_1mm.root", "TP", "Config TP PETAL pinhole 1mm", 1, 0.5, 1400000, 62.5, 20.75, 262.1, 745.9, 400, 0, 0., false, -30, -25, -15, 6);
   //Analyse("proton_pinhole_100um_B_0.6T_E_1000kV.root", "He1+_pinhole_100um_B_0.6T_E_1000kV.root", "He2+_pinhole_100um_B_0.6T_E_1000kV.root", "TP", "pinhole 100 um - B 0.6T - E 1000 kV/m", 0.1, 0.6, 1e6, 50, 5, 150, 155, 100, 1, 0.1, false, -15, -9, -6.5, 1.4);
   //Analyse("proton_pinhole_100um_B_0.6T_E_2000kV.root", "He1+_pinhole_100um_B_0.6T_E_2000kV.root", "He2+_pinhole_100um_B_0.6T_E_2000kV.root", "TP", "pinhole 100 um - B 0.6T - E 2000 kV/m", 0.1, 0.6, 2e6, 50, 5, 150, 155, 100, 1, 0.1, false, -15, -10, -3, 1.6);
   //Analyse("proton_pinhole_100um_B_0.6T_E_2000kV_Le1_300.root", "He1+_pinhole_100um_B_0.6T_E_2000kV_Le1_300.root", "He2+_pinhole_100um_B_0.6T_E_2000kV_Le1_300.root", "TP", "pinhole 100 um - B 0.6T - E 2000 kV/m - Le1 300 mm", 0.1, 0.6, 2e6, 50, 5, 300, 150, 100, 1, 0.1, false, -15, -10, -3, 2);
@@ -100,7 +105,7 @@ void Analyse_TP()
   //Analyse("Pinhole_variation/proton_E_2000_B_0.3_pinhole_0.1_Le1_225_Le2_120.root", "Pinhole_variation/He1+_E_2000_B_0.3_pinhole_0.1_Le1_225_Le2_120.root", "Pinhole_variation/He2+_E_2000_B_0.3_pinhole_0.1_Le1_225_Le2_120.root", "TP", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 1, 0., false, -10, -5, -3.2, 1.5);
   //Analyse("proton_E_2000_B_0.3_pinhole_0.15_Le1_225_Le2_120.root", "He1+_E_2000_B_0.3_pinhole_0.15_Le1_225_Le2_120.root", "He2+_E_2000_B_0.3_pinhole_0.15_Le1_225_Le2_120.root", "TP", "pinhole 150 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm", 0.15, 0.3, 2e6, 50, 5, 225, 120, 100, 1, 0., false, -10, -5, -3.2, 2.2);
   //Analyse("proton_E_2000_B_0.3_pinhole_0.2_Le1_225_Le2_120.root", "He1+_E_2000_B_0.3_pinhole_0.2_Le1_225_Le2_120.root", "He2+_E_2000_B_0.3_pinhole_0.2_Le1_225_Le2_120.root", "TP", "pinhole 200 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm", 0.2, 0.3, 2e6, 50, 5, 225, 120, 100, 1, 0., false, -10, -5, -3.2, 2.4);
-  
+
   //Analyse("proton_E_2000_B_0.3_pinhole_0.1_Le1_100_Le2_225.root", "He1+_E_2000_B_0.3_pinhole_0.1_Le1_100_Le2_225.root", "He2+_E_2000_B_0.3_pinhole_0.1_Le1_100_Le2_225.root", "TP", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 100 mm Le2 225 mm", 0.1, 0.3, 2e6, 50, 5, 100, 225, 100, 1, 0., false, -10, -5, -3.2, 1.6);
   //Analyse("proton_E_2000_B_0.3_pinhole_0.1_Le1_150_Le2_175.root", "He1+_E_2000_B_0.3_pinhole_0.1_Le1_150_Le2_175.root", "He2+_E_2000_B_0.3_pinhole_0.1_Le1_150_Le2_175.root", "TP", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 150 mm Le2 175 mm", 0.1, 0.3, 2e6, 50, 5, 150, 175, 100, 1, 0., false, -10, -5, -3.2, 1.3);
   //Analyse("proton_E_2000_B_0.3_pinhole_0.1_Le1_225_Le2_100.root", "He1+_E_2000_B_0.3_pinhole_0.1_Le1_225_Le2_100.root", "He2+_E_2000_B_0.3_pinhole_0.1_Le1_225_Le2_100.root", "TP", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 100 mm", 0.1, 0.3, 2e6, 50, 5, 225, 100, 100, 1, 0., false, -10, -5, -3.2, 1.6);
@@ -159,7 +164,7 @@ void Analyse_TP()
   //Analyse("proton_Config4_Sc_1.root", "He1+_Config4_Sc_1.root", "He2+_Config4_Sc_1.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - EJ 212 1 mm", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 1, 0., true, -6, -4.5, -3.8, 3);
   //Analyse("proton_Config4_ZnS_0.05.root", "He1+_Config4_ZnS_0.05.root", "He2+_Config4_ZnS_0.05.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - ZnS 0.05 mm", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 0, 0.1, true, -6, -4.5, -3.8, 1.1);
   //Analyse("proton_Config4_ZnS_0.1.root", "He1+_Config4_ZnS_0.1.root", "He2+_Config4_ZnS_0.1.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - ZnS 0.1 mm", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 0, 0.1, true, -6, -4.5, -3.8, 1.1);
-  //Analyse("proton_Config4_ZnS_0.25.root", "He1+_Config4_ZnS_0.25.root", "He2+_Config4_ZnS_0.25.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - ZnS 0.25 mm", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 0, 0.25, true, -6, -4.5, -3.8, 1.4);  
+  //Analyse("proton_Config4_ZnS_0.25.root", "He1+_Config4_ZnS_0.25.root", "He2+_Config4_ZnS_0.25.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - ZnS 0.25 mm", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 0, 0.25, true, -6, -4.5, -3.8, 1.4);
   //Analyse("proton_Config4_ZnS_0.5.root", "He1+_Config4_ZnS_0.5.root", "He2+_Config4_ZnS_0.5.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - ZnS 0.5 mm", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 0, 0.5, true, -6, -4.5, -3.8, 1.6);
   //Analyse("proton_Config4_ZnS_1.root", "He1+_Config4_ZnS_1.root", "He2+_Config4_ZnS_1.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - ZnS 1 mm", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 0, 1, true, -5, -3.8, -3.7, 1.6);
   //Analyse("proton_Config4_ZnS_2.root", "He1+_Config4_ZnS_2.root", "He2+_Config4_ZnS_2.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - ZnS 2 mm", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 0, 2, true, -5, -4.5, -3.8, 1.5);
@@ -169,7 +174,7 @@ void Analyse_TP()
   //Analyse("proton_Config4_NoWaSH_0.5.root", "He1+_Config4_NoWaSH_0.5.root", "He2+_Config4_NoWaSH_0.5.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - NoWaSH 0.5 mm", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 0.5, 0., true, -6, -4.5, -3.8, 1.4);
   //Analyse("proton_Config4_NoWaSH_1.root", "He1+_Config4_NoWaSH_1.root", "He2+_Config4_NoWaSH_1.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - NoWaSH 1 mm", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 1, 0., true, -6, -4.5, -3.8, 1);
   //Analyse("proton_Config4_NoWaSH_2.root", "He1+_Config4_NoWaSH_2.root", "He2+_Config4_NoWaSH_2.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - NoWaSH 2 mm", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 2, 0., true, -5.5, -4.5, -3.8, 1.3);
-  
+
 
 
   //####################################################################################
@@ -250,9 +255,9 @@ void Analyse_TP()
   //Analyse("proton_Config2_High_Stat_dist_detecteur_plaques_0mm.root", "He1+_Config2_High_Stat_dist_detecteur_plaques_0mm.root", "He2+_Config2_High_Stat_dist_detecteur_plaques_0mm.root", "TP", "pinhole 100 um - B 0.3T - E 1500 kV/m - Le1 300 mm Le2 0 mm", 0.1, 0.3, 1.5e6, 50, 5, 300, 0, 100, 0., 0., false, -5, -5, -3.2, 1.4);
   //Analyse("proton_Config2_High_Stat_thick_elec_plate_10mm.root", "He1+_Config2_High_Stat_thick_elec_plate_10mm.root", "He2+_Config2_High_Stat_thick_elec_plate_10mm.root", "TP", "pinhole 100 um - B 0.3T - E 1500 kV/m - Le1 300 mm Le2 105 mm thickness elec plate 10mm", 0.1, 0.3, 1.5e6, 50, 5, 300, 105, 100, 0., 0., false, -5, -5, -3.2, 1.4);
 
-  
+
   //void Analyse(const char* file_proton, const char* file_He1, const char* file_He2, const char* TreeName, const char* CanvasName, float pinhole, float B, float E, float Lb1, float D, float Le1, float Le2, float Sc_length, float Sc_thickness, float ZnS_thickness, bool Optique, float xmin_proton, float xmin_He1, float xmax_proton, float sigma)
-  
+
 
 
 
@@ -304,7 +309,7 @@ void Analyse_TP()
    TH1D *proj = new TH1D("proj", "proj", 610, -1, 60);
    TH1D *proj_clean = new TH1D("proj_clean", "proj_clean", 610, -1, 60);
    TH1D *bg = new TH1D("bg", "bg", 610, -1, 60);
-  
+
    //for (int i=bin_start; i<bin_end; i++)
    //{
    //cout << "i = " << i << endl;
@@ -326,7 +331,7 @@ void Analyse_TP()
        nfound = s->Search(proj, 2,"",0.2);
        printf("Found %d candidate peaks to fit\n",nfound);
 
-    
+
        //estimate linear background using a fitting method
        TF1 *fline = new TF1("fline","pol1",-1,60);
        proj->Fit("fline","same");
@@ -366,17 +371,17 @@ void Analyse_TP()
        test_fit3->SetParLimits(8, 1, 10);
        h2->Fit(test_fit3, "R+");
        cout << "Eval = " << test_fit1->Eval(par[3]-0.5);
-       
+
        for (int i=0; i<h2->GetNbinsX(); i++)
 	 {
 	   bg->SetBinContent(i, h2->GetBinContent(i) - test_fit1->Eval(h2->GetBinCenter(i)) - test_fit2->Eval(h2->GetBinCenter(i)));
 	 }
-       
+
        bg->SetLineColor(kGreen);
        bg->Draw("same");
-       
+
        printf("Found %d useful peaks to fit\n",npeaks);
-       printf("Now fitting: Be patient\n");      
+       printf("Now fitting: Be patient\n");
        TF1 *fit = new TF1("fit",fpeaks,-1,60,2+3*npeaks);
        // We may have more than the default 25 parameters
        TVirtualFitter::Fitter(h2,10+3*npeaks);
@@ -399,14 +404,14 @@ void Analyse_TP()
 
        //}
 
-  
+
        */
 
       // c1->cd(2);
       // TH1F *h2 = (TH1F*)proj_clean->Clone("h2");
       // //h2->Draw();
       // printf("Found %d useful peaks to fit\n",npeaks);
-      // printf("Now fitting: Be patient\n");      
+      // printf("Now fitting: Be patient\n");
       // TF1 *fit = new TF1("fit",fpeaks,-1,60,2+3*npeaks);
       // // We may have more than the default 25 parameters
       // TVirtualFitter::Fitter(h2,10+3*npeaks);
@@ -424,13 +429,11 @@ void Analyse_TP()
       // c1->Modified();
       // c1->Update();
       // getchar();
-   
+
       // }
-  
 
 
-  
-  
+
+
+
 }
-
-

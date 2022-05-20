@@ -15,10 +15,10 @@
 #include <vector>
 
 //First STUDY
-int NbinsX=700;
-int NbinsY=300;
-float PosX = -70;
-float PosY = 30;
+int NbinsX=1500;
+int NbinsY=800;
+float PosX = -150;
+float PosY = 80;
 
 //ORCA II
 //int NbinsX=1024;
@@ -36,7 +36,7 @@ float Param_Parabole(float masse, float charge, float Le1, float Le2, float E, f
 {
   float Num = masse*E*((Le1*Le1)/2 + Le1*Le2);
   float Denum = charge*B*B*(((Lb1*Lb1)/2+Lb1*Lb2)*((Lb1*Lb1)/2+Lb1*Lb2));
-  
+
   float param = Num/(1000*Denum);
 
   return param;
@@ -66,15 +66,8 @@ TGraph *Graph_Parabole(const char* filename, const char* TreeName)
   TGraph* graph = new TGraph(Entries, PosX, PosY);
 
   return graph;
-  
-}
-
-
-void Graph_Zoom_2D(TH2F* f)
-{
 
 }
-
 
 
 TH2F *Histo_Parabole(TTree* Tree, const char* name)
@@ -93,7 +86,7 @@ TH2F *Histo_Parabole(TTree* Tree, const char* name)
     h->Fill(x,y);
   }
 
-  return h;  
+  return h;
 }
 
 
@@ -118,7 +111,7 @@ TH2F *Histo_Parabole_Optique(TTree* Tree, const char* name)
       }
   }
 
-  return h;  
+  return h;
 }
 
 TGraphErrors* Fit_LargeurY_Parabole(TH2F* h, int parametre)
@@ -220,7 +213,7 @@ TGraphErrors* Fit_LargeurY_Parabole_NORM(TH2F* h, int parametre)
     }
 
   TGraphErrors* g = new TGraphErrors(n, x, y, ex, ey);
-  
+
 
   delete proj;
   return g;
@@ -241,7 +234,7 @@ TGraphErrors* Resolution(TGraphErrors* gMean1, TGraphErrors* gMean2, TGraphError
   float DM=0;
   float eDM=0;
   float n=0;
-  
+
   for (int i=0; i<150; i++)
     {
       M = abs(gMean1->GetPointY(i) - gMean2->GetPointY(i));
@@ -257,27 +250,27 @@ TGraphErrors* Resolution(TGraphErrors* gMean1, TGraphErrors* gMean2, TGraphError
     }
 
   TGraphErrors* g = new TGraphErrors(n, x, Resolution, ex, eResolution);
-  
+
   return g;
-  
+
 }
 
 
 
 TF1 *fit_gaus_resolution(TH1D* proj, TF1* fit_mean1, TF1* fit_mean2, TF1* fit_sigma1, TF1 *fit_sigma2, float flag_resolution)
 {
-  
+
   TF1* fit_gaus1 = new TF1("fit_gaus1", "gaus(0)", fit_mean1->Eval(flag_resolution)-3*fit_sigma1->Eval(flag_resolution), fit_mean1->Eval(flag_resolution)+2*fit_sigma1->Eval(flag_resolution));
   fit_gaus1->SetParameter(1, fit_mean1->Eval(flag_resolution));
   fit_gaus1->SetParameter(2, fit_sigma1->Eval(flag_resolution));
   proj->Fit(fit_gaus1, "QNR+");
-  
+
   TF1* fit_gaus2 = new TF1("fit_gaus2", "gaus(0)", fit_mean2->Eval(flag_resolution)-fit_sigma2->Eval(flag_resolution), fit_mean2->Eval(flag_resolution)+3*fit_sigma2->Eval(flag_resolution));
   fit_gaus2->SetParameter(1, fit_mean2->Eval(flag_resolution));
   fit_gaus2->SetParameter(2, fit_sigma2->Eval(flag_resolution));
   proj->Fit(fit_gaus2, "QNR+");
 
-  
+
   TF1* fit_gaus = new TF1("fit_gaus", "gaus(0) + gaus(3)",-1, -flag_resolution);
   fit_gaus->SetParameter(0, fit_gaus1->GetParameter(0));
   fit_gaus->SetParameter(1, fit_gaus1->GetParameter(1));
@@ -295,7 +288,7 @@ TF1 *fit_gaus_resolution(TH1D* proj, TF1* fit_mean1, TF1* fit_mean2, TF1* fit_si
 
   delete fit_gaus1;
   delete fit_gaus2;
-  
+
   return fit_gaus;
 
 }
@@ -304,18 +297,18 @@ TF1 *fit_gaus_resolution(TH1D* proj, TF1* fit_mean1, TF1* fit_mean2, TF1* fit_si
 
 TF1 *fit_gaus_resolution_test(TH1D* proj, TGraphErrors* fit_mean1, TGraphErrors* fit_mean2, TGraphErrors* fit_sigma1, TGraphErrors *fit_sigma2, float flag_resolution)
 {
-  
+
   TF1* fit_gaus1 = new TF1("fit_gaus1", "gaus(0)", fit_mean1->Eval(flag_resolution)-1*fit_sigma1->Eval(flag_resolution), fit_mean1->Eval(flag_resolution)+0.75*fit_sigma1->Eval(flag_resolution));
   fit_gaus1->SetParameter(1, fit_mean1->Eval(flag_resolution));
   fit_gaus1->SetParameter(2, fit_sigma1->Eval(flag_resolution));
   proj->Fit(fit_gaus1, "QNR+");
-  
+
   TF1* fit_gaus2 = new TF1("fit_gaus2", "gaus(0)", fit_mean2->Eval(flag_resolution)-0.75*fit_sigma2->Eval(flag_resolution), fit_mean2->Eval(flag_resolution)+1*fit_sigma2->Eval(flag_resolution));
   fit_gaus2->SetParameter(1, fit_mean2->Eval(flag_resolution));
   fit_gaus2->SetParameter(2, fit_sigma2->Eval(flag_resolution));
   proj->Fit(fit_gaus2, "QNR+");
 
-  
+
   TF1* fit_gaus = new TF1("fit_gaus", "gaus(0) + gaus(3)",-1, -flag_resolution);
   fit_gaus->SetParameter(0, fit_gaus1->GetParameter(0));
   fit_gaus->SetParameter(1, fit_gaus1->GetParameter(1));
@@ -333,7 +326,7 @@ TF1 *fit_gaus_resolution_test(TH1D* proj, TGraphErrors* fit_mean1, TGraphErrors*
 
   delete fit_gaus1;
   delete fit_gaus2;
-  
+
   return fit_gaus;
 
 }
@@ -347,8 +340,8 @@ TH2F* Plot_E_Position(TTree* Tree, const char* Position)
   Tree->SetBranchAddress(Position, &Pos);
   Tree->SetBranchAddress("E_start", &E);
   const int Entries = Tree->GetEntries();
-  TH2F* h = new TH2F("EvsX", "EvsX", NbinsX, PosX, 0, 1000, 0, 100);
-  //TH2F* h = new TH2F("test", "test", 1000, 0, 100000, 450, -40, 5);  
+  TH2F* h = new TH2F("EvsX", "EvsX", NbinsX, PosX, 0, 2000, 0, 200);
+  //TH2F* h = new TH2F("test", "test", 1000, 0, 100000, 450, -40, 5);
 
   for(int i=0; i<Entries; i++)
   {
@@ -357,7 +350,7 @@ TH2F* Plot_E_Position(TTree* Tree, const char* Position)
     //h->Fill(E,Pos);
   }
 
-  return h;  
+  return h;
 }
 
 
@@ -370,7 +363,7 @@ TH2F* Plot_E_Position_Optique(TTree* Tree, const char* Position)
   Tree->SetBranchAddress("IncidentE", &E);
   const int Entries = Tree->GetEntries();
   TH2F* h = new TH2F("test", "test", NbinsX, PosX, 0, 1000, 0, 100);
-  //TH2F* h = new TH2F("test", "test", 1000, 0, 100000, 450, -40, 5);  
+  //TH2F* h = new TH2F("test", "test", 1000, 0, 100000, 450, -40, 5);
 
   for(int i=0; i<Entries; i++)
   {
@@ -383,7 +376,7 @@ TH2F* Plot_E_Position_Optique(TTree* Tree, const char* Position)
   }
 
 
-  return h;  
+  return h;
 }
 
 
@@ -405,7 +398,7 @@ Double_t fpeaks(Double_t *x, Double_t *par)
 int Find_bin_resolution(TH2F* h_ALL, float xmin, float xmax, int npeaks, float sigma)
 {
   //x[n] = PosX + i*abs(PosX/NbinsX) -0.05;
-  int bin_start = (xmin+0.05-PosX)*abs(NbinsX/PosX); 
+  int bin_start = (xmin+0.05-PosX)*abs(NbinsX/PosX);
   int bin_end = (xmax+0.05-PosX)*abs(NbinsX/PosX);
   double par[3000];
   int p;
@@ -418,14 +411,14 @@ int Find_bin_resolution(TH2F* h_ALL, float xmin, float xmax, int npeaks, float s
   int number_of_peaks = npeaks;
   cout << "bin start = " << bin_start << endl;
   cout << "bin end = " << bin_end << endl;
-  
-  
+
+
   for (int i=bin_start; i<bin_end; i++)
     {
       h_ALL->ProjectionY("proj", i, i, "");
       TSpectrum *s = new TSpectrum(npeaks);
       nfound = s->Search(proj,sigma,"",0.1);
-      
+
       //estimate linear background using a fitting method
       TF1 *fline = new TF1("fline","pol1",0,PosY);
       proj->Fit("fline","qn");
@@ -449,7 +442,7 @@ int Find_bin_resolution(TH2F* h_ALL, float xmin, float xmax, int npeaks, float s
 
       delete s;
       proj->Reset();
-      
+
       if(npeaks==number_of_peaks-1)
 	{
 	  n =i;
@@ -458,7 +451,7 @@ int Find_bin_resolution(TH2F* h_ALL, float xmin, float xmax, int npeaks, float s
 	}
 
     }
-  
+
   return n;
 
 }
@@ -470,7 +463,7 @@ float Fit_YProjection_at_Resolution(TH1D* Output_resolution, int npeaks, float a
   double par[3000];
   int p;
   TH1F *h2 = (TH1F*)Output_resolution->Clone("h2");
-  
+
   h2->GetXaxis()->SetRangeUser(-1, a);
   TSpectrum *s = new TSpectrum(npeaks);
   Int_t nfound = s->Search(Output_resolution, 1,"",0.05);
@@ -499,7 +492,7 @@ float Fit_YProjection_at_Resolution(TH1D* Output_resolution, int npeaks, float a
     par[3*npeaks+4] = 0.1; // "sigma"
     npeaks++;
   }
-  
+
   printf("Found %d useful peaks to fit\n",npeaks);
   printf("Now fitting: Be patient\n");
 
@@ -549,11 +542,11 @@ float Fit_YProjection_at_Resolution(TH1D* Output_resolution, int npeaks, float a
   fitgaus3->SetLineColor(kGreen+2);
   fitgaus3->Draw("same");
   h2->GetXaxis()->SetRangeUser(-1, test_fit3->GetParameter(1) + 20*test_fit3->GetParameter(2));
-  
+
   float c = test_fit3->GetParameter(1) + 20*test_fit3->GetParameter(2);
 
   return c;
-  
+
   // TF1 *fit = new TF1("fit",fpeaks,-1,60,2+3*npeaks);
   // // We may have more than the default 25 parameters
   // TVirtualFitter::Fitter(h2,10+3*npeaks);
@@ -576,7 +569,26 @@ float Fit_YProjection_at_Resolution(TH1D* Output_resolution, int npeaks, float a
 
 
 
-void Analyse(const char* file_proton, const char* file_He1, const char* file_He2, const char* TreeName, const char* CanvasName, float pinhole, float B, float E, float Lb1, float D, float Le1, float Le2, float Sc_length, float Sc_thickness, float ZnS_thickness, bool Optique, float xmin_proton, float xmin_He1, float xmax_proton, float sigma)
+void Analyse( const char* file_proton,
+              const char* file_He1,
+              const char* file_He2,
+              const char* TreeName,
+              const char* CanvasName,
+              float pinhole,
+              float B,
+              float E,
+              float Lb1,
+              float D,
+              float Le1,
+              float Le2,
+              float Sc_length,
+              float Sc_thickness,
+              float ZnS_thickness,
+              bool Optique,
+              float xmin_proton,
+              float xmin_He1,
+              float xmax_proton,
+              float sigma)
 {
   TCanvas *c1 = new TCanvas(CanvasName, CanvasName, 0, 10, 1600, 900);
   TPad *pad1 = new TPad("pad1", "", 0, 0.51, 0.61, 1);
@@ -601,7 +613,7 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   pad9->Draw();
 
   cout << TreeName << endl;
- 
+
 
   TFile* file1 = new TFile(file_proton);
   TTree *Tree1 = (TTree*)file1->Get(TreeName);
@@ -611,7 +623,7 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   TTree *Tree3 = (TTree*)file3->Get(TreeName);
 
 
-  
+
   TH2F* h_proton;
   TH2F* h_ALL;
   TH2F* h_proton_He1;
@@ -661,7 +673,7 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   //######################################################################
   pad1->cd();
 
-  
+
   //Draw & Color
   h_ALL->Add(h_He1, 1);
   h_ALL->Add(h_He2, 1);
@@ -673,7 +685,7 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   h_ALL->GetYaxis()->SetTitle("Y Position [mm]");
 
 
-  
+
   //######################################################################
   //############################# PAD 2 ##################################
   //######################################################################
@@ -718,7 +730,7 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   // legend->AddEntry(fit_mean_He1,"fit He1+","l");
   // legend->AddEntry(fit_mean_He2,"fit He2+","l");
   // legend->Draw();
-  
+
 
 
   //######################################################################
@@ -782,7 +794,7 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   //############################# PAD 4 ##################################
   //######################################################################
   pad4->cd();
-  
+
   int npeaks = 2;
   TH1D *Output_resolution = new TH1D("Output_resolution", "Output_resolution", NbinsY, 0, PosY);
   TH2F *h_proton_He2_bis = (TH2F*)h_proton_He2->Clone();
@@ -790,7 +802,7 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   float a = PosX + n*abs(PosX/NbinsX) -0.05;
   cout << "bin = " << n << endl;
   cout << "a = " << a << endl;
-  
+
   h_proton_He2->ProjectionY("Output_resolution", n-1, n-1, "");
   Output_resolution->Draw();
   float c = Fit_YProjection_at_Resolution(Output_resolution, npeaks, -a, kRed);
@@ -868,19 +880,19 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   //############################# PAD 8 ##################################
   //######################################################################
   pad8->cd();
-  
+
   TH2F* aze;
-  
+
   if (Optique == false)
     {
       aze = Plot_E_Position(Tree1, "PositionX");
     }
-  
+
     if (Optique == true)
       {
         aze = Plot_E_Position_Optique(Tree1, "PositionX");
       }
-  
+
   aze->Draw("colz");
 
   TH1D *proj2 = new TH1D("proj2", "proj2", 1000, 0, 100);
@@ -895,7 +907,7 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
 
   cout << "n = " << n << endl;
   cout << "Fit gaus = " << fit_gaus_Energie->GetParameter(1) << endl;
-  
+
   TLine* l6 = new TLine(a,0, a, fit_gaus_Energie->GetParameter(1));
   l6->SetLineColor(kRed);
   l6->SetLineWidth(2);
@@ -929,13 +941,13 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   t3bis->Draw("same");
   aze->SetTitle("Evolution of energy according x deviation");
   aze->GetXaxis()->SetTitle("X Position [mm]");
-  aze->GetYaxis()->SetTitle("E [keV]");
+  aze->GetYaxis()->SetTitle("E [MeV]");
 
 
   //######################################################################
   //############################# PAD 9 ##################################
   //######################################################################
-  
+
   pad9->cd();
   TLatex *param = new TLatex(0,0.85, "Simulation parameters :");
   param->SetTextSize(0.085);
@@ -946,12 +958,12 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   TLatex *lPinhole = new TLatex(0,0.78, sPinhole.c_str());
   lPinhole->Draw();
   lPinhole->SetTextSize(0.06);
-  
+
   string sBValue = Form("B value =  %g T", B);
   TLatex *lBValue = new TLatex(0,0.72, sBValue.c_str());
   lBValue->Draw();
   lBValue->SetTextSize(0.06);
-  
+
   string sEValue = Form("E value =  %g V/m", E);
   TLatex *lEValue = new TLatex(0,0.66, sEValue.c_str());
   lEValue->Draw();
@@ -1005,9 +1017,6 @@ void Analyse(const char* file_proton, const char* file_He1, const char* file_He2
   TLatex *lOptique = new TLatex(0,0.12, sOptique.c_str());
   lOptique->Draw();
   lOptique->SetTextSize(0.06);
-  
+
 
 }
-
-
-

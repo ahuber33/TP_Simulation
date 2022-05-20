@@ -217,7 +217,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
   // Create World Volume
   // This is just a big box to place all other logical volumes inside
-  G4Box *SolidWorld = new G4Box("SolidWorld", 110*cm, 110*cm, 110*cm );
+  G4Box *SolidWorld = new G4Box("SolidWorld", 210*cm, 210*cm, 210*cm );
   LogicalWorld = new G4LogicalVolume(SolidWorld, VacuumWorld,"LogicalWorld",0,0,0);
   LogicalWorld->SetVisAttributes(invis);
 
@@ -228,7 +228,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   // Create Holder Volume
   // This is just a big box to count the escaped photons
   //G4Box *s_holder;
-  G4Box *s_holder = new G4Box("s_holder", 100*cm, 100*cm, 100*cm );
+  G4Box *s_holder = new G4Box("s_holder", 200*cm, 200*cm, 200*cm );
 
   LogicalHolder = new G4LogicalVolume(s_holder,Vacuum,"logical_holder",0,0,0); //Replace Air with Vacuum (init)
 

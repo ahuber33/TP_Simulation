@@ -102,3 +102,6 @@
 #- Modifications mineurs aux codes d'analyse
 #- Config en cours : TP reel ENL expérience LULI
 #- Passage de la simulation sur 11.0.1
+
+#commit #13 le 20/05/2022 [TPSim.0.5.4]
+# - Ajout des configurations LFEX et PETAL pour comparaison avec donnes expérimentales
