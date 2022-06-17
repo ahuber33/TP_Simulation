@@ -11,7 +11,7 @@
 # /vis/scene/add/trajectories smooth
 # /vis/scene/endOfEventAction accumulate
 
-/tracking/verbose 1
+/tracking/verbose 0
 /run/verbose 1
 /run/printProgress 100000
 
@@ -128,10 +128,11 @@
 ### PART TO SIMULATE PARTICLE WITH GPS (no setgun) ###
 ######################################################
 /gps/number 1
-#/gps/particle proton
+/gps/particle proton
 /gps/pos/type Point
 /gps/pos/centre 0.0 0.0 -300.0 mm
-#/gps/energy 30000 keV
+#/gps/pos/centre 0.0 0.0 1104.9 mm
+#/gps/energy 1 MeV
 #/gps/direction 0.0 0.0 1.0
 /gps/ang/type cos
 /gps/ang/rot1 -1 0 0
@@ -150,6 +151,6 @@
 #/gps/hist/file Spectre_CELIA_Mo.txt
 #/gps/hist/inter Lin
 
-/gps/particle ion
-/gps/ion 2 4 1
+#/gps/particle ion
+#/gps/ion 2 4 1
 #/grdm/nucleusLimits 60 60 27 27

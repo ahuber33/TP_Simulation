@@ -556,8 +556,8 @@ void TPSimMaterials::Construct()
 	ReadVac.close();
 
 	vacMPT = new G4MaterialPropertiesTable();
-	//vacMPT->AddProperty("RINDEX", Vacuum_Energy, Vacuum_Index_Value);
-	vacMPT->AddProperty("RINDEX", "Air");
+	vacMPT->AddProperty("RINDEX", Vacuum_Energy, Vacuum_Index_Value);
+	//vacMPT->AddProperty("RINDEX", "Air");
 	vacMPT->AddProperty("ABSLENGTH", Vacuum_Energy, Vacuum_Absorption_Long);
 	Air->SetMaterialPropertiesTable(vacMPT);
 	Vacuum->SetMaterialPropertiesTable(vacMPT);
@@ -879,7 +879,8 @@ void TPSimMaterials::Construct()
 			G4String filler;
 			Read_PMMA_ref_index >> pWavelength >> filler >> PMMAIndex;
 			PMMA_Energy_index.push_back((1240/pWavelength)*eV);
-			PMMA_Index_Value.push_back(PMMAIndex);
+			//PMMA_Index_Value.push_back(PMMAIndex);
+			PMMA_Index_Value.push_back(1.49);
 		}
 	}
 	else
@@ -913,6 +914,69 @@ void TPSimMaterials::Construct()
 	PMMAMPT->AddProperty("ABSLENGTH", PMMA_Energy_abs, PMMA_Absorption_Long);
 	PMMAMPT->AddProperty("RINDEX", PMMA_Energy_index, PMMA_Index_Value);
 	PMMA->SetMaterialPropertiesTable(PMMAMPT);
+
+	//#######################################################################################################################################
+	//#######################################################################################################################################
+
+
+	//#######################################################################################################################################
+	//#######################################################################################################################################
+
+	//Fulorinated polymer
+	FP = new G4Material("FP",  1.43*g/cm3, 3, kStateSolid, 273.15*kelvin, 1.0*atmosphere );
+	FP->AddElement( elementH, 4 );
+	FP->AddElement( elementC, 4 );
+	FP->AddElement( elementF, 4 );
+
+	std::ifstream Read_FP_ref_index;
+	G4String FP_ref_index_emit = path+"PMMA_ref_index_geant_reverse.dat";
+	G4double FP_absorblength;
+	G4double FPIndex;
+	std::vector<G4double> FP_Energy_index;
+	std::vector<G4double> FP_Index_Value;
+	std::vector<G4double> FP_Energy_abs;
+	std::vector<G4double> FP_Absorption_Long;
+	Read_FP_ref_index.open(FP_ref_index_emit);
+	if(Read_FP_ref_index.is_open()){
+		while(!Read_FP_ref_index.eof()){
+			G4String filler;
+			Read_FP_ref_index >> pWavelength >> filler >> FPIndex;
+			FP_Energy_index.push_back((1240/pWavelength)*eV);
+			//FP_Index_Value.push_back(FPIndex);
+			FP_Index_Value.push_back(1.49);
+		}
+	}
+	else
+	G4cout << "Error opening file: " << FP_ref_index_emit << G4endl;
+	Read_FP_ref_index.close();
+
+	std::ifstream Read_FP_Bulk;
+	G4String FP_bulk = path+"PMMABulkAbsorb_reverse.dat";
+
+	//  Read_pmma_Bulk.open(pmma_Bulk);
+	Read_FP_Bulk.open(FP_bulk);
+
+	if(Read_FP_Bulk.is_open()){
+		while(!Read_FP_Bulk.eof()){
+			G4String filler;
+			Read_FP_Bulk >> pWavelength >> filler >> FP_absorblength;
+			FP_Energy_abs.push_back((1240/pWavelength)*eV);
+			FP_Absorption_Long.push_back(FP_absorblength*m);
+			//      G4cout<<pmmaEntries<<" "<<pmmaEnergy[pmmaEntries]<<" "<<cladIndex1[pmmaEntries]<<G4endl;
+
+		}
+	}
+	else
+	//    G4cout << "Error opening file: " << Bulk << G4endl;
+	G4cout << "Error opening file: " << "FPBulkAbsorb.dat" << G4endl;
+
+	Read_FP_Bulk.close();
+
+	//FP
+	FPMPT = new G4MaterialPropertiesTable();
+	FPMPT->AddProperty("ABSLENGTH", FP_Energy_abs, FP_Absorption_Long);
+	FPMPT->AddProperty("RINDEX", FP_Energy_index, FP_Index_Value);
+	FP->SetMaterialPropertiesTable(FPMPT);
 
 	//#######################################################################################################################################
 	//#######################################################################################################################################

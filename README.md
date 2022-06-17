@@ -104,4 +104,11 @@
 #- Passage de la simulation sur 11.0.1
 
 #commit #13 le 20/05/2022 [TPSim.0.5.4]
-# - Ajout des configurations LFEX et PETAL pour comparaison avec donnes expérimentales
+#- Ajout des configurations LFEX et PETAL pour comparaison avec donnes expérimentales
+
+#commit #14 le 17/06/2022 [TPSim.0.6.0]
+# - Ajout des fonctions de paramétrisation permettant de répliquer une fibre en un certain nombre afin de gagner du temps de calcul et de génération de géométrie. Egalement un souci de simplification du code nécessaire car impossible de générer 1000 fibres différentes => Ajout des fichiers FiberParametrisation.hh et .cc
+# - Définition d'un nouveau matériau (FP) correspondant au cladding externe d'une fibre circulaire multi cladding
+# - Ensemble des paramètres liés aux fibres a été parametrisé (longueur, épaisseur, espacement, multi cladding ou non, type de géométrie) et automatisé. Pour passer d'une géométrie à l'autre, il suffit de changer les paramètres dans le TPSim.cfg.
+# - Ajout des fonctions permettant d'accéder aux informations liées à la fibre dans TPSim.cfg
+# - Ajout d'une variable Angle afin de pouvoir vérifier la bonne propagation des photons dans la fibre. EN ATTENTE !!!!

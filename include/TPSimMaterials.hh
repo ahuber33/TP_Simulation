@@ -94,6 +94,7 @@ private:
   G4Material *grease;
   G4Material *cargille;
   G4Material *PMMA;
+  G4Material *FP;
   G4Material *Alu;
   G4Material *RTV;
   G4Material *ZnS;
@@ -108,6 +109,7 @@ private:
   G4MaterialPropertiesTable *cargilleMPT;
   G4MaterialPropertiesTable *LaBr3MPT;
   G4MaterialPropertiesTable *PMMAMPT;
+  G4MaterialPropertiesTable *FPMPT;
   G4MaterialPropertiesTable *ZnSMPT;
   G4MaterialPropertiesTable *NoWaSHMPT;
 

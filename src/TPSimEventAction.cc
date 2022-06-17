@@ -59,6 +59,7 @@ void TPSimEventAction::BeginOfEventAction(const G4Event* evt){
   StatsOptical.Total_Reflections.clear();
   StatsOptical.Wrap_Reflections.clear();
   StatsOptical.TotalLength.clear();
+  StatsOptical.Angle.clear();
 
   StatsTP.ParticuleID=0;
   StatsTP.E_start=0;
@@ -137,11 +138,11 @@ void TPSimEventAction::EndOfEventAction(const G4Event* evt){
 
   }
 
-if(Deposit>0)
-{
+//if(Deposit>0)
+//{
   runac->UpdateStatisticsOptical(StatsOptical);
   runac->UpdateStatisticsTP(StatsTP);
-}
+//}
 
 
 }

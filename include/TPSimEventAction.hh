@@ -48,6 +48,7 @@ struct RunTallyOptical {
   std::vector<float>Total_Reflections;
   std::vector<float>Wrap_Reflections;
   std::vector<float>TotalLength;
+  std::vector<float>Angle;
 
   inline int operator ==(const RunTallyOptical& right) const
   {return (this==&right);}
@@ -115,6 +116,9 @@ public:
   void FillTotalReflections(G4float e){StatsOptical.Total_Reflections.push_back(e);}
   void FillWrapReflecions(G4float e){StatsOptical.Wrap_Reflections.push_back(e);}
   void FillPhotonTotalLength(G4float e){StatsOptical.TotalLength.push_back(e);}
+  void FillFiberAngle(G4float e){StatsOptical.Angle.push_back(e);}
+  void SetAngleFiber(G4float e) {Angle=e;}
+  G4double GetAngleFiber() {return Angle;}
 
   //Functions for TP Tree
   void SetParticuleID(G4double a){StatsTP.ParticuleID =a;}
@@ -146,6 +150,7 @@ private:
   RunTallyOptical StatsOptical;
   RunTallyTP StatsTP;
   G4String suffixe;
+  G4double Angle;
 
 
 

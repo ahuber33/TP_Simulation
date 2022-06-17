@@ -68,6 +68,7 @@ TPSimSteppingAction::TPSimSteppingAction()
     G4double py = aStep->GetPostStepPoint()->GetMomentum().y();
     G4double pz = aStep->GetPostStepPoint()->GetMomentum().z();
     G4double r = sqrt(x*x + y*y);
+    G4double angle;
     //G4double my_dist_after = aStep->GetTrack()->GetTrackLength()/mm;
 
 
@@ -77,6 +78,23 @@ TPSimSteppingAction::TPSimSteppingAction()
     //##########################START OPTICAL PART###########################
     //#######################################################################
     //#######################################################################
+    // G4cout << "x = " << x << G4endl;
+    // G4cout << "y = " << y << G4endl;
+    // G4cout << "z = " << z << G4endl;
+    // G4cout << "px = " << px << G4endl;
+    // G4cout << "py = " << py << G4endl;
+    // G4cout << "pz = " << pz << G4endl;
+
+    if(StepNo==1 && partname == "opticalphoton")
+    {
+      //G4cout << "px = " << px << G4endl;
+      //G4cout << "py = " << py << G4endl;
+      //G4cout << "pz = " << pz << G4endl;
+      angle = acos((z-1104.9)/aStep->GetStepLength());
+      evtac->SetAngleFiber(angle/deg);
+      //G4cout << "angle 1= " << angle/deg << G4endl;
+      //evtac->FillFiberAngle(angle/deg);
+    }
 
     if(0){                       //set to 1 to ignore generated photons
       if(theTrack->GetDefinition()->GetParticleName()=="opticalphoton")
@@ -178,6 +196,7 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
       evtac->FillTotalReflections(((TPSimTrackInformation*) (aStep->GetTrack()->GetUserInformation()))->GetTotalInternalReflections());
       evtac->FillWrapReflecions(((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->GetReflections());
       evtac->FillPhotonTotalLength(aStep->GetTrack()->GetTrackLength()/mm);
+      evtac->FillFiberAngle(evtac->GetAngleFiber());
       //G4cout << "Photon detecté" << G4endl;
       //G4cout << "N detecté = " << evtac->GetDetected() << G4endl;
 
@@ -305,7 +324,7 @@ if(Parent_ID ==0 && aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() ==
 if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "ZnS" && partname != "opticalphoton") {evtac->AddEdepZnS(aStep->GetTotalEnergyDeposit()/keV);}
 if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator" && partname != "opticalphoton") {evtac->AddEdepSc(aStep->GetTotalEnergyDeposit()/keV);}
 
-if(aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "PhysicalWorld") {theTrack->SetTrackStatus(fStopAndKill);}
+if(aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "World") {theTrack->SetTrackStatus(fStopAndKill);}
 
 
 //G4cout << "Charge = " << aStep->GetPostStepPoint()->GetCharge() << G4endl;

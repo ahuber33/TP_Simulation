@@ -175,6 +175,34 @@ Geometry::Geometry(G4String buildfile){
         config >> value >> unit;
         translation_pinhole = value*G4UnitDefinition::GetValueOf(unit);
       }
+      else if(variable == "Fiber_geometry"){
+        config >> value;
+        Fiber_geometry = value;
+      }
+      else if(variable == "Fiber_multi_cladding"){
+        config >> value;
+        Fiber_multi_cladding = value;
+      }
+      else if(variable == "Fiber_number_per_line"){
+        config >> value;
+        Fiber_number_per_line = value;
+      }
+      else if(variable == "Fiber_space"){
+        config >> value >> unit;
+        Fiber_space = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      else if(variable == "Fiber_width"){
+        config >> value >> unit;
+        Fiber_width = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      else if(variable == "Fiber_cladding_ratio"){
+        config >> value;
+        Fiber_cladding_ratio = value;
+      }
+      else if(variable == "Fiber_length"){
+        config >> value >> unit;
+        Fiber_length = value*G4UnitDefinition::GetValueOf(unit);
+      }
     }
   }
   config.close();
@@ -208,6 +236,13 @@ Geometry::Geometry(G4String buildfile){
   << "\n Distance EF Plates / Detector = " << Dist_EFPlates_Detector
   << "\n Distance pinhole / MF Plates = " << Dist_pinhole_MFPlates
   << "\n translation pinhole = " << translation_pinhole
+  << "\n Fiber Geometry ? (0=round/1=square) = " << Fiber_geometry
+  << "\n Fiber multi cladding activate ? = " << Fiber_multi_cladding
+  << "\n Fiber number per line = " << Fiber_number_per_line
+  << "\n Fiber space = " << Fiber_space
+  << "\n Fiber width (diameter or length) = " << Fiber_width
+  << "\n Fiber cladding ratio = " << Fiber_cladding_ratio
+  << "\n Fiber length = " << Fiber_length
   << "\n " << G4endl;
 
 }
@@ -220,11 +255,110 @@ Geometry::~Geometry(){
 }
 
 
+G4LogicalVolume *Geometry::GetCoreRoundFiber(){
+
+  Material = scintProp->GetMaterial("scintillator");
+
+  G4Tubs *Tubs;
+
+  if(Fiber_multi_cladding==0)
+  {
+    Tubs = new G4Tubs   ("Tubs",             //its name
+    0, (Fiber_width-2*Fiber_cladding_ratio*Fiber_width)/2, Fiber_length/2, 0, 360*deg);    //its size
+  }
+
+
+  if(Fiber_multi_cladding==1)
+  {
+    Tubs = new G4Tubs   ("Tubs",             //its name
+    0, (Fiber_width-4*Fiber_cladding_ratio*Fiber_width)/2, Fiber_length/2, 0, 360*deg);    //its size
+  }
+
+  LogicalVolume = new G4LogicalVolume(Tubs, Material, "Core_Round_Fiber",0,0,0);
+
+  return LogicalVolume;
+}
+
+G4LogicalVolume *Geometry::GetInnerCladdingRoundFiber(){
+
+  G4RotationMatrix DontRotate;
+  DontRotate.rotateX(0*deg);
+
+  Material = scintProp->GetMaterial("PMMA");
+
+  G4Tubs *Tubs;
+
+  if(Fiber_multi_cladding==0)
+  {
+    Tubs = new G4Tubs   ("Tubs",             //its name
+    0, Fiber_width/2, Fiber_length/2, 0, 360*deg);    //its size
+  }
+
+
+  if(Fiber_multi_cladding==1)
+  {
+    Tubs = new G4Tubs   ("Tubs",             //its name
+    0, (Fiber_width-2*Fiber_cladding_ratio*Fiber_width)/2, Fiber_length/2, 0, 360*deg);    //its size
+  }
+
+  LogicalVolume = new G4LogicalVolume(Tubs, Material, "Inner_Cladding_Round_Fiber",0,0,0);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetOuterCladdingRoundFiber(){
+
+  G4RotationMatrix DontRotate;
+  DontRotate.rotateX(0*deg);
+
+  Material = scintProp->GetMaterial("FP");
+
+
+  G4Tubs* Tubs = new G4Tubs   ("Tubs",             //its name
+  (Fiber_width-2*Fiber_cladding_ratio*Fiber_width)/2, (Fiber_width)/2, Fiber_length/2, 0, 360*deg);    //its size
+
+
+  LogicalVolume = new G4LogicalVolume(Tubs, Material, "Outer_Cladding_Round_Fiber",0,0,0);
+
+  return LogicalVolume;
+}
+
+
+
+G4LogicalVolume *Geometry::GetCoreSquareFiber(){
+
+  Material = scintProp->GetMaterial("scintillator");
+
+  G4Box *Box = new G4Box   ("Box",             //its name
+  (Fiber_width-Fiber_cladding_ratio*Fiber_width)/2, (Fiber_width-Fiber_cladding_ratio*Fiber_width)/2, Fiber_length/2);    //its size
+
+  LogicalVolume = new G4LogicalVolume(Box, Material, "Core_Square_Fiber",0,0,0);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetCladdingSquareFiber(){
+
+  G4RotationMatrix DontRotate;
+  DontRotate.rotateX(0*deg);
+
+  Material = scintProp->GetMaterial("PMMA");
+
+  G4Box *Box = new G4Box   ("Box",             //its name
+  Fiber_width/2, Fiber_width/2, Fiber_length/2);    //its size
+
+  LogicalVolume = new G4LogicalVolume(Box, Material, "Cladding_Square_Fiber",0,0,0);
+
+  return LogicalVolume;
+}
+
 G4LogicalVolume *Geometry::GetScTest(){
 
-  //Material = scintProp->GetMaterial("scintillator");
+  Material = scintProp->GetMaterial("scintillator");
   //Material = scintProp->GetMaterial("NoWaSH");
-  Material = scintProp->GetMaterial("ZnS");
+  //Material = scintProp->GetMaterial("ZnS");
 
   //scintillator = scintProp->GetMaterial("Alu");
 
@@ -329,7 +463,7 @@ G4LogicalVolume *Geometry::GetPinhole(){
 
   G4Tubs *Tubs = new G4Tubs   ("Tubs",             //its name
   //0., (38.1/2)*mm, (38.1/2)*mm, 0, 360*deg);    //its size
-  Pinhole_radius_int, Pinhole_radius_ext, Pinhole_thickness, 0, 360*deg);    //its size
+  Pinhole_radius_int, Pinhole_radius_ext, Pinhole_thickness/2, 0, 360*deg);    //its size
   LogicalVolume = new G4LogicalVolume(Tubs, Material, "Pinhole",0,0,0);
 
   return LogicalVolume;
@@ -377,11 +511,13 @@ G4LogicalVolume *Geometry::GetZnSLG(){
 
 G4LogicalVolume *Geometry::GetPhotocathode(){
   // Materials properties for PMT
-    //Material = scintProp->GetMaterial("Vacuum");
-    Material = scintProp->GetMaterial("Silicium");
+  //Material = scintProp->GetMaterial("Vacuum");
+  Material = scintProp->GetMaterial("Silicium");
 
   G4Box *Box = new G4Box   ("Box",             //its name
-  ScintillatorLength/2, ScintillatorLength/2, DetectorThickness/2);    //its size
+  //ScintillatorLength/2, ScintillatorLength/2, DetectorThickness/2);    //its size
+    (Fiber_number_per_line*Fiber_width)/2, (Fiber_number_per_line*Fiber_width)/2, DetectorThickness/2);    //its size
+
   LogicalVolume = new G4LogicalVolume(Box, Material, "Photocathode",0,0,0);
 
   return LogicalVolume;

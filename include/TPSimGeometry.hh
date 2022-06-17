@@ -59,6 +59,7 @@ private:
   // Logical Volumes
   G4LogicalVolume *LogicalWorld;
   G4LogicalVolume *LogicalHolder;
+  G4LogicalVolume *LogicalFibersHolder;
   G4LogicalVolume *LogicalGM_LND;
   G4LogicalVolume *LogicalSc;
   G4LogicalVolume *LogicalZnS;
@@ -76,11 +77,16 @@ private:
   G4LogicalVolume *LogicalMFPlates;
   G4LogicalVolume *LogicalVolumeMFPlates;
   G4LogicalVolume *LogicalPinhole;
+  G4LogicalVolume *LogicalCoreFiber;
+  G4LogicalVolume *LogicalInnerCladdingFiber;
+  G4LogicalVolume *LogicalOuterCladdingFiber;
+  G4LogicalVolume *LogicalFiber;
 
 
   // Physical volumes
   G4VPhysicalVolume *PhysicalWorld;
   G4VPhysicalVolume *PhysicalHolder;
+  G4VPhysicalVolume *PhysicalFibersHolder;
   G4VPhysicalVolume *PhysicalGM_LND;
   G4VPhysicalVolume *PhysicalSc;
   G4VPhysicalVolume *PhysicalZnS;
@@ -97,6 +103,9 @@ private:
   G4VPhysicalVolume *PhysicalMFPlates;
   G4VPhysicalVolume *PhysicalVolumeMFPlates;
   G4VPhysicalVolume *PhysicalPinhole;
+  G4VPhysicalVolume *PhysicalCoreFiber;
+  G4VPhysicalVolume *PhysicalInnerCladdingFiber;
+  G4VPhysicalVolume *PhysicalOuterCladdingFiber;
 
   // Optical surfaces
   G4OpticalSurface *OpticalTeflon;
@@ -136,6 +145,22 @@ private:
   G4double ZnSThickness;
   G4double ZnSLGThickness;
   G4double DetectorThickness;
+  G4double PinholeThickness;
+  G4double FiberLength;
+  G4double FiberWidth;
+  G4double FiberSpace;
+  G4double FiberCladdingRatio;
+  G4double FiberNumberPerLine;
+  G4double InnerCladdingFiberRadius;
+  G4double OuterCladdingFiberRadius;
+  G4double InnerCladdingFiberWidth;
+  G4int NbOfFibers;
+  G4double FiberSpacing;
+  G4double FiberWidthCore;
+  G4double FiberWidthCladding;
+  G4double FiberMultiCladding;
+  G4double FiberGeometry;
+  G4double WidthBunchFibers;
 
   // Dimensions PLACEMENTS
   G4double Z_Position_MFPlates;
@@ -144,6 +169,7 @@ private:
   G4double Z_Position_Sc;
   G4double Z_Position_ZnSLG;
   G4double Z_Position_Photocathode;
+  G4double Z_Position_Fiber;
   // wrapping
   G4double TeflonGap;
   G4double TeflonThickness;

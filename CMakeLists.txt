@@ -68,6 +68,7 @@ set(PROJECT_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimRunAction.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimSteppingAction.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimTrackInformation.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/FiberParameterisation.cc
     )
 
 set(PROJECT_HEADER
@@ -82,7 +83,7 @@ set(PROJECT_HEADER
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimRunAction.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimSteppingAction.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimTrackInformation.hh
-	#${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimUniformityPMT.hh
+	${CMAKE_CURRENT_SOURCE_DIR}/include/FiberParameterisation.hh
     )
 
 #----------------------------------------------------------------------------

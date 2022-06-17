@@ -1,6 +1,6 @@
-// TPSimGeometry_test.cc
+//// TPSimGeometry.cc
 //// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr>
-/// Copyright: 2017 (C) Projet BADGE - CARMELEC -P2R
+//// Copyright: 2022 (C) Projet RATP - ENL [LP2IB] - CELIA
 
 #include "TPSimGeometry.hh"
 #include "TPSimRunAction.hh"
@@ -33,6 +33,11 @@
 #include "globals.hh"
 #include <fstream>
 #include <iostream>
+#include "G4PVParameterised.hh"
+#include "FiberParameterisation.hh"
+#include "G4PVReplica.hh"
+#include "G4SubtractionSolid.hh"
+#include "G4AssemblyVolume.hh"
 
 #include "G4ElectroMagneticField.hh"
 #include "G4MagneticField.hh"
@@ -117,7 +122,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   gray->SetForceSolid(true);
   gray->SetVisibility(true);
 
-  gray_bis = new G4VisAttributes(G4Colour(0.5,0.5,0.5,0.25));
+  gray_bis = new G4VisAttributes(G4Colour(0.5,0.5,0.5,0.05));
   //  gray->SetForceWireframe(true);
   gray_bis->SetForceSolid(true);
   gray_bis->SetVisibility(true);
@@ -144,12 +149,12 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   red_hot->SetForceSolid(true);
   red_hot->SetVisibility(true);
 
-  orange = new G4VisAttributes(G4Colour(1,0.5,0,0.99));
+  orange = new G4VisAttributes(G4Colour(1,0.5,0,0.1));
   //  orange->SetForceWireframe(true);
   orange->SetForceSolid(true);
   orange->SetVisibility(true);
 
-  yellow = new G4VisAttributes(G4Colour(1,1,0,0.39));
+  yellow = new G4VisAttributes(G4Colour(1,1,0,0.99));
   //  yellow->SetForceWireframe(true);
   yellow->SetForceSolid(true);
   yellow->SetVisibility(true);
@@ -169,7 +174,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   cyan->SetForceSolid(true);
   cyan->SetVisibility(true);
 
-  blue = new G4VisAttributes(G4Colour(0,0,1,0.3));
+  blue = new G4VisAttributes(G4Colour(0,0,1,0.5));
   //  blue->SetForceWireframe(true);
   blue->SetForceSolid(true);
   blue->SetVisibility(true);
@@ -209,7 +214,27 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   ZnSThickness = theScint->GetZnSThickness();
   ZnSLGThickness = theScint->GetZnSLGThickness();
   DetectorThickness = theScint->GetDetectorThickness();
-
+  PinholeThickness = theScint->GetPinholeThickness();
+  FiberLength = theScint->GetFiberLength();
+  FiberWidth = theScint->GetFiberWidth();
+  FiberCladdingRatio = theScint->GetFiberCladdingRatio();
+  FiberNumberPerLine = theScint->GetFiberNumberPerLine();
+  FiberSpace = theScint->GetFiberSpace();
+  NbOfFibers = FiberNumberPerLine*FiberNumberPerLine;
+  FiberSpacing = FiberWidth+FiberSpace;
+  FiberGeometry = theScint->GetFiberGeometry();
+  FiberMultiCladding = theScint->GetFiberMultiCladdingOption();
+  FiberWidthCore=0;
+  if(FiberMultiCladding ==0) FiberWidthCore = FiberWidth-2*FiberCladdingRatio*FiberWidth;
+  else if(FiberMultiCladding ==1)
+  {
+    FiberWidthCore = FiberWidth-4*FiberCladdingRatio*FiberWidth;
+    FiberWidthCladding = FiberWidth-2*FiberCladdingRatio*FiberWidth;
+  }
+  else  G4Exception("TPSim.cfg",
+  "InvalidSetup", FatalException,
+  "Fiber multi cladding option not well defined");
+  WidthBunchFibers = FiberNumberPerLine*FiberWidth;
 
   //#########################
   // DEFINE GEOMETRY VOLUMES#
@@ -222,20 +247,19 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalWorld->SetVisAttributes(invis);
 
   // Place the world volume: center of world at origin (0,0,0)
-  PhysicalWorld = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector(0,0,0)),"PhysicalWorld",LogicalWorld,NULL,false,0);
+  PhysicalWorld = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector(0,0,0)),"World",LogicalWorld,NULL,false,0);
 
 
   // Create Holder Volume
   // This is just a big box to count the escaped photons
-  //G4Box *s_holder;
-  G4Box *s_holder = new G4Box("s_holder", 200*cm, 200*cm, 200*cm );
+  G4Box *s_holder = new G4Box("s_fibersholder", 200*cm, 200*cm, 200*cm);
 
   LogicalHolder = new G4LogicalVolume(s_holder,Vacuum,"logical_holder",0,0,0); //Replace Air with Vacuum (init)
 
-  // Place the holder volume: center of world at origin (0,0,0)
-  PhysicalHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector(0,0,0)),LogicalHolder, "Air",LogicalWorld,false,0);
+  //G4Box *s_holder;
+  G4Box *s_fibersholder = new G4Box("s_holder", (WidthBunchFibers/1.99)*mm, (WidthBunchFibers/1.99)*mm, FiberLength/2);
 
-  LogicalHolder->SetVisAttributes(invis);
+  LogicalFibersHolder = new G4LogicalVolume(s_fibersholder,Vacuum,"logical_fibersholder",0,0,0); //Replace Air with Vacuum (init)
 
   //*********************************
   // Build scint et wrapping volumes*
@@ -247,7 +271,26 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalMFPlates = theScint->GetMFPlates();
   LogicalVolumeMFPlates = theScint->GetVolumeMFPlates();
   LogicalSc = theScint->GetScTest();
+
   //  LogicalZnS = theScint->GetZnS();
+  if(FiberGeometry ==0)
+  {
+    LogicalCoreFiber = theScint->GetCoreRoundFiber();
+    LogicalInnerCladdingFiber = theScint->GetInnerCladdingRoundFiber();
+    LogicalOuterCladdingFiber = theScint->GetOuterCladdingRoundFiber();
+    LogicalOuterCladdingFiber->SetVisAttributes(red);
+  }
+
+  else if (FiberGeometry ==1)
+  {
+    LogicalCoreFiber = theScint->GetCoreSquareFiber();
+    LogicalInnerCladdingFiber = theScint->GetCladdingSquareFiber();
+  }
+
+  else  G4Exception("TPSim.cfg",
+  "InvalidSetup", FatalException,
+  "Fiber Geometry !=0 or 1");
+
 
   // Set colors of various block materials
   LogicalPinhole->SetVisAttributes(black);
@@ -256,7 +299,12 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalMFPlates->SetVisAttributes(blue);
   LogicalVolumeMFPlates->SetVisAttributes(gray);
   LogicalSc->SetVisAttributes(cyan);
+  LogicalCoreFiber->SetVisAttributes(cyan);
+  LogicalInnerCladdingFiber->SetVisAttributes(yellow);
   //LogicalZnS->SetVisAttributes(green);
+  LogicalHolder->SetVisAttributes(invis);
+  LogicalFibersHolder->SetVisAttributes(invis);
+
 
   // G4Region* RegEM = new G4Region("EMField");
   // //RegEM->AddRootLogicalVolume(LogicalHolder);
@@ -265,8 +313,6 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   //
   // G4Region* RegSc = new G4Region("Sc");
   // RegSc->AddRootLogicalVolume(LogicalSc);
-
-
 
   //********************************************
   // Build optical properties and skin surfaces*
@@ -495,18 +541,26 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
       // Various Positioning values
       //***********************
 
-      Z_Position_MFPlates = Dist_pinhole_MFPlates + MF_Length_plates/2;
-      Z_Position_EFPlates = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates/2;
-      Z_Position_ZnS = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness/2;
-      Z_Position_Sc = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness/2;
+      Z_Position_MFPlates = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates/2;
+      Z_Position_EFPlates = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates/2;
+      Z_Position_ZnS = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness/2;
+      Z_Position_Sc = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness/2;
       //Z_Position_ZnSLG = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness +ZnSLGThickness/2;
-      Z_Position_Photocathode = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness+ZnSLGThickness+DetectorThickness/2;
+      Z_Position_Fiber = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + FiberLength/2;
+      Z_Position_Photocathode = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + FiberLength + DetectorThickness/2;
+      //Z_Position_Photocathode = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness+ZnSLGThickness+DetectorThickness/2;
+
 
       //############################
       // DEFINE GEOMETRY PLACEMENTS#
       //############################
 
       #ifndef disable_gdml
+
+      PhysicalHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector(0, 0, 0)),LogicalHolder, "Vacuum", LogicalWorld,false,0);
+
+      //PhysicalFibersHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector((-WidthBunchFibers)/2 ,(WidthBunchFibers)/2, 0)),LogicalFibersHolder, "Holder_Fiber",LogicalHolder,false,0);
+      PhysicalFibersHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector((-WidthBunchFibers)/2 ,(WidthBunchFibers)/2, Z_Position_Fiber)),LogicalFibersHolder, "Holder_Fiber",LogicalHolder,false,0);
 
       PhysicalPinhole = new G4PVPlacement(G4Transform3D
         (DontRotate,G4ThreeVector(0*mm, 0*mm, 0*mm)), // Set at origin as basis of everything else
@@ -539,61 +593,154 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
                 //   LogicalZnS,"ZnS",
                 //   LogicalHolder,false,0);
                 //
-                PhysicalSc = new G4PVPlacement(G4Transform3D
-                  (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_Sc)), // Set at origin as basis of everything else
-                  LogicalSc,"Scintillator",
-                  LogicalHolder,false,0);
+                // PhysicalSc = new G4PVPlacement(G4Transform3D
+                //   (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_Sc)), // Set at origin as basis of everything else
+                //   LogicalSc,"Scintillator",
+                //   LogicalHolder,false,0);
 
-                  // PhysicalZnSLG = new G4PVPlacement(G4Transform3D
-                  //   (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_ZnSLG)), // Set at origin as basis of everything else
-                  //   LogicalZnSLG,"PMMA",
-                  //   LogicalHolder,false,0);
-
-                    // PMT photocathode placement
-                    PhysicalPhotocathode = new G4PVPlacement(G4Transform3D
-                      (DontRotate,G4ThreeVector(0, translation_pinhole, Z_Position_Photocathode)),
-                      LogicalPhotocathode,"CMOS",
-                      LogicalHolder,true,0);
-
-                      //   PhysicalPMMA = new G4PVPlacement(G4Transform3D
-                      //     (DontRotate,G4ThreeVector(0*mm,0.*mm,21.55*mm)), // Set at origin as basis of everything else
-                      //     LogicalPMMA,"PMMA",
-                      //     LogicalHolder,false,0);
-                      //
-                      //     PhysicalBoitierAlu = new G4PVPlacement(G4Transform3D
-                      //       //(Flip,G4ThreeVector(0*mm,0.*mm,111.8*mm)), // FOR THE PM !!!!
-                      //       (DontRotate,G4ThreeVector(0*mm,0.*mm, 1.3*mm)), // FOR THE HPD !!!!
-                      //       LogicalBoitierAlu,"Boitier_Alu",
-                      //       LogicalHolder,false,0);
-                      //
-                      //       // PMT placement
-                      //       PhysicalGlue = new G4PVPlacement(G4Transform3D
-                      //         (DontRotate,G4ThreeVector(0,0,24.1*mm)),
-                      //         LogicalGlue,"BC-631",
-                      //         LogicalHolder,false,0);
-                      //
-                      //         // PMT placement
-                      //         PhysicalPM = new G4PVPlacement(G4Transform3D
-                      //           (DontRotate,G4ThreeVector(0,0,24.65*mm)),
-                      //           LogicalPM,"PM",
-                      //           LogicalHolder,false,0);
-                      //
-                      //           // PMT photocathode placement
-                      //           PhysicalPhotocathode = new G4PVPlacement(G4Transform3D
-                      //             (DontRotate,G4ThreeVector(0,0,25.2*mm)),
-                      //             LogicalPhotocathode,"Photocathode",
-                      //             LogicalHolder,true,0);
-                      //
+                // PhysicalZnSLG = new G4PVPlacement(G4Transform3D
+                //   (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_ZnSLG)), // Set at origin as basis of everything else
+                //   LogicalZnSLG,"PMMA",
+                //   LogicalHolder,false,0);
 
 
-                      #else
+                if(FiberGeometry ==0)
+                {
+                  if (FiberMultiCladding ==0)
+                  {
+                    G4VPVParameterisation* InnerCladdingFiberParam =  new FiberParameterisation(
+                      FiberNumberPerLine,   // NoFibers
+                      (-WidthBunchFibers+FiberWidth)/2,  // Z of center of first
+                      FiberSpacing, // Z spacing of centers
+                      FiberWidth,  // Fiber radius/width for round/square fiber
+                      FiberLength);    // final length
 
-                      #endif
+                      new G4PVParameterised("Inner_Cladding_Fiber",       // their name
+                      LogicalInnerCladdingFiber,   // their logical volume
+                      LogicalFibersHolder,       // Mother logical volume
+                      kUndefined,          // Are placed along this axis
+                      NbOfFibers,    // Number of Fibers
+                      InnerCladdingFiberParam,    // The parametrisation
+                      false); // checking overlaps
+
+
+                      G4VPVParameterisation* FiberParam =  new FiberParameterisation(
+                        FiberNumberPerLine,   // NoFibers
+                        0,  // Z of center of first
+                        1, // Z spacing of centers -> Not useful HERE
+                        FiberWidthCore,  // Fiber radius/width for round/square fiber
+                        FiberLength);    // final length
+
+                        new G4PVParameterised("Core_Fiber",       // their name
+                        LogicalCoreFiber,   // their logical volume
+                        LogicalInnerCladdingFiber,       // Mother logical volume
+                        kUndefined,          // Are placed along this axis
+                        1,    // Number of Fibers
+                        FiberParam,    // The parametrisation
+                        false); // checking overlaps
+                      }
+
+
+                      if (FiberMultiCladding ==1)
+                      {
+                        G4VPVParameterisation* OuterCladdingFiberParam =  new FiberParameterisation(
+                          FiberNumberPerLine,   // NoFibers
+                          (-WidthBunchFibers+FiberWidth)/2,  // Z of center of first
+                          FiberSpacing, // Z spacing of centers
+                          FiberWidth,  // Fiber radius/width for round/square fiber
+                          FiberLength);    // final length
+
+                          new G4PVParameterised("Outer_Cladding_Fiber",       // their name
+                          LogicalOuterCladdingFiber,   // their logical volume
+                          LogicalFibersHolder,       // Mother logical volume
+                          kUndefined,          // Are placed along this axis
+                          NbOfFibers,    // Number of Fibers
+                          OuterCladdingFiberParam,    // The parametrisation
+                          false); // checking overlaps
+
+
+                          G4VPVParameterisation* InnerCladdingFiberParam =  new FiberParameterisation(
+                            FiberNumberPerLine,   // NoFibers
+                            0,  // Z of center of first
+                            1, // Z spacing of centers
+                            FiberWidthCladding,  // Fiber radius/width for round/square fiber
+                            FiberLength);    // final length
+
+                            new G4PVParameterised("Inner_Cladding_Fiber",       // their name
+                            LogicalInnerCladdingFiber,   // their logical volume
+                            LogicalOuterCladdingFiber,       // Mother logical volume
+                            kUndefined,          // Are placed along this axis
+                            1,    // Number of Fibers
+                            InnerCladdingFiberParam,    // The parametrisation
+                            false); // checking overlaps
+
+
+                            G4VPVParameterisation* FiberParam =  new FiberParameterisation(
+                              FiberNumberPerLine,   // NoFibers
+                              0,  // Z of center of first
+                              1, // Z spacing of centers -> Not useful HERE
+                              FiberWidthCore,  // Fiber radius/width for round/square fiber
+                              FiberLength);    // final length
+
+                              new G4PVParameterised("Core_Fiber",       // their name
+                              LogicalCoreFiber,   // their logical volume
+                              LogicalInnerCladdingFiber,       // Mother logical volume
+                              kUndefined,          // Are placed along this axis
+                              1,    // Number of Fibers
+                              FiberParam,    // The parametrisation
+                              false); // checking overlaps
+                            }
+                          }
+
+                          if(FiberGeometry ==1)
+                          {
+                            G4VPVParameterisation* InnerCladdingFiberParam =  new FiberParameterisation(
+                              FiberNumberPerLine,   // NoFibers
+                              (-WidthBunchFibers+FiberWidth)/2,  // Z of center of first
+                              FiberSpacing, // Z spacing of centers
+                              FiberWidth,  // Fiber radius/width for round/square fiber
+                              FiberLength);    // final length
+
+                              new G4PVParameterised("Inner_Cladding_Fiber",       // their name
+                              LogicalInnerCladdingFiber,   // their logical volume
+                              LogicalFibersHolder,       // Mother logical volume
+                              kUndefined,          // Are placed along this axis
+                              NbOfFibers,    // Number of Fibers
+                              InnerCladdingFiberParam,    // The parametrisation
+                              false); // checking overlaps
+
+
+                              G4VPVParameterisation* FiberParam =  new FiberParameterisation(
+                                FiberNumberPerLine,   // NoFibers
+                                0,  // Z of center of first
+                                1, // Z spacing of centers -> Not useful HERE
+                                FiberWidthCore,  // Fiber radius/width for round/square fiber
+                                FiberLength);    // final length
+
+                                new G4PVParameterised("Core_Fiber",       // their name
+                                LogicalCoreFiber,   // their logical volume
+                                LogicalInnerCladdingFiber,       // Mother logical volume
+                                kUndefined,          // Are placed along this axis
+                                1,    // Number of Fibers
+                                FiberParam,    // The parametrisation
+                                false); // checking overlaps
+                              }
+
+
+                              // PMT photocathode placement
+                              PhysicalPhotocathode = new G4PVPlacement(G4Transform3D
+                                (DontRotate,G4ThreeVector((-WidthBunchFibers)/2,(WidthBunchFibers)/2, Z_Position_Photocathode)),
+                                LogicalPhotocathode,"CMOS",
+                                LogicalHolder,true,0);
+
+                                #else
+
+                                #endif
 
 
 
 
 
-                      // Returns world with everything in it and all properties set
-                      return PhysicalWorld;
-                    }
+                                // Returns world with everything in it and all properties set
+                                return PhysicalWorld;
+                              }

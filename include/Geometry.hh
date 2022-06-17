@@ -28,6 +28,11 @@ public:
 
   // Functions to call this geometry in x_blockGeometry.cc
 
+  G4LogicalVolume *GetCoreRoundFiber();
+  G4LogicalVolume *GetInnerCladdingRoundFiber();
+  G4LogicalVolume *GetOuterCladdingRoundFiber();
+  G4LogicalVolume *GetCoreSquareFiber();
+  G4LogicalVolume *GetCladdingSquareFiber();
   G4LogicalVolume *GetScTest();
   G4LogicalVolume *GetEFPlates();
   G4LogicalVolume *GetVolumeEFPlates();
@@ -66,13 +71,20 @@ public:
   G4double GetDistBetweenPlates(){return Dist_between_plates;}
   G4double GetEFPlatesDetector(){return Dist_EFPlates_Detector;}
   G4double GetPinholeMFPlates(){return Dist_pinhole_MFPlates;}
+  G4double GetPinholeThickness(){return Pinhole_thickness;}
   G4double GetTranslationPinhole(){return translation_pinhole;}
   // Position of Detector
   G4double GetScintillatorThickness(){return ScintillatorThickness;}
   G4double GetZnSThickness(){return ZnSThickness;}
   G4double GetZnSLGThickness(){return ZnSLGThickness;}
   G4double GetDetectorThickness(){return DetectorThickness;}
-
+  G4double GetFiberLength(){return Fiber_length;}
+  G4double GetFiberWidth(){return Fiber_width;}
+  G4double GetFiberSpace(){return Fiber_space;}
+  G4double GetFiberCladdingRatio(){return Fiber_cladding_ratio;}
+  G4double GetFiberNumberPerLine(){return Fiber_number_per_line;}
+  G4int GetFiberMultiCladdingOption(){return Fiber_multi_cladding;}
+  G4int GetFiberGeometry(){return Fiber_geometry;}
 
 private:
 
@@ -127,6 +139,15 @@ private:
   G4double Dist_EFPlates_Detector;
   G4double Dist_pinhole_MFPlates;
   G4double translation_pinhole;
+
+  //Fibers
+  G4int Fiber_geometry;
+  G4int Fiber_multi_cladding;
+  G4double Fiber_number_per_line;
+  G4double Fiber_cladding_ratio;
+  G4double Fiber_length;
+  G4double Fiber_width;
+  G4double Fiber_space;
 
 
   // Other

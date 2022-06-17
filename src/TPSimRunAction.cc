@@ -64,6 +64,7 @@ void TPSimRunAction::BeginOfRunAction(const G4Run* aRun){
   // RunBranch = Tree_Optical->Branch("Total_Reflections", "vector<float>", &StatsOptical.Total_Reflections);
   // RunBranch = Tree_Optical->Branch("Wrap_Reflections", "vector<float>", &StatsOptical.Wrap_Reflections);
   //RunBranch = Tree_Optical->Branch("TotalLength", "vector<float>", &StatsOptical.TotalLength);
+  RunBranch = Tree_Optical->Branch("Angle", "vector<float>", &StatsOptical.Angle);
 
 
   //*****************************INFORMATION FROM THE TP**************************************
