@@ -79,8 +79,8 @@
 # - Problème du commit #7 avec la génération des ions avec Z>2 et une charge Q géré par la macro en partie réglé. Il est dorénavant possible de générer un noyau de Carbone avec une charge ionique allant de +1 à +6 pour le suivi dans la TP. Cela a été rendu possible avec l'ajout des G4BraggIonGasModel et G4BetheBlochIonGasModel permettant de suivre correctement les ions dans un milieu gazeux. Ainsi l'ion ne se retrouve pas automatiquement en équilibre avec le milieu dans lequel il se propage comme cela est le cas en règle générale dans GEANT4.
 # - NEANMOINS, LA PRISE EN COMPTE DE CES FONCTIONS INDUIT UN BIAIS LORS DE L'INTERACTION DE CES IONS AVEC LE SCINTILLATEUR QUI ONT UN PARCOURS PLUS IMPORTANT CAR LE MODELE PRIS EST CELUI D'UN GAZ. EN COURS D'INVESTIGATION POUR RÉSOUDRE CE PROBLEME.
 # - En attendant, le modèle AddIonGasModels() est désactivé et l'étude optique se portera uniquement sur des protons et alpha dans un premier temps. Néanmoins, pour juste suivre la déviation sans la production de photons, il est possible d'étudier ces ions en activant le modèle AddIonGasModels().
-# - Simplification du code en regroupant l'ensemble des volumes crées dans un même fichier Geometry.cc. Les fichiers Scintillator.cc, PMT.cc, Coupling.cc et GdL.cc ont été effacés.
-# - Simplification des Trees de résultats. Mise au point d'un Tree avec l'ensemble des résultats liés à l'optique (introduction des vecteurs pour l'accès aux informations liées aux photons détectés) et un Tree pour l'ensemble des informations issues de la TP.
+#- Simplification du code en regroupant l'ensemble des volumes crées dans un même fichier Geometry.cc. Les fichiers Scintillator.cc, PMT.cc, Coupling.cc et GdL.cc ont été effacés.
+#- Simplification des Trees de résultats. Mise au point d'un Tree avec l'ensemble des résultats liés à l'optique (introduction des vecteurs pour l'accès aux informations liées aux photons détectés) et un Tree pour l'ensemble des informations issues de la TP.
 #- Création des fonctions Set et Get pour chaque variable des Trees
 #- Nettoyage des parties de code non nécessaires
 #- Ajout des informations sur l'ID de la particule, son temps de vol (particule et photons) ainsi que sa charge.
@@ -107,11 +107,11 @@
 #- Ajout des configurations LFEX et PETAL pour comparaison avec donnes expérimentales
 
 #commit #14 le 17/06/2022 [TPSim.0.6.0]
-# - Ajout des fonctions de paramétrisation permettant de répliquer une fibre en un certain nombre afin de gagner du temps de calcul et de génération de géométrie. Egalement un souci de simplification du code nécessaire car impossible de générer 1000 fibres différentes => Ajout des fichiers FiberParametrisation.hh et .cc
-# - Définition d'un nouveau matériau (FP) correspondant au cladding externe d'une fibre circulaire multi cladding
-# - Ensemble des paramètres liés aux fibres a été parametrisé (longueur, épaisseur, espacement, multi cladding ou non, type de géométrie) et automatisé. Pour passer d'une géométrie à l'autre, il suffit de changer les paramètres dans le TPSim.cfg.
-# - Ajout des fonctions permettant d'accéder aux informations liées à la fibre dans TPSim.cfg
-# - Ajout d'une variable Angle afin de pouvoir vérifier la bonne propagation des photons dans la fibre. EN ATTENTE !!!!
+#- Ajout des fonctions de paramétrisation permettant de répliquer une fibre en un certain nombre afin de gagner du temps de calcul et de génération de géométrie. Egalement un souci de simplification du code nécessaire car impossible de générer 1000 fibres différentes => Ajout des fichiers FiberParametrisation.hh et .cc
+#- Définition d'un nouveau matériau (FP) correspondant au cladding externe d'une fibre circulaire multi cladding
+#- Ensemble des paramètres liés aux fibres a été parametrisé (longueur, épaisseur, espacement, multi cladding ou non, type de géométrie) et automatisé. Pour passer d'une géométrie à l'autre, il suffit de changer les paramètres dans le TPSim.cfg.
+#- Ajout des fonctions permettant d'accéder aux informations liées à la fibre dans TPSim.cfg
+#- Ajout d'une variable Angle afin de pouvoir vérifier la bonne propagation des photons dans la fibre. EN ATTENTE !!!!
 
 # Commit #15 le 01/09/2022 [TPSim.0.7.0]
 # - Définition de l'angle des photons dans la fibre de cette façon : angle = acos((z-zpre)/aStep->GetStepLength())
