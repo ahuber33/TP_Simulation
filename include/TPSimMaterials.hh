@@ -113,6 +113,8 @@ private:
   G4MaterialPropertiesTable *ZnSMPT;
   G4MaterialPropertiesTable *NoWaSHMPT;
 
+  G4OpticalSurface* PMMAOpSurface;
+
 
   G4double scintAbsorbconst;
   G4double scintIndexconst;

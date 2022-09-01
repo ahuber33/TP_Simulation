@@ -1,4 +1,4 @@
-# TPSim for Thomson Parabola Simulation [huber@ecnbg.in2p3.fr, huberarnaud@gmail.com]
+# TPSim for Thomson Parabola Simulation [huber@cenbg.in2p3.fr, huberarnaud@gmail.com]
 
 # INSTRUCTIONS TO USE THE SIMULATION
 # - Download the VMWare Geant4.11.0.1 from https://heberge.lp2ib.in2p3.fr/G4VM/index.html
@@ -112,3 +112,15 @@
 # - Ensemble des paramètres liés aux fibres a été parametrisé (longueur, épaisseur, espacement, multi cladding ou non, type de géométrie) et automatisé. Pour passer d'une géométrie à l'autre, il suffit de changer les paramètres dans le TPSim.cfg.
 # - Ajout des fonctions permettant d'accéder aux informations liées à la fibre dans TPSim.cfg
 # - Ajout d'une variable Angle afin de pouvoir vérifier la bonne propagation des photons dans la fibre. EN ATTENTE !!!!
+
+# Commit #15 le 01/09/2022 [TPSim.0.7.0]
+# - Définition de l'angle des photons dans la fibre de cette façon : angle = acos((z-zpre)/aStep->GetStepLength())
+# - Ajout du modèle G4FastSimulationManagerProcess afin de pouvoir accélerer la simulation. Lorsqu'un photon effectue 3 réflexions totales, son chemin est pris en compte et translater directement vers la fin de la fibre afin de gagner du temps de calcul.
+# - De nombreuses vérifications ont été effectués afin de comprendre ce qui se passait au sein de la fibre simple caldding ronde pour l'instant. Le modèle est principalement utilisable pour les photons dont les angles sont ceux permettant aux photons de se propager dans le coeur de la fibre. Il est néanmoins possible, au delà d'une certaine longueur de fibre et en négligeant le cross-talk, d'arrêter de suivre les angles supérieures afin de gagner beaucoup de temps de calcul !!!
+# - Ajout de fichiers FastSimModelOpFiber & SimG4FastSimOpFiberRegion. Un Holder est crée et défini en tant que région où s'applique le modèle (trigger, doIt, autres calculs).
+# - Ajout des informations dans le fichier ROOT concernant l'angle de départ et de détection des photons ainsi que l'ensemble des points X, Y et Z de la trajectoire d'un photon afin de pouvoir reconstruire les trajectoires par la suite. Ajout également d'une information dans le fichier ROOT concernant le statut final du photon (escaped, trasmitted, detected, asborbed, ...).
+# - Création d'un code d'analyse (PhotonTrajectory) permettant de visualiser les trajectoires des photons dans la fibre ronde simple cladding. Sélection possible en fonction de l'angle et du statut final du photon
+# - Ajout sans utilisation du PMMA Optical Surface
+# - Ajout des informations Time, polarisation et modifications sur les px,y,z -> PreStep plutot que PostStep
+# - Ajout de la possibilité d'accéder aux informations sur la normal à une surface sur laquelle arrive un photon dans le SteppingAction. Sert pour potentiellement du débug.
+# - Ajout des accès aux potentiels différents types de réfraction, réflexions dans le SteppingAction

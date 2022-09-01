@@ -33,6 +33,9 @@
 #include "G4BraggIonGasModel.hh"
 #include "G4BetheBlochIonGasModel.hh"
 
+#include "G4ParallelWorldProcess.hh"
+#include "G4TransportationManager.hh"
+
 
 
 using namespace CLHEP;
@@ -64,11 +67,14 @@ TPSimSteppingAction::TPSimSteppingAction()
     G4double x = aStep->GetTrack()->GetPosition().x();
     G4double y = aStep->GetTrack()->GetPosition().y();
     G4double z = aStep->GetTrack()->GetPosition().z();
-    G4double px = aStep->GetPostStepPoint()->GetMomentum().x();
-    G4double py = aStep->GetPostStepPoint()->GetMomentum().y();
-    G4double pz = aStep->GetPostStepPoint()->GetMomentum().z();
+    G4double zpre = aStep->GetPreStepPoint()->GetPosition().z();
+    G4double px = aStep->GetPreStepPoint()->GetMomentumDirection().x();
+    G4double py = aStep->GetPreStepPoint()->GetMomentumDirection().y();
+    G4double pz = aStep->GetPreStepPoint()->GetMomentumDirection().z();
     G4double r = sqrt(x*x + y*y);
-    G4double angle;
+    G4double angle = acos((z-zpre)/aStep->GetStepLength());
+    G4double time = aStep->GetPostStepPoint()->GetGlobalTime()/ns;
+    G4ThreeVector polarisation = theTrack->GetPolarization();
     //G4double my_dist_after = aStep->GetTrack()->GetTrackLength()/mm;
 
 
@@ -84,16 +90,24 @@ TPSimSteppingAction::TPSimSteppingAction()
     // G4cout << "px = " << px << G4endl;
     // G4cout << "py = " << py << G4endl;
     // G4cout << "pz = " << pz << G4endl;
+    // G4cout << "polarisation = " << polarisation << G4endl;
+    // G4cout << "angle = " << angle/deg << G4endl;
+    // G4cout << "Time = " << time << " ns" << G4endl;
+
+    // G4bool valid;
+    // G4int hNavId = G4ParallelWorldProcess::GetHypNavigatorID();
+    // auto iNav = G4TransportationManager::GetTransportationManager()->GetActiveNavigatorsIterator();
+    // G4ThreeVector test = (iNav[hNavId])->GetLocalExitNormal(&valid);
+    //G4cout << "Normal Surface = " << test << G4endl;
 
     if(StepNo==1 && partname == "opticalphoton")
     {
       //G4cout << "px = " << px << G4endl;
       //G4cout << "py = " << py << G4endl;
       //G4cout << "pz = " << pz << G4endl;
-      angle = acos((z-1104.9)/aStep->GetStepLength());
-      evtac->SetAngleFiber(angle/deg);
-      //G4cout << "angle 1= " << angle/deg << G4endl;
-      //evtac->FillFiberAngle(angle/deg);
+      evtac->FillFiberAngleCreation(angle/deg);
+      evtac->SetPhotonCreationAngle(angle/deg);
+      evtac->SetTrackLengthFastSimulated(0);
     }
 
     if(0){                       //set to 1 to ignore generated photons
@@ -130,13 +144,23 @@ TPSimSteppingAction::TPSimSteppingAction()
       //G4cout << "BirthLambda = " << info->GetBirthLambda() << G4endl;
       //G4cout << "Time =" << aStep->GetPostStepPoint()->GetGlobalTime()/ns << G4endl;
 
+
+      evtac->AddPhotonTrajectoryNStep();
+      evtac->FillPhotonTrajectoryX(x);
+      evtac->FillPhotonTrajectoryY(y);
+      evtac->FillPhotonTrajectoryZ(z);
+
       if(endproc == "OpAbsorption")
       {
         if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "ZnS") {evtac->CountBulkAbsZnS();}
-        if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator") {evtac->CountBulkAbsSc();}
+        if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Core_Fiber") {evtac->CountBulkAbsSc();}
+        if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Vacuum") {evtac->CountBulkAbsSc();}
         //G4cout << "Photon BulkAbsorbed" << G4endl;
         //G4cout << "N bulk abs Sc = " << evtac->GetBulkAbsSc() << G4endl;
         //G4cout << "N bulk abs ZnS = " << evtac->GetBulkAbsZnS() << G4endl;
+        evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
+        evtac->ClearPhotonTrajectoryNStep();
+        evtac->FillPhotonFinalState(1);
       }
 
 
@@ -173,11 +197,13 @@ TPSimSteppingAction::TPSimSteppingAction()
 }
 */
 
-else if(partname == "opticalphoton" && endproc != "Transportation" && endproc != "OpAbsorption")
+else if(partname == "opticalphoton" && endproc != "Transportation" && endproc != "OpAbsorption" && endproc !="G4FSMP")
 G4cout << endproc << G4endl;
 
 
 if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
+
+  //G4cout << "Boundary Status = " << boundaryStatus << G4endl;
 
   switch(boundaryStatus){
     case Detection:
@@ -195,26 +221,41 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
       evtac->FillRayleigh(((TPSimTrackInformation*) (aStep->GetTrack()->GetUserInformation()))->GetRayleigh());
       evtac->FillTotalReflections(((TPSimTrackInformation*) (aStep->GetTrack()->GetUserInformation()))->GetTotalInternalReflections());
       evtac->FillWrapReflecions(((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->GetReflections());
-      evtac->FillPhotonTotalLength(aStep->GetTrack()->GetTrackLength()/mm);
-      evtac->FillFiberAngle(evtac->GetAngleFiber());
+      evtac->FillPhotonTotalLength(aStep->GetTrack()->GetTrackLength()/mm + evtac->GetTrackLengthFastSimulated());
+      evtac->FillFiberAngleDetection(angle/deg);
+      // G4cout << "Lamda = " << info->GetBirthLambda() << " nm " << G4endl;
+      // G4cout << "[STEP] Track Length fast simulated = " << evtac->GetTrackLengthFastSimulated() << G4endl;
+      // G4cout << "[STEP] Track Length = " << evtac->GetTrackLengthFastSimulated()+aStep->GetTrack()->GetTrackLength()/mm << G4endl;
       //G4cout << "Photon detecté" << G4endl;
       //G4cout << "N detecté = " << evtac->GetDetected() << G4endl;
+
+      evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
+      evtac->ClearPhotonTrajectoryNStep();
+      evtac->FillPhotonFinalState(4);
 
       break;
       case Absorption:    // used to get the number TRANSMITTED!!
 
-      if (theTrack->GetNextVolume()->GetName()=="Photocathode")
+      //if (theTrack->GetNextVolume()->GetName()=="Photocathode")
+      if (theTrack->GetNextVolume()->GetName()=="CMOS")
       {
         evtac->CountFailed();
         //G4cout << "Photon failed" << G4endl;
         //G4cout << "N failed = " << evtac->GetFailed() << G4endl;
 
-        //  Note that currently it is not set up to root output...see void CountDetected();
+        evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
+        evtac->ClearPhotonTrajectoryNStep();
+        evtac->FillPhotonFinalState(3);
+
       }
       else{  // if not bulk, transmitted, or detected...it must be surface!
         evtac->CountAbsorbed();
         //G4cout << "Photon surface absorbed" << G4endl;
         //G4cout << "N absorbed = " << evtac->GetAbsorbed() << G4endl;
+
+        evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
+        evtac->ClearPhotonTrajectoryNStep();
+        evtac->FillPhotonFinalState(0);
       }
 
       break;
@@ -225,12 +266,34 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
         evtac->CountEscaped();
         //G4cout << "count escaped" << G4endl;
         //G4cout << "N escaped = " << evtac->GetEscaped() << G4endl;
+
+        evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
+        evtac->ClearPhotonTrajectoryNStep();
+        evtac->FillPhotonFinalState(2);
       }
       break;
 
       // if we have any kind of reflections, count them
       case LambertianReflection:
+      {
+        //G4cout << "Reflection L" << G4endl;
+        break;
+      }
+       case FresnelRefraction:
+       {
+         //G4cout << "Fresnel Refraction" << G4endl;
+         break;
+       }
+      case FresnelReflection:
+      {
+        //G4cout << "Fresnel Reflection" << G4endl;
+        break;
+      }
       case LobeReflection:
+      {
+        //G4cout << "Reflection Lobe" << G4endl;
+        break;
+      }
       case SpikeReflection:
       {
         ((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->CountReflections();
@@ -257,7 +320,8 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
       //G4cout << " Photon Scintillation from ZnS!!!" << G4endl;
     }
 
-    if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator")
+    if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator"
+     || aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Core_Fiber")
     {
       evtac->CountScintillationSc();
       //G4cout << " Photon Scintillation from Sc!!!" << G4endl;
@@ -323,6 +387,7 @@ if(Parent_ID ==0 && aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() ==
 
 if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "ZnS" && partname != "opticalphoton") {evtac->AddEdepZnS(aStep->GetTotalEnergyDeposit()/keV);}
 if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator" && partname != "opticalphoton") {evtac->AddEdepSc(aStep->GetTotalEnergyDeposit()/keV);}
+if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Core_Fiber" && partname != "opticalphoton") {evtac->AddEdepSc(aStep->GetTotalEnergyDeposit()/keV);}
 
 if(aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "World") {theTrack->SetTrackStatus(fStopAndKill);}
 

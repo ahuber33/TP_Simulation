@@ -81,6 +81,10 @@
 #include "G4DormandPrinceRK78.hh"
 #include "G4TsitourasRK45.hh"
 
+#include "G4RegionStore.hh"
+#include "FastSimModelOpFiber.hh"
+#include "SimG4FastSimOpFiberRegion.hh"
+
 using namespace CLHEP;
 
 const G4String TPSimGeometry::path_bin = "../bin/";
@@ -154,7 +158,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   orange->SetForceSolid(true);
   orange->SetVisibility(true);
 
-  yellow = new G4VisAttributes(G4Colour(1,1,0,0.99));
+  yellow = new G4VisAttributes(G4Colour(1,1,0,0.1));
   //  yellow->SetForceWireframe(true);
   yellow->SetForceSolid(true);
   yellow->SetVisibility(true);
@@ -169,7 +173,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   green_hot->SetForceSolid(true);
   green_hot->SetVisibility(true);
 
-  cyan = new G4VisAttributes(G4Colour(0,1,1,0.55));
+  cyan = new G4VisAttributes(G4Colour(0,1,1,0.1));
   //  cyan->SetForceWireframe(true);
   cyan->SetForceSolid(true);
   cyan->SetVisibility(true);
@@ -242,7 +246,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
   // Create World Volume
   // This is just a big box to place all other logical volumes inside
-  G4Box *SolidWorld = new G4Box("SolidWorld", 210*cm, 210*cm, 210*cm );
+  G4Box *SolidWorld = new G4Box("SolidWorld", 1100*cm, 1100*cm, 1100*cm );
   LogicalWorld = new G4LogicalVolume(SolidWorld, VacuumWorld,"LogicalWorld",0,0,0);
   LogicalWorld->SetVisAttributes(invis);
 
@@ -252,12 +256,13 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
   // Create Holder Volume
   // This is just a big box to count the escaped photons
-  G4Box *s_holder = new G4Box("s_fibersholder", 200*cm, 200*cm, 200*cm);
+  G4Box *s_holder = new G4Box("s_holder", 1000*cm, 1000*cm, 1000*cm);
 
   LogicalHolder = new G4LogicalVolume(s_holder,Vacuum,"logical_holder",0,0,0); //Replace Air with Vacuum (init)
 
   //G4Box *s_holder;
-  G4Box *s_fibersholder = new G4Box("s_holder", (WidthBunchFibers/1.99)*mm, (WidthBunchFibers/1.99)*mm, FiberLength/2);
+  G4Box *s_fibersholder = new G4Box("s_fibersholder", (WidthBunchFibers/1.99)*mm, (WidthBunchFibers/1.99)*mm, FiberLength/2);
+  //G4Tubs *s_fibersholder = new G4Tubs("s_fibersholder", 0.0, 0.6*mm, 50*mm, 0, 360*deg);
 
   LogicalFibersHolder = new G4LogicalVolume(s_fibersholder,Vacuum,"logical_fibersholder",0,0,0); //Replace Air with Vacuum (init)
 
@@ -311,8 +316,18 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   // RegEM->AddRootLogicalVolume(LogicalVolumeEFPlates);
   // RegEM->AddRootLogicalVolume(LogicalVolumeMFPlates);
   //
-  // G4Region* RegSc = new G4Region("Sc");
-  // RegSc->AddRootLogicalVolume(LogicalSc);
+  G4Region* FiberRegion = new G4Region("Fiber_Region");
+  FiberRegion->AddRootLogicalVolume(LogicalFibersHolder);
+
+
+  G4RegionStore* regionStore = G4RegionStore::GetInstance();
+  //new FastSimModelOpFiber("FastSimModelOpFiber", FiberRegion);
+
+
+  // FastSimModelOpFiber* fModel;
+  // auto regionStore = G4RegionStore:GetInstance():
+  // auto region = regionStore->GetRegion("FastSimModelOpFiber")
+  //fModel = new FastSimModelOpFiber("FastSimModelOpFiber", region)
 
   //********************************************
   // Build optical properties and skin surfaces*
@@ -547,8 +562,9 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
       Z_Position_Sc = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness/2;
       //Z_Position_ZnSLG = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness +ZnSLGThickness/2;
       Z_Position_Fiber = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + FiberLength/2;
-      Z_Position_Photocathode = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + FiberLength + DetectorThickness/2;
+      //Z_Position_Photocathode = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + FiberLength + DetectorThickness/2;
       //Z_Position_Photocathode = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness+ZnSLGThickness+DetectorThickness/2;
+      Z_Position_Photocathode = FiberLength/2 + DetectorThickness/2;
 
 
       //############################
@@ -559,33 +575,33 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
       PhysicalHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector(0, 0, 0)),LogicalHolder, "Vacuum", LogicalWorld,false,0);
 
-      //PhysicalFibersHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector((-WidthBunchFibers)/2 ,(WidthBunchFibers)/2, 0)),LogicalFibersHolder, "Holder_Fiber",LogicalHolder,false,0);
-      PhysicalFibersHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector((-WidthBunchFibers)/2 ,(WidthBunchFibers)/2, Z_Position_Fiber)),LogicalFibersHolder, "Holder_Fiber",LogicalHolder,false,0);
+      PhysicalFibersHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector((-WidthBunchFibers)/2 ,(WidthBunchFibers)/2, 0)),LogicalFibersHolder, "Holder_Fiber",LogicalHolder,false,0);
+      //PhysicalFibersHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector((-WidthBunchFibers)/2 ,(WidthBunchFibers)/2, Z_Position_Fiber)),LogicalFibersHolder, "Holder_Fiber",LogicalHolder,false,0);
 
-      PhysicalPinhole = new G4PVPlacement(G4Transform3D
-        (DontRotate,G4ThreeVector(0*mm, 0*mm, 0*mm)), // Set at origin as basis of everything else
-        LogicalPinhole,"Pinhole",
-        LogicalHolder,false,0);
-
-        PhysicalVolumeMFPlates = new G4PVPlacement(G4Transform3D
-          (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_MFPlates)), // Set at origin as basis of everything else
-          LogicalVolumeMFPlates,"Volume_MF_Plates",
-          LogicalHolder,false,0);
-
-          PhysicalMFPlates = new G4PVPlacement(G4Transform3D
-            (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-            LogicalMFPlates,"MF_Plates",
-            LogicalVolumeMFPlates,false,0);
-
-            PhysicalVolumeEFPlates = new G4PVPlacement(G4Transform3D
-              (DontRotate,G4ThreeVector(0*mm,translation_pinhole, Z_Position_EFPlates)), // Set at origin as basis of everything else
-              LogicalVolumeEFPlates,"Volume_EF_Plates",
-              LogicalHolder,false,0);
-
-              PhysicalEFPlates = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalEFPlates,"EF_Plates",
-                LogicalVolumeEFPlates,false,0);
+      // PhysicalPinhole = new G4PVPlacement(G4Transform3D
+      //   (DontRotate,G4ThreeVector(0*mm, 0*mm, 0*mm)), // Set at origin as basis of everything else
+      //   LogicalPinhole,"Pinhole",
+      //   LogicalHolder,false,0);
+      //
+      //   PhysicalVolumeMFPlates = new G4PVPlacement(G4Transform3D
+      //     (DontRotate,G4ThreeVector(0*mm, translation_pinhole, Z_Position_MFPlates)), // Set at origin as basis of everything else
+      //     LogicalVolumeMFPlates,"Volume_MF_Plates",
+      //     LogicalHolder,false,0);
+      //
+      //     PhysicalMFPlates = new G4PVPlacement(G4Transform3D
+      //       (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+      //       LogicalMFPlates,"MF_Plates",
+      //       LogicalVolumeMFPlates,false,0);
+      //
+      //       PhysicalVolumeEFPlates = new G4PVPlacement(G4Transform3D
+      //         (DontRotate,G4ThreeVector(0*mm,translation_pinhole, Z_Position_EFPlates)), // Set at origin as basis of everything else
+      //         LogicalVolumeEFPlates,"Volume_EF_Plates",
+      //         LogicalHolder,false,0);
+      //
+      //         PhysicalEFPlates = new G4PVPlacement(G4Transform3D
+      //           (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+      //           LogicalEFPlates,"EF_Plates",
+      //           LogicalVolumeEFPlates,false,0);
 
 
                 // PhysicalZnS = new G4PVPlacement(G4Transform3D

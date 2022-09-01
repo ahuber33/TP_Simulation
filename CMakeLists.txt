@@ -69,6 +69,8 @@ set(PROJECT_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimSteppingAction.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimTrackInformation.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/src/FiberParameterisation.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/FastSimModelOpFiber.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/SimG4FastSimOpFiberRegion.cc
     )
 
 set(PROJECT_HEADER
@@ -84,6 +86,8 @@ set(PROJECT_HEADER
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimSteppingAction.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimTrackInformation.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/FiberParameterisation.hh
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/FastSimModelOpFiber.hh
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/SimG4FastSimOpFiberRegion.hh
     )
 
 #----------------------------------------------------------------------------

@@ -51,6 +51,7 @@
 #include "G4BraggIonModel.hh"
 #include "G4BraggModel.hh"
 #include "G4BetheBlochModel.hh"
+#include "G4FastSimulationManagerProcess.hh"
 
 
 using namespace CLHEP;
@@ -107,6 +108,7 @@ void TPSimPhysics::ConstructProcess()
   particleList->ConstructProcess();
   raddecayList->ConstructProcess();
   ConstructOp();
+  AddParameterisation();
   //AddIonGasModels();  // Be careful, use only for the TP!!! Process ionIoni not taken into account for neutral nucleus !!!
 
 }
@@ -214,6 +216,32 @@ void TPSimPhysics::ConstructOp()
 
 
   }
+}
+
+
+void TPSimPhysics::AddParameterisation() {
+
+  G4FastSimulationManagerProcess* fastSimProcess =
+   new G4FastSimulationManagerProcess("G4FSMP");
+
+  // Registers the fastSimProcess with all the particles as a discrete and
+  // continuous process (this works in all cases; in the case that parallel
+  // geometries are not used, as in this example, it would be enough to
+  // add it as a discrete process).
+   auto particleIterator=GetParticleIterator();
+   particleIterator->reset();
+  while ( (*particleIterator)() ) {
+  G4ParticleDefinition* particle = particleIterator->value();
+   G4ProcessManager* pmanager = particle->GetProcessManager();
+    pmanager->SetVerboseLevel(0);
+
+  if(particle->GetParticleName() == "opticalphoton")
+    //pmanager->AddDiscreteProcess( fastSimProcess );    // No parallel geometry
+    pmanager->AddProcess( fastSimProcess, -1, 0, 0 );  // General
+  }
+
+
+
 }
 
 void TPSimPhysics::SetCuts()
