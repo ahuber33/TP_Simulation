@@ -12,13 +12,13 @@
 #- Based on G4EmStandardPhysics_option3 with additional Optical part.
 #- DO NOT HESITATE TO REPORT BUGS OR ANY IDEAS THAT WILL IMPROVE THE SIMULATION !!!!
 
-#commit #1 le 23/02/2022 [TPSim.0.0.0]:
+# Commit #1 le 23/02/2022 [TPSim.0.0.0]:
 #-Reprise en main du code GMSim de la version G4-9.6p02 pour le mettre sur la version G4-11.0
 #-Changement de l'intégralité des noms GMSim en TPSim
 #-Premier nettoyage rapide du code sur certaines fonctions
 #-Création Tree electrons + fonctions en vue de vérifier les PhysicsList
 
-#commit #2 le 24/02/2022 (Validation G4EM-electrons) [TPSim.0.1.0]:
+# Commit #2 le 24/02/2022 (Validation G4EM-electrons) [TPSim.0.1.0]:
 #-Changement de la définition du Scintillateur pour coller aux données de ESTAR
 #-Création matériau Carbon pour tests avec ESTAR
 #-Géométrie basique pour le moment pour tests G4EM
@@ -27,7 +27,7 @@
 #-Nettoyage du dossier bin (Scripts, macros et fichiers txt correspondants à la simulation GMSim)
 #-De nombreux tests avec .gitignore pour faciliter l'utilisation
 
-#commit #3 le 25/02/2022 (Validation G4EM-protons) [TPSim.0.1.1]
+# Commit #3 le 25/02/2022 (Validation G4EM-protons) [TPSim.0.1.1]
 #-Changement taille scintillateur pour pouvoir suivre le proton de 500 MeV sur toute sa trajectoire dans le Scintillateur
 #-Changement définition holder de Orb en Box
 #-Ajout d'un StopandKill pour gagner du temps sur les particules secondaires générées
@@ -37,7 +37,7 @@
 #-Le tree electrons est juste utilisé ici pour avoir les informations sur les protons -> Nécessité de faire attention par la suite et de surement créer un autre tree pour les protons
 #-Du aux nombreux gammas crées, la condition de remplissage du tree (Estart=Edep) a été enlevé.
 
-#commit #4 le 28/02/2022 (Mise en place partie Optique) [TPSim.0.2.0]
+# Commit #4 le 28/02/2022 (Mise en place partie Optique) [TPSim.0.2.0]
 #-Ajout des fichiers Coupling et PMT (temporairement ou non) afin de pouvoir vérifier la partie optique sur les scintillateurs SuperNEMO
 #- Ajout de l'ensemble des fonctions, géométries, matériaux et variables liés à SuperNEMO (temporaire ou non) nécessaire pour la vérification de la partie optique
 #- Ajout propriétés optique du scintillateur, mylar, teflon, colle, photocathode et PM
@@ -47,7 +47,7 @@
 #-Possibilité de considérer uniquement les photons détectés et/ou transmis
 #-Changement du Cut dans la PhysicsList à 1mm pour faciliter/accélerer l'analyse optique avec électrons
 
-#commit #5 le 07/03/2022 (Ajout partie LaBr3 + nettoyage) [TPSim.0.3.0]
+# Commit #5 le 07/03/2022 (Ajout partie LaBr3 + nettoyage) [TPSim.0.3.0]
 #- Ajout des fichiers géométries correspondant à la configuration HPD et PMT (fichiers de config inclus pour le scintillateur LaBr3 et le PM)
 #- Ajout des spectres réels de flash X issues de l'expérience de Emmanuel au CELIA dans Geant4
 #- Ajout de fonctions pour ploter les résultats dans Plot.hh
@@ -58,12 +58,12 @@
 #- Mise en forme du code plus propre avec déclarations des variables et fonctions en début de fichier pour faciliter la lecture
 #- Ajout de la données "Time" dans le root de sortie permettant de connaitre la répartition temporelle des photons sur la photocathode
 
-#commit #6 le 09/03/2022 [TPSim.0.3.1]
+# Commit #6 le 09/03/2022 [TPSim.0.3.1]
 #- Ajout de la propriété Rayleigh scattering et donc split de l'attenuation length en absorption length et scattering length selon [https://www.researchgate.net/publication/254060762_Optical_Absorption_Length_Scattering_Length_and_Refractive_Index_of_LaBr3Ce3]
 #- Selon cette référence, l'absorption entraine quasi à chaque fois la réémission d'un photon derrière pour le LaBr3 donc à investiguer dans le futur !!!
 #- Changement de position de certaines lignes de code pour plus de clarté
 
-#commit #7 le 16/03/2022 [TPSim0.4.0]
+# Commit #7 le 16/03/2022 [TPSim0.4.0]
 #- Ajout des longueurs de référence de la TP dans le fichier de config. L'ensemble des distances pour le placement des éléments dépend de ces paramètres. Ensemble des liens effectués
 #- Ajout dans le vis.mac des lignes permettant d'afficher la direction des champs magnétiques et électriques
 #- Création de l'ensemble des volumes principaux de la TP. La zone de champ magnétique est électrique est crée et englobe la partie créant le champ.
@@ -71,11 +71,11 @@
 #- Ajout des élements permettant de générer un champ magnétique et électrique uniforme dans le TPSimGeometry.cc. ATTENTION : La vérification des déviations pour le champ magnétique laissé apparaitre des écarts de plus en plus important entre la simu et les équations pour les trajectoires très déviées. A suivre et investiguer !!!!!!!!!! Ok pour le champ électrique !!!!
 # - PROBLEME AVEC LA GENERATION DES IONS AVEC Z>2. NE PREND PAS EN COMPTE LA CHARGE IONIQUE DANS LE GPS/ION. INVESTIGATION EN COURS !!!!
 
-#commit #8 le 18/03/2022 [TPSim.0.4.1]
+# Commit #8 le 18/03/2022 [TPSim.0.4.1]
 #- Ajout des propriétés du scintillateur ZnS et ajout dans la simulation
 #- Création des variables associées au ZnS
 
-#commit #9 le 25/03/2022 [TPSim.0.5.0]
+# Commit #9 le 25/03/2022 [TPSim.0.5.0]
 # - Problème du commit #7 avec la génération des ions avec Z>2 et une charge Q géré par la macro en partie réglé. Il est dorénavant possible de générer un noyau de Carbone avec une charge ionique allant de +1 à +6 pour le suivi dans la TP. Cela a été rendu possible avec l'ajout des G4BraggIonGasModel et G4BetheBlochIonGasModel permettant de suivre correctement les ions dans un milieu gazeux. Ainsi l'ion ne se retrouve pas automatiquement en équilibre avec le milieu dans lequel il se propage comme cela est le cas en règle générale dans GEANT4.
 # - NEANMOINS, LA PRISE EN COMPTE DE CES FONCTIONS INDUIT UN BIAIS LORS DE L'INTERACTION DE CES IONS AVEC LE SCINTILLATEUR QUI ONT UN PARCOURS PLUS IMPORTANT CAR LE MODELE PRIS EST CELUI D'UN GAZ. EN COURS D'INVESTIGATION POUR RÉSOUDRE CE PROBLEME.
 # - En attendant, le modèle AddIonGasModels() est désactivé et l'étude optique se portera uniquement sur des protons et alpha dans un premier temps. Néanmoins, pour juste suivre la déviation sans la production de photons, il est possible d'étudier ces ions en activant le modèle AddIonGasModels().
@@ -86,27 +86,27 @@
 #- Ajout des informations sur l'ID de la particule, son temps de vol (particule et photons) ainsi que sa charge.
 #- L'ensemble des éléments de la géométrie bouge en fonction des paramètres de chacun des éléments de la configuration. Toutes les distances sont liées dans le TPSimGeometry.cc lors du placement des éléments.
 
-#commit #10 le 01/04/2022 [TPSim.0.5.1]
+# Commit #10 le 01/04/2022 [TPSim.0.5.1]
 #-Quelques changements mineurs sur le code pour ne pas avoir des ficheirs de résultats trop gros (Branches non prises en compte et donc commentées)
 #-Quelques petits bugs fixés.
 #-Ajout des programmes d'analyse (Analyse_TP.cc et Analyse_TP.hh)
 
-#commit #11 le 24/04/2022 [TPSim.0.5.2]
+# Commit #11 le 24/04/2022 [TPSim.0.5.2]
 #- Ajout des propriétés optiques du scintillateur NoWaSH de Liquido.
 #- Ajout de l'efficacité quantique de la caméra CCD ORCA II
 #- Code analyse ayant servi à la première étude projet RATP du 2 mai 2022 [Analyse_TP.cc & Analyse_Optique.cc]
 
-#commit #12 le 10/05/2022 [TPSim.0.5.3]
+# Commit #12 le 10/05/2022 [TPSim.0.5.3]
 #- Ajout et prise en compte du fait que le ZnS est appliqué sur un guide de lumière ou sur un scintillateur. Création de la géometrie guide de lumière en conséquence
 #- Création du matériau Silicium
 #- Modifications mineurs aux codes d'analyse
 #- Config en cours : TP reel ENL expérience LULI
 #- Passage de la simulation sur 11.0.1
 
-#commit #13 le 20/05/2022 [TPSim.0.5.4]
+# Commit #13 le 20/05/2022 [TPSim.0.5.4]
 #- Ajout des configurations LFEX et PETAL pour comparaison avec donnes expérimentales
 
-#commit #14 le 17/06/2022 [TPSim.0.6.0]
+# Commit #14 le 17/06/2022 [TPSim.0.6.0]
 #- Ajout des fonctions de paramétrisation permettant de répliquer une fibre en un certain nombre afin de gagner du temps de calcul et de génération de géométrie. Egalement un souci de simplification du code nécessaire car impossible de générer 1000 fibres différentes => Ajout des fichiers FiberParametrisation.hh et .cc
 #- Définition d'un nouveau matériau (FP) correspondant au cladding externe d'une fibre circulaire multi cladding
 #- Ensemble des paramètres liés aux fibres a été parametrisé (longueur, épaisseur, espacement, multi cladding ou non, type de géométrie) et automatisé. Pour passer d'une géométrie à l'autre, il suffit de changer les paramètres dans le TPSim.cfg.
@@ -125,8 +125,12 @@
 #- Ajout de la possibilité d'accéder aux informations sur la normal à une surface sur laquelle arrive un photon dans le SteppingAction. Sert pour potentiellement du débug.
 #- Ajout des accès aux potentiels différents types de réfraction, réflexions dans le SteppingAction
 
-#Commit #16 le 08/09/2022 [TPSim.0.7.1]
+# Commit #16 le 08/09/2022 [TPSim.0.7.1]
 # - Ajout de la variable DetectorTranslation dans TPSim.cfg afin de pouvoir dans le futur décaler la zone de détection par rapport aux fibres (étude de l'éloignement de la lentille)
 # - Ajout du paramètre sur le multicladding dans la fonction d'appel du module G4Fast. Cela permettra de mieux utiliser les coupures sur les angles qui se propagent dans les différents types de fibres
 # - Correction du bug de placement des fibres dans le FiberHolder. En effet, l'espace entre les fibres n'était pas pris en compte, ce qui lors de la génération d'un grand nombre de fibres entrainait des recouvrements et donc des soucis au niveau de la simulation. Ce problème est dorénavant patché de façon certaine pour la géométrie ronde single cladding. Le même processus a été réalisée pour la géométrie ronde multicladding auquel il reste de nombreuses vérifications à effectuer
 # - Tests en cours pour déterminer pourquoi des photons qui partent vers l'arrière et qui devraient logiquement sortir de la fibre sont de retour et vont jusqu'à être détectés
+
+# Commit #17 08/09/2022 [TPSim.0.7.2]
+# - Explication des photons détectés partant à la base dans le sens opposé. Bien que la majorité des photons ayant ces angles sont transmis à travers cette interface, en focntion de l'angle et de la polarisation du photon, il y a une probabilité non nul pour que le photon soit réflechi selon ce qu'on appelle une rélfexion de Fresnel (voir image correspondante pour plus de détails). Il est donc normal de voir ces angles pouvoir potentiellement se propager et aller jusqu'au détecteur, ce n'est pas une erreur dans la simulation !!!!
+# - Exemple d'un de ces photons présent ici : bin/Event_detected_angle161.deg
