@@ -547,7 +547,7 @@ void TPSimMaterials::Construct()
 			ReadVac >> pWavelength >> filler >> y;
 			Vacuum_Energy.push_back((1240/pWavelength)*eV); //convert wavelength to eV
 			Vacuum_Absorption_Long.push_back(vacAbsorbconst);
-			Vacuum_Index_Value.push_back(1.0);
+			Vacuum_Index_Value.push_back(1.);
 			//    G4cout<<vacEntries<<" "<<vacEnergy[vacEntries]<<" "<<vacIndex[vacEntries]<<G4endl;
 		}
 	}

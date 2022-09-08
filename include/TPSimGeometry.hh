@@ -145,6 +145,7 @@ private:
   G4double ZnSThickness;
   G4double ZnSLGThickness;
   G4double DetectorThickness;
+  G4double DetectorTranslation;
   G4double PinholeThickness;
   G4double FiberLength;
   G4double FiberWidth;

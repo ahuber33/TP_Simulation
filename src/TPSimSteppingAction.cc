@@ -86,12 +86,13 @@ TPSimSteppingAction::TPSimSteppingAction()
     //#######################################################################
     // G4cout << "x = " << x << G4endl;
     // G4cout << "y = " << y << G4endl;
-    // G4cout << "z = " << z << G4endl;
+    G4cout << "z = " << z << G4endl;
+    G4cout << "z pre = " << zpre << G4endl;
     // G4cout << "px = " << px << G4endl;
     // G4cout << "py = " << py << G4endl;
     // G4cout << "pz = " << pz << G4endl;
     // G4cout << "polarisation = " << polarisation << G4endl;
-    // G4cout << "angle = " << angle/deg << G4endl;
+     //G4cout << "angle = " << angle/deg << G4endl;
     // G4cout << "Time = " << time << " ns" << G4endl;
 
     // G4bool valid;
@@ -105,7 +106,8 @@ TPSimSteppingAction::TPSimSteppingAction()
       //G4cout << "px = " << px << G4endl;
       //G4cout << "py = " << py << G4endl;
       //G4cout << "pz = " << pz << G4endl;
-      evtac->FillFiberAngleCreation(angle/deg);
+      G4cout << "ANGLE = " << angle/deg << G4endl;
+      //evtac->FillFiberAngleCreation(angle/deg);
       evtac->SetPhotonCreationAngle(angle/deg);
       evtac->SetTrackLengthFastSimulated(0);
     }
@@ -223,6 +225,7 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
       evtac->FillWrapReflecions(((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->GetReflections());
       evtac->FillPhotonTotalLength(aStep->GetTrack()->GetTrackLength()/mm + evtac->GetTrackLengthFastSimulated());
       evtac->FillFiberAngleDetection(angle/deg);
+      evtac->FillFiberAngleCreation(evtac->GetPhotonCreationAngle());
       // G4cout << "Lamda = " << info->GetBirthLambda() << " nm " << G4endl;
       // G4cout << "[STEP] Track Length fast simulated = " << evtac->GetTrackLengthFastSimulated() << G4endl;
       // G4cout << "[STEP] Track Length = " << evtac->GetTrackLengthFastSimulated()+aStep->GetTrack()->GetTrackLength()/mm << G4endl;
@@ -281,12 +284,12 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
       }
        case FresnelRefraction:
        {
-         //G4cout << "Fresnel Refraction" << G4endl;
+        G4cout << "Fresnel Refraction" << G4endl;
          break;
        }
       case FresnelReflection:
       {
-        //G4cout << "Fresnel Reflection" << G4endl;
+        G4cout << "Fresnel Reflection" << G4endl;
         break;
       }
       case LobeReflection:
@@ -297,12 +300,12 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
       case SpikeReflection:
       {
         ((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->CountReflections();
-        //G4cout << "Reflection" << G4endl;
+        G4cout << "Reflection" << G4endl;
         break;}
         case TotalInternalReflection:
         {
           ((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->CountTotalInternalReflections();
-          //G4cout << "Reflection totale" << G4endl;
+          G4cout << "Reflection totale" << G4endl;
           break;
         }
         default:

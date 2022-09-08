@@ -22,6 +22,7 @@ public:
 
 private:
   FastSimModelOpFiber* fModel;
+  G4double FiberMultiCladding;
 };
 
 #endif

@@ -77,6 +77,10 @@ Geometry::Geometry(G4String buildfile){
         config >> value >> unit;
         DetectorThickness = value*G4UnitDefinition::GetValueOf(unit);
       }
+      else if(variable == "DetectorTranslation"){
+        config >> value >> unit;
+        DetectorTranslation = value*G4UnitDefinition::GetValueOf(unit);
+      }
       if(variable == "TeflonThickness"){
         config >> value >> unit;
         TeflonThickness = value*G4UnitDefinition::GetValueOf(unit);
@@ -516,7 +520,7 @@ G4LogicalVolume *Geometry::GetPhotocathode(){
 
   G4Box *Box = new G4Box   ("Box",             //its name
   //ScintillatorLength/2, ScintillatorLength/2, DetectorThickness/2);    //its size
-    (Fiber_number_per_line*Fiber_width)/2, (Fiber_number_per_line*Fiber_width)/2, DetectorThickness/2);    //its size
+    (Fiber_number_per_line*Fiber_width + (Fiber_number_per_line+1)*Fiber_space)/2, (Fiber_number_per_line*Fiber_width + (Fiber_number_per_line+1)*Fiber_space)/2, DetectorThickness/2);    //its size
 
   LogicalVolume = new G4LogicalVolume(Box, Material, "Photocathode",0,0,0);
 

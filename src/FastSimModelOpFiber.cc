@@ -7,9 +7,10 @@
 #include "G4Tubs.hh"
 #include "G4EventManager.hh"
 #include "TPSimEventAction.hh"
+#include "Geometry.hh"
 
-FastSimModelOpFiber::FastSimModelOpFiber(G4String name, G4Region* envelope)
-: G4VFastSimulationModel(name,envelope) {
+FastSimModelOpFiber::FastSimModelOpFiber(G4String name, G4Region* envelope, G4double CladdingIndex)
+: G4VFastSimulationModel(name,envelope, CladdingIndex) {
   fOpBoundaryProc = NULL;
   fCoreMaterial = NULL;
   fProcAssigned = false;
@@ -24,6 +25,7 @@ FastSimModelOpFiber::FastSimModelOpFiber(G4String name, G4Region* envelope)
   fKill = false;
   fNtotIntRefl = 0;
   fTrackId = 0;
+  FiberMultiCladding = CladdingIndex;
 
   DefineCommands();
 }
@@ -64,16 +66,35 @@ G4bool FastSimModelOpFiber::ModelTrigger(const G4FastTrack& fasttrack) {
   // G4cout << "Fiber axis = " << fFiberAxis << G4endl;
   // G4cout << "F Track Length = " << fTrkLength << G4endl;
   // G4cout << "F Track Length = " << fTrkLength << G4endl;
-   //G4cout << "Fiber length = " << fiberLen << G4endl;
+  //G4cout << "Fiber length = " << fiberLen << G4endl;
 
 
-   // if ( fiberLen >600 && evtac->GetPhotonCreationAngle() >20.4 && evtac->GetPhotonCreationAngle() <159.6 ) { // kill skew ray if fiber length is too long because they will not arrive to CMOS
-   //   fKill = true;
-   //   //G4cout << "Track killed" << G4endl;
-   //   return true;
-   // }
+  // if ( fiberLen >600 && evtac->GetPhotonCreationAngle() >20.4 && evtac->GetPhotonCreationAngle() <159.6 ) { // kill skew ray if fiber length is too long because they will not arrive to CMOS
+  //   fKill = true;
+  //   //G4cout << "Track killed" << G4endl;
+  //   return true;
+  // }
 
-   if(evtac->GetPhotonCreationAngle() >20.4 && evtac->GetPhotonCreationAngle() <159.6) return false;
+  if(FiberMultiCladding==0)
+  {
+    if(evtac->GetPhotonCreationAngle() >20.4 && evtac->GetPhotonCreationAngle() <159.6)
+    {
+      //G4cout << "Escaped" << G4endl;
+      evtac->CountEscaped();
+      fKill = true;
+      return true;
+      //return false;
+    }
+  }
+
+
+  if(FiberMultiCladding==1)
+  {
+    // if(evtac->GetPhotonCreationAngle() >20.4 || evtac->GetPhotonCreationAngle() <159.6)
+    // {
+    //   return false;
+    // }
+  }
 
   if ( fTrkLength==0. ) { // kill stopped particle
     fKill = true;
@@ -126,6 +147,7 @@ G4bool FastSimModelOpFiber::ModelTrigger(const G4FastTrack& fasttrack) {
     if ( nInteractionLength > nInteractionLengthLeft ) { // OpAbsorption
       fKill = true;
       //G4cout << "nInteractionLength > nInteractionLengthLeft" << G4endl;
+      evtac->CountBulkAbsSc();
       return true;
     }
   }

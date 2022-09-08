@@ -19,7 +19,7 @@ void SimG4FastSimOpFiberRegion::create() {
   auto regionStore = G4RegionStore::GetInstance();
   auto region = regionStore->GetRegion("Fiber_Region");
 
-  fModel = new FastSimModelOpFiber("FastSimModelOpFiber",region);
+  fModel = new FastSimModelOpFiber("FastSimModelOpFiber",region, FiberMultiCladding);
   //fModel->SetFiberLength(2000.*mm);
 
   return;

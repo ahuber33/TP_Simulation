@@ -6,15 +6,17 @@ TGraph* Tubs_xz;
 TGraph* Core_xz;
 TGraph* Tubs_yz;
 TGraph* Core_yz;
-float Traj_X[100000];
-float Traj_Y[100000];
-float Traj_Z[100000];
-float Angle[100000];
-int Final_State_Photon[100000];
-TGraph2D* g[100000];
-TGraph* xy[100000];
-TGraph* xz[100000];
-TGraph* yz[100000];
+float Traj_X[10000000];
+float Traj_Y[10000000];
+float Traj_Z[10000000];
+float Angle[10000000];
+int Final_State_Photon[10000000];
+float Pos_X[10000000];
+float Pos_Y[10000000];
+TGraph2D* g[10000000];
+TGraph* xy[10000000];
+TGraph* xz[10000000];
+TGraph* yz[10000000];
 TPad *pad1;
 TPad *pad2;
 TPad *pad3;
@@ -53,12 +55,12 @@ void Draw_ALL_Results(float condition_angle, int condition_status)
 	  pad2->cd();
 	  Tubs_xy->SetTitle("Plan XY");
 	  Tubs_xy->Draw("AP");
-	  Tubs_xy->GetXaxis()->SetLimits(-1.1,0.1);
-	  Tubs_xy->GetHistogram()->SetMinimum(-0.1);
-	  Tubs_xy->GetHistogram()->SetMaximum(1.1);
+	  //Tubs_xy->GetXaxis()->SetLimits(-1.1,0.1);
+	  //Tubs_xy->GetHistogram()->SetMinimum(-0.1);
+	  //Tubs_xy->GetHistogram()->SetMaximum(1.1);
 	  Tubs_xy->SetMarkerColor(kBlue);
 	  Core_xy->SetMarkerColor(kRed);
-	  Core_xy->Draw("PSAME");
+	  //Core_xy->Draw("PSAME");
 	  xy[i]->Draw("SAME");
 	  xy[i]->SetLineColor(kGreen);
 	  pad2->Update();
@@ -121,9 +123,9 @@ void Draw_Particular_Results(int i)
   pad2->cd();
   Tubs_xy->SetTitle("Plan XY");
   Tubs_xy->Draw("AP");
-  Tubs_xy->GetXaxis()->SetLimits(-1,0);
-  Tubs_xy->GetHistogram()->SetMinimum(0);
-  Tubs_xy->GetHistogram()->SetMaximum(1);
+  // Tubs_xy->GetXaxis()->SetLimits(-1,0);
+  // Tubs_xy->GetHistogram()->SetMinimum(0);
+  // Tubs_xy->GetHistogram()->SetMaximum(1);
   Tubs_xy->SetMarkerColor(kBlue);
   Core_xy->SetMarkerColor(kRed);
   Core_xy->Draw("PSAME");
@@ -188,6 +190,8 @@ void Create_Trajectory(const char* filename)
   std::vector<int>* N=0;
   std::vector<int>* FinalState=0;
   std::vector<float>* vAngle=0;
+  std::vector<float>* Posx=0;
+  std::vector<float>* Posy=0;
   
   Tree->SetBranchAddress("PhotonTrajectoryX", &x);
   Tree->SetBranchAddress("PhotonTrajectoryY", &y);
@@ -195,8 +199,12 @@ void Create_Trajectory(const char* filename)
   Tree->SetBranchAddress("PhotonTrajectoryNStep", &N);
   Tree->SetBranchAddress("Angle_creation", &vAngle);
   Tree->SetBranchAddress("Final_state_photon", &FinalState);
+  Tree->SetBranchAddress("PositionX", &Posx);
+  Tree->SetBranchAddress("PositionY", &Posy);
 
   const int Entries = Tree->GetEntries();
+
+  cout << "entries = " << Entries << endl;
 
   int NStep_TOT=0;
   int Trajectory_Number=1;
@@ -218,6 +226,7 @@ void Create_Trajectory(const char* filename)
 	Angle[j] = vAngle->at(j);
 	if (Angle[j]>90) {Angle[j] =180-Angle[j];}
 	Final_State_Photon[j] = FinalState->at(j);
+	//cout << "j = " << j << endl;
       }
     
     }
@@ -229,6 +238,8 @@ void Create_Trajectory(const char* filename)
 	Traj_X[TrajectoryStep_Number] = x->at(i);
 	Traj_Y[TrajectoryStep_Number] = y->at(i);
 	Traj_Z[TrajectoryStep_Number] = z->at(i);
+	Pos_X[TrajectoryStep_Number] = Posx->at(i);
+	Pos_Y[TrajectoryStep_Number] = Posy->at(i);
 	// cout << "x[" << i << "] = " << x->at(i) << endl;
 	// cout << "y[" << i << "] = " << y->at(i) << endl;
 	// cout << "z[" << i << "] = " << z->at(i) << endl;
@@ -276,7 +287,7 @@ TGraph2D* Create_Fiber_3D(float fiber_radius, float core_radius, float fiber_len
   
     for (float z=-fiber_length; z <fiber_length; z+=5)
     {
-      for (float x=-fiber_radius-fiber_radius; x<0; x+=0.05)
+      for (float x=-fiber_radius-fiber_radius; x<0; x+=0.5)
 	{
 	  TubsX[n] = x;
 	  TubsY[n] = sqrt(fiber_radius*fiber_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
@@ -305,7 +316,7 @@ TGraph2D* Create_Core_3D(float fiber_radius, float core_radius, float fiber_leng
   
     for (float z=-fiber_length; z <fiber_length; z+=5)
     {
-      for (float x=-fiber_radius-core_radius; x<0; x+=0.05)
+      for (float x=-fiber_radius-core_radius; x<0; x+=0.5)
 	{
 	  TubsX[n] = x;
 	  TubsY[n] = sqrt(core_radius*core_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
@@ -331,7 +342,7 @@ TGraph* Create_Fiber_XY(float fiber_radius, float core_radius, float fiber_lengt
   float TubsY[1000];
   int n=0;
   
-  for (float x=-fiber_radius-fiber_radius; x<0; x+=0.01)
+  for (float x=-fiber_radius-fiber_radius; x<0; x+=0.5)
     {
       TubsX[n] = x;
       TubsY[n] = sqrt(fiber_radius*fiber_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
@@ -354,7 +365,7 @@ TGraph* Create_Core_XY(float fiber_radius, float core_radius, float fiber_length
   float TubsY[1000];
   int n=0;
   
-  for (float x=-fiber_radius-core_radius; x<0; x+=0.01)
+  for (float x=-fiber_radius-core_radius; x<0; x+=0.5)
     {
       TubsX[n] = x;
       TubsY[n] = sqrt(core_radius*core_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;

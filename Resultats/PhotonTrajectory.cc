@@ -3,15 +3,15 @@
 void PhotonTrajectory()
 {
   int noftraj =0;
-  float fiber_radius =0.5;
+  float fiber_radius =5.5;
   float core_radius =fiber_radius-0.02*fiber_radius;
-  float fiber_length = 50;
+  float fiber_length = 500;
   float condition_angle =0;
   int condition_status =0;
 
   Initialisation_Geometrie(fiber_radius, core_radius, fiber_length);
 
-  Create_Trajectory("Photon_Trajectory_100mm_NoAir.root");
+    Create_Trajectory("b.root");
   //  Create_Trajectory("a.root");
 
 

@@ -218,6 +218,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   ZnSThickness = theScint->GetZnSThickness();
   ZnSLGThickness = theScint->GetZnSLGThickness();
   DetectorThickness = theScint->GetDetectorThickness();
+  DetectorTranslation = theScint->GetDetectorTranslation();
   PinholeThickness = theScint->GetPinholeThickness();
   FiberLength = theScint->GetFiberLength();
   FiberWidth = theScint->GetFiberWidth();
@@ -238,7 +239,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   else  G4Exception("TPSim.cfg",
   "InvalidSetup", FatalException,
   "Fiber multi cladding option not well defined");
-  WidthBunchFibers = FiberNumberPerLine*FiberWidth;
+  WidthBunchFibers = FiberNumberPerLine*(FiberWidth) + (FiberNumberPerLine +1)*FiberSpace;
 
   //#########################
   // DEFINE GEOMETRY VOLUMES#
@@ -261,7 +262,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalHolder = new G4LogicalVolume(s_holder,Vacuum,"logical_holder",0,0,0); //Replace Air with Vacuum (init)
 
   //G4Box *s_holder;
-  G4Box *s_fibersholder = new G4Box("s_fibersholder", (WidthBunchFibers/1.99)*mm, (WidthBunchFibers/1.99)*mm, FiberLength/2);
+  G4Box *s_fibersholder = new G4Box("s_fibersholder", (WidthBunchFibers/2)*mm, (WidthBunchFibers/2)*mm, FiberLength/2);
   //G4Tubs *s_fibersholder = new G4Tubs("s_fibersholder", 0.0, 0.6*mm, 50*mm, 0, 360*deg);
 
   LogicalFibersHolder = new G4LogicalVolume(s_fibersholder,Vacuum,"logical_fibersholder",0,0,0); //Replace Air with Vacuum (init)
@@ -308,7 +309,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalInnerCladdingFiber->SetVisAttributes(yellow);
   //LogicalZnS->SetVisAttributes(green);
   LogicalHolder->SetVisAttributes(invis);
-  LogicalFibersHolder->SetVisAttributes(invis);
+  LogicalFibersHolder->SetVisAttributes(orange);
 
 
   // G4Region* RegEM = new G4Region("EMField");
@@ -321,7 +322,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
 
   G4RegionStore* regionStore = G4RegionStore::GetInstance();
-  //new FastSimModelOpFiber("FastSimModelOpFiber", FiberRegion);
+  //new FastSimModelOpFiber("FastSimModelOpFiber", FiberRegion, FiberMultiCladding);
 
 
   // FastSimModelOpFiber* fModel;
@@ -423,7 +424,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
   // Build the PMT glass structure from PMT class
   LogicalPhotocathode = theScint->GetPhotocathode(); // Call function for PMT glass
-  LogicalPhotocathode->SetVisAttributes(orange); // Set photocathode color to orange
+  //LogicalPhotocathode->SetVisAttributes(blue); // Set photocathode color to orange
 
 
   // Define PMT properties
@@ -564,7 +565,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
       Z_Position_Fiber = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + FiberLength/2;
       //Z_Position_Photocathode = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + FiberLength + DetectorThickness/2;
       //Z_Position_Photocathode = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness+ZnSLGThickness+DetectorThickness/2;
-      Z_Position_Photocathode = FiberLength/2 + DetectorThickness/2;
+      Z_Position_Photocathode = FiberLength/2 + DetectorThickness/2 + DetectorTranslation;
 
 
       //############################
@@ -575,8 +576,9 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
       PhysicalHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector(0, 0, 0)),LogicalHolder, "Vacuum", LogicalWorld,false,0);
 
-      PhysicalFibersHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector((-WidthBunchFibers)/2 ,(WidthBunchFibers)/2, 0)),LogicalFibersHolder, "Holder_Fiber",LogicalHolder,false,0);
-      //PhysicalFibersHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector((-WidthBunchFibers)/2 ,(WidthBunchFibers)/2, Z_Position_Fiber)),LogicalFibersHolder, "Holder_Fiber",LogicalHolder,false,0);
+      //PhysicalFibersHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector(FiberWidth/2 + FiberSpace - WidthBunchFibers/2, 0, 0)),LogicalFibersHolder, "Holder_Fiber",LogicalHolder,false,0);//USE THAT FOR TP
+      PhysicalFibersHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector(0, 0, 0)),LogicalFibersHolder, "Holder_Fiber",LogicalHolder,false,0);//USE THAT FOR DEBUG
+
 
       // PhysicalPinhole = new G4PVPlacement(G4Transform3D
       //   (DontRotate,G4ThreeVector(0*mm, 0*mm, 0*mm)), // Set at origin as basis of everything else
@@ -626,7 +628,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
                   {
                     G4VPVParameterisation* InnerCladdingFiberParam =  new FiberParameterisation(
                       FiberNumberPerLine,   // NoFibers
-                      (-WidthBunchFibers+FiberWidth)/2,  // Z of center of first
+                      (-WidthBunchFibers+FiberWidth+2*FiberSpace)/2,  // Z of center of first
                       FiberSpacing, // Z spacing of centers
                       FiberWidth,  // Fiber radius/width for round/square fiber
                       FiberLength);    // final length
@@ -638,7 +640,6 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
                       NbOfFibers,    // Number of Fibers
                       InnerCladdingFiberParam,    // The parametrisation
                       false); // checking overlaps
-
 
                       G4VPVParameterisation* FiberParam =  new FiberParameterisation(
                         FiberNumberPerLine,   // NoFibers
@@ -661,7 +662,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
                       {
                         G4VPVParameterisation* OuterCladdingFiberParam =  new FiberParameterisation(
                           FiberNumberPerLine,   // NoFibers
-                          (-WidthBunchFibers+FiberWidth)/2,  // Z of center of first
+                          (-WidthBunchFibers+FiberWidth+2*FiberSpace)/2,  // Z of center of first
                           FiberSpacing, // Z spacing of centers
                           FiberWidth,  // Fiber radius/width for round/square fiber
                           FiberLength);    // final length
@@ -745,7 +746,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
                               // PMT photocathode placement
                               PhysicalPhotocathode = new G4PVPlacement(G4Transform3D
-                                (DontRotate,G4ThreeVector((-WidthBunchFibers)/2,(WidthBunchFibers)/2, Z_Position_Photocathode)),
+                                //(DontRotate,G4ThreeVector(FiberWidth/2 + FiberSpace - WidthBunchFibers/2, 0, Z_Position_Photocathode)), //USE THAT FOR TP
+                                (DontRotate,G4ThreeVector(0, 0, Z_Position_Photocathode)), //USE THAT FOR DEBUG
                                 LogicalPhotocathode,"CMOS",
                                 LogicalHolder,true,0);
 

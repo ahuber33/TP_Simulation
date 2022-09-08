@@ -78,6 +78,7 @@ public:
   G4double GetZnSThickness(){return ZnSThickness;}
   G4double GetZnSLGThickness(){return ZnSLGThickness;}
   G4double GetDetectorThickness(){return DetectorThickness;}
+  G4double GetDetectorTranslation(){return DetectorTranslation;}
   G4double GetFiberLength(){return Fiber_length;}
   G4double GetFiberWidth(){return Fiber_width;}
   G4double GetFiberSpace(){return Fiber_space;}
@@ -106,6 +107,7 @@ private:
   G4double ZnSThickness;
   G4double ZnSLGThickness;
   G4double DetectorThickness;
+  G4double DetectorTranslation;
   // Physical Dimensions
   // wrapping
   G4double AirGapTeflon;

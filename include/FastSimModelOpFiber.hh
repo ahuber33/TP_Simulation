@@ -7,9 +7,11 @@
 #include "G4OpBoundaryProcess.hh"
 #include "G4Material.hh"
 
+class Geometry;
+
 class FastSimModelOpFiber : public G4VFastSimulationModel {
 public:
-  FastSimModelOpFiber(G4String, G4Region*);
+  FastSimModelOpFiber(G4String, G4Region*, G4double);
   ~FastSimModelOpFiber();
 
   virtual G4bool IsApplicable(const G4ParticleDefinition&);
@@ -43,6 +45,7 @@ private:
   G4bool fKill;
   G4int fNtotIntRefl;
   G4int fTrackId;
+  G4double FiberMultiCladding;
 };
 
 #endif
