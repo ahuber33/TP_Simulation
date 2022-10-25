@@ -1,10 +1,16 @@
 TGraph2D* Tubs_3D;
+TGraph2D* Inner_3D;
 TGraph2D* Core_3D;
 TGraph* Tubs_xy;
+TGraph* Tubs_sq_xy;
+TGraph* Inner_xy;
+TGraph* Inner_sq_xy;
 TGraph* Core_xy;
 TGraph* Tubs_xz;
+TGraph* Inner_xz;
 TGraph* Core_xz;
 TGraph* Tubs_yz;
+TGraph* Inner_yz;
 TGraph* Core_yz;
 float Traj_X[10000000];
 float Traj_Y[10000000];
@@ -39,8 +45,10 @@ void Draw_ALL_Results(float condition_angle, int condition_status)
 	  pad1->cd();
 	  Tubs_3D->SetTitle("3D");
 	  Tubs_3D->Draw("P");
+	  Inner_3D->Draw("PSAME");
 	  Core_3D->Draw("PSAME");
 	  Tubs_3D->SetMarkerColor(kBlue);
+	  Inner_3D->SetMarkerColor(kCyan);
 	  Core_3D->SetMarkerColor(kRed);
 	  g[i]->Draw("SAMELINE");
 	  g[i]->SetLineColor(kGreen);
@@ -53,16 +61,27 @@ void Draw_ALL_Results(float condition_angle, int condition_status)
 	  lAngle->SetTextColor(kRed);
 
 	  pad2->cd();
-	  Tubs_xy->SetTitle("Plan XY");
-	  Tubs_xy->Draw("AP");
+	  //Tubs_xy->SetTitle("Plan XY");
+	  //Tubs_xy->Draw("AP");
 	  //Tubs_xy->GetXaxis()->SetLimits(-1.1,0.1);
 	  //Tubs_xy->GetHistogram()->SetMinimum(-0.1);
 	  //Tubs_xy->GetHistogram()->SetMaximum(1.1);
-	  Tubs_xy->SetMarkerColor(kBlue);
-	  Core_xy->SetMarkerColor(kRed);
+	  //Tubs_xy->SetMarkerColor(kBlue);
+	  //Inner_xy->SetMarkerColor(kCyan);
+	  //Core_xy->SetMarkerColor(kRed);
+	  //Inner_xy->Draw("PSAME");
 	  //Core_xy->Draw("PSAME");
+	  //xy[i]->Draw("SAME");
+	  //xy[i]->SetLineColor(kGreen);
+
+	  Tubs_sq_xy->SetTitle("Plan XY");
+	  Tubs_sq_xy->Draw("AP");
+	  Inner_sq_xy->Draw("PSAME");
+	  Tubs_sq_xy->SetMarkerColor(kBlue);
+	  Inner_sq_xy->SetMarkerColor(kCyan);
 	  xy[i]->Draw("SAME");
 	  xy[i]->SetLineColor(kGreen);
+	  
 	  pad2->Update();
 
 
@@ -73,8 +92,10 @@ void Draw_ALL_Results(float condition_angle, int condition_status)
 	  // Tubs_xz->GetHistogram()->SetMinimum(-1);
 	  // Tubs_xz->GetHistogram()->SetMaximum(0);
 	  Tubs_xz->SetMarkerColor(kBlue);
+	  Inner_xz->SetMarkerColor(kCyan);
 	  Core_xz->SetMarkerColor(kRed);
-	  Core_xz->Draw("PSAME");
+	  Inner_xz->Draw("PSAME");
+	  //Core_xz->Draw("PSAME");
 	  xz[i]->Draw("SAME");
 	  xz[i]->SetLineColor(kGreen);
 	  pad3->Update();
@@ -84,11 +105,13 @@ void Draw_ALL_Results(float condition_angle, int condition_status)
 	  Tubs_yz->SetTitle("Plan YZ");
 	  Tubs_yz->Draw("AP");
 	  //Tubs_yz->GetXaxis()->SetLimits(-55,55);
-	  Tubs_yz->GetHistogram()->SetMinimum(-0.1);
+	  //Tubs_yz->GetHistogram()->SetMinimum(-0.6);
 	  //Tubs_yz->GetHistogram()->SetMaximum(0);
 	  Tubs_yz->SetMarkerColor(kBlue);
+	  Inner_yz->SetMarkerColor(kCyan);
 	  Core_yz->SetMarkerColor(kRed);
-	  Core_yz->Draw("PSAME");
+	  Inner_yz->Draw("PSAME");
+	  //Core_yz->Draw("PSAME");
 	  yz[i]->Draw("SAME");
 	  yz[i]->SetLineColor(kGreen);
 	  pad4->Update();
@@ -108,8 +131,10 @@ void Draw_Particular_Results(int i)
   pad1->cd();
   Tubs_3D->SetTitle("3D");
   Tubs_3D->Draw("P");
+  Inner_3D->Draw("PSAME");
   Core_3D->Draw("PSAME");
   Tubs_3D->SetMarkerColor(kBlue);
+  Inner_3D->SetMarkerColor(kCyan);
   Core_3D->SetMarkerColor(kRed);
   g[i]->Draw("SAMELINE");
   g[i]->SetLineColor(kGreen);
@@ -127,7 +152,9 @@ void Draw_Particular_Results(int i)
   // Tubs_xy->GetHistogram()->SetMinimum(0);
   // Tubs_xy->GetHistogram()->SetMaximum(1);
   Tubs_xy->SetMarkerColor(kBlue);
+  Inner_xy->SetMarkerColor(kCyan);
   Core_xy->SetMarkerColor(kRed);
+  Inner_xy->Draw("PSAME");
   Core_xy->Draw("PSAME");
   xy[i]->Draw("SAME");
   xy[i]->SetLineColor(kGreen);
@@ -140,7 +167,9 @@ void Draw_Particular_Results(int i)
   // Tubs_xz->GetHistogram()->SetMinimum(-1);
   // Tubs_xz->GetHistogram()->SetMaximum(0);
   Tubs_xz->SetMarkerColor(kBlue);
+  Inner_xz->SetMarkerColor(kCyan);
   Core_xz->SetMarkerColor(kRed);
+  Inner_xz->Draw("PSAME");
   Core_xz->Draw("PSAME");
   xz[i]->Draw("SAME");
   xz[i]->SetLineColor(kGreen);
@@ -150,10 +179,12 @@ void Draw_Particular_Results(int i)
   Tubs_yz->SetTitle("Plan YZ");
   Tubs_yz->Draw("AP");
   //Tubs_yz->GetXaxis()->SetLimits(-55,55);
-  Tubs_yz->GetHistogram()->SetMinimum(-0.1);
+  //Tubs_yz->GetHistogram()->SetMinimum(-0.1);
   //Tubs_yz->GetHistogram()->SetMaximum(0);
   Tubs_yz->SetMarkerColor(kBlue);
+  Inner_yz->SetMarkerColor(kCyan);
   Core_yz->SetMarkerColor(kRed);
+  Inner_yz->Draw("PSAME");
   Core_yz->Draw("PSAME");
   yz[i]->Draw("SAME");
   yz[i]->SetLineColor(kGreen);
@@ -199,8 +230,8 @@ void Create_Trajectory(const char* filename)
   Tree->SetBranchAddress("PhotonTrajectoryNStep", &N);
   Tree->SetBranchAddress("Angle_creation", &vAngle);
   Tree->SetBranchAddress("Final_state_photon", &FinalState);
-  Tree->SetBranchAddress("PositionX", &Posx);
-  Tree->SetBranchAddress("PositionY", &Posy);
+  // Tree->SetBranchAddress("PositionX", &Posx);
+  // Tree->SetBranchAddress("PositionY", &Posy);
 
   const int Entries = Tree->GetEntries();
 
@@ -216,7 +247,7 @@ void Create_Trajectory(const char* filename)
       y->clear();
       z->clear();
       Tree->GetEntry(i);
-      //cout << "N photons trajectory stored = " << N->size() << endl;
+      cout << "N photons trajectory stored = " << N->size() << endl;
       NTraj_stored = N->size();
       
     for (int j=0; j<N->size(); j++)
@@ -231,16 +262,16 @@ void Create_Trajectory(const char* filename)
     
     }
 
-    cout << "N Step TOT = " << NStep_TOT << endl;
+  //cout << "N Step TOT = " << NStep_TOT << endl;
 
     for (int i=0; i< NStep_TOT; i++)
       {
 	Traj_X[TrajectoryStep_Number] = x->at(i);
 	Traj_Y[TrajectoryStep_Number] = y->at(i);
 	Traj_Z[TrajectoryStep_Number] = z->at(i);
-	Pos_X[TrajectoryStep_Number] = Posx->at(i);
-	Pos_Y[TrajectoryStep_Number] = Posy->at(i);
-	// cout << "x[" << i << "] = " << x->at(i) << endl;
+	// Pos_X[TrajectoryStep_Number] = Posx->at(i);
+	// Pos_Y[TrajectoryStep_Number] = Posy->at(i);
+	//cout << "x[" << i << "] = " << x->at(i) << endl;
 	// cout << "y[" << i << "] = " << y->at(i) << endl;
 	// cout << "z[" << i << "] = " << z->at(i) << endl;
 	//	cout << "i = " << i << endl;
@@ -278,7 +309,7 @@ void Create_Trajectory(const char* filename)
 
 
 
-TGraph2D* Create_Fiber_3D(float fiber_radius, float core_radius, float fiber_length)
+TGraph2D* Create_Fiber_3D(float fiber_radius, float inner_radius, float core_radius, float fiber_length)
 {
   float TubsX[100000];
   float TubsY[100000];
@@ -287,14 +318,16 @@ TGraph2D* Create_Fiber_3D(float fiber_radius, float core_radius, float fiber_len
   
     for (float z=-fiber_length; z <fiber_length; z+=5)
     {
-      for (float x=-fiber_radius-fiber_radius; x<0; x+=0.5)
+      for (float x=-fiber_radius; x<fiber_radius; x+=0.1)
 	{
 	  TubsX[n] = x;
-	  TubsY[n] = sqrt(fiber_radius*fiber_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+	  //TubsY[n] = sqrt(fiber_radius*fiber_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+	  TubsY[n] = sqrt(fiber_radius*fiber_radius - x*x);
 	  TubsZ[n] = z;
 	  n++;
 	  TubsX[n] = x;
-	  TubsY[n] = -sqrt(fiber_radius*fiber_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+	  //TubsY[n] = -sqrt(fiber_radius*fiber_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+	  TubsY[n] = -sqrt(fiber_radius*fiber_radius - x*x);
 	  TubsZ[n] = z;
 	  n++;
 	}	      
@@ -307,7 +340,7 @@ TGraph2D* Create_Fiber_3D(float fiber_radius, float core_radius, float fiber_len
 }
 
 
-TGraph2D* Create_Core_3D(float fiber_radius, float core_radius, float fiber_length)
+TGraph2D* Create_Inner_3D(float fiber_radius, float inner_radius, float core_radius, float fiber_length)
 {
   float TubsX[100000];
   float TubsY[100000];
@@ -316,14 +349,16 @@ TGraph2D* Create_Core_3D(float fiber_radius, float core_radius, float fiber_leng
   
     for (float z=-fiber_length; z <fiber_length; z+=5)
     {
-      for (float x=-fiber_radius-core_radius; x<0; x+=0.5)
+      for (float x=-inner_radius; x<inner_radius; x+=0.1)
 	{
 	  TubsX[n] = x;
-	  TubsY[n] = sqrt(core_radius*core_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+	  //TubsY[n] = sqrt(core_radius*core_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+	  TubsY[n] = sqrt(inner_radius*inner_radius-x*x);
 	  TubsZ[n] = z;
 	  n++;
 	  TubsX[n] = x;
-	  TubsY[n] = -sqrt(core_radius*core_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+	  //TubsY[n] = -sqrt(core_radius*core_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+	  TubsY[n] = -sqrt(inner_radius*inner_radius-x*x);
 	  TubsZ[n] = z;
 	  n++;
 	}	      
@@ -336,19 +371,52 @@ TGraph2D* Create_Core_3D(float fiber_radius, float core_radius, float fiber_leng
 }
 
 
-TGraph* Create_Fiber_XY(float fiber_radius, float core_radius, float fiber_length)
+TGraph2D* Create_Core_3D(float fiber_radius, float inner_radius, float core_radius, float fiber_length)
+{
+  float TubsX[100000];
+  float TubsY[100000];
+  float TubsZ[100000];
+  int n=0;
+  
+    for (float z=-fiber_length; z <fiber_length; z+=5)
+    {
+      for (float x=-core_radius; x<core_radius; x+=0.1)
+	{
+	  TubsX[n] = x;
+	  //TubsY[n] = sqrt(core_radius*core_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+	  TubsY[n] = sqrt(core_radius*core_radius-x*x);
+	  TubsZ[n] = z;
+	  n++;
+	  TubsX[n] = x;
+	  //TubsY[n] = -sqrt(core_radius*core_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+	  TubsY[n] = -sqrt(core_radius*core_radius-x*x);
+	  TubsZ[n] = z;
+	  n++;
+	}	      
+    }
+
+    TGraph2D* g = new TGraph2D (n, TubsZ, TubsX, TubsY);
+
+    return g;
+
+}
+
+
+TGraph* Create_Fiber_XY(float fiber_radius, float inner_radius, float core_radius, float fiber_length)
 {
   float TubsX[1000];
   float TubsY[1000];
   int n=0;
   
-  for (float x=-fiber_radius-fiber_radius; x<0; x+=0.5)
+  for (float x=-fiber_radius; x<fiber_radius; x+=0.01)
     {
       TubsX[n] = x;
-      TubsY[n] = sqrt(fiber_radius*fiber_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+      //TubsY[n] = sqrt(fiber_radius*fiber_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+      TubsY[n] = sqrt(fiber_radius*fiber_radius - x*x);
       n++;
       TubsX[n] = x;
-      TubsY[n] = -sqrt(fiber_radius*fiber_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+      //TubsY[n] = -sqrt(fiber_radius*fiber_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+      TubsY[n] = -sqrt(fiber_radius*fiber_radius - x*x);
       n++;
     }	      
   
@@ -359,19 +427,21 @@ TGraph* Create_Fiber_XY(float fiber_radius, float core_radius, float fiber_lengt
 }
 
 
-TGraph* Create_Core_XY(float fiber_radius, float core_radius, float fiber_length)
+TGraph* Create_Inner_XY(float fiber_radius, float inner_radius, float core_radius, float fiber_length)
 {
   float TubsX[1000];
   float TubsY[1000];
   int n=0;
   
-  for (float x=-fiber_radius-core_radius; x<0; x+=0.5)
+  for (float x=-inner_radius; x<inner_radius; x+=0.01)
     {
       TubsX[n] = x;
-      TubsY[n] = sqrt(core_radius*core_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+      //TubsY[n] = sqrt(fiber_radius*fiber_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+      TubsY[n] = sqrt(inner_radius*inner_radius - x*x);
       n++;
       TubsX[n] = x;
-      TubsY[n] = -sqrt(core_radius*core_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+      //TubsY[n] = -sqrt(fiber_radius*fiber_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+      TubsY[n] = -sqrt(inner_radius*inner_radius - x*x);
       n++;
     }	      
   
@@ -382,7 +452,123 @@ TGraph* Create_Core_XY(float fiber_radius, float core_radius, float fiber_length
 }
 
 
-TGraph* Create_Fiber_XZ(float fiber_radius, float core_radius, float fiber_length)
+TGraph* Create_Core_XY(float fiber_radius, float inner_radius, float core_radius, float fiber_length)
+{
+  float TubsX[1000];
+  float TubsY[1000];
+  int n=0;
+  
+  for (float x=-core_radius; x<core_radius; x+=0.01)
+    {
+      TubsX[n] = x;
+      //TubsY[n] = sqrt(core_radius*core_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+      TubsY[n] = sqrt(core_radius*core_radius-x*x);
+      n++;
+      TubsX[n] = x;
+      //TubsY[n] = -sqrt(core_radius*core_radius-(x+fiber_radius)*(x+fiber_radius))+fiber_radius;
+      TubsY[n] = -sqrt(core_radius*core_radius-x*x);
+      n++;
+    }	      
+  
+  TGraph* g = new TGraph (n, TubsX, TubsY);
+  
+  return g;
+
+}
+
+
+TGraph* Create_Square_Fiber_XY(float fiber_radius, float inner_radius, float core_radius, float fiber_length)
+{
+  float TubsX[10000];
+  float TubsY[10000];
+  int n=0;
+  
+  for (float x=-fiber_radius; x<fiber_radius; x+=0.01)
+    {
+      TubsX[n] = x;
+      TubsY[n] = -fiber_radius;
+      n++;
+      TubsX[n] = x;
+      TubsY[n] = fiber_radius;
+      n++;
+
+      
+      if(x==-fiber_radius)
+	{
+	  for (float y=-fiber_radius; y<fiber_radius; y+=0.01)
+	    {
+	      TubsX[n] = x;
+	      TubsY[n] = y;
+	      n++;
+	    }
+	}
+
+      if(x>fiber_radius-0.01)
+	{
+	  for (float z=-fiber_radius; z<fiber_radius; z+=0.01)
+	    {
+	      TubsX[n] = x;
+	      TubsY[n] = z;
+	      n++;
+	    }
+	}
+      
+    }	      
+  
+  TGraph* g = new TGraph (n, TubsX, TubsY);
+  
+  return g;
+
+}
+
+
+TGraph* Create_Square_Inner_XY(float fiber_radius, float inner_radius, float core_radius, float fiber_length)
+{
+  float TubsX[10000];
+  float TubsY[10000];
+  int n=0;
+
+    for (float x=-inner_radius; x<inner_radius; x+=0.01)
+    {
+      TubsX[n] = x;
+      TubsY[n] = -inner_radius;
+      n++;
+      TubsX[n] = x;
+      TubsY[n] = inner_radius;
+      n++;
+
+      
+      if(x==-inner_radius)
+	{
+	  for (float y=-inner_radius; y<inner_radius; y+=0.01)
+	    {
+	      TubsX[n] = x;
+	      TubsY[n] = y;
+	      n++;
+	    }
+	}
+
+      if(x>inner_radius-0.01)
+	{
+	  for (float z=-inner_radius; z<inner_radius; z+=0.01)
+	    {
+	      TubsX[n] = x;
+	      TubsY[n] = z;
+	      n++;
+	    }
+	}
+      
+    }	      
+
+  
+  TGraph* g = new TGraph (n, TubsX, TubsY);
+  
+  return g;
+
+}
+
+
+TGraph* Create_Fiber_XZ(float fiber_radius, float inner_radius, float core_radius, float fiber_length)
 {
   float TubsX[10000];
   float TubsZ[10000];
@@ -391,10 +577,10 @@ TGraph* Create_Fiber_XZ(float fiber_radius, float core_radius, float fiber_lengt
 
   for (float z=-fiber_length; z <fiber_length; z+=0.5)
     {
-      TubsX[n] = fiber_radius-fiber_radius;
+      TubsX[n] = -fiber_radius;
       TubsZ[n] = z;
       n++;
-      TubsX[n] = -fiber_radius-fiber_radius;
+      TubsX[n] = fiber_radius;
       TubsZ[n] = z;
       n++;
     }
@@ -405,19 +591,18 @@ TGraph* Create_Fiber_XZ(float fiber_radius, float core_radius, float fiber_lengt
 }
 
 
-TGraph* Create_Core_XZ(float fiber_radius, float core_radius, float fiber_length)
+TGraph* Create_Inner_XZ(float fiber_radius, float inner_radius, float core_radius, float fiber_length)
 {
   float TubsX[10000];
   float TubsZ[10000];
   int n=0;
 
-
   for (float z=-fiber_length; z <fiber_length; z+=0.5)
     {
-      TubsX[n] = core_radius-fiber_radius;
+      TubsX[n] = -inner_radius;
       TubsZ[n] = z;
       n++;
-      TubsX[n] = -core_radius-fiber_radius;
+      TubsX[n] = inner_radius;
       TubsZ[n] = z;
       n++;
     }
@@ -429,7 +614,31 @@ TGraph* Create_Core_XZ(float fiber_radius, float core_radius, float fiber_length
 }
 
 
-TGraph* Create_Fiber_YZ(float fiber_radius, float core_radius, float fiber_length)
+TGraph* Create_Core_XZ(float fiber_radius, float inner_radius, float core_radius, float fiber_length)
+{
+  float TubsX[10000];
+  float TubsZ[10000];
+  int n=0;
+
+
+  for (float z=-fiber_length; z <fiber_length; z+=0.5)
+    {
+      TubsX[n] = -core_radius;
+      TubsZ[n] = z;
+      n++;
+      TubsX[n] = core_radius;
+      TubsZ[n] = z;
+      n++;
+    }
+  
+  TGraph* g = new TGraph (n, TubsZ, TubsX);
+
+  return g;
+
+}
+
+
+TGraph* Create_Fiber_YZ(float fiber_radius, float inner_radius, float core_radius, float fiber_length)
 {
   float TubsY[10000];
   float TubsZ[10000];
@@ -437,10 +646,10 @@ TGraph* Create_Fiber_YZ(float fiber_radius, float core_radius, float fiber_lengt
 
   for (float z=-fiber_length; z <fiber_length; z+=0.5)
     {
-      TubsY[n] = fiber_radius+fiber_radius;
+      TubsY[n] = -fiber_radius;
       TubsZ[n] = z;
       n++;
-      TubsY[n] = -fiber_radius+fiber_radius;
+      TubsY[n] = fiber_radius;
       TubsZ[n] = z;
       n++;
     }
@@ -452,8 +661,7 @@ TGraph* Create_Fiber_YZ(float fiber_radius, float core_radius, float fiber_lengt
 }
 
 
-
-TGraph* Create_Core_YZ(float fiber_radius, float core_radius, float fiber_length)
+TGraph* Create_Inner_YZ(float fiber_radius, float inner_radius, float core_radius, float fiber_length)
 {
   float TubsY[10000];
   float TubsZ[10000];
@@ -461,10 +669,10 @@ TGraph* Create_Core_YZ(float fiber_radius, float core_radius, float fiber_length
 
   for (float z=-fiber_length; z <fiber_length; z+=0.5)
     {
-      TubsY[n] = fiber_radius+core_radius;
+      TubsY[n] = -inner_radius;
       TubsZ[n] = z;
       n++;
-      TubsY[n] = -core_radius+fiber_radius;
+      TubsY[n] = inner_radius;
       TubsZ[n] = z;
       n++;
     }
@@ -476,16 +684,45 @@ TGraph* Create_Core_YZ(float fiber_radius, float core_radius, float fiber_length
 }
 
 
-void Initialisation_Geometrie(float fiber_radius, float core_radius, float fiber_length)
+TGraph* Create_Core_YZ(float fiber_radius, float inner_radius, float core_radius, float fiber_length)
+{
+  float TubsY[10000];
+  float TubsZ[10000];
+  int n=0;
+
+  for (float z=-fiber_length; z <fiber_length; z+=0.5)
+    {
+      TubsY[n] = -core_radius;
+      TubsZ[n] = z;
+      n++;
+      TubsY[n] = core_radius;
+      TubsZ[n] = z;
+      n++;
+    }
+  
+  TGraph* g = new TGraph (n, TubsZ, TubsY);
+
+  return g;
+
+}
+
+
+void Initialisation_Geometrie(float fiber_radius, float inner_radius, float core_radius, float fiber_length)
 {
 
-  Tubs_3D = Create_Fiber_3D(fiber_radius, core_radius, fiber_length);
-  Core_3D = Create_Core_3D(fiber_radius, core_radius, fiber_length);
-  Tubs_xy = Create_Fiber_XY(fiber_radius, core_radius, fiber_length);
-  Core_xy = Create_Core_XY(fiber_radius, core_radius, fiber_length);
-  Tubs_xz = Create_Fiber_XZ(fiber_radius, core_radius, fiber_length);
-  Core_xz = Create_Core_XZ(fiber_radius, core_radius, fiber_length);
-  Tubs_yz = Create_Fiber_YZ(fiber_radius, core_radius, fiber_length);
-  Core_yz = Create_Core_YZ(fiber_radius, core_radius, fiber_length);
+  Tubs_3D = Create_Fiber_3D(fiber_radius, inner_radius, core_radius, fiber_length);
+  Inner_3D = Create_Inner_3D(fiber_radius, inner_radius, core_radius, fiber_length);
+  Core_3D = Create_Core_3D(fiber_radius, inner_radius, core_radius, fiber_length);
+  Tubs_xy = Create_Fiber_XY(fiber_radius, inner_radius, core_radius, fiber_length);
+  Tubs_sq_xy = Create_Square_Fiber_XY(fiber_radius, inner_radius, core_radius, fiber_length);
+  Inner_sq_xy = Create_Square_Inner_XY(fiber_radius, inner_radius, core_radius, fiber_length);
+  Inner_xy = Create_Inner_XY(fiber_radius, inner_radius, core_radius, fiber_length);
+  Core_xy = Create_Core_XY(fiber_radius, inner_radius, core_radius, fiber_length);
+  Tubs_xz = Create_Fiber_XZ(fiber_radius, inner_radius, core_radius, fiber_length);
+  Inner_xz = Create_Inner_YZ(fiber_radius, inner_radius, core_radius, fiber_length);
+  Core_xz = Create_Core_XZ(fiber_radius, inner_radius, core_radius, fiber_length);
+  Tubs_yz = Create_Fiber_YZ(fiber_radius, inner_radius, core_radius, fiber_length);
+  Inner_yz = Create_Inner_YZ(fiber_radius, inner_radius, core_radius, fiber_length);
+  Core_yz = Create_Core_YZ(fiber_radius, inner_radius, core_radius, fiber_length);
 
 }

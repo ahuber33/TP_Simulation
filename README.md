@@ -126,11 +126,27 @@
 #- Ajout des accès aux potentiels différents types de réfraction, réflexions dans le SteppingAction
 
 # Commit #16 le 08/09/2022 [TPSim.0.7.1]
-# - Ajout de la variable DetectorTranslation dans TPSim.cfg afin de pouvoir dans le futur décaler la zone de détection par rapport aux fibres (étude de l'éloignement de la lentille)
-# - Ajout du paramètre sur le multicladding dans la fonction d'appel du module G4Fast. Cela permettra de mieux utiliser les coupures sur les angles qui se propagent dans les différents types de fibres
-# - Correction du bug de placement des fibres dans le FiberHolder. En effet, l'espace entre les fibres n'était pas pris en compte, ce qui lors de la génération d'un grand nombre de fibres entrainait des recouvrements et donc des soucis au niveau de la simulation. Ce problème est dorénavant patché de façon certaine pour la géométrie ronde single cladding. Le même processus a été réalisée pour la géométrie ronde multicladding auquel il reste de nombreuses vérifications à effectuer
-# - Tests en cours pour déterminer pourquoi des photons qui partent vers l'arrière et qui devraient logiquement sortir de la fibre sont de retour et vont jusqu'à être détectés
+#- Ajout de la variable DetectorTranslation dans TPSim.cfg afin de pouvoir dans le futur décaler la zone de détection par rapport aux fibres (étude de l'éloignement de la lentille)
+#- Ajout du paramètre sur le multicladding dans la fonction d'appel du module G4Fast. Cela permettra de mieux utiliser les coupures sur les angles qui se propagent dans les différents types de fibres
+#- Correction du bug de placement des fibres dans le FiberHolder. En effet, l'espace entre les fibres n'était pas pris en compte, ce qui lors de la génération d'un grand nombre de fibres entrainait des recouvrements et donc des soucis au niveau de la simulation. Ce problème est dorénavant patché de façon certaine pour la géométrie ronde single cladding. Le même processus a été réalisée pour la géométrie ronde multicladding auquel il reste de nombreuses vérifications à effectuer
+#- Tests en cours pour déterminer pourquoi des photons qui partent vers l'arrière et qui devraient logiquement sortir de la fibre sont de retour et vont jusqu'à être détectés
 
 # Commit #17 08/09/2022 [TPSim.0.7.2]
-# - Explication des photons détectés partant à la base dans le sens opposé. Bien que la majorité des photons ayant ces angles sont transmis à travers cette interface, en focntion de l'angle et de la polarisation du photon, il y a une probabilité non nul pour que le photon soit réflechi selon ce qu'on appelle une rélfexion de Fresnel (voir image correspondante pour plus de détails). Il est donc normal de voir ces angles pouvoir potentiellement se propager et aller jusqu'au détecteur, ce n'est pas une erreur dans la simulation !!!!
-# - Exemple d'un de ces photons présent ici : bin/Event_detected_angle161.deg
+#- Explication des photons détectés partant à la base dans le sens opposé. Bien que la majorité des photons ayant ces angles sont transmis à travers cette interface, en fonction de l'angle et de la polarisation du photon, il y a une probabilité non nul pour que le photon soit réflechi selon ce qu'on appelle une réflexion de Fresnel (voir image correspondante pour plus de détails). Il est donc normal de voir ces angles pouvoir potentiellement se propager et aller jusqu'au détecteur, ce n'est pas une erreur dans la simulation !!!!
+#- Exemple d'un de ces photons présent ici : bin/Event_detected_angle161.deg
+
+# Commit #18 le 25/10/2022 [TPSim.0.8.0]
+# - Abandon de la méthode de génération du bunch de fibres avec l'outil G4VPVParameterisation de GEANT4. En effet, celui-ci introduit un dysfonctionnement dans le suivi des photons optiques dans la chambre du à une erreur lors de la prise en compte de la normale à la surface de la fibre. Celle-ci est inversée ce qui fait qu'un photon étant à la base piégé dans la fibre peut se retrouver en dehors de celle-ci...
+# - Remplacement de la méthode précédente par une boucle for permettant de générer l'ensemble des fibres à partir du nombre indiqué dans le fichier de config.
+# - Nécessaire de changer la génération des volumes solides dans le fichier Geometry.cc. Précédemment, les volumes circulaires des fibres étaient plein afin de pouvoir être le holder du volume ayant un diamètre plus petit. Doréanavant, vu que chaque élément est distinct de l'autre et défini dans le FibersHolder, il est nécessaire de créer les vraies volumes (donc sous la forme d'anneau).
+# - Création de tableaux de G4VPhysicalVolume pour prendre en compte l'ensemble des modifications précédentes et afficher le bunch de fibres. Méthode OK !!!
+# - Passage de l'efficacité quantique du détecteur à 1 afin que les photons détectés correspondent aux photons transmis jusqu'au détecteur (plus facile pour les études préliminaires).
+# - Ajout d'un paramètre dans l'outil G4FAST permettant de calculer la longueur de la trace à partir du moment où elle effectue a première réflexion totale et non pas de puis sa création.
+# - Ajout d'un paramètre dans l'outil G4FAST permettant d'effectuer certaines opérations ou non si la géométrie des fibres est circulaire ou carrée (exemple du suivi des photons à grand angle dans la géométrie carrée où le module G4FAST est désactivée).
+# - Ajout d'un paramètre Air_Index dans le fichier de config Materials.cfg afin de pouvoir changer l'indice de l'air autour des fibres sans recompiler le code.
+# - Ajout d'un paramètre dans le EventAction permettant de récupérer l'indice optique de l'air autour des fibres dans le SteppingAction afin de pouvoir l'utiliser dans le module d'accélération.
+# - Ajout du paramètre G4FAST dans le fichier de configuration. Ce dernier permet d'activer ou non le module d'accélération du suivi des photons sans recompiler le code comme précédemment.
+# - Ajout de ligne permettant d'accéder au CopyNumber si nécessaire par la suite (Plus nécessaire actuellement car nous avons arrêté la génération des fibres avec l'outil de paramétrisation)
+# - MAJ des corrections sur la longueur d'atténuation à considérer en fonction de la géométrie qui est testée pour reproduire les datas sans le module d'accélération.
+# - Création de dossiers pour les différents fichiers ROOT afin de classifier les différentes études
+# - VERSION DE CODE UTILISEE POUR GENERER LE FICHIER EXCEL LABS_TPSIM AFIN DE VERIFIER LA CONCORDANCE ENTRE LA SIMU OPTIQUE COMPLETE ET L OUTIL G4FAST. TOUT EST OK !!!!!

@@ -73,9 +73,13 @@ TPSimSteppingAction::TPSimSteppingAction()
     G4double pz = aStep->GetPreStepPoint()->GetMomentumDirection().z();
     G4double r = sqrt(x*x + y*y);
     G4double angle = acos((z-zpre)/aStep->GetStepLength());
+    //G4int CopyNo = theTrack->GetTouchableHandle()->GetCopyNumber();
+
+
     G4double time = aStep->GetPostStepPoint()->GetGlobalTime()/ns;
     G4ThreeVector polarisation = theTrack->GetPolarization();
     //G4double my_dist_after = aStep->GetTrack()->GetTrackLength()/mm;
+
 
 
 
@@ -86,30 +90,37 @@ TPSimSteppingAction::TPSimSteppingAction()
     //#######################################################################
     // G4cout << "x = " << x << G4endl;
     // G4cout << "y = " << y << G4endl;
-    G4cout << "z = " << z << G4endl;
-    G4cout << "z pre = " << zpre << G4endl;
+    // G4cout << "z = " << z << G4endl;
+    // G4cout << "z pre = " << zpre << G4endl;
     // G4cout << "px = " << px << G4endl;
     // G4cout << "py = " << py << G4endl;
     // G4cout << "pz = " << pz << G4endl;
     // G4cout << "polarisation = " << polarisation << G4endl;
-     //G4cout << "angle = " << angle/deg << G4endl;
+    //G4cout << "angle = " << angle/deg << G4endl;
     // G4cout << "Time = " << time << " ns" << G4endl;
 
-    // G4bool valid;
-    // G4int hNavId = G4ParallelWorldProcess::GetHypNavigatorID();
-    // auto iNav = G4TransportationManager::GetTransportationManager()->GetActiveNavigatorsIterator();
-    // G4ThreeVector test = (iNav[hNavId])->GetLocalExitNormal(&valid);
-    //G4cout << "Normal Surface = " << test << G4endl;
+
+    if((partname=="opticalphoton" && aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Holder_Fiber")
+    && (evtac->GetAirIndex()<1))
+    {
+      G4MaterialPropertyVector* rindex= theTrack->GetVolume()->GetLogicalVolume()->GetMaterial()->GetMaterialPropertiesTable()->GetProperty("RINDEX");
+      G4float Index = (*rindex)[0];
+      //G4cout << "HOLDER Fiber " << G4endl;
+      //G4cout << "TEST = " <<  Index << G4endl;
+      evtac->SetAirIndex(Index);
+      //G4cout << "Test 2 =" << evtac->GetAirIndex() << G4endl;
+    }
 
     if(StepNo==1 && partname == "opticalphoton")
     {
       //G4cout << "px = " << px << G4endl;
       //G4cout << "py = " << py << G4endl;
       //G4cout << "pz = " << pz << G4endl;
-      G4cout << "ANGLE = " << angle/deg << G4endl;
+      //G4cout << "ANGLE = " << angle/deg << G4endl;
       //evtac->FillFiberAngleCreation(angle/deg);
       evtac->SetPhotonCreationAngle(angle/deg);
       evtac->SetTrackLengthFastSimulated(0);
+      //if(angle/deg>20.4 && angle/deg <20.7)G4cout << "HERE" << G4endl;
     }
 
     if(0){                       //set to 1 to ignore generated photons
@@ -146,6 +157,13 @@ TPSimSteppingAction::TPSimSteppingAction()
       //G4cout << "BirthLambda = " << info->GetBirthLambda() << G4endl;
       //G4cout << "Time =" << aStep->GetPostStepPoint()->GetGlobalTime()/ns << G4endl;
 
+      // G4bool valid;
+      // G4int hNavId = G4ParallelWorldProcess::GetHypNavigatorID();
+      // auto iNav = G4TransportationManager::GetTransportationManager()->GetActiveNavigatorsIterator();
+      // G4ThreeVector normal = (iNav[hNavId])->GetLocalExitNormal(&valid);
+      // float angle_normal = acos(px*normal.x() + py*normal.y() + pz*normal.z())/deg;
+      //G4cout << "Normal Surface = " << normal << G4endl;
+      //G4cout << "angle_normal = " << angle_normal << G4endl;
 
       evtac->AddPhotonTrajectoryNStep();
       evtac->FillPhotonTrajectoryX(x);
@@ -163,6 +181,7 @@ TPSimSteppingAction::TPSimSteppingAction()
         evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
         evtac->ClearPhotonTrajectoryNStep();
         evtac->FillPhotonFinalState(1);
+        //evtac->FillFiberAngleCreation(evtac->GetPhotonCreationAngle());
       }
 
 
@@ -226,6 +245,14 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
       evtac->FillPhotonTotalLength(aStep->GetTrack()->GetTrackLength()/mm + evtac->GetTrackLengthFastSimulated());
       evtac->FillFiberAngleDetection(angle/deg);
       evtac->FillFiberAngleCreation(evtac->GetPhotonCreationAngle());
+      if(r >0.5)
+      {
+        //evtac->FillFiberAngleCreation(evtac->GetPhotonCreationAngle());
+        //evtac->FillFiberAngleDetection(angle/deg);
+        //G4cout << "ICI " << G4endl;
+      }
+
+      //G4cout << "angle detection = " << angle/deg << G4endl;
       // G4cout << "Lamda = " << info->GetBirthLambda() << " nm " << G4endl;
       // G4cout << "[STEP] Track Length fast simulated = " << evtac->GetTrackLengthFastSimulated() << G4endl;
       // G4cout << "[STEP] Track Length = " << evtac->GetTrackLengthFastSimulated()+aStep->GetTrack()->GetTrackLength()/mm << G4endl;
@@ -249,6 +276,7 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
         evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
         evtac->ClearPhotonTrajectoryNStep();
         evtac->FillPhotonFinalState(3);
+        //evtac->FillFiberAngleCreation(evtac->GetPhotonCreationAngle());
 
       }
       else{  // if not bulk, transmitted, or detected...it must be surface!
@@ -259,6 +287,7 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
         evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
         evtac->ClearPhotonTrajectoryNStep();
         evtac->FillPhotonFinalState(0);
+        //evtac->FillFiberAngleCreation(evtac->GetPhotonCreationAngle());
       }
 
       break;
@@ -273,6 +302,7 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
         evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
         evtac->ClearPhotonTrajectoryNStep();
         evtac->FillPhotonFinalState(2);
+        //evtac->FillFiberAngleCreation(evtac->GetPhotonCreationAngle());
       }
       break;
 
@@ -282,14 +312,14 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
         //G4cout << "Reflection L" << G4endl;
         break;
       }
-       case FresnelRefraction:
-       {
-        G4cout << "Fresnel Refraction" << G4endl;
-         break;
-       }
+      case FresnelRefraction:
+      {
+        //G4cout << "Fresnel Refraction" << G4endl;
+        break;
+      }
       case FresnelReflection:
       {
-        G4cout << "Fresnel Reflection" << G4endl;
+        //G4cout << "Fresnel Reflection" << G4endl;
         break;
       }
       case LobeReflection:
@@ -300,12 +330,12 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
       case SpikeReflection:
       {
         ((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->CountReflections();
-        G4cout << "Reflection" << G4endl;
+        //G4cout << "Reflection" << G4endl;
         break;}
         case TotalInternalReflection:
         {
           ((TPSimTrackInformation*)(aStep->GetTrack()->GetUserInformation()))->CountTotalInternalReflections();
-          G4cout << "Reflection totale" << G4endl;
+          //G4cout << "Reflection totale" << G4endl;
           break;
         }
         default:
@@ -324,7 +354,7 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
     }
 
     if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator"
-     || aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Core_Fiber")
+    || aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Core_Fiber")
     {
       evtac->CountScintillationSc();
       //G4cout << " Photon Scintillation from Sc!!!" << G4endl;

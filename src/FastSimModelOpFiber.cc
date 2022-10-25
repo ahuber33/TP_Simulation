@@ -5,6 +5,7 @@
 #include "G4ProcessManager.hh"
 #include "G4OpProcessSubType.hh"
 #include "G4Tubs.hh"
+#include "G4Box.hh"
 #include "G4EventManager.hh"
 #include "TPSimEventAction.hh"
 #include "Geometry.hh"
@@ -25,7 +26,9 @@ FastSimModelOpFiber::FastSimModelOpFiber(G4String name, G4Region* envelope, G4do
   fKill = false;
   fNtotIntRefl = 0;
   fTrackId = 0;
+  CoreTrackLength =0;
   FiberMultiCladding = CladdingIndex;
+  fSquareGeometry = true;
 
   DefineCommands();
 }
@@ -46,7 +49,34 @@ G4bool FastSimModelOpFiber::ModelTrigger(const G4FastTrack& fasttrack) {
 
   auto matPropTable = fCoreMaterial->GetMaterialPropertiesTable();
 
+  G4TouchableHandle theTouchable = track->GetTouchableHandle();
+  auto fiberPos = theTouchable->GetHistory()->GetTopTransform().Inverse().TransformPoint(G4ThreeVector(0.,0.,0.));
+
+  fFiberAxis = theTouchable->GetHistory()->GetTopTransform().Inverse().TransformAxis(G4ThreeVector(0.,0.,1.));
+  fTrkLength = track->GetTrackLength();
+  G4Tubs* tubs = static_cast<G4Tubs*>(theTouchable->GetSolid());
+  G4Box* box = static_cast<G4Box*>(theTouchable->GetSolid());
+  G4double fiberLen = 2.*box->GetZHalfLength();
+  if(fiberLen==0)
+  {
+    fiberLen = 2.*tubs->GetZHalfLength();
+    fSquareGeometry=false;
+  }
+
   if ( !matPropTable ) return false;
+
+  if ( matPropTable->GetProperty(kABSLENGTH) ) {
+
+    double attLength = matPropTable->GetProperty(kABSLENGTH)->Value( track->GetDynamicParticle()->GetTotalMomentum() );
+
+    if(evtac->GetPhotonCreationAngle() >20.4 && evtac->GetPhotonCreationAngle() <159.6)
+    {
+      //attLength = 1.05*attLength; //ROUND SINGLE CLADDING
+      //attLength = 1.1*attLength; //ROUND MULTI CLADDING
+      //attLength = 1.08*attLength; //SQUARE AIR INDEX = 1
+      attLength = 1.02*attLength; //SQUARE AIR INDEX = 1.49
+      if(fSquareGeometry==true) return false;
+    }
 
   if ( !checkTotalInternalReflection(track) )
   {
@@ -54,47 +84,16 @@ G4bool FastSimModelOpFiber::ModelTrigger(const G4FastTrack& fasttrack) {
     return false; // nothing to do if the previous status is not total internal reflection
   }
 
-  G4TouchableHandle theTouchable = track->GetTouchableHandle();
-  auto fiberPos = theTouchable->GetHistory()->GetTopTransform().Inverse().TransformPoint(G4ThreeVector(0.,0.,0.));
 
-  fFiberAxis = theTouchable->GetHistory()->GetTopTransform().Inverse().TransformAxis(G4ThreeVector(0.,0.,1.));
-  fTrkLength = track->GetTrackLength();
-  G4Tubs* tubs = static_cast<G4Tubs*>(theTouchable->GetSolid());
-  G4double fiberLen = 2.*tubs->GetZHalfLength();
-
+  // G4cout << "Fiber Length = " << fiberLen << G4endl;
   // G4cout << "Fiber pos = " << fiberPos << G4endl;
   // G4cout << "Fiber axis = " << fFiberAxis << G4endl;
   // G4cout << "F Track Length = " << fTrkLength << G4endl;
-  // G4cout << "F Track Length = " << fTrkLength << G4endl;
+  // G4cout << "F Track Length bis = " << fTrkLengthBis << G4endl;
+  // G4cout << "Track length considered = " << fTrkLength - fTrkLengthBis << G4endl;
+  // G4cout << "Track length considered in core fiber = " << CoreTrackLength << G4endl;
   //G4cout << "Fiber length = " << fiberLen << G4endl;
 
-
-  // if ( fiberLen >600 && evtac->GetPhotonCreationAngle() >20.4 && evtac->GetPhotonCreationAngle() <159.6 ) { // kill skew ray if fiber length is too long because they will not arrive to CMOS
-  //   fKill = true;
-  //   //G4cout << "Track killed" << G4endl;
-  //   return true;
-  // }
-
-  if(FiberMultiCladding==0)
-  {
-    if(evtac->GetPhotonCreationAngle() >20.4 && evtac->GetPhotonCreationAngle() <159.6)
-    {
-      //G4cout << "Escaped" << G4endl;
-      evtac->CountEscaped();
-      fKill = true;
-      return true;
-      //return false;
-    }
-  }
-
-
-  if(FiberMultiCladding==1)
-  {
-    // if(evtac->GetPhotonCreationAngle() >20.4 || evtac->GetPhotonCreationAngle() <159.6)
-    // {
-    //   return false;
-    // }
-  }
 
   if ( fTrkLength==0. ) { // kill stopped particle
     fKill = true;
@@ -134,10 +133,12 @@ G4bool FastSimModelOpFiber::ModelTrigger(const G4FastTrack& fasttrack) {
     return false;
   }
 
-  if ( matPropTable->GetProperty(kABSLENGTH) ) {
-    double attLength = matPropTable->GetProperty(kABSLENGTH)->Value( track->GetDynamicParticle()->GetTotalMomentum() );
-    //double attLength = 2000;
-    //G4cout << "AttLength = " << attLength << G4endl;
+    if(evtac->GetPhotonCreationAngle() >50. && evtac->GetPhotonCreationAngle() <130)
+    {
+      //53 for square fiber && 51 for round fiber single cladding
+      return false;
+    }
+
     evtac->SetTrackLengthFastSimulated((fTrkLength-fTrkLengthBis)*fNtransport);
     double nInteractionLength = (fTrkLength-fTrkLengthBis)*fNtransport/attLength;
     //G4cout << "nInteractionLength = " << nInteractionLength << G4endl;
@@ -195,8 +196,21 @@ bool FastSimModelOpFiber::checkTotalInternalReflection(const G4Track* track) {
     setOpBoundaryProc(track);
   }
 
+  G4EventManager *evtman = G4EventManager::GetEventManager();
+  TPSimEventAction *evtac = (TPSimEventAction*)evtman->GetUserEventAction();
+
   if ( fOpBoundaryProc->GetStatus()==G4OpBoundaryProcessStatus::FresnelReflection ) {
-    reset();
+    if(evtac->GetAirIndex()==1)
+    {
+      if(evtac->GetPhotonCreationAngle() <20.4 || evtac->GetPhotonCreationAngle() >22) //USE ONLY IF AIR INDEX IS 1
+      {
+        reset();
+      }
+    }
+    if(evtac->GetAirIndex()>1.)
+    {
+      reset();
+    }
   }
 
   if(track->GetCurrentStepNumber() ==1)
@@ -217,22 +231,36 @@ bool FastSimModelOpFiber::checkTotalInternalReflection(const G4Track* track) {
     }
   }
 
+  if ( fOpBoundaryProc->GetStatus()==G4OpBoundaryProcessStatus::FresnelReflection )
+  {
+    //G4cout << "fTrackId = " << fTrackId << G4endl;
+    //G4cout << "GetTrackID = " << track->GetTrackID() << G4endl;
+    fNtotIntRefl++;
+    if ( fTrackId != track->GetTrackID() )
+    { // reset everything if when encountered a different track
+      //G4cout << "RESET ici !!!" << G4endl;
+      reset();
+    }
+  }
+
+
   fTrackId = track->GetTrackID();
   //G4cout << "Track ID = " << fTrackId << G4endl;
 
   if(fNtotIntRefl ==1) fTrkLengthBis = track->GetTrackLength();
   //G4cout << "TrackLength Bis = " << fTrkLengthBis << G4endl;
 
-  //G4cout << "fNtotIntRefl = " << fNtotIntRefl << G4endl;
+  if (fNtotIntRefl >1 && fNtotIntRefl <4 && track->GetVolume()->GetName() == "Inner_Cladding_Fiber")
+  {
+    AddCoreTrackLength(track->GetStepLength());
+    //G4cout << "Track Length in Core Fiber = " << CoreTrackLength << G4endl;
+  }
 
-  //if(fNtotIntRefl > fSafety){fSafetyFiberCore--;}
 
   if ( fNtotIntRefl > fSafety && track->GetNextVolume()->GetName() == "Core_Fiber") { // require at least n = fSafety of total internal reflections at the beginning
     //G4cout << "N reflection tot > Safety = 2 && Next volume Core_Fiber" << G4endl;
     return true;
   }
-
-  //G4cout << "fSafetyFiberCore = " << fSafetyFiberCore << G4endl;
 
   return false;
 }
@@ -286,15 +314,10 @@ void FastSimModelOpFiber::getCoreMaterial(const G4Track* track) {
   auto logVol = physVol->GetLogicalVolume();
 
   if ( logVol->GetNoDaughters()==0 ) {
-    //G4cout << "GetNoDaughters =0" << G4endl;
     fCoreMaterial = logVol->GetMaterial();
   } else {
     auto corePhys = logVol->GetDaughter(0);
-    //fCoreMaterial = corePhys->GetLogicalVolume()->GetMaterial();
     fCoreMaterial = track->GetNextMaterial();
-    // G4cout << "GetNoDaughters >0" << G4endl;
-    // G4cout << "Daughter size = " << logVol->GetNoDaughters() << G4endl;
-    //G4cout << "fCoreMaterial = " << fCoreMaterial << G4endl;
   }
 }
 
@@ -309,6 +332,8 @@ void FastSimModelOpFiber::reset() {
   fNtotIntRefl = 0;
   fTrackId = 0;
   fSafetyFiberCore=3;
+  CoreTrackLength=0;
+  fSquareGeometry=true;
   //G4cout << "Passage par la fonction Reset() " << G4endl;
 }
 

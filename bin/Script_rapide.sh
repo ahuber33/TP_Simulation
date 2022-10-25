@@ -1,12 +1,12 @@
  #!/bin/bash
 
 
-for (( i=1 ; i<=4 ; i++ ))
+for (( i=1 ; i<=8 ; i++ ))
 do
-    while [[ $(pgrep -x TPSim | wc -l) -gt 4 ]]
+    while [[ $(pgrep -x TPSim | wc -l) -gt 7 ]]
     do
 	sleep 10
     done
-    ./TPSim a_${i} 2500 vrml.mac &
-    sleep 10
+    ./TPSim a_${i} 1250 vrml.mac &
+    sleep 5
     done

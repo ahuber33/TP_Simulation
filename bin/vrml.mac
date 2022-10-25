@@ -11,9 +11,9 @@
 # /vis/scene/add/trajectories smooth
 # /vis/scene/endOfEventAction accumulate
 
-/tracking/verbose 1
+/tracking/verbose 0
 /run/verbose 1
-/run/printProgress 1000
+/run/printProgress 100
 
 
 # /vis/scene/endOfEventAction accumulate 10
@@ -131,7 +131,7 @@
 /gps/particle e-
 /gps/pos/type Point
 #/gps/pos/centre 0.0 0.0 -300.0 mm
-/gps/pos/centre 0.0 0.0 -5000.0 mm
+/gps/pos/centre 0. 0.0 -6000.0 mm
 #/gps/pos/centre -0. -200.0 0 mm
 /gps/energy 10 keV
 /gps/direction 0.0 0.0 1.0

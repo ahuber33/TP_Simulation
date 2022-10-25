@@ -129,6 +129,7 @@ private:
   G4double mylar_ref_coeff;
   G4double pWavelength;
   G4double ratio;
+  G4float Air_Index;
 
 
 };

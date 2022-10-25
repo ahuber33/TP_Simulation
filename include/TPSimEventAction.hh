@@ -138,6 +138,8 @@ public:
   int GetPhotonTrajectoryNStep(){return PhotonTrajectoryNStep;}
   int GetSizePhotonTrajectoryNStep(){return StatsOptical.PhotonTrajectoryNStep.size();}
   int GetSizePhotonTrajectoryX(){return StatsOptical.PhotonTrajectoryX.size();}
+  void SetAirIndex(G4float a){Air_Index = a;}
+  float GetAirIndex(){return Air_Index;}
 
   //Functions for TP Tree
   void SetParticuleID(G4double a){StatsTP.ParticuleID =a;}
@@ -172,6 +174,7 @@ private:
   float TrackLengthFastSimulated;
   int PhotonTrajectoryNStep;
   float Photon_creation_angle;
+  float Air_Index;
 
 
 

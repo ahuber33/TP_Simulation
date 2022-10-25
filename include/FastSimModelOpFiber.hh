@@ -17,6 +17,7 @@ public:
   virtual G4bool IsApplicable(const G4ParticleDefinition&);
   virtual G4bool ModelTrigger(const G4FastTrack&);
   virtual void DoIt(const G4FastTrack&, G4FastStep&);
+  void AddCoreTrackLength(G4double a){CoreTrackLength+=a;}
 
   void SetCoreMaterial(G4Material* mat) { fCoreMaterial = mat; }
 
@@ -33,6 +34,7 @@ private:
   G4OpBoundaryProcess* fOpBoundaryProc;
   G4Material* fCoreMaterial;
   G4bool fProcAssigned;
+  G4bool fSquareGeometry;
 
   G4int fSafety;
   G4int fSafetyFiberCore;
@@ -46,6 +48,7 @@ private:
   G4int fNtotIntRefl;
   G4int fTrackId;
   G4double FiberMultiCladding;
+  G4double CoreTrackLength;
 };
 
 #endif

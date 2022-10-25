@@ -102,7 +102,10 @@ PMMA(0)
 				config_prop >> value >> unit;
 				scintAbsorbconst = value*G4UnitDefinition::GetValueOf(unit);
 			}
-
+			else if(variable == "Air_Index")
+			{
+				config_prop >> Air_Index;
+			}
 		}
 	}
 
@@ -547,7 +550,7 @@ void TPSimMaterials::Construct()
 			ReadVac >> pWavelength >> filler >> y;
 			Vacuum_Energy.push_back((1240/pWavelength)*eV); //convert wavelength to eV
 			Vacuum_Absorption_Long.push_back(vacAbsorbconst);
-			Vacuum_Index_Value.push_back(1.);
+			Vacuum_Index_Value.push_back(Air_Index);
 			//    G4cout<<vacEntries<<" "<<vacEnergy[vacEntries]<<" "<<vacIndex[vacEntries]<<G4endl;
 		}
 	}
@@ -557,7 +560,6 @@ void TPSimMaterials::Construct()
 
 	vacMPT = new G4MaterialPropertiesTable();
 	vacMPT->AddProperty("RINDEX", Vacuum_Energy, Vacuum_Index_Value);
-	//vacMPT->AddProperty("RINDEX", "Air");
 	vacMPT->AddProperty("ABSLENGTH", Vacuum_Energy, Vacuum_Absorption_Long);
 	Air->SetMaterialPropertiesTable(vacMPT);
 	Vacuum->SetMaterialPropertiesTable(vacMPT);
@@ -943,7 +945,7 @@ void TPSimMaterials::Construct()
 			Read_FP_ref_index >> pWavelength >> filler >> FPIndex;
 			FP_Energy_index.push_back((1240/pWavelength)*eV);
 			//FP_Index_Value.push_back(FPIndex);
-			FP_Index_Value.push_back(1.49);
+			FP_Index_Value.push_back(1.42);
 		}
 	}
 	else

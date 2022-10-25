@@ -106,6 +106,10 @@ private:
   G4VPhysicalVolume *PhysicalCoreFiber;
   G4VPhysicalVolume *PhysicalInnerCladdingFiber;
   G4VPhysicalVolume *PhysicalOuterCladdingFiber;
+  G4VPhysicalVolume *PhysicalCoreFiberBunch[1000000];
+  G4VPhysicalVolume *PhysicalInnerCladdingFiberBunch[1000000];
+  G4VPhysicalVolume *PhysicalOuterCladdingFiberBunch[1000000];
+
 
   // Optical surfaces
   G4OpticalSurface *OpticalTeflon;
@@ -162,6 +166,7 @@ private:
   G4double FiberMultiCladding;
   G4double FiberGeometry;
   G4double WidthBunchFibers;
+  G4int ActivationG4FAST;
 
   // Dimensions PLACEMENTS
   G4double Z_Position_MFPlates;

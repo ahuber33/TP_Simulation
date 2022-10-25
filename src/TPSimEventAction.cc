@@ -67,6 +67,7 @@ void TPSimEventAction::BeginOfEventAction(const G4Event* evt){
   StatsOptical.Angle_detection.clear();
   TrackLengthFastSimulated=0;
   PhotonTrajectoryNStep=0;
+  Air_Index=-1;
 
   StatsTP.ParticuleID=0;
   StatsTP.E_start=0;

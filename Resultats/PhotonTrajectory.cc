@@ -3,15 +3,16 @@
 void PhotonTrajectory()
 {
   int noftraj =0;
-  float fiber_radius =5.5;
-  float core_radius =fiber_radius-0.02*fiber_radius;
-  float fiber_length = 500;
+  float fiber_radius =0.5;
+  float inner_radius =0.48;
+  float core_radius =0.46;
+  float fiber_length = 50;
   float condition_angle =0;
   int condition_status =0;
 
-  Initialisation_Geometrie(fiber_radius, core_radius, fiber_length);
+  Initialisation_Geometrie(fiber_radius, inner_radius, core_radius, fiber_length);
 
-    Create_Trajectory("b.root");
+    Create_Trajectory("a.root");
   //  Create_Trajectory("a.root");
 
 

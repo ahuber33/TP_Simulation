@@ -240,6 +240,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   "InvalidSetup", FatalException,
   "Fiber multi cladding option not well defined");
   WidthBunchFibers = FiberNumberPerLine*(FiberWidth) + (FiberNumberPerLine +1)*FiberSpace;
+  ActivationG4FAST = theScint->GetActivationG4FAST();
 
   //#########################
   // DEFINE GEOMETRY VOLUMES#
@@ -322,13 +323,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
 
   G4RegionStore* regionStore = G4RegionStore::GetInstance();
-  //new FastSimModelOpFiber("FastSimModelOpFiber", FiberRegion, FiberMultiCladding);
+  if(ActivationG4FAST==1) new FastSimModelOpFiber("FastSimModelOpFiber", FiberRegion, FiberMultiCladding);
 
-
-  // FastSimModelOpFiber* fModel;
-  // auto regionStore = G4RegionStore:GetInstance():
-  // auto region = regionStore->GetRegion("FastSimModelOpFiber")
-  //fModel = new FastSimModelOpFiber("FastSimModelOpFiber", region)
 
   //********************************************
   // Build optical properties and skin surfaces*
@@ -447,8 +443,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
       //PMTdetect[PMTentries] = 0.79*quant_eff*.65;  //0.79 = correction factor to adjust QE to lower value of 34% for R6594 and 0.59 = 25%
       //PMTdetect1[PMTentries] = 1; // Use only if you want %100 QE
       Photocathode_Energy.push_back((1240/wavelength)*eV);
-      //Photocathode_Value.push_back(quant_eff*0.57);  //For the GAxxxx file with good QE and 0.65 for collection efficiency
-      Photocathode_Value.push_back(quant_eff*1); //Change 1 if you know ou want to apply a collection efficiency factor !!!
+      Photocathode_Value.push_back(1);  //For the GAxxxx file with good QE and 0.65 for collection efficiency
+      //Photocathode_Value.push_back(quant_eff*1); //Change 1 if you know ou want to apply a collection efficiency factor !!!
       Photocathode_Index.push_back(indexconst);
       Photocathode_Reflectivity.push_back(reflectconst);
     }
@@ -621,127 +617,158 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
                 //   LogicalZnSLG,"PMMA",
                 //   LogicalHolder,false,0);
 
+G4int n=0;
+G4float translation_x=0;
+G4float translation_y =0;
 
-                if(FiberGeometry ==0)
-                {
-                  if (FiberMultiCladding ==0)
-                  {
-                    G4VPVParameterisation* InnerCladdingFiberParam =  new FiberParameterisation(
-                      FiberNumberPerLine,   // NoFibers
-                      (-WidthBunchFibers+FiberWidth+2*FiberSpace)/2,  // Z of center of first
-                      FiberSpacing, // Z spacing of centers
-                      FiberWidth,  // Fiber radius/width for round/square fiber
-                      FiberLength);    // final length
+for (int i=0; i<FiberNumberPerLine; i++)
+{
+  for (int j=0; j<FiberNumberPerLine; j++)
+  {
+    translation_x = (FiberSpace+FiberWidth/2-WidthBunchFibers/2)+j*(FiberWidth + FiberSpace);
+    translation_y = (FiberSpace+FiberWidth/2-WidthBunchFibers/2)+i*(FiberWidth + FiberSpace);
 
-                      new G4PVParameterised("Inner_Cladding_Fiber",       // their name
-                      LogicalInnerCladdingFiber,   // their logical volume
-                      LogicalFibersHolder,       // Mother logical volume
-                      kUndefined,          // Are placed along this axis
-                      NbOfFibers,    // Number of Fibers
-                      InnerCladdingFiberParam,    // The parametrisation
-                      false); // checking overlaps
+    PhysicalCoreFiberBunch[n] = new G4PVPlacement(G4Transform3D
+     (DontRotate,G4ThreeVector(translation_x, translation_y, 0*mm)), // Set at origin as basis of everything else
+     LogicalCoreFiber,"Core_Fiber",
+     LogicalFibersHolder,false,0);
 
-                      G4VPVParameterisation* FiberParam =  new FiberParameterisation(
-                        FiberNumberPerLine,   // NoFibers
-                        0,  // Z of center of first
-                        1, // Z spacing of centers -> Not useful HERE
-                        FiberWidthCore,  // Fiber radius/width for round/square fiber
-                        FiberLength);    // final length
+     PhysicalInnerCladdingFiberBunch[n] = new G4PVPlacement(G4Transform3D
+      (DontRotate,G4ThreeVector(translation_x, translation_y, 0*mm)), // Set at origin as basis of everything else
+      LogicalInnerCladdingFiber,"Inner_Cladding_Fiber",
+      LogicalFibersHolder,false,0);
 
-                        new G4PVParameterised("Core_Fiber",       // their name
-                        LogicalCoreFiber,   // their logical volume
-                        LogicalInnerCladdingFiber,       // Mother logical volume
-                        kUndefined,          // Are placed along this axis
-                        1,    // Number of Fibers
-                        FiberParam,    // The parametrisation
-                        false); // checking overlaps
-                      }
+      if(FiberMultiCladding  == 1)
+      {
+        PhysicalOuterCladdingFiberBunch[n] = new G4PVPlacement(G4Transform3D
+         (DontRotate,G4ThreeVector(translation_x, translation_y, 0*mm)), // Set at origin as basis of everything else
+         LogicalOuterCladdingFiber,"Outer_Cladding_Fiber",
+         LogicalFibersHolder,false,0);
+      }
 
-
-                      if (FiberMultiCladding ==1)
-                      {
-                        G4VPVParameterisation* OuterCladdingFiberParam =  new FiberParameterisation(
-                          FiberNumberPerLine,   // NoFibers
-                          (-WidthBunchFibers+FiberWidth+2*FiberSpace)/2,  // Z of center of first
-                          FiberSpacing, // Z spacing of centers
-                          FiberWidth,  // Fiber radius/width for round/square fiber
-                          FiberLength);    // final length
-
-                          new G4PVParameterised("Outer_Cladding_Fiber",       // their name
-                          LogicalOuterCladdingFiber,   // their logical volume
-                          LogicalFibersHolder,       // Mother logical volume
-                          kUndefined,          // Are placed along this axis
-                          NbOfFibers,    // Number of Fibers
-                          OuterCladdingFiberParam,    // The parametrisation
-                          false); // checking overlaps
-
-
-                          G4VPVParameterisation* InnerCladdingFiberParam =  new FiberParameterisation(
-                            FiberNumberPerLine,   // NoFibers
-                            0,  // Z of center of first
-                            1, // Z spacing of centers
-                            FiberWidthCladding,  // Fiber radius/width for round/square fiber
-                            FiberLength);    // final length
-
-                            new G4PVParameterised("Inner_Cladding_Fiber",       // their name
-                            LogicalInnerCladdingFiber,   // their logical volume
-                            LogicalOuterCladdingFiber,       // Mother logical volume
-                            kUndefined,          // Are placed along this axis
-                            1,    // Number of Fibers
-                            InnerCladdingFiberParam,    // The parametrisation
-                            false); // checking overlaps
-
-
-                            G4VPVParameterisation* FiberParam =  new FiberParameterisation(
-                              FiberNumberPerLine,   // NoFibers
-                              0,  // Z of center of first
-                              1, // Z spacing of centers -> Not useful HERE
-                              FiberWidthCore,  // Fiber radius/width for round/square fiber
-                              FiberLength);    // final length
-
-                              new G4PVParameterised("Core_Fiber",       // their name
-                              LogicalCoreFiber,   // their logical volume
-                              LogicalInnerCladdingFiber,       // Mother logical volume
-                              kUndefined,          // Are placed along this axis
-                              1,    // Number of Fibers
-                              FiberParam,    // The parametrisation
-                              false); // checking overlaps
-                            }
-                          }
-
-                          if(FiberGeometry ==1)
-                          {
-                            G4VPVParameterisation* InnerCladdingFiberParam =  new FiberParameterisation(
-                              FiberNumberPerLine,   // NoFibers
-                              (-WidthBunchFibers+FiberWidth)/2,  // Z of center of first
-                              FiberSpacing, // Z spacing of centers
-                              FiberWidth,  // Fiber radius/width for round/square fiber
-                              FiberLength);    // final length
-
-                              new G4PVParameterised("Inner_Cladding_Fiber",       // their name
-                              LogicalInnerCladdingFiber,   // their logical volume
-                              LogicalFibersHolder,       // Mother logical volume
-                              kUndefined,          // Are placed along this axis
-                              NbOfFibers,    // Number of Fibers
-                              InnerCladdingFiberParam,    // The parametrisation
-                              false); // checking overlaps
-
-
-                              G4VPVParameterisation* FiberParam =  new FiberParameterisation(
-                                FiberNumberPerLine,   // NoFibers
-                                0,  // Z of center of first
-                                1, // Z spacing of centers -> Not useful HERE
-                                FiberWidthCore,  // Fiber radius/width for round/square fiber
-                                FiberLength);    // final length
-
-                                new G4PVParameterised("Core_Fiber",       // their name
-                                LogicalCoreFiber,   // their logical volume
-                                LogicalInnerCladdingFiber,       // Mother logical volume
-                                kUndefined,          // Are placed along this axis
-                                1,    // Number of Fibers
-                                FiberParam,    // The parametrisation
-                                false); // checking overlaps
-                              }
+     n++;
+  }
+}
+                // if(FiberGeometry ==0)
+                // {
+                //   if (FiberMultiCladding ==0)
+                //   {
+                //     G4VPVParameterisation* InnerCladdingFiberParam =  new FiberParameterisation(
+                //       FiberNumberPerLine,   // NoFibers
+                //       (-WidthBunchFibers+FiberWidth+2*FiberSpace)/2,  // Z of center of first
+                //       FiberSpacing, // Z spacing of centers
+                //       FiberWidth,  // Fiber radius/width for round/square fiber
+                //       FiberLength);    // final length
+                //
+                //       new G4PVParameterised("Inner_Cladding_Fiber",       // their name
+                //       LogicalInnerCladdingFiber,   // their logical volume
+                //       LogicalFibersHolder,       // Mother logical volume
+                //       kUndefined,          // Are placed along this axis
+                //       NbOfFibers,    // Number of Fibers
+                //       InnerCladdingFiberParam,    // The parametrisation
+                //       false); // checking overlaps
+                //
+                //       G4VPVParameterisation* FiberParam =  new FiberParameterisation(
+                //         FiberNumberPerLine,   // NoFibers
+                //         0,  // Z of center of first
+                //         1, // Z spacing of centers -> Not useful HERE
+                //         FiberWidthCore,  // Fiber radius/width for round/square fiber
+                //         FiberLength);    // final length
+                //
+                //         new G4PVParameterised("Core_Fiber",       // their name
+                //         LogicalCoreFiber,   // their logical volume
+                //         LogicalInnerCladdingFiber,       // Mother logical volume
+                //         kUndefined,          // Are placed along this axis
+                //         1,    // Number of Fibers
+                //         FiberParam,    // The parametrisation
+                //         false); // checking overlaps
+                //       }
+                //
+                //
+                //       if (FiberMultiCladding ==1)
+                //       {
+                //         G4VPVParameterisation* OuterCladdingFiberParam =  new FiberParameterisation(
+                //           FiberNumberPerLine,   // NoFibers
+                //           (-WidthBunchFibers+FiberWidth+2*FiberSpace)/2,  // Z of center of first
+                //           FiberSpacing, // Z spacing of centers
+                //           FiberWidth,  // Fiber radius/width for round/square fiber
+                //           FiberLength);    // final length
+                //
+                //           new G4PVParameterised("Outer_Cladding_Fiber",       // their name
+                //           LogicalOuterCladdingFiber,   // their logical volume
+                //           LogicalFibersHolder,       // Mother logical volume
+                //           kUndefined,          // Are placed along this axis
+                //           NbOfFibers,    // Number of Fibers
+                //           OuterCladdingFiberParam,    // The parametrisation
+                //           false); // checking overlaps
+                //
+                //
+                //           G4VPVParameterisation* InnerCladdingFiberParam =  new FiberParameterisation(
+                //             FiberNumberPerLine,   // NoFibers
+                //             0,  // Z of center of first
+                //             1, // Z spacing of centers
+                //             FiberWidthCladding,  // Fiber radius/width for round/square fiber
+                //             FiberLength);    // final length
+                //
+                //             new G4PVParameterised("Inner_Cladding_Fiber",       // their name
+                //             LogicalInnerCladdingFiber,   // their logical volume
+                //             LogicalOuterCladdingFiber,       // Mother logical volume
+                //             kUndefined,          // Are placed along this axis
+                //             1,    // Number of Fibers
+                //             InnerCladdingFiberParam,    // The parametrisation
+                //             false); // checking overlaps
+                //
+                //
+                //             G4VPVParameterisation* FiberParam =  new FiberParameterisation(
+                //               FiberNumberPerLine,   // NoFibers
+                //               0,  // Z of center of first
+                //               1, // Z spacing of centers -> Not useful HERE
+                //               FiberWidthCore,  // Fiber radius/width for round/square fiber
+                //               FiberLength);    // final length
+                //
+                //               new G4PVParameterised("Core_Fiber",       // their name
+                //               LogicalCoreFiber,   // their logical volume
+                //               LogicalInnerCladdingFiber,       // Mother logical volume
+                //               kUndefined,          // Are placed along this axis
+                //               1,    // Number of Fibers
+                //               FiberParam,    // The parametrisation
+                //               false); // checking overlaps
+                //             }
+                //           }
+                //
+                //           if(FiberGeometry ==1)
+                //           {
+                //             G4VPVParameterisation* InnerCladdingFiberParam =  new FiberParameterisation(
+                //               FiberNumberPerLine,   // NoFibers
+                //               (-WidthBunchFibers+FiberWidth)/2,  // Z of center of first
+                //               FiberSpacing, // Z spacing of centers
+                //               FiberWidth,  // Fiber radius/width for round/square fiber
+                //               FiberLength);    // final length
+                //
+                //               new G4PVParameterised("Inner_Cladding_Fiber",       // their name
+                //               LogicalInnerCladdingFiber,   // their logical volume
+                //               LogicalFibersHolder,       // Mother logical volume
+                //               kUndefined,          // Are placed along this axis
+                //               NbOfFibers,    // Number of Fibers
+                //               InnerCladdingFiberParam,    // The parametrisation
+                //               false); // checking overlaps
+                //
+                //
+                //               G4VPVParameterisation* FiberParam =  new FiberParameterisation(
+                //                 FiberNumberPerLine,   // NoFibers
+                //                 0,  // Z of center of first
+                //                 1, // Z spacing of centers -> Not useful HERE
+                //                 FiberWidthCore,  // Fiber radius/width for round/square fiber
+                //                 FiberLength);    // final length
+                //
+                //                 new G4PVParameterised("Core_Fiber",       // their name
+                //                 LogicalCoreFiber,   // their logical volume
+                //                 LogicalInnerCladdingFiber,       // Mother logical volume
+                //                 kUndefined,          // Are placed along this axis
+                //                 1,    // Number of Fibers
+                //                 FiberParam,    // The parametrisation
+                //                 false); // checking overlaps
+                //               }
 
 
                               // PMT photocathode placement

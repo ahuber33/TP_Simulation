@@ -86,6 +86,7 @@ public:
   G4double GetFiberNumberPerLine(){return Fiber_number_per_line;}
   G4int GetFiberMultiCladdingOption(){return Fiber_multi_cladding;}
   G4int GetFiberGeometry(){return Fiber_geometry;}
+  G4int GetActivationG4FAST(){return Activation_G4FAST;}
 
 private:
 
@@ -150,6 +151,9 @@ private:
   G4double Fiber_length;
   G4double Fiber_width;
   G4double Fiber_space;
+
+  //G4FastTrack
+  G4int Activation_G4FAST;
 
 
   // Other

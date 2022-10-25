@@ -207,6 +207,10 @@ Geometry::Geometry(G4String buildfile){
         config >> value >> unit;
         Fiber_length = value*G4UnitDefinition::GetValueOf(unit);
       }
+      else if(variable == "G4FAST"){
+        config >> value;
+        Activation_G4FAST = value;
+      }
     }
   }
   config.close();
@@ -247,6 +251,7 @@ Geometry::Geometry(G4String buildfile){
   << "\n Fiber width (diameter or length) = " << Fiber_width
   << "\n Fiber cladding ratio = " << Fiber_cladding_ratio
   << "\n Fiber length = " << Fiber_length
+  << "\n Activation G4FAST = " << Activation_G4FAST
   << "\n " << G4endl;
 
 }
@@ -295,14 +300,15 @@ G4LogicalVolume *Geometry::GetInnerCladdingRoundFiber(){
   if(Fiber_multi_cladding==0)
   {
     Tubs = new G4Tubs   ("Tubs",             //its name
-    0, Fiber_width/2, Fiber_length/2, 0, 360*deg);    //its size
+    (Fiber_width-2*Fiber_cladding_ratio*Fiber_width)/2, Fiber_width/2, Fiber_length/2, 0, 360*deg);    //its size
   }
 
 
   if(Fiber_multi_cladding==1)
   {
     Tubs = new G4Tubs   ("Tubs",             //its name
-    0, (Fiber_width-2*Fiber_cladding_ratio*Fiber_width)/2, Fiber_length/2, 0, 360*deg);    //its size
+    (Fiber_width-4*Fiber_cladding_ratio*Fiber_width)/2, (Fiber_width-2*Fiber_cladding_ratio*Fiber_width)/2, Fiber_length/2, 0, 360*deg);    //its size
+    //0, (Fiber_width-2*Fiber_cladding_ratio*Fiber_width)/2, Fiber_length/2, 0, 360*deg);    //its size
   }
 
   LogicalVolume = new G4LogicalVolume(Tubs, Material, "Inner_Cladding_Round_Fiber",0,0,0);
@@ -320,6 +326,7 @@ G4LogicalVolume *Geometry::GetOuterCladdingRoundFiber(){
 
 
   G4Tubs* Tubs = new G4Tubs   ("Tubs",             //its name
+  //(Fiber_width-2*Fiber_cladding_ratio*Fiber_width)/2, (Fiber_width)/2, Fiber_length/2, 0, 360*deg);    //its size
   (Fiber_width-2*Fiber_cladding_ratio*Fiber_width)/2, (Fiber_width)/2, Fiber_length/2, 0, 360*deg);    //its size
 
 
@@ -335,7 +342,7 @@ G4LogicalVolume *Geometry::GetCoreSquareFiber(){
   Material = scintProp->GetMaterial("scintillator");
 
   G4Box *Box = new G4Box   ("Box",             //its name
-  (Fiber_width-Fiber_cladding_ratio*Fiber_width)/2, (Fiber_width-Fiber_cladding_ratio*Fiber_width)/2, Fiber_length/2);    //its size
+  (Fiber_width-2*Fiber_cladding_ratio*Fiber_width)/2, (Fiber_width-2*Fiber_cladding_ratio*Fiber_width)/2, Fiber_length/2);    //its size
 
   LogicalVolume = new G4LogicalVolume(Box, Material, "Core_Square_Fiber",0,0,0);
 
@@ -350,8 +357,13 @@ G4LogicalVolume *Geometry::GetCladdingSquareFiber(){
 
   Material = scintProp->GetMaterial("PMMA");
 
-  G4Box *Box = new G4Box   ("Box",             //its name
+  G4Box *Box1 = new G4Box   ("Box1",             //its name
   Fiber_width/2, Fiber_width/2, Fiber_length/2);    //its size
+
+  G4Box *Box2 = new G4Box   ("Box2",             //its name
+  (Fiber_width-2*Fiber_cladding_ratio*Fiber_width)/2, (Fiber_width-2*Fiber_cladding_ratio*Fiber_width)/2, Fiber_length/2);    //its size
+
+  G4SubtractionSolid* Box = new G4SubtractionSolid("Box", Box1, Box2, G4Transform3D(DontRotate,G4ThreeVector(0,0,0.0)));
 
   LogicalVolume = new G4LogicalVolume(Box, Material, "Cladding_Square_Fiber",0,0,0);
 
@@ -519,8 +531,8 @@ G4LogicalVolume *Geometry::GetPhotocathode(){
   Material = scintProp->GetMaterial("Silicium");
 
   G4Box *Box = new G4Box   ("Box",             //its name
-  //ScintillatorLength/2, ScintillatorLength/2, DetectorThickness/2);    //its size
-    (Fiber_number_per_line*Fiber_width + (Fiber_number_per_line+1)*Fiber_space)/2, (Fiber_number_per_line*Fiber_width + (Fiber_number_per_line+1)*Fiber_space)/2, DetectorThickness/2);    //its size
+  ScintillatorLength/2, ScintillatorLength/2, DetectorThickness/2);    //its size
+    //(Fiber_number_per_line*Fiber_width + (Fiber_number_per_line+1)*Fiber_space)/2, (Fiber_number_per_line*Fiber_width + (Fiber_number_per_line+1)*Fiber_space)/2, DetectorThickness/2);    //its size
 
   LogicalVolume = new G4LogicalVolume(Box, Material, "Photocathode",0,0,0);
 
