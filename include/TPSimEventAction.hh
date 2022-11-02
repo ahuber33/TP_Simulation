@@ -35,8 +35,12 @@ struct RunTallyOptical {
   int    Failed;
   //int    WLS;
   int    Detected;
-  std::vector<float>PositionX;
-  std::vector<float>PositionY;
+  std::vector<float>ExitLightPositionX;
+  std::vector<float>ExitLightPositionY;
+  std::vector<float>LensPositionX;
+  std::vector<float>LensPositionY;
+  std::vector<float>DetectorPositionX;
+  std::vector<float>DetectorPositionY;
   std::vector<float>PositionZ;
   std::vector<float>PhotonTrajectoryX;
   std::vector<float>PhotonTrajectoryY;
@@ -109,8 +113,12 @@ public:
   int GetEscaped(){return StatsOptical.Escaped;}
   void CountFailed(){StatsOptical.Failed++;}
   int GetFailed(){return StatsOptical.Failed;}
-  void FillPhotonPositionX(G4float e){StatsOptical.PositionX.push_back(e);}
-  void FillPhotonPositionY(G4float e){StatsOptical.PositionY.push_back(e);}
+  void FillPhotonExitLightPositionX(G4float e){StatsOptical.ExitLightPositionX.push_back(e);}
+  void FillPhotonExitLightPositionY(G4float e){StatsOptical.ExitLightPositionY.push_back(e);}
+  void FillPhotonLensPositionX(G4float e){StatsOptical.LensPositionX.push_back(e);}
+  void FillPhotonLensPositionY(G4float e){StatsOptical.LensPositionY.push_back(e);}
+  void FillPhotonDetectorPositionX(G4float e){StatsOptical.DetectorPositionX.push_back(e);}
+  void FillPhotonDetectorPositionY(G4float e){StatsOptical.DetectorPositionY.push_back(e);}
   void FillPhotonPositionZ(G4float e){StatsOptical.PositionZ.push_back(e);}
   void FillPhotonTrajectoryX(G4float e){StatsOptical.PhotonTrajectoryX.push_back(e);}
   void FillPhotonTrajectoryY(G4float e){StatsOptical.PhotonTrajectoryY.push_back(e);}

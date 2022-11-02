@@ -150,3 +150,16 @@
 # - MAJ des corrections sur la longueur d'atténuation à considérer en fonction de la géométrie qui est testée pour reproduire les datas sans le module d'accélération.
 # - Création de dossiers pour les différents fichiers ROOT afin de classifier les différentes études
 # - VERSION DE CODE UTILISEE POUR GENERER LE FICHIER EXCEL LABS_TPSIM AFIN DE VERIFIER LA CONCORDANCE ENTRE LA SIMU OPTIQUE COMPLETE ET L OUTIL G4FAST. TOUT EST OK !!!!!
+
+# Commit #19 le 02/11/2022 [TPSim.0.8.1]
+# - IMPORTANT : Version de la simulation ayant permis d'estimer les résultats d'un bunch de fibres arrivant directement sur la caméra ORCA.
+# - Changement dans la configuration de la simulation pour créer des fibres plus petites (0.2mm) avec un espacement plus faible entre (0.05mm) afin de simuler le bunch de fibres directement sur la camera
+# - Nettoyage des dossiers du code en enlevant le fichier de geometrie du Dolphy Beta (Carmelec) ainsi que les fichiers GDML associés.
+# - Ajout dans le code de la possibilité d'ajouter une lentille dans la simulation afin de pouvoir les ramener sur la caméra. Commenté pour le moment car pas utilisé. A CONFIRMER PAR LA SUITE !!!! VERIFICATIONS NECESSAIRES
+# - Ajout des fichiers GDML correspondant à des lentilles issues de ThorLabs
+# - Ajout des fichiers de config pour la fibres (matériau N-BK7, indice optiqque et longueur d'absorption)
+# - Ajout des variables et fonctions permettant (dans le cas de l'utilisation des lentilles) d'accéder à la position des photons au niveau de la sortie des fibres, au niveau de la lentille et au niveau du détecteur.
+# - Creation d'un fichier Plot_2D_cross_talk.cc permettant de tracer l'évolution du cross-talk en focntion du nombre de fibres et de la longueur de ces dernières.
+# - Réarrangement des fonctions dans le fichier FastSimModelOpFiber.cc
+# - Création d'un fichier de géomérie backup
+# - Fonctions permettant de récupérer les trajectoires pour les plotter par la suite ont été commentées pour ne pas créer de fuite mémoire lors de tirs à hautes énergies

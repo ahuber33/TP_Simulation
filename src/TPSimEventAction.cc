@@ -46,8 +46,12 @@ void TPSimEventAction::BeginOfEventAction(const G4Event* evt){
   StatsOptical.Failed = 0;
   //StatsOptical.WLS = 0;
   StatsOptical.Detected = 0;
-  StatsOptical.PositionX.clear();
-  StatsOptical.PositionY.clear();
+  StatsOptical.ExitLightPositionX.clear();
+  StatsOptical.ExitLightPositionY.clear();
+  StatsOptical.LensPositionX.clear();
+  StatsOptical.LensPositionY.clear();
+  StatsOptical.DetectorPositionX.clear();
+  StatsOptical.DetectorPositionY.clear();
   StatsOptical.PositionZ.clear();
   StatsOptical.PhotonTrajectoryX.clear();
   StatsOptical.PhotonTrajectoryY.clear();
@@ -146,11 +150,11 @@ void TPSimEventAction::EndOfEventAction(const G4Event* evt){
 
   }
 
-//if(Deposit>0)
-//{
+if(Deposit>0)
+{
   runac->UpdateStatisticsOptical(StatsOptical);
   runac->UpdateStatisticsTP(StatsTP);
-//}
+}
 
 
 }

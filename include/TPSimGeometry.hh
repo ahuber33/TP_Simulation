@@ -81,6 +81,7 @@ private:
   G4LogicalVolume *LogicalInnerCladdingFiber;
   G4LogicalVolume *LogicalOuterCladdingFiber;
   G4LogicalVolume *LogicalFiber;
+  G4LogicalVolume *LogicalLens;
 
 
   // Physical volumes
@@ -109,6 +110,7 @@ private:
   G4VPhysicalVolume *PhysicalCoreFiberBunch[1000000];
   G4VPhysicalVolume *PhysicalInnerCladdingFiberBunch[1000000];
   G4VPhysicalVolume *PhysicalOuterCladdingFiberBunch[1000000];
+  G4VPhysicalVolume *PhysicalLens;
 
 
   // Optical surfaces
@@ -150,6 +152,8 @@ private:
   G4double ZnSLGThickness;
   G4double DetectorThickness;
   G4double DetectorTranslation;
+  G4double LensTranslation;
+  G4double LensThickness;
   G4double PinholeThickness;
   G4double FiberLength;
   G4double FiberWidth;
@@ -176,6 +180,7 @@ private:
   G4double Z_Position_ZnSLG;
   G4double Z_Position_Photocathode;
   G4double Z_Position_Fiber;
+  G4double Z_Position_Lens;
   // wrapping
   G4double TeflonGap;
   G4double TeflonThickness;

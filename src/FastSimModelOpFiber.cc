@@ -71,67 +71,74 @@ G4bool FastSimModelOpFiber::ModelTrigger(const G4FastTrack& fasttrack) {
 
     if(evtac->GetPhotonCreationAngle() >20.4 && evtac->GetPhotonCreationAngle() <159.6)
     {
-      //attLength = 1.05*attLength; //ROUND SINGLE CLADDING
+      attLength = 1.05*attLength; //ROUND SINGLE CLADDING
       //attLength = 1.1*attLength; //ROUND MULTI CLADDING
       //attLength = 1.08*attLength; //SQUARE AIR INDEX = 1
-      attLength = 1.02*attLength; //SQUARE AIR INDEX = 1.49
+      //attLength = 1.02*attLength; //SQUARE AIR INDEX = 1.49
       if(fSquareGeometry==true) return false;
     }
 
-  if ( !checkTotalInternalReflection(track) )
-  {
-    //G4cout << "Previous status is not internal reflection" << G4endl;
-    return false; // nothing to do if the previous status is not total internal reflection
-  }
+
+    // if(evtac->GetPhotonCreationAngle() >40. && evtac->GetPhotonCreationAngle() <140)
+    // {
+    //   fKill=true;
+    //   return true;
+    // }
+
+    if ( !checkTotalInternalReflection(track) )
+    {
+      //G4cout << "Previous status is not internal reflection" << G4endl;
+      return false; // nothing to do if the previous status is not total internal reflection
+    }
 
 
-  // G4cout << "Fiber Length = " << fiberLen << G4endl;
-  // G4cout << "Fiber pos = " << fiberPos << G4endl;
-  // G4cout << "Fiber axis = " << fFiberAxis << G4endl;
-  // G4cout << "F Track Length = " << fTrkLength << G4endl;
-  // G4cout << "F Track Length bis = " << fTrkLengthBis << G4endl;
-  // G4cout << "Track length considered = " << fTrkLength - fTrkLengthBis << G4endl;
-  // G4cout << "Track length considered in core fiber = " << CoreTrackLength << G4endl;
-  //G4cout << "Fiber length = " << fiberLen << G4endl;
+    // G4cout << "Fiber Length = " << fiberLen << G4endl;
+    // G4cout << "Fiber pos = " << fiberPos << G4endl;
+    // G4cout << "Fiber axis = " << fFiberAxis << G4endl;
+    // G4cout << "F Track Length = " << fTrkLength << G4endl;
+    // G4cout << "F Track Length bis = " << fTrkLengthBis << G4endl;
+    // G4cout << "Track length considered = " << fTrkLength - fTrkLengthBis << G4endl;
+    // G4cout << "Track length considered in core fiber = " << CoreTrackLength << G4endl;
+    //G4cout << "Fiber length = " << fiberLen << G4endl;
 
 
-  if ( fTrkLength==0. ) { // kill stopped particle
-    fKill = true;
-    //G4cout << "Track Length = 0" << G4endl;
-    return true;
-  }
+    if ( fTrkLength==0. ) { // kill stopped particle
+      fKill = true;
+      //G4cout << "Track Length = 0" << G4endl;
+      return true;
+    }
 
-  auto delta = track->GetMomentumDirection() * (fTrkLength-fTrkLengthBis);
-  // G4cout << "Momentum Direction = " << track->GetMomentumDirection() << G4endl;
-  // G4cout << "delta = " << delta << G4endl;
-  fTransportUnit = delta.dot(fFiberAxis);
-  //G4cout << "fTransportUnit = " << fTransportUnit << G4endl;
+    auto delta = track->GetMomentumDirection() * (fTrkLength-fTrkLengthBis);
+    // G4cout << "Momentum Direction = " << track->GetMomentumDirection() << G4endl;
+    // G4cout << "delta = " << delta << G4endl;
+    fTransportUnit = delta.dot(fFiberAxis);
+    //G4cout << "fTransportUnit = " << fTransportUnit << G4endl;
 
-  if ( fTransportUnit < 0. ) { // kill backward propagation
-    fKill = true;
-    //G4cout << "fTransportUnit <0" << G4endl;
-    return true;
-  }
+    if ( fTransportUnit < 0. ) { // kill backward propagation
+      fKill = true;
+      //G4cout << "fTransportUnit <0" << G4endl;
+      return true;
+    }
 
-  auto fiberEnd = fiberPos + fFiberAxis*fiberLen/2.;
-  //G4cout << "fiberEnd = " << fiberEnd << G4endl;
-  auto toEnd = fiberEnd - track->GetPosition();
-  //G4cout << "toEnd = " << toEnd << G4endl;
-  double toEndAxis = toEnd.dot(fFiberAxis);
-  //G4cout << "toEndAxis = " << toEndAxis << G4endl;
-  double maxTransport = std::floor(toEndAxis/fTransportUnit);
-  //G4cout << "maxTransport = " << maxTransport << G4endl;
-  //fNtransport = maxTransport - fSafety;
-  fNtransport = maxTransport;
-  //G4cout << "fNtransport = " << fNtransport << G4endl;
+    auto fiberEnd = fiberPos + fFiberAxis*fiberLen/2.;
+    //G4cout << "fiberEnd = " << fiberEnd << G4endl;
+    auto toEnd = fiberEnd - track->GetPosition();
+    //G4cout << "toEnd = " << toEnd << G4endl;
+    double toEndAxis = toEnd.dot(fFiberAxis);
+    //G4cout << "toEndAxis = " << toEndAxis << G4endl;
+    double maxTransport = std::floor(toEndAxis/fTransportUnit);
+    //G4cout << "maxTransport = " << maxTransport << G4endl;
+    fNtransport = maxTransport - fSafety;
+    //fNtransport = maxTransport;
+    //G4cout << "fNtransport = " << fNtransport << G4endl;
 
-  //G4cout << "Track Length fast simulated = " << (fTrkLength-fTrkLengthBis)*fNtransport << G4endl;
+    //G4cout << "Track Length fast simulated = " << (fTrkLength-fTrkLengthBis)*fNtransport << G4endl;
 
-  if ( fNtransport <= 0. ) { // require at least n = fSafety of total internal reflections at the end
-    reset();
-    //G4cout << "FNtransport <= 0" << G4endl;
-    return false;
-  }
+    if ( fNtransport <= 0. ) { // require at least n = fSafety of total internal reflections at the end
+      reset();
+      //G4cout << "FNtransport <= 0" << G4endl;
+      return false;
+    }
 
     if(evtac->GetPhotonCreationAngle() >50. && evtac->GetPhotonCreationAngle() <130)
     {

@@ -668,6 +668,74 @@ void TPSimMaterials::Construct()
 	//#######################################################################################################################################
 	//#######################################################################################################################################
 
+
+	lens_glass = new G4Material("lens_glass",
+	2.51*g/cm3,
+	4,
+	kStateSolid,
+	273.15*kelvin,
+	1.0*atmosphere );
+
+	lens_glassMPT = new G4MaterialPropertiesTable();
+
+	lens_glass->AddMaterial(SiO2, 0.81);
+	lens_glass->AddMaterial(B2O3, 0.13);
+	lens_glass->AddMaterial(Na2O, 0.04);
+	lens_glass->AddMaterial(Al2O3, 0.02);
+
+	std::ifstream ReadGlassLens;
+	G4String GlassLens = path+"N-BK7_GlassBulkAbsorb_reverse.cfg";
+	ReadGlassLens.open(GlassLens);
+	ReadGlassLens.clear();
+	std::vector<G4double> Lens_Energy;
+	std::vector<G4double> Lens_Absorption_Long;
+	if(ReadGlassLens.is_open()){
+		while(!ReadGlassLens.eof()){
+			G4String filler;
+			ReadGlassLens >> pWavelength >> filler >> glassabsorblength;
+			Lens_Energy.push_back((1240/pWavelength)*eV);
+			Lens_Absorption_Long.push_back(glassabsorblength*m);
+			//   G4cout << "Energy = " << glassEnergy[glassEntries]
+			//<< "    BulkAbsorb = " << glassbulkAbsorb[glassEntries] << G4endl;
+		}
+	}
+	else
+	G4cout << "Error opening file: " << GlassLens << G4endl;
+
+	ReadGlassLens.close();
+
+
+	std::ifstream ReadLensIndex;
+	G4String LensIndexFile = path+"N-BK7_ref_index_reverse.dat";
+	G4double lensindexvalue;
+	std::vector<G4double> Lens_Index_Energy;
+	std::vector<G4double> Lens_Index_Value;
+	ReadLensIndex.open(LensIndexFile);
+	ReadLensIndex.clear();
+	if(ReadLensIndex.is_open()){
+		while(!ReadLensIndex.eof()){
+			G4String filler;
+			ReadLensIndex >> pWavelength >> filler >> lensindexvalue;
+			Lens_Index_Energy.push_back((1240/pWavelength)*eV);
+			Lens_Index_Value.push_back(lensindexvalue);
+			//Lens_Index_Value.push_back(1.517);
+			//      G4cout << " Energy = " << bsgindexEnergy[bsgindexEntries] << "    Index = " << bsgindexvalue[bsgindexEntries] << G4endl;
+		}
+	}
+
+	else
+	G4cout << "Error opening file: " << LensIndexFile << G4endl;
+
+	ReadLensIndex.close();
+
+	lens_glassMPT->AddProperty("ABSLENGTH",Lens_Energy, Lens_Absorption_Long);
+	lens_glassMPT->AddProperty("RINDEX",Lens_Index_Energy, Lens_Index_Value);
+	lens_glass->SetMaterialPropertiesTable(lens_glassMPT);
+
+
+	//#######################################################################################################################################
+	//#######################################################################################################################################
+
 	//Cargille**************************************************************
 
 	cargille = new G4Material("cargille",

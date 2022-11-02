@@ -99,6 +99,7 @@ private:
   G4Material *RTV;
   G4Material *ZnS;
   G4Material *NoWaSH;
+  G4Material *lens_glass;
 
   G4MaterialPropertiesTable *bs_glassMPT;
   G4MaterialPropertiesTable *vacMPT;
@@ -112,6 +113,7 @@ private:
   G4MaterialPropertiesTable *FPMPT;
   G4MaterialPropertiesTable *ZnSMPT;
   G4MaterialPropertiesTable *NoWaSHMPT;
+  G4MaterialPropertiesTable *lens_glassMPT;
 
   G4OpticalSurface* PMMAOpSurface;
 

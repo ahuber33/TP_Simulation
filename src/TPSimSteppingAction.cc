@@ -73,15 +73,14 @@ TPSimSteppingAction::TPSimSteppingAction()
     G4double pz = aStep->GetPreStepPoint()->GetMomentumDirection().z();
     G4double r = sqrt(x*x + y*y);
     G4double angle = acos((z-zpre)/aStep->GetStepLength());
+    G4String VolumeNamePreStep = aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName();
+    G4String VolumeNamePostStep = aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName();
     //G4int CopyNo = theTrack->GetTouchableHandle()->GetCopyNumber();
 
 
     G4double time = aStep->GetPostStepPoint()->GetGlobalTime()/ns;
     G4ThreeVector polarisation = theTrack->GetPolarization();
     //G4double my_dist_after = aStep->GetTrack()->GetTrackLength()/mm;
-
-
-
 
     //#######################################################################
     //#######################################################################
@@ -98,6 +97,26 @@ TPSimSteppingAction::TPSimSteppingAction()
     // G4cout << "polarisation = " << polarisation << G4endl;
     //G4cout << "angle = " << angle/deg << G4endl;
     // G4cout << "Time = " << time << " ns" << G4endl;
+
+    if(partname=="opticalphoton" && VolumeNamePostStep == "Lens")
+    {
+      evtac->FillPhotonLensPositionX(x);
+      evtac->FillPhotonLensPositionY(y);
+      // G4cout << "Position X Lens = " << x << G4endl;
+      // G4cout << "Position Y Lens = " << y << G4endl;
+    }
+
+
+    if(partname=="opticalphoton" && VolumeNamePostStep == "Vacuum" && z >0)
+    {
+      if(VolumeNamePreStep == "Core_Fiber" || VolumeNamePreStep == "Inner_Cladding_Fiber" || VolumeNamePreStep == "Outer_Cladding_Fiber" || VolumeNamePreStep == "Holder_Fiber")
+      {
+        evtac->FillPhotonExitLightPositionX(x);
+        evtac->FillPhotonExitLightPositionY(y);
+        // G4cout << "Position X Exit Light = " << x << G4endl;
+        // G4cout << "Position Y Exit Light = " << y << G4endl;
+      }
+    }
 
 
     if((partname=="opticalphoton" && aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Holder_Fiber")
@@ -165,10 +184,10 @@ TPSimSteppingAction::TPSimSteppingAction()
       //G4cout << "Normal Surface = " << normal << G4endl;
       //G4cout << "angle_normal = " << angle_normal << G4endl;
 
-      evtac->AddPhotonTrajectoryNStep();
-      evtac->FillPhotonTrajectoryX(x);
-      evtac->FillPhotonTrajectoryY(y);
-      evtac->FillPhotonTrajectoryZ(z);
+      //evtac->AddPhotonTrajectoryNStep();
+      //evtac->FillPhotonTrajectoryX(x);
+      //evtac->FillPhotonTrajectoryY(y);
+      //evtac->FillPhotonTrajectoryZ(z);
 
       if(endproc == "OpAbsorption")
       {
@@ -178,9 +197,9 @@ TPSimSteppingAction::TPSimSteppingAction()
         //G4cout << "Photon BulkAbsorbed" << G4endl;
         //G4cout << "N bulk abs Sc = " << evtac->GetBulkAbsSc() << G4endl;
         //G4cout << "N bulk abs ZnS = " << evtac->GetBulkAbsZnS() << G4endl;
-        evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
+        //evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
         evtac->ClearPhotonTrajectoryNStep();
-        evtac->FillPhotonFinalState(1);
+        //evtac->FillPhotonFinalState(1);
         //evtac->FillFiberAngleCreation(evtac->GetPhotonCreationAngle());
       }
 
@@ -230,12 +249,12 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
     case Detection:
     {
       evtac->CountDetected();
-      evtac->FillPhotonPositionX(x);
-      evtac->FillPhotonPositionY(y);
+      evtac->FillPhotonDetectorPositionX(x);
+      evtac->FillPhotonDetectorPositionY(y);
       evtac->FillPhotonPositionZ(z);
-      evtac->FillPhotonMomentumX(px);
-      evtac->FillPhotonMomentumY(py);
-      evtac->FillPhotonMomentumZ(pz);
+      //evtac->FillPhotonMomentumX(px);
+      //evtac->FillPhotonMomentumY(py);
+      //evtac->FillPhotonMomentumZ(pz);
       evtac->FillBirthLambda(info->GetBirthLambda());
       evtac->FillPhotonTime(aStep->GetPostStepPoint()->GetGlobalTime()/ns);
       evtac->FillEnergype(aStep->GetTotalEnergyDeposit()/eV);
@@ -273,9 +292,9 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
         //G4cout << "Photon failed" << G4endl;
         //G4cout << "N failed = " << evtac->GetFailed() << G4endl;
 
-        evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
-        evtac->ClearPhotonTrajectoryNStep();
-        evtac->FillPhotonFinalState(3);
+        //evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
+        //evtac->ClearPhotonTrajectoryNStep();
+        //evtac->FillPhotonFinalState(3);
         //evtac->FillFiberAngleCreation(evtac->GetPhotonCreationAngle());
 
       }
@@ -284,9 +303,9 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
         //G4cout << "Photon surface absorbed" << G4endl;
         //G4cout << "N absorbed = " << evtac->GetAbsorbed() << G4endl;
 
-        evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
-        evtac->ClearPhotonTrajectoryNStep();
-        evtac->FillPhotonFinalState(0);
+        //evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
+        //evtac->ClearPhotonTrajectoryNStep();
+        //evtac->FillPhotonFinalState(0);
         //evtac->FillFiberAngleCreation(evtac->GetPhotonCreationAngle());
       }
 
@@ -299,9 +318,9 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
         //G4cout << "count escaped" << G4endl;
         //G4cout << "N escaped = " << evtac->GetEscaped() << G4endl;
 
-        evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
-        evtac->ClearPhotonTrajectoryNStep();
-        evtac->FillPhotonFinalState(2);
+        //evtac->FillPhotonTrajectoryNStep(evtac->GetPhotonTrajectoryNStep());
+        //evtac->ClearPhotonTrajectoryNStep();
+        //evtac->FillPhotonFinalState(2);
         //evtac->FillFiberAngleCreation(evtac->GetPhotonCreationAngle());
       }
       break;
@@ -406,8 +425,8 @@ if (((aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator"
   evtac->AddEdepTP(aStep->GetTotalEnergyDeposit()/keV);
 }
 
-//Be careful here !!! If Zns in here, put ZnS. If not, put Scintillator !!!!
-if(Parent_ID ==0 && aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator" && evtac->GetTPPositionZ()==0)
+//Be careful here !!! If Zns in here, put ZnS. If not, put Scintillator or Core_Fiber!!!!
+if(Parent_ID ==0 && aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "Core_Fiber" && evtac->GetTPPositionZ()==0)
 {
   evtac->SetTPPositionX(x);
   evtac->SetTPPositionY(y);

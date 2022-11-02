@@ -51,8 +51,12 @@ void TPSimRunAction::BeginOfRunAction(const G4Run* aRun){
    RunBranch = Tree_Optical->Branch("Failed", &StatsOptical.Failed, "Failed/I");
   //RunBranch = Tree_Optical->Branch("WLS", &StatsOptical.WLS, "WLS/I");
   RunBranch = Tree_Optical->Branch("Detected", &StatsOptical.Detected, "Detected/I");
-  RunBranch = Tree_Optical->Branch("PositionX", "vector<float>", &StatsOptical.PositionX);
-  RunBranch = Tree_Optical->Branch("PositionY", "vector<float>", &StatsOptical.PositionY);
+  //RunBranch = Tree_Optical->Branch("ExitLightPositionX", "vector<float>", &StatsOptical.ExitLightPositionX);
+  //RunBranch = Tree_Optical->Branch("ExitLightPositionY", "vector<float>", &StatsOptical.ExitLightPositionY);
+  //RunBranch = Tree_Optical->Branch("LensPositionX", "vector<float>", &StatsOptical.LensPositionX);
+  //RunBranch = Tree_Optical->Branch("LensPositionY", "vector<float>", &StatsOptical.LensPositionY);
+  RunBranch = Tree_Optical->Branch("DetectorPositionX", "vector<float>", &StatsOptical.DetectorPositionX);
+  RunBranch = Tree_Optical->Branch("DetectorPositionY", "vector<float>", &StatsOptical.DetectorPositionY);
   //RunBranch = Tree_Optical->Branch("PositionZ", "vector<float>", &StatsOptical.PositionZ);
   // RunBranch = Tree_Optical->Branch("PhotonTrajectoryX", "vector<float>", &StatsOptical.PhotonTrajectoryX);
   // RunBranch = Tree_Optical->Branch("PhotonTrajectoryY", "vector<float>", &StatsOptical.PhotonTrajectoryY);
@@ -68,8 +72,8 @@ void TPSimRunAction::BeginOfRunAction(const G4Run* aRun){
   // RunBranch = Tree_Optical->Branch("Total_Reflections", "vector<float>", &StatsOptical.Total_Reflections);
   // RunBranch = Tree_Optical->Branch("Wrap_Reflections", "vector<float>", &StatsOptical.Wrap_Reflections);
   //RunBranch = Tree_Optical->Branch("TotalLength", "vector<float>", &StatsOptical.TotalLength);
-  RunBranch = Tree_Optical->Branch("Angle_creation", "vector<float>", &StatsOptical.Angle_creation);
-  RunBranch = Tree_Optical->Branch("Angle_detection", "vector<float>", &StatsOptical.Angle_detection);
+  //RunBranch = Tree_Optical->Branch("Angle_creation", "vector<float>", &StatsOptical.Angle_creation);
+  //RunBranch = Tree_Optical->Branch("Angle_detection", "vector<float>", &StatsOptical.Angle_detection);
   //RunBranch = Tree_Optical->Branch("Final_state_photon", "vector<int>", &StatsOptical.FinalState);
 
 
