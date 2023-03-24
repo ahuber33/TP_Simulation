@@ -11,6 +11,7 @@ void Analyse_TP()
   float mHe = 4.0026*1.66054e-27;
   float qp = 1.6e-19; //C
 
+  string file_proton = "Pinhole_variation/proton_pinhole.root";
   string file_He1 = "Pinhole_variation/He1+_pinhole.root";
   string file_He2 = "Pinhole_variation/He2+_pinhole.root";
   float pinhole =0.1;
@@ -29,8 +30,8 @@ void Analyse_TP()
   bool Optique = false;
 
 
-  //Analyse("Borlin333_Files/proton_Config_PAUL_1-12MeV_RoundBunchFibersDoubleCladding_0.2mm_1m_pinhole_100um_FactorLY_0.1_100k.root", "Borlin333_Files/He1+_Config_PAUL_1-12MeV_RoundBunchFibersDoubleCladding_0.2mm_1m_pinhole_100um_FactorLY_0.1_100k.root", "Borlin333_Files/He2+_Config_PAUL_1-12MeV_RoundBunchFibersDoubleCladding_0.2mm_1m_pinhole_100um_FactorLY_0.1_100k.root", "Optical", "Config TP PETAL Exp", 0.5, 0.5, 1400000, 62.5, 20.75, 262.1, 745.9, 400, 0, 0., true, -40, -40, -25, 6);
-
+  Analyse("proton_Config_PAUL_1-12MeV_RoundBunchFibersDoubleCladding_0.2mm_1m_pinhole_100um_FactorLY_0.1_100k.root", "He1+_Config_PAUL_1-12MeV_RoundBunchFibersDoubleCladding_0.2mm_1m_pinhole_100um_FactorLY_0.1_100k.root", "He2+_Config_PAUL_1-12MeV_RoundBunchFibersDoubleCladding_0.2mm_1m_pinhole_100um_FactorLY_0.1_100k.root", "Optical", "Fiber", 0.5, 0.5, 1400000, 62.5, 20.75, 262.1, 745.9, 400, 0, 0., true, -27.656, -27.656, -14.344, 0.2);
+  Analyse("../Apercu_proton_3.5-10MeV_square_fibers_0.2mm_1m.root", "../Apercu_He1+_3.5-10MeV_square_fibers_0.2mm_1m.root", "../Apercu_He2+_3.5-10MeV_square_fibers_0.2mm_1m.root", "Optical", "SquareFiber", 0.5, 0.5, 1400000, 62.5, 20.75, 262.1, 745.9, 400, 0, 0., true, -26.656, -27.656, -18.344, 0.1);
 
   
   //Analyse("proton_pinhole_200um.root", "He1+_pinhole_200um.root", "He2+_pinhole_200um.root", "TP", "pinhole 200 um", 0.2, B, E, 50, 5, 150, 155, 100, 1, 0.1, false, -15, -10, -2.9, 2);
@@ -42,8 +43,7 @@ void Analyse_TP()
   //Analyse("proton_pinhole_100um_B_0.9T.root", "He1+_pinhole_100um_B_0.9T.root", "He2+_pinhole_100um_B_0.9T.root", "TP", "pinhole 100 um - B 0.9T", 0.1, 0.9, E, 50, 5, 150, 155, 100, 1, 0.1, false, -15, -15, -9.9, 1.5);
   //Analyse("proton_Config_TP_existante.root", "He1+_Config_TP_existante.root", "He2+_Config_TP_existante.root", "TP", "Config TP existante pinhole 100um", 0.1, 0.6, E, 50.8, 8.45, 40, 108.85, 100, 1, 0.1, false, -20, -10, -3.5, 1);
   //Analyse("proton_Config_TP_ENL_1MeV_10MeV.root", "He1+_Config_TP_ENL_1MeV_10MeV.root", "He2+_Config_TP_ENL_1MeV_10MeV.root", "TP", "Config TP existante pinhole 100um", 0.1, 0.6, 630000, 50., 0, 40, 175, 200, 0, 0., false, -25, -17, -15.5, 1.1);
-  //Analyse("ZnS/proton_Config_TP_ENL_ZnS_0.1_1MeV_10MeV.root", "ZnS/He1+_Config_TP_ENL_ZnS_0.1_1MeV_10MeV.root", "ZnS/He2+_Config_TP_ENL_ZnS_0.1_1MeV_10MeV.root", "TP", "Config TP existante pinhole 100um with ZnS 0.1mm", 0.1, 0.6, 630000, 50., 0, 40, 175, 200, 0., 0.1, false, -25, -17, -15.8, 1.3);
-  //Analyse("test1.root", "test2.root", "test3.root", "TP", "Config TP existante pinhole 100um with ZnS 0.1mm", 0.1, 0.6, 630000, 50., 0, 40, 175, 200, 0., 0.1, false, -25, -17, -15.8, 1.3);
+  //Analyse("proton_Config_TP_ENL_ZnS_0.1_1MeV_10MeV.root", "He1+_Config_TP_ENL_ZnS_0.1_1MeV_10MeV.root", "He2+_Config_TP_ENL_ZnS_0.1_1MeV_10MeV.root", "Optical", "Config TP existante pinhole 100um with ZnS 0.1mm", 0.1, 0.6, 630000, 50., 0, 40, 175, 200, 0., 0.1, true, -25, -17, -15.8, 1.3);
   //Analyse("ELFEX/proton_Config_TP_ELFEX_new.root", "ELFEX/He1+_Config_TP_ELFEX_new.root", "ELFEX/He2+_Config_TP_ELFEX_new.root", "TP", "Config TP ELFEX new", 0.3, 0.8, 1200000, 150., 20, 175, 200, 400, 0, 0., false, -100, -70, -52, 3.5);
   //Analyse("PETAL/proton_Config_TP_PETAL.root", "PETAL/He1+_Config_TP_PETAL.root", "PETAL/He2+_Config_TP_PETAL.root", "TP", "Config TP PETAL", 0.5, 0.5, 1400000, 62.5, 20.75, 262.1, 745.9, 400, 0, 0., false, -28, -25, -14.8, 6);
   //Analyse("PETAL/proton_Config_TP_PETAL_Exp.root", "PETAL/He1+_Config_TP_PETAL_Exp.root", "PETAL/He2+_Config_TP_PETAL_Exp.root", "TP", "Config TP PETAL Exp", 0.5, 0.5, 1400000, 62.5, 20.75, 262.1, 745.9, 400, 0, 0., false, -40, -40, -25, 6);
@@ -126,7 +126,7 @@ void Analyse_TP()
   //################################# CONFIG 2 #########################################
   //####################################################################################
   //Analyse("Pinhole_variation/proton_E_1500_B_0.3_pinhole_0.1_Le1_300_Le2_105.root", "Pinhole_variation/He1+_E_1500_B_0.3_pinhole_0.1_Le1_300_Le2_105.root", "Pinhole_variation/He2+_E_1500_B_0.3_pinhole_0.1_Le1_300_Le2_105.root", "TP", "pinhole 100 um - B 0.3T - E 1500 kV/m - Le1 300 mm Le2 105 mm", 0.1, 0.3, 1.5e6, 50, 5, 300, 105, 100, 1, 0., false, -10, -5, -3.2, 1.5);
-  //Analyse("Config2/proton_E_1500_B_0.3_pinhole_0.15_Le1_300_Le2_105.root", "Config2/He1+_E_1500_B_0.3_pinhole_0.15_Le1_300_Le2_105.root", "Config2/He2+_E_1500_B_0.3_pinhole_0.15_Le1_300_Le2_105.root", "TP", "pinhole 150 um - B 0.3T - E 1500 kV/m - Le1 300 mm Le2 105 mm", 0.15, 0.3, 1.5e6, 50, 5, 300, 105, 100, 1, 0., false, -10, -5, -3.2, 2.2);
+  //Analyse("proton_E_1500_B_0.3_pinhole_0.15_Le1_300_Le2_105.root", "He1+_E_1500_B_0.3_pinhole_0.15_Le1_300_Le2_105.root", "He2+_E_1500_B_0.3_pinhole_0.15_Le1_300_Le2_105.root", "TP", "pinhole 150 um - B 0.3T - E 1500 kV/m - Le1 300 mm Le2 105 mm", 0.15, 0.3, 1.5e6, 50, 5, 300, 105, 100, 1, 0., false, -10, -5, -3.2, 2.2);
   //Analyse("proton_E_1500_B_0.3_pinhole_0.2_Le1_300_Le2_105.root", "He1+_E_1500_B_0.3_pinhole_0.2_Le1_300_Le2_105.root", "He2+_E_1500_B_0.3_pinhole_0.2_Le1_300_Le2_105.root", "TP", "pinhole 200 um - B 0.3T - E 1500 kV/m - Le1 300 mm Le2 105 mm", 0.2, 0.3, 1.5e6, 50, 5, 300, 105, 100, 1, 0., false, -10, -5, -3.2, 2.2);
   //Analyse("proton_E_1500_B_0.3_pinhole_0.1_Le1_350_Le2_25.root", "He1+_E_1500_B_0.3_pinhole_0.1_Le1_350_Le2_25.root", "He2+_E_1500_B_0.3_pinhole_0.1_Le1_350_Le2_25.root", "TP", "pinhole 100 um - B 0.3T - E 1500 kV/m - Le1 350 mm Le2 25 mm", 0.1, 0.3, 1.5e6, 50, 5, 350, 25, 100, 1, 0., false, -10, -5, -3.2, 1.5);
   //Analyse("proton_E_1500_B_0.3_pinhole_0.1_Le1_250_Le2_115.root", "He1+_E_1500_B_0.3_pinhole_0.1_Le1_250_Le2_115.root", "He2+_E_1500_B_0.3_pinhole_0.1_Le1_250_Le2_115.root", "TP", "pinhole 100 um - B 0.3T - E 1500 kV/m - Le1 250 mm Le2 115 mm", 0.1, 0.3, 1.5e6, 50, 5, 250, 115, 100, 1, 0., false, -10, -5, -3.2, 2);
@@ -227,7 +227,7 @@ void Analyse_TP()
   //####################################################################################
   //################################# CONFIG 2 W SC#####################################
   //####################################################################################
-  //Analyse("Config2/proton_Config2_Sc_0.05.root", "Config2/He1+_Config2_Sc_0.05.root", "Config2/He2+_Config2_Sc_0.05.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - Sc 0.05 mm ", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 0.05, 0., true, -5.5, -5, -4.3, 1.4);
+  //Analyse("proton_Config2_Sc_0.05.root", "He1+_Config2_Sc_0.05.root", "He2+_Config2_Sc_0.05.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - Sc 0.05 mm ", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 0.05, 0., true, -5.5, -5, -4.3, 1.4);
   //Analyse("proton_Config2_Sc_0.1.root", "He1+_Config2_Sc_0.1.root", "He2+_Config2_Sc_0.1.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - Sc 0.1 mm ", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 0.1, 0., true, -5, -5, -3.2, 1.8);
   //Analyse("proton_Config2_Sc_0.25.root", "He1+_Config2_Sc_0.25.root", "He2+_Config2_Sc_0.25.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - Sc 0.25 mm ", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 0.25, 0., true, -7, -5, -3.2, 1.5);
   //Analyse("proton_Config2_Sc_0.5.root", "He1+_Config2_Sc_0.5.root", "He2+_Config2_Sc_0.5.root", "Optical", "pinhole 100 um - B 0.3T - E 2000 kV/m - Le1 225 mm Le2 120 mm - Sc 0.5 mm ", 0.1, 0.3, 2e6, 50, 5, 225, 120, 100, 0.5, 0., true, -7, -5, -3.2, 1.5);
@@ -263,360 +263,6 @@ void Analyse_TP()
 
   //void Analyse(const char* file_proton, const char* file_He1, const char* file_He2, const char* TreeName, const char* CanvasName, float pinhole, float B, float E, float Lb1, float D, float Le1, float Le2, float Sc_length, float Sc_thickness, float ZnS_thickness, bool Optique, float xmin_proton, float xmin_He1, float xmax_proton, float sigma)
 
-
-
-
-
-  //Analyse("proton_test.root", "He1+_test.root", "He2+_test.root", "Optical", "PAUL test", 0.1, 0.6, 670e3, 50.8, 8.45, 40, 108.85, 120, 1, 0., true, 0, 0, 15, 0.001);
-
-  //string file_proton = "test.root";
-  //string file_proton = "Timing_proton_EJ214_0.025mm_ORCA_Exp.root";
-  string file_proton = "test.root";
-  //string file_proton = "He1+_0.1mm.root";
-
-
-  //######################################################
-  //DEBUT CREATION FICHIERS
-  //######################################################
-  /*
-  cout << "Début création fichiers" << endl;
-  
-  TFile* file1 = new TFile(file_proton.c_str());
-  TTree* Tree1 = (TTree*)file1->Get("Optical");
-  TTree* Tree2 = (TTree*)file1->Get("TP");
-  TH2F* h_proton = Histo_Parabole_Optique(Tree1, file_proton.c_str());
-  Create_ROOT_Histo_Parabole_Optique(Tree1, "He1+_EJ262_1mm_CMOS_Exp_30MeV_Optique_2D.root");
-  //Create_ROOT_Histo_Parabole(Tree2, "He2+_2D.root");
-  //TH2F* h_proton = Histo_Parabole(Tree1, file_proton.c_str());
-
-  cout << "Fin Histo 2D position" << endl;
-
-  TH2F* test = Plot_E_Position_Optique(Tree1, "DetectorPositionX");
-  Create_ROOT_Plot_E_Position_Optique(Tree1, "DetectorPositionX", "He1+_EJ262_1mm_CMOS_Exp_30MeV_Optique_Energie.root");
-  //Create_ROOT_Plot_E_Position(Tree2, "PositionX", "proton_Energie.root");
-  //TH2F* test = Plot_E_Position(Tree1, "PositionX");
-
-  cout << "Fin Histo E vs Position" << endl;
-
-  Create_ROOT_E_start(Tree2, "He1+_EJ262_1mm_CMOS_Exp_30MeV_Optique_Estart.root");
-
-  //Create_ROOT_Timing_Optique(Tree1, "proton_EJ214_0.025mm_ORCA_Exp_30MeV_Optique_TIME.root");
-
-  cout << "Fin Création fichiers" << endl;
-  */
-
-  
-  //######################################################
-  //FIN CREATION FICHIERS
-  //######################################################
-
-
-   
-  
-  //######################################################
-  //DEBUT LECTURE FICHIERS
-  //######################################################
- 
-  
-  TFile* file1 = new TFile("Etudes_Scintillateurs/ROOT_files/proton_EJ212_0.1mm_CMOS_Exp_30MeV_Optique_2D.root");
-  //TFile* file1 = new TFile("proton_EJ444_0.081mm_0.025mm_CMOS_Exp_30MeV_Optique_2D.root");
-  TH2F* h_proton=(TH2F*)file1->Get("2D");
-
-  TFile* file2 = new TFile("Etudes_Scintillateurs/ROOT_files/proton_EJ212_0.1mm_CMOS_Exp_30MeV_Optique_Energie.root");
-  //TFile* file2 = new TFile("proton_EJ444_0.081mm_0.025mm_CMOS_Exp_30MeV_Optique_Energie.root");
-  TH2F* test=(TH2F*)file2->Get("E_vs_Position");
-
-
-  TFile* file3 = new TFile("Etudes_Scintillateurs/ROOT_files/proton_EJ212_0.1mm_CMOS_Exp_30MeV_Optique_Estart.root");
-  //TFile* file3 = new TFile("proton_EJ444_0.081mm_0.025mm_CMOS_Exp_30MeV_Optique_Estart.root");
-  TH1F* Estart=(TH1F*)file3->Get("E_start");
-
-
-  string filename_resolution = "Graph_Resolution_proton_EJ212_0.1mm_CMOS_Exp_30MeV_Optique.root";
-  string filename_Nph = "Graph_Nph_proton_EJ212_0.1mm_CMOS_Exp_30MeV_Optique.root";
-
-  //######################################################
-  //FIN LECTURE FICHIERS
-  //######################################################
-  
-  
-  
-  h_proton->Draw("colz");
-  
-  float NEvents=0;
-  float a = 0;
-  float b = 0;
-  float c = 0;
-  
-  
-  // new TCanvas;
-  // TH1D *Output = new TH1D("Output", "Output", NbinsY, -1, PosY);
-  // h_proton->ProjectionY("Output", 994, 994, "");
-  // Output->Draw();
-  // double par[3000];
-  // TF1*fit1a = new TF1("fit1a", "gaus", -1, PosY);
-  // Output->Fit(fit1a, "R");
-  // TF1*fit1bb = new TF1("fit1bb", "gaus", fit1a->GetParameter(1)-2*fit1a->GetParameter(2), fit1a->GetParameter(1)+2*fit1a->GetParameter(2));
-  // Output->Fit(fit1bb, "R");
-
-  // a = fit1bb->GetParameter(0);
-  // b = fit1bb->GetParameter(1);
-  // c = fit1bb->GetParameter(2);
-
-  // cout << " a = " << a << endl;
-  // TF1 *fit2b = new TF1("fit2", "gaus(0)+gaus(3)", fit1a->GetParameter(1)-3*fit1a->GetParameter(2), fit1a->GetParameter(1)+3*fit1a->GetParameter(2));
-  // fit2b->SetParameter(0, a);
-  // fit2b->SetParameter(1, b);
-  // fit2b->SetParameter(2, c);
-  // fit2b->SetParameter(3, 0.1*a);
-  // fit2b->SetParLimits(3, 0.1*a, 100*a);
-  // fit2b->SetParameter(4, b);
-  // fit2b->SetParLimits(4, 0, 5);
-  // fit2b->SetParameter(5, 3*c);
-  // fit2b->SetParLimits(5, 0.01, 10);
-  // Output->Fit(fit2b, "R");
-  // cout << "Eval1 = " << fit1bb->Eval(fit1a->GetParameter(1)) << endl;
-  // cout << "Eval2 = " << fit1bb->Eval(fit1a->GetParameter(1) + 1*fit1bb->GetParameter(2)) << endl;
-  
-
-
-  //new TCanvas;
-  // TH1D *proj2 = new TH1D("proj2", "proj2", 1000, 0, 100);
-  // test->ProjectionY("proj2", 950, 950, "");
-  //TF1* fit_gaus_Energie = new TF1("fit_gaus_Energie", "gaus", 0, 100);
-  // proj2->Fit(fit_gaus_Energie, "");
-
-  float x[NbinsX], ex[NbinsX], y[NbinsX], ey[NbinsX];
-  float x_new[150], y_new[150], ex_new[150], ey_new[150];
-  float xE[NbinsX], exE[NbinsX], yE[NbinsX], eyE[NbinsX];
-  float xNph[NbinsX], exNph[NbinsX], yNph[NbinsX], eyNph[NbinsX];
-  int n=0;
-  int nbis=0;
-  TH1D *proj2 = new TH1D("proj2", "proj2", 1000, 0, 100);
-  TH1D *proj3 = new TH1D("proj3", "proj3", NbinsX, 0, PosX);
-  TF1* fit_gaus_Energie = new TF1("fit_gaus_Energie", "gaus", 0, 100);
-
-  TH1D *Output_resolution = new TH1D("Output_resolution", "Output_resolution", NbinsY, -1, PosY);
-  TF1*fit1 = new TF1("fit1", "gaus", -1, PosY);
-  TF1*fitX = new TF1("fitX", "gaus", 0, 25);
-  TF1*fit1b;
-  TF1*fit2;
-  TF1*fit4b;
-  TF1*fit4;
-  float mean, sigma, Chi2, Ndf, Chi2Ndf, Eval1, Eval2, MeanEval, Eval_Energy;
-
-  
-  
-   for (int i=150; i<1000; i++)
-     {
-  //     h_proton->ProjectionY("Output_resolution", i, i, "");
-  //     Output_resolution->Fit(fit1, "QR");
-  //     fit1b = new TF1("fit1b", "gaus", fit1->GetParameter(1)-2*fit1->GetParameter(2), fit1->GetParameter(1)+2*fit1->GetParameter(2));
-  //     Output_resolution->Fit(fit1b, "QR");
-  //     a = fit1b->GetParameter(0);
-  //     b = fit1b->GetParameter(1);
-  //     c = fit1b->GetParameter(2);
-  //     fit2 = new TF1("fit2", "gaus(0)+gaus(3)", fit1->GetParameter(1)-3*fit1->GetParameter(2), fit1->GetParameter(1)+3*fit1->GetParameter(2));
-  //     fit2->SetParameter(0, a);
-  //     fit2->SetParameter(1, b);
-  //     fit2->SetParameter(2, c);
-  //     fit2->SetParameter(3, 0.1*a);
-  //     fit2->SetParLimits(3, 0.1*a, 100*a);
-  //     fit2->SetParameter(4, b);
-  //     fit2->SetParLimits(4, 0, 5);
-  //     fit2->SetParameter(5, 3*c);
-  //     fit2->SetParLimits(5, 0.01, 10);
-  //     Output_resolution->Fit(fit2, "QR");
-  //     Eval1 = fit2->Eval(fit2->GetParameter(1));
-  //     Eval2 = fit2->Eval(fit2->GetParameter(1) + 1*fit2->GetParameter(2));
-  //     //Eval1 = fit2->Eval(fit1b->GetParameter(1));
-  //     //Eval2 = fit2->Eval(fit1b->GetParameter(1) + 1*fit1b->GetParameter(2));
-  //     //MeanEval = (Eval1+Eval2)/2;
-  //     MeanEval = Eval2;
-  //     //cout << "i = " << i << endl;
-  //     //cout << "Eval = " << MeanEval << endl;
-  //     //if(MeanEval >3000)cout << "!!!!" << i << endl;
-
-
-  //     //cout << "mean = " << fit2->GetParameter(4) << endl;
-  //     //cout << "sigma = " << fit2->GetParameter(5) << endl;
-      
-      
-       test->ProjectionY("proj2", i, i, "");
-       test->ProjectionX("proj3", i, i, "");
-       proj2->Fit(fit_gaus_Energie, "QN");
-       mean = fit_gaus_Energie->GetParameter(1);
-       sigma = fit_gaus_Energie->GetParameter(2);
-       Chi2 = fit_gaus_Energie->GetChisquare();
-       Ndf = fit_gaus_Energie->GetNDF();
-       Chi2Ndf = Chi2/Ndf;
-      
-      
-       if(Chi2Ndf >0.5 && Chi2Ndf <800 && mean >0 && mean <120 && sigma/mean <1)
-   	{
-	  // 	  x[n] = proj3->GetBinCenter(i);
-	  	  //cout << "x = " << x[n] << endl;
-	  // 	  //cout << "Chi2/NdF = " << Chi2Ndf << endl;
-  // 	  ex[n]=proj3->GetBinCenter(i+1) - proj3->GetBinCenter(i);
-   	  y[n] = fit_gaus_Energie->GetParameter(1);
-   	  ey[n] = fit_gaus_Energie->GetParameter(2);
-   	  //if(ey[n] <0.1)ey[n]=0.1;
-	  
-   	  xE[n] = y[n];
-   	  exE[n] = fit_gaus_Energie->GetParError(1);
-   	  if(exE[n] >100)exE[n]=0;
-   	  yE[n] = ey[n]/y[n];
-	  //if(yE[n] >0.1)yE[n]=-0.1;
-   	  eyE[n] = fit_gaus_Energie->GetParError(2)/ey[n] + fit_gaus_Energie->GetParError(1)/y[n];
-   	  if(eyE[n] >0.02)eyE[n]=0;
-
-  // 	  xNph[n] = y[n];
-  // 	  exNph[n] = ey[n];
-  // 	  NEvents = Estart->Integral((int)1000*(y[n]-ey[n]), (int)1000*(y[n]+ey[n]));
-
-  // 	  // cout << "\ni = " << i << endl;
-  // 	  // cout << "n = " << n << endl;
-  // 	  // cout << "y = " << y[n] << endl;
-  // 	  // cout << "ey = " << ey[n] << endl;
-  // 	  // cout << "Eval 1= " << Eval1 << endl;
-  // 	  // cout << "Eval 2= " << Eval2 << endl;
-  // 	  // cout << "MeanEval = " << MeanEval << endl;
-  // 	  // cout << "NEvents = " << NEvents << endl;
-	  
-  // 	  yNph[n] = MeanEval/(NEvents);
-  // 	  if(NEvents==0) yNph[n]=0;
-  // 	  //cout << "Nph = " << yNph[n] << endl;
-  // 	  //	  eyNph[n] = (Eval1-MeanEval)/(NEvents);
-	  
-   	  n++;
-  // 	  //cout << "n = " << n << endl;
-   	}
-     }
-
-   // TGraphErrors* g = new TGraphErrors(n, x, y, ex, ey);
-   // g->Draw();
-   
-   new TCanvas;
-   TGraphErrors* gg = new TGraphErrors(n, xE, yE, exE, eyE);
-   gg->Draw("APE2");
-   gg->SetFillColor(kRed);
-   gg->SetFillStyle(3002);
-   gg->SetLineColor(kRed);
-   gg->SetMarkerColor(kRed);
-   gg->SetLineWidth(2);
-
-  TFile file_out_resolution(filename_resolution.c_str(), "RECREATE");
-  gg->Write();
-  file_out_resolution.Close();
-
-
-  // new TCanvas;
-  // TGraphErrors* ggg = new TGraphErrors(n, xNph, yNph, exNph, eyNph);
-  // ggg->Draw("APE2");
-  // ggg->SetFillColor(kRed);
-  // ggg->SetMarkerColor(kRed);
-  // ggg->SetFillStyle(3001);
-  // ggg->SetLineColor(kRed);
-  // ggg->SetLineWidth(3);
-
-  // TFile file_out_Nph(filename_Nph.c_str(), "RECREATE");
-  // ggg->Write();
-  // file_out_Nph.Close();
-
-  
-  test->RebinY(10);
-  Estart->Rebin(1000);
-  cout << "Bin 1 Estart = " << Estart->GetBinContent(1) << endl;
-
-  new TCanvas;
-  Estart->Draw();
-
-  new TCanvas;
-  test->Draw("colz");
-
-  new TCanvas;
-  TH1D *OutputE = new TH1D("OutputE", "OutputE", 150, 0, 150);
-  test->ProjectionX("OutputE", 50, 50, "");
-  OutputE->Draw();
-  TF1*fit3a = new TF1("fit3a", "gaus", 0, 25);
-  OutputE->Fit(fit3a, "R");
-  TF1*fit3bb = new TF1("fit3bb", "gaus", fit3a->GetParameter(1)-2*fit3a->GetParameter(2), fit3a->GetParameter(1)+2*fit3a->GetParameter(2));
-  OutputE->Fit(fit3bb, "R");
-  a = fit3bb->GetParameter(0);
-  b = fit3bb->GetParameter(1);
-  c = fit3bb->GetParameter(2);
-  TF1 *fit3b = new TF1("fit2", "gaus(0)+gaus(3)", fit3a->GetParameter(1)-5*fit3a->GetParameter(2), fit3a->GetParameter(1)+5*fit3a->GetParameter(2));
-  fit3b->SetParameter(0, a);
-  fit3b->SetParameter(1, b);
-  fit3b->SetParameter(2, c);
-  fit3b->SetParameter(3, 0.1*a);
-  fit3b->SetParLimits(3, 0.01*a, 100*a);
-  fit3b->SetParameter(4, b);
-  fit3b->SetParLimits(4, 0, 50);
-  fit3b->SetParameter(5, 5*c);
-  fit3b->SetParLimits(5, 0.01, 10);
-  OutputE->Fit(fit3b, "R");
-
-
-  cout << "Eval = " << fit3b->Eval(fit3b->GetParameter(1) + fit3b->GetParameter(2)) << endl;
-  cout << "Eval = " << fit3b->Eval(fit3b->GetParameter(1) - fit3b->GetParameter(2)) << endl;
-  cout << "Eval = " << (fit3b->Eval(fit3b->GetParameter(1) + fit3b->GetParameter(2)) + (fit3b->Eval(fit3b->GetParameter(1) - fit3b->GetParameter(2))))/2 << endl;
-
-  TH1D *Output_energy = new TH1D("Output_energy", "Output_energy", 150, 0, 150);
-  
-  for (int i=3; i<120; i++)
-    {
-      test->ProjectionX("Output_energy", i, i, "");
-      Output_energy->Fit(fitX, "QR");
-      fit4b = new TF1("fit4b", "gaus", fitX->GetParameter(1)-2*fitX->GetParameter(2), fitX->GetParameter(1)+2*fitX->GetParameter(2));
-      Output_energy->Fit(fit4b, "QR");
-      a = fit4b->GetParameter(0);
-      b = fit4b->GetParameter(1);
-      c = fit4b->GetParameter(2);
-      fit4 = new TF1("fit4", "gaus(0)+gaus(3)", fitX->GetParameter(1)-5*fitX->GetParameter(2), fitX->GetParameter(1)+5*fitX->GetParameter(2));
-      fit4->SetParameter(0, a);
-      fit4->SetParameter(1, b);
-      fit4->SetParameter(2, c);
-      fit4->SetParameter(3, 0.1*a);
-      fit4->SetParLimits(3, 0.1*a, 100*a);
-      fit4->SetParameter(4, b);
-      fit4->SetParLimits(4, 0, 50);
-      fit4->SetParameter(5, 5*c);
-      fit4->SetParLimits(5, 0.01, 10);
-      Output_energy->Fit(fit4, "QR");
-      Eval_Energy = (fit4->Eval(fit4->GetParameter(1) + 1*fit4->GetParameter(2)));
-      NEvents = Estart->Integral(i, i);
-      x_new[nbis] = i-0.5;
-      ex_new[nbis] = 0.5;
-      y_new[nbis] = Eval_Energy/NEvents;
-      ey_new[nbis] = y_new[nbis] * ((sqrt(Eval_Energy)/Eval_Energy) + (sqrt(NEvents)/NEvents));
-      Chi2 = fit4->GetChisquare();
-      Ndf = fit4->GetNDF();
-      Chi2Ndf = Chi2/Ndf;
-      cout << "\ni = " << i << endl;
-      cout << "Eval = " << Eval_Energy << endl;
-      cout << "Nevents = " << NEvents << endl;
-      cout << "Nph = " << Eval_Energy/NEvents << endl;
-      cout << "Chi2/NdF = " << Chi2Ndf << endl;
-      nbis++;
-       
-    }
-
-  
-  new TCanvas;
-  TGraphErrors* Nph = new TGraphErrors(nbis, x_new, y_new, ex_new, ey_new);
-  Nph->Draw("APE2");           
-  Nph->SetFillColor(kRed);
-  Nph->SetMarkerColor(kRed);
-  Nph->SetFillStyle(3001);
-  Nph->SetLineColor(kRed);
-  Nph->SetLineWidth(3);
-
-  TFile file_out_Nph(filename_Nph.c_str(), "RECREATE");
-  Nph->Write();
-  file_out_Nph.Close();
-  
-  
 
 
 

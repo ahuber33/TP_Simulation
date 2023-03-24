@@ -163,3 +163,12 @@
 # - Réarrangement des fonctions dans le fichier FastSimModelOpFiber.cc
 # - Création d'un fichier de géomérie backup
 # - Fonctions permettant de récupérer les trajectoires pour les plotter par la suite ont été commentées pour ne pas créer de fuite mémoire lors de tirs à hautes énergies
+
+# Commit #20 le 24/03/2023 [TPSim.0.8.2]
+# - IMPORTANT : version de la simulation ayant permis l'étude d'optimisation des scintillateurs en contact avec le détecteur dans le plan de détection de la TP (FORUM ILP)
+# - Ajout des données CMOS/CCD et des scintillateurs présents dans l'étude (EJ212, EJ214, EJ260, EJ262, CsI:Tl, LYSO, ZnS, LuAG, YAG:Ce) + matériaux correspondants
+# - Modification du code Analyse_TP avec ajout de code ayant permis d'obtenir les plots de cette étude. Creation des fichiers 2D pour gain de poids de fichier (Fichiers ROOT de départ beaucoup trop gros et lent à analyser)
+# - Ajout d'un fichier Plot.cc permettant de comparer les résultats des différents scintillateurs
+# - Ajout d'un fichier Test_Discrimination.cc afin de déterminer l'énergie à aprtir de laquell la discri n'est plus possible (en optique) entre p+ et He2+
+# - Nettoyage de certains fichiers résultats non nécessaires ainsi que de données de simulation
+# - Passage du cut de 100um à 1um

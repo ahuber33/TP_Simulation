@@ -14,20 +14,26 @@
 /gps/number 1
 #/gps/particle alpha
 /gps/pos/type Point
-/gps/pos/centre 0.0 0.0 -1000.0 mm
+/gps/pos/centre 0.0 0.0 -300.0 mm
 #/gps/energy %energy MeV
-#/gps/direction 0.0 0.0 1.0
+/gps/direction 0.0 0.0 1.0
 
-/gps/ene/type Lin
-/gps/ene/min 5000 keV
-/gps/ene/max 200000 keV
-/gps/ene/gradient 0
-/gps/ene/intercept 1
+#/gps/ene/type Lin
+#/#gps/ene/min 5000 keV
+#/gps/ene/max 200000 keV
+#/gps/ene/gradient 0
+#/gps/ene/intercept 1
 
 /gps/ang/type cos
 /gps/ang/rot1 -1 0 0
-#/gps/ang/maxtheta 0.0005	 rad
-/gps/ang/maxtheta 0.0004 rad 
+/gps/ang/maxtheta 0.001 rad
+#/gps/ang/maxtheta 0.0004 rad
+
+
+/gps/ene/type Exp
+/gps/ene/min 100 keV
+/gps/ene/max 100. MeV
+/gps/ene/ezero 50 MeV
 
 /gps/particle ion
 /gps/ion %ion

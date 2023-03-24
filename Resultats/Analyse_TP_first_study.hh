@@ -15,13 +15,10 @@
 #include <vector>
 
 //First STUDY
-//float pitch = 6.5e-3; //ORCA
-float pitch = 20e-3; //CMOS
-//float pitch = 50e-3; //IP
-float PosX = 50;
-float PosY = 5;
-int NbinsX=PosX/pitch;
-int NbinsY=(PosY+1)/pitch;
+int NbinsX=1500;
+int NbinsY=2000;
+float PosX = -150;
+float PosY = 20;
 
 //ORCA II
 //int NbinsX=1024;
@@ -86,8 +83,8 @@ TH2F *Histo_Parabole(TTree* Tree, const char* name)
   Tree->SetBranchAddress("PositionX", &x);
   Tree->SetBranchAddress("PositionY", &y);
   const int Entries = Tree->GetEntries();
-  TH2F* h = new TH2F(name, name, NbinsX, 0, PosX, NbinsY, -1, PosY);
-  //  TH2F* h = new TH2F(name, name, 2000, 0, 50, 200, 0, 5);
+  //TH2F* h = new TH2F(name, name, NbinsX, PosX, 0, NbinsY, -1, PosY);
+  TH2F* h = new TH2F(name, name, 10000, -20, 120, 10000, -20, 120);
 
 
   for(int i=0; i<Entries; i++)
@@ -105,13 +102,13 @@ TH2F *Histo_Parabole_Optique(TTree* Tree, const char* name)
   Tree->ResetBranchAddresses();
   std::vector<float>* x=0;
   std::vector<float>* y=0;
-  Tree->SetBranchAddress("DetectorPositionX", &x);
-  Tree->SetBranchAddress("DetectorPositionY", &y);
-  //Tree->SetBranchAddress("PositionX", &x);
-  //Tree->SetBranchAddress("PositionY", &y);
+  //Tree->SetBranchAddress("DetectorPositionX", &x);
+  //Tree->SetBranchAddress("DetectorPositionY", &y);
+  Tree->SetBranchAddress("PositionX", &x);
+  Tree->SetBranchAddress("PositionY", &y);
   const int Entries = Tree->GetEntries();
-  TH2F* h = new TH2F(name, name, NbinsX, 0, PosX, NbinsY, -1, PosY);
-  //TH2F* h = new TH2F(name, name, 1000, -20, 120, 1000, -20, 120);
+  //TH2F* h = new TH2F(name, name, NbinsX, PosX, 0, NbinsY, 0, PosY);
+  TH2F* h = new TH2F(name, name, 1000, -20, 120, 1000, -20, 120);
 
   for(int i=0; i<Entries; i++)
   {
@@ -127,94 +124,9 @@ TH2F *Histo_Parabole_Optique(TTree* Tree, const char* name)
   return h;
 }
 
-
-void Create_ROOT_Histo_Parabole_Optique(TTree* Tree,  const char* filename)
-{
-  Tree->ResetBranchAddresses();
-  std::vector<float>* x=0;
-  std::vector<float>* y=0;
-  Tree->SetBranchAddress("DetectorPositionX", &x);
-  Tree->SetBranchAddress("DetectorPositionY", &y);
-  //Tree->SetBranchAddress("PositionX", &x);
-  //Tree->SetBranchAddress("PositionY", &y);
-  const int Entries = Tree->GetEntries();
-  TH2F* h = new TH2F("2D", "2D", NbinsX, 0, PosX, NbinsY, -1, PosY);
-  //TH2F* h = new TH2F(name, name, 1000, -20, 120, 1000, -20, 120);
-
-  for(int i=0; i<Entries; i++)
-  {
-    x->clear();
-    y->clear();
-    Tree->GetEntry(i);
-    for(int j=0; j<(x->size()); j++)
-      {
-	h->Fill(x->at(j),y->at(j));
-      }
-  }
-
-  TFile file_out(filename, "RECREATE");
-  h->Write();
-  file_out.Close();
-}
-
-
-
-void Create_ROOT_Histo_Parabole(TTree* Tree,  const char* filename)
-{
-  Tree->ResetBranchAddresses();
-  float x=0;
-  float y=0;
-  Tree->SetBranchAddress("PositionX", &x);
-  Tree->SetBranchAddress("PositionY", &y);
-  const int Entries = Tree->GetEntries();
-  TH2F* h = new TH2F("2D", "2D", NbinsX, 0, PosX, NbinsY, -1, PosY);
-  //TH2F* h = new TH2F(name, name, 1000, -20, 120, 1000, -20, 120);
-
-  for(int i=0; i<Entries; i++)
-  {
-    Tree->GetEntry(i);
-    
-    h->Fill(x,y);
-      
-  }
-
-  TFile file_out(filename, "RECREATE");
-  h->Write();
-  file_out.Close();
-}
-
-
-void Create_ROOT_Timing_Optique(TTree* Tree,  const char* filename)
-{
-  Tree->ResetBranchAddresses();
-  std::vector<float>* t=0;
-  Tree->SetBranchAddress("Time", &t);
-  const int Entries = Tree->GetEntries();
-  TH1F* h = new TH1F("Time", "Time", 20000, 0, 20000);
-
-  for(int i=0; i<Entries; i++)
-  {
-    t->clear();
-    Tree->GetEntry(i);
-    for(int j=0; j<(t->size()); j++)
-      {
-	h->Fill(t->at(j));
-      }
-  }
-
-
-  h->Scale(1./h->Integral());
-  
-  TFile file_out(filename, "RECREATE");
-  h->Write();
-  file_out.Close();
-}
-
-
-
 TGraphErrors* Fit_LargeurY_Parabole(TH2F* h, int parametre)
 {
-  TH1D* projj = new TH1D("projj", "projj", NbinsY, 0, PosY);
+  TH1D* projj = new TH1D("projj", "projj", NbinsY, -1, PosY);
   float Bin_Max;
   float Min;
   float Max;
@@ -438,7 +350,7 @@ TH2F* Plot_E_Position(TTree* Tree, const char* Position)
   Tree->SetBranchAddress(Position, &Pos);
   Tree->SetBranchAddress("E_start", &E);
   const int Entries = Tree->GetEntries();
-  TH2F* h = new TH2F("EvsX", "EvsX", NbinsX, 0, PosX, 1000, 0, 100);
+  TH2F* h = new TH2F("EvsX", "EvsX", NbinsX, PosX, 0, 2000, 0, 200);
   //TH2F* h = new TH2F("test", "test", 1000, 0, 100000, 450, -40, 5);
 
   for(int i=0; i<Entries; i++)
@@ -460,7 +372,7 @@ TH2F* Plot_E_Position_Optique(TTree* Tree, const char* Position)
   Tree->SetBranchAddress(Position, &Pos);
   Tree->SetBranchAddress("IncidentE", &E);
   const int Entries = Tree->GetEntries();
-  TH2F* h = new TH2F("test", "test", NbinsX, 0, PosX, 1000, 0, 100);
+  TH2F* h = new TH2F("test", "test", NbinsX, PosX, 0, 1000, 0, 100);
   //TH2F* h = new TH2F("test", "test", 1000, 0, 100000, 450, -40, 5);
 
   for(int i=0; i<Entries; i++)
@@ -475,80 +387,6 @@ TH2F* Plot_E_Position_Optique(TTree* Tree, const char* Position)
 
 
   return h;
-}
-
-
-void Create_ROOT_Plot_E_Position_Optique(TTree* Tree, const char* Position, const char* filename)
-{
-  Tree->ResetBranchAddresses();
-  float E=0;;
-  vector<float>* Pos=0;
-  Tree->SetBranchAddress(Position, &Pos);
-  Tree->SetBranchAddress("IncidentE", &E);
-  const int Entries = Tree->GetEntries();
-  TH2F* h = new TH2F("E_vs_Position", "E_vs_Position", NbinsX, 0, PosX, 2000, 0, 200);
-  //TH2F* h = new TH2F("test", "test", 1000, 0, 100000, 450, -40, 5);
-
-  for(int i=0; i<Entries; i++)
-  {
-    Pos->clear();
-    Tree->GetEntry(i);
-    for (int j =0; j<Pos->size(); j++)
-      {
-	h->Fill(Pos->at(j),E/1000);
-      }
-  }
-
-  TFile file_out(filename, "RECREATE");
-  h->Write();
-  file_out.Close();
-}
-
-
-void Create_ROOT_Plot_E_Position(TTree* Tree, const char* Position, const char* filename)
-{
-  Tree->ResetBranchAddresses();
-  float E=0;;
-  float Pos=0;
-  Tree->SetBranchAddress(Position, &Pos);
-  Tree->SetBranchAddress("E_start", &E);
-  const int Entries = Tree->GetEntries();
-  TH2F* h = new TH2F("E_vs_Position", "E_vs_Position", NbinsX, 0, PosX, 2000, 0, 200);
-  //TH2F* h = new TH2F("test", "test", 1000, 0, 100000, 450, -40, 5);
-
-  for(int i=0; i<Entries; i++)
-  {
-    Tree->GetEntry(i);
-  
-    h->Fill(Pos,E/1000);
-
-  }
-
-  TFile file_out(filename, "RECREATE");
-  h->Write();
-  file_out.Close();
-}
-
-
-
-void Create_ROOT_E_start(TTree* Tree, const char* filename)
-{
-  Tree->ResetBranchAddresses();
-  float E=0;
-  Tree->SetBranchAddress("E_start", &E);
-  const int Entries = Tree->GetEntries();
-  TH1F* h = new TH1F("E_start", "E_start", 200000, 0, 200);
-
-
-  for(int i=0; i<Entries; i++)
-  {
-    Tree->GetEntry(i);
-    h->Fill(E/1000);
-  }
-
-  TFile file_out(filename, "RECREATE");
-  h->Write();
-  file_out.Close();
 }
 
 
@@ -570,8 +408,8 @@ Double_t fpeaks(Double_t *x, Double_t *par)
 int Find_bin_resolution(TH2F* h_ALL, float xmin, float xmax, int npeaks, float sigma)
 {
   //x[n] = PosX + i*abs(PosX/NbinsX) -0.05;
-  int bin_start = (xmin+0.05)*abs(NbinsX/PosX);
-  int bin_end = (xmax+0.05)*abs(NbinsX/PosX);
+  int bin_start = (xmin+0.05-PosX)*abs(NbinsX/PosX);
+  int bin_end = (xmax+0.05-PosX)*abs(NbinsX/PosX);
   double par[3000];
   int p;
   int n=bin_end;
@@ -579,20 +417,20 @@ int Find_bin_resolution(TH2F* h_ALL, float xmin, float xmax, int npeaks, float s
   double xp;
   int bin;
   double yp;
-  TH1D *proj = new TH1D("proj", "proj", NbinsY, -1, PosY);
+  TH1D *proj = new TH1D("proj", "proj", NbinsY, 0, PosY);
   int number_of_peaks = npeaks;
   cout << "bin start = " << bin_start << endl;
   cout << "bin end = " << bin_end << endl;
 
 
-  for (int i=bin_end; i<bin_start; i--)
+  for (int i=bin_start; i<bin_end; i++)
     {
       h_ALL->ProjectionY("proj", i, i, "");
       TSpectrum *s = new TSpectrum(npeaks);
       nfound = s->Search(proj,sigma,"",0.1);
 
       //estimate linear background using a fitting method
-      TF1 *fline = new TF1("fline","pol1",-1,PosY);
+      TF1 *fline = new TF1("fline","pol1",0,PosY);
       proj->Fit("fline","qn");
       // Loop on all found peaks. Eliminate peaks at the background level
       par[0] = fline->GetParameter(0);
@@ -607,7 +445,7 @@ int Find_bin_resolution(TH2F* h_ALL, float xmin, float xmax, int npeaks, float s
 	if (yp-TMath::Sqrt(yp) < fline->Eval(xp)) continue;
 	par[3*npeaks+2] = yp; // "height"
 	par[3*npeaks+3] = xp; // "mean"
-	par[3*npeaks+4] = 0.01; // "sigma"
+	par[3*npeaks+4] = 0.03; // "sigma"
 	npeaks++;
       }
 
@@ -638,7 +476,7 @@ float Fit_YProjection_at_Resolution(TH1D* Output_resolution, int npeaks, float a
 
   h2->GetXaxis()->SetRangeUser(-1, a);
   TSpectrum *s = new TSpectrum(npeaks);
-  Int_t nfound = s->Search(Output_resolution, 1,"",0.01);
+  Int_t nfound = s->Search(Output_resolution, 1,"",0.05);
   printf("Found %d candidate peaks to fit\n",nfound);
   // // Estimate background using TSpectrum::Background
   // TH1 *hb = s->Background(Output_resolution,20,"same");
@@ -661,7 +499,7 @@ float Fit_YProjection_at_Resolution(TH1D* Output_resolution, int npeaks, float a
     if (yp-TMath::Sqrt(yp) < fline->Eval(xp)) continue;
     par[3*npeaks+2] = yp; // "height"
     par[3*npeaks+3] = xp; // "mean"
-    par[3*npeaks+4] = 0.01; // "sigma"
+    par[3*npeaks+4] = 0.1; // "sigma"
     npeaks++;
   }
 
@@ -824,9 +662,6 @@ void Analyse( const char* file_proton,
       h_He2 = Histo_Parabole_Optique(Tree3, file_He2);
     }
 
-  h_He1->Scale(1./10.);
-  h_He2->Scale(1./10.);
-
   h_proton_He1->Add(h_He1, 1);
   h_proton_He2->Add(h_He2, 1);
 
@@ -976,10 +811,10 @@ void Analyse( const char* file_proton,
   pad4->cd();
 
   int npeaks = 2;
-  TH1D *Output_resolution = new TH1D("Output_resolution", "Output_resolution", NbinsY, -1, PosY);
+  TH1D *Output_resolution = new TH1D("Output_resolution", "Output_resolution", NbinsY, 0, PosY);
   TH2F *h_proton_He2_bis = (TH2F*)h_proton_He2->Clone();
   int n = Find_bin_resolution(h_proton_He2_bis, xmin_proton, xmax_proton, npeaks, sigma);
-  float a = n*abs(PosX/NbinsX) -0.05;
+  float a = PosX + n*abs(PosX/NbinsX) -0.05;
   cout << "bin = " << n << endl;
   cout << "a = " << a << endl;
 
@@ -1018,11 +853,11 @@ void Analyse( const char* file_proton,
   //############################# PAD 6 ##################################
   //######################################################################
   pad6->cd();
-  TH1D *Output_resolution_bis = new TH1D("Output_resolution_bis", "Output_resolution_bis", NbinsY, -1, PosY);
+  TH1D *Output_resolution_bis = new TH1D("Output_resolution_bis", "Output_resolution_bis", NbinsY, 0, PosY);
   h_proton_He1->Draw("colz");
   TH2F *h_proton_He1_bis = (TH2F*)h_proton_He1->Clone();
   int nbis = Find_bin_resolution(h_proton_He1_bis, xmin_He1, xmax_proton, 2, sigma);
-  float abis = nbis*abs(PosX/NbinsX) -0.05;
+  float abis = PosX + nbis*abs(PosX/NbinsX) -0.05;
   cout << "bin bis = " << nbis << endl;
   cout << "a bis = " << abis << endl;
 
@@ -1070,7 +905,7 @@ void Analyse( const char* file_proton,
 
     if (Optique == true)
       {
-        aze = Plot_E_Position_Optique(Tree1, "DetectorPositionX");
+        aze = Plot_E_Position_Optique(Tree1, "PositionX");
       }
 
   aze->Draw("colz");

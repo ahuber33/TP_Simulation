@@ -88,7 +88,7 @@ TPSimSteppingAction::TPSimSteppingAction()
     //#######################################################################
     //#######################################################################
     // G4cout << "x = " << x << G4endl;
-    // G4cout << "y = " << y << G4endl;
+     //G4cout << "y = " << y << G4endl;
     // G4cout << "z = " << z << G4endl;
     // G4cout << "z pre = " << zpre << G4endl;
     // G4cout << "px = " << px << G4endl;
@@ -410,15 +410,15 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
 
 if (Parent_ID ==0 && StepNo==1)
 {
-  evtac->SetEstartTP(aStep->GetPreStepPoint()->GetKineticEnergy()/keV);
+  evtac->SetEstartTP(aStep->GetPreStepPoint()->GetKineticEnergy()/MeV);
   evtac->SetIncidentE(aStep->GetPreStepPoint()->GetKineticEnergy()/keV);
   evtac->SetParticuleID(partID);
   evtac->SetCharge(aStep->GetPostStepPoint()->GetCharge());
 }
 
 
-if (((aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator") || (aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "ZnS"))
-&& ((aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator") || (aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "ZnS"))
+if (((aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator") || (aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "ZnS") || (aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Core_Fiber"))
+&& ((aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator") || (aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "ZnS") || (aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "Core_Fiber"))
 && partname != "opticalphoton")
 {
   evtac->AddTrackLength(aStep->GetTrack()->GetStepLength()/mm);
@@ -426,7 +426,7 @@ if (((aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator"
 }
 
 //Be careful here !!! If Zns in here, put ZnS. If not, put Scintillator or Core_Fiber!!!!
-if(Parent_ID ==0 && aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "Core_Fiber" && evtac->GetTPPositionZ()==0)
+if(Parent_ID ==0 && aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName() == "Scintillator" && evtac->GetTPPositionZ()==0)
 {
   evtac->SetTPPositionX(x);
   evtac->SetTPPositionY(y);
