@@ -14,9 +14,9 @@ void Test_Discrimination()
   //TFile *file2 = new TFile("He2+_YAG_0.1mm_CMOS_Exp_30MeV_Optique_2D.root");
   //TFile *file3 = new TFile("Proton_YAG_0.1mm_CMOS_Exp_30MeV_Optique_Energie.root");
 
-  TFile *file1 = new TFile("proton_2D.root");
-  TFile *file2 = new TFile("He2+_2D.root");
-  TFile *file3 = new TFile("proton_Energie.root");
+  TFile *file1 = new TFile("/mnt/hgfs/shared/Simulations/TP_Simulation/Resultats/Etudes_Scintillateurs/ROOT_files/proton_2D.root");
+  TFile *file2 = new TFile("/mnt/hgfs/shared/Simulations/TP_Simulation/Resultats/Etudes_Scintillateurs/ROOT_files/He2+_2D.root");
+  TFile *file3 = new TFile("/mnt/hgfs/shared/Simulations/TP_Simulation/Resultats/Etudes_Scintillateurs/ROOT_files/proton_Energie.root");
 
   TH2F *f = (TH2F*)file1->Get("2D");
   TH2F *g = (TH2F*)file2->Get("2D");

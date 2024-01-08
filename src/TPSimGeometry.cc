@@ -283,6 +283,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   //LogicalZnS = theScint->GetZnS();
   //LogicalZnSLG = theScint->GetZnSLG();
   LogicalLens = theScint->GetLens();
+  LogicalLens2 = theScint->GetLens();
 
   //  LogicalZnS = theScint->GetZnS();
   if(FiberGeometry ==0)
@@ -318,6 +319,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalHolder->SetVisAttributes(invis);
   LogicalFibersHolder->SetVisAttributes(orange);
   LogicalLens->SetVisAttributes(gray);
+  LogicalLens2->SetVisAttributes(gray);
 
 
   // G4Region* RegEM = new G4Region("EMField");
@@ -426,7 +428,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   //***********************
 
   // Build the PMT glass structure from PMT class
-  LogicalPhotocathode = theScint->GetPhotocathode(); // Call function for PMT glass
+  //LogicalPhotocathode = theScint->GetPhotocathode(); // Call function for PMT glass
+  LogicalPhotocathode = theScint->GetRoundPhotocathode(); // Call function for PMT glass
   LogicalPhotocathode->SetVisAttributes(blue); // Set photocathode color to orange
 
 
@@ -592,7 +595,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
         LogicalHolder,false,0);
 
         PhysicalVolumeMFPlates = new G4PVPlacement(G4Transform3D
-          (DontRotate,G4ThreeVector(MF_Width_plates/2-10, -2.45*mm, Z_Position_MFPlates)), // Set at origin as basis of everything else
+          (DontRotate,G4ThreeVector(MF_Width_plates/2-2, 0*mm, Z_Position_MFPlates)), // Set at origin as basis of everything else
           LogicalVolumeMFPlates,"Volume_MF_Plates",
           LogicalHolder,false,0);
 
@@ -602,7 +605,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
             LogicalVolumeMFPlates,false,0);
 
             PhysicalVolumeEFPlates = new G4PVPlacement(G4Transform3D
-              (DontRotate,G4ThreeVector(EF_Width_plates/2 - 7*mm, 0.1*mm, Z_Position_EFPlates)), // Set at origin as basis of everything else
+              (DontRotate,G4ThreeVector(EF_Width_plates/2 - 2*mm, 4*mm, Z_Position_EFPlates)), // Set at origin as basis of everything else
               LogicalVolumeEFPlates,"Volume_EF_Plates",
               LogicalHolder,false,0);
 
@@ -662,18 +665,28 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
 
             // PMT photocathode placement
-            PhysicalPhotocathode = new G4PVPlacement(G4Transform3D
-              //(DontRotate,G4ThreeVector(FiberWidth/2 + FiberSpace - WidthBunchFibers/2, 0, Z_Position_Photocathode)), //USE THAT FOR TP
-              (DontRotate,G4ThreeVector((60-10)*mm, (30-12.1)*mm, Z_Position_Photocathode)), //USE THAT FOR DEBUG
-              LogicalPhotocathode,"ORCA",
-              LogicalHolder,true,0);
+            // PhysicalPhotocathode = new G4PVPlacement(G4Transform3D
+            //   //(DontRotate,G4ThreeVector(FiberWidth/2 + FiberSpace - WidthBunchFibers/2, 0, Z_Position_Photocathode)), //USE THAT FOR TP
+            //   //(DontRotate,G4ThreeVector((60-10)*mm, (30-12.1)*mm, Z_Position_Photocathode+300)), //USE THAT FOR DEBUG
+            //   (DontRotate,G4ThreeVector(30*mm, 0*mm, Z_Position_Photocathode+300)), //USE THAT FOR DEBUG
+            //   LogicalPhotocathode,"ORCA",
+            //   LogicalHolder,true,0);
 
 
               // Lens placement
               // PhysicalLens = new G4PVPlacement(G4Transform3D
-              //   (DontRotate,G4ThreeVector(-37.5, -37.5, Z_Position_Lens)), //USE THAT FOR DEBUG
+              //   (Flip,G4ThreeVector(-20, 50, Z_Position_Lens-115)), //USE THAT FOR DEBUG
               //   LogicalLens,"Lens",
               //   LogicalHolder,true,0);
+              //
+              //
+              //
+              //   // Lens placement
+              //   PhysicalLens2 = new G4PVPlacement(G4Transform3D
+              //     (DontRotate,G4ThreeVector(-20, -25, Z_Position_Lens-91)), //USE THAT FOR DEBUG
+              //     LogicalLens2,"Lens",
+              //     LogicalHolder,true,0);
+
 
               #else
 

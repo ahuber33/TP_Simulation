@@ -82,6 +82,7 @@ private:
   G4LogicalVolume *LogicalOuterCladdingFiber;
   G4LogicalVolume *LogicalFiber;
   G4LogicalVolume *LogicalLens;
+  G4LogicalVolume *LogicalLens2;
 
 
   // Physical volumes
@@ -111,6 +112,7 @@ private:
   G4VPhysicalVolume *PhysicalInnerCladdingFiberBunch[1000000];
   G4VPhysicalVolume *PhysicalOuterCladdingFiberBunch[1000000];
   G4VPhysicalVolume *PhysicalLens;
+  G4VPhysicalVolume *PhysicalLens2;
 
 
   // Optical surfaces

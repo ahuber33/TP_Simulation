@@ -392,7 +392,7 @@ G4LogicalVolume *Geometry::GetScTest(){
   //scintillator = scintProp->GetMaterial("Alu");
 
   G4Box *Box = new G4Box   ("Box",             //its name
-  ScintillatorLength/2, 60./2, ScintillatorThickness/2);    //its size
+  ScintillatorLength/2, 100./2, ScintillatorThickness/2);    //its size
 
   LogicalVolume = new G4LogicalVolume(Box, Material, "Sc_Test",0,0,0);
 
@@ -544,11 +544,24 @@ G4LogicalVolume *Geometry::GetPhotocathode(){
   Material = scintProp->GetMaterial("Silicium");
 
   G4Box *Box = new G4Box   ("Box",             //its name
-  ScintillatorLength/2, 60/2, DetectorThickness/2);    //its size
+  //ScintillatorLength/2, 60/2, DetectorThickness/2);    //its size
   //(Fiber_number_per_line*Fiber_width + (Fiber_number_per_line+1)*Fiber_space)/2, (Fiber_number_per_line*Fiber_width + (Fiber_number_per_line+1)*Fiber_space)/2, DetectorThickness/2);    //its size
-  //DetectorLength/2, DetectorWidth/2, DetectorThickness/2);    //its size
+  DetectorLength/2, DetectorWidth/2, DetectorThickness/2);    //its size
 
   LogicalVolume = new G4LogicalVolume(Box, Material, "Photocathode",0,0,0);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRoundPhotocathode(){
+
+  Material = scintProp->GetMaterial("Silicium");
+
+  G4Tubs *Tubs = new G4Tubs   ("Tubs",             //its name
+  0., (75/2)*mm, (0.1/2)*mm, 0, 360*deg);    //its size
+
+  LogicalVolume = new G4LogicalVolume(Tubs, Material, "Photocathode",0,0,0);
 
   return LogicalVolume;
 }
@@ -562,8 +575,8 @@ G4LogicalVolume *Geometry::GetLens(){
   G4GDMLParser* parser = new G4GDMLParser();
   //Create Tesselated volume of "Bouchon"
   parser->Clear();
-  parser->Read("../gdml_models/LA1238-Step.gdml", false);
-  LogicalVolume = parser->GetVolume("LA1238-Step");
+  parser->Read("../gdml_models/LA1002-Step.gdml", false);
+  LogicalVolume = parser->GetVolume("LA1002-Step");
   LogicalVolume->SetMaterial(Material);
 #else
   //

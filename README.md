@@ -136,39 +136,41 @@
 #- Exemple d'un de ces photons présent ici : bin/Event_detected_angle161.deg
 
 # Commit #18 le 25/10/2022 [TPSim.0.8.0]
-# - Abandon de la méthode de génération du bunch de fibres avec l'outil G4VPVParameterisation de GEANT4. En effet, celui-ci introduit un dysfonctionnement dans le suivi des photons optiques dans la chambre du à une erreur lors de la prise en compte de la normale à la surface de la fibre. Celle-ci est inversée ce qui fait qu'un photon étant à la base piégé dans la fibre peut se retrouver en dehors de celle-ci...
-# - Remplacement de la méthode précédente par une boucle for permettant de générer l'ensemble des fibres à partir du nombre indiqué dans le fichier de config.
-# - Nécessaire de changer la génération des volumes solides dans le fichier Geometry.cc. Précédemment, les volumes circulaires des fibres étaient plein afin de pouvoir être le holder du volume ayant un diamètre plus petit. Doréanavant, vu que chaque élément est distinct de l'autre et défini dans le FibersHolder, il est nécessaire de créer les vraies volumes (donc sous la forme d'anneau).
-# - Création de tableaux de G4VPhysicalVolume pour prendre en compte l'ensemble des modifications précédentes et afficher le bunch de fibres. Méthode OK !!!
-# - Passage de l'efficacité quantique du détecteur à 1 afin que les photons détectés correspondent aux photons transmis jusqu'au détecteur (plus facile pour les études préliminaires).
-# - Ajout d'un paramètre dans l'outil G4FAST permettant de calculer la longueur de la trace à partir du moment où elle effectue a première réflexion totale et non pas de puis sa création.
-# - Ajout d'un paramètre dans l'outil G4FAST permettant d'effectuer certaines opérations ou non si la géométrie des fibres est circulaire ou carrée (exemple du suivi des photons à grand angle dans la géométrie carrée où le module G4FAST est désactivée).
-# - Ajout d'un paramètre Air_Index dans le fichier de config Materials.cfg afin de pouvoir changer l'indice de l'air autour des fibres sans recompiler le code.
-# - Ajout d'un paramètre dans le EventAction permettant de récupérer l'indice optique de l'air autour des fibres dans le SteppingAction afin de pouvoir l'utiliser dans le module d'accélération.
-# - Ajout du paramètre G4FAST dans le fichier de configuration. Ce dernier permet d'activer ou non le module d'accélération du suivi des photons sans recompiler le code comme précédemment.
-# - Ajout de ligne permettant d'accéder au CopyNumber si nécessaire par la suite (Plus nécessaire actuellement car nous avons arrêté la génération des fibres avec l'outil de paramétrisation)
-# - MAJ des corrections sur la longueur d'atténuation à considérer en fonction de la géométrie qui est testée pour reproduire les datas sans le module d'accélération.
-# - Création de dossiers pour les différents fichiers ROOT afin de classifier les différentes études
-# - VERSION DE CODE UTILISEE POUR GENERER LE FICHIER EXCEL LABS_TPSIM AFIN DE VERIFIER LA CONCORDANCE ENTRE LA SIMU OPTIQUE COMPLETE ET L OUTIL G4FAST. TOUT EST OK !!!!!
+#- Abandon de la méthode de génération du bunch de fibres avec l'outil G4VPVParameterisation de GEANT4. En effet, celui-ci introduit un dysfonctionnement dans le suivi des photons optiques dans la chambre du à une erreur lors de la prise en compte de la normale à la surface de la fibre. Celle-ci est inversée ce qui fait qu'un photon étant à la base piégé dans la fibre peut se retrouver en dehors de celle-ci...
+#- Remplacement de la méthode précédente par une boucle for permettant de générer l'ensemble des fibres à partir du nombre indiqué dans le fichier de config.
+#- Nécessaire de changer la génération des volumes solides dans le fichier Geometry.cc. Précédemment, les volumes circulaires des fibres étaient plein afin de pouvoir être le holder du volume ayant un diamètre plus petit. Doréanavant, vu que chaque élément est distinct de l'autre et défini dans le FibersHolder, il est nécessaire de créer les vraies volumes (donc sous la forme d'anneau).
+#- Création de tableaux de G4VPhysicalVolume pour prendre en compte l'ensemble des modifications précédentes et afficher le bunch de fibres. Méthode OK !!!
+#- Passage de l'efficacité quantique du détecteur à 1 afin que les photons détectés correspondent aux photons transmis jusqu'au détecteur (plus facile pour les études préliminaires).
+#- Ajout d'un paramètre dans l'outil G4FAST permettant de calculer la longueur de la trace à partir du moment où elle effectue a première réflexion totale et non pas de puis sa création.
+#- Ajout d'un paramètre dans l'outil G4FAST permettant d'effectuer certaines opérations ou non si la géométrie des fibres est circulaire ou carrée (exemple du suivi des photons à grand angle dans la géométrie carrée où le module G4FAST est désactivée).
+#- Ajout d'un paramètre Air_Index dans le fichier de config Materials.cfg afin de pouvoir changer l'indice de l'air autour des fibres sans recompiler le code.
+#- Ajout d'un paramètre dans le EventAction permettant de récupérer l'indice optique de l'air autour des fibres dans le SteppingAction afin de pouvoir l'utiliser dans le module d'accélération.
+#- Ajout du paramètre G4FAST dans le fichier de configuration. Ce dernier permet d'activer ou non le module d'accélération du suivi des photons sans recompiler le code comme précédemment.
+#- Ajout de ligne permettant d'accéder au CopyNumber si nécessaire par la suite (Plus nécessaire actuellement car nous avons arrêté la génération des fibres avec l'outil de paramétrisation)
+#- MAJ des corrections sur la longueur d'atténuation à considérer en fonction de la géométrie qui est testée pour reproduire les datas sans le module d'accélération.
+#- Création de dossiers pour les différents fichiers ROOT afin de classifier les différentes études
+#- VERSION DE CODE UTILISEE POUR GENERER LE FICHIER EXCEL LABS_TPSIM AFIN DE VERIFIER LA CONCORDANCE ENTRE LA SIMU OPTIQUE COMPLETE ET L OUTIL G4FAST. TOUT EST OK !!!!!
 
 # Commit #19 le 02/11/2022 [TPSim.0.8.1]
-# - IMPORTANT : Version de la simulation ayant permis d'estimer les résultats d'un bunch de fibres arrivant directement sur la caméra ORCA.
-# - Changement dans la configuration de la simulation pour créer des fibres plus petites (0.2mm) avec un espacement plus faible entre (0.05mm) afin de simuler le bunch de fibres directement sur la camera
-# - Nettoyage des dossiers du code en enlevant le fichier de geometrie du Dolphy Beta (Carmelec) ainsi que les fichiers GDML associés.
-# - Ajout dans le code de la possibilité d'ajouter une lentille dans la simulation afin de pouvoir les ramener sur la caméra. Commenté pour le moment car pas utilisé. A CONFIRMER PAR LA SUITE !!!! VERIFICATIONS NECESSAIRES
-# - Ajout des fichiers GDML correspondant à des lentilles issues de ThorLabs
-# - Ajout des fichiers de config pour la fibres (matériau N-BK7, indice optiqque et longueur d'absorption)
-# - Ajout des variables et fonctions permettant (dans le cas de l'utilisation des lentilles) d'accéder à la position des photons au niveau de la sortie des fibres, au niveau de la lentille et au niveau du détecteur.
-# - Creation d'un fichier Plot_2D_cross_talk.cc permettant de tracer l'évolution du cross-talk en focntion du nombre de fibres et de la longueur de ces dernières.
-# - Réarrangement des fonctions dans le fichier FastSimModelOpFiber.cc
-# - Création d'un fichier de géomérie backup
-# - Fonctions permettant de récupérer les trajectoires pour les plotter par la suite ont été commentées pour ne pas créer de fuite mémoire lors de tirs à hautes énergies
+#- IMPORTANT : Version de la simulation ayant permis d'estimer les résultats d'un bunch de fibres arrivant directement sur la caméra ORCA.
+#- Changement dans la configuration de la simulation pour créer des fibres plus petites (0.2mm) avec un espacement plus faible entre (0.05mm) afin de simuler le bunch de fibres directement sur la camera
+#- Nettoyage des dossiers du code en enlevant le fichier de geometrie du Dolphy Beta (Carmelec) ainsi que les fichiers GDML associés.
+#- Ajout dans le code de la possibilité d'ajouter une lentille dans la simulation afin de pouvoir les ramener sur la caméra. Commenté pour le moment car pas utilisé. A CONFIRMER PAR LA SUITE !!!! VERIFICATIONS NECESSAIRES
+#- Ajout des fichiers GDML correspondant à des lentilles issues de ThorLabs
+#- Ajout des fichiers de config pour la fibres (matériau N-BK7, indice optiqque et longueur d'absorption)
+#- Ajout des variables et fonctions permettant (dans le cas de l'utilisation des lentilles) d'accéder à la position des photons au niveau de la sortie des fibres, au niveau de la lentille et au niveau du détecteur.
+#- Creation d'un fichier Plot_2D_cross_talk.cc permettant de tracer l'évolution du cross-talk en focntion du nombre de fibres et de la longueur de ces dernières.
+#- Réarrangement des fonctions dans le fichier FastSimModelOpFiber.cc
+#- Création d'un fichier de géomérie backup
+#- Fonctions permettant de récupérer les trajectoires pour les plotter par la suite ont été commentées pour ne pas créer de fuite mémoire lors de tirs à hautes énergies
 
 # Commit #20 le 24/03/2023 [TPSim.0.8.2]
-# - IMPORTANT : version de la simulation ayant permis l'étude d'optimisation des scintillateurs en contact avec le détecteur dans le plan de détection de la TP (FORUM ILP)
-# - Ajout des données CMOS/CCD et des scintillateurs présents dans l'étude (EJ212, EJ214, EJ260, EJ262, CsI:Tl, LYSO, ZnS, LuAG, YAG:Ce) + matériaux correspondants
-# - Modification du code Analyse_TP avec ajout de code ayant permis d'obtenir les plots de cette étude. Creation des fichiers 2D pour gain de poids de fichier (Fichiers ROOT de départ beaucoup trop gros et lent à analyser)
-# - Ajout d'un fichier Plot.cc permettant de comparer les résultats des différents scintillateurs
-# - Ajout d'un fichier Test_Discrimination.cc afin de déterminer l'énergie à aprtir de laquell la discri n'est plus possible (en optique) entre p+ et He2+
-# - Nettoyage de certains fichiers résultats non nécessaires ainsi que de données de simulation
-# - Passage du cut de 100um à 1um
+#- IMPORTANT : version de la simulation ayant permis l'étude d'optimisation des scintillateurs en contact avec le détecteur dans le plan de détection de la TP (FORUM ILP)
+#- Ajout des données CMOS/CCD et des scintillateurs présents dans l'étude (EJ212, EJ214, EJ260, EJ262, CsI:Tl, LYSO, ZnS, LuAG, YAG:Ce) + matériaux correspondants
+#- Modification du code Analyse_TP avec ajout de code ayant permis d'obtenir les plots de cette étude. Creation des fichiers 2D pour gain de poids de fichier (Fichiers ROOT de départ beaucoup trop gros et lent à analyser)
+#- Ajout d'un fichier Plot.cc permettant de comparer les résultats des différents scintillateurs
+#- Ajout d'un fichier Test_Discrimination.cc afin de déterminer l'énergie à aprtir de laquell la discri n'est plus possible (en optique) entre p+ et He2+
+#- Nettoyage de certains fichiers résultats non nécessaires ainsi que de données de simulation
+#- Passage du cut de 100um à 1um
+
+# commit #21 le ######
