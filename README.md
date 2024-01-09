@@ -173,4 +173,6 @@
 #- Nettoyage de certains fichiers résultats non nécessaires ainsi que de données de simulation
 #- Passage du cut de 100um à 1um
 
-# commit #21 le ######
+# Commit #21 le 09/01/2024 [TPSim.0.8.2]
+#- Passage sur Visual Studio Code avec nouveau lien effectué entre les dossiers locaux et GitHub
+#- Création d'une nouvelle branche save permettant de sauvegarder chaque chanegment de code dans cette branche. Les différentes versions validées seront ensuite push sur la branche master !!!
