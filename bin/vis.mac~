@@ -55,7 +55,7 @@
 /gps/pos/centre 0.0 0.0 -300 mm
 #/gps/pos/centre 0.0 -100. 200 mm
 #/gps/pos/centre 0.0 -100. 58.6 mm
-/gps/energy 1.9 MeV
+/gps/energy 1.2 MeV
 /gps/direction 0.0 0.0 1.0
 #/gps/ang/type cos
 #/gps/ang/rot1 -1 0 0

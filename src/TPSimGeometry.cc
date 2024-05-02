@@ -282,8 +282,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalSc = theScint->GetScTest();
   //LogicalZnS = theScint->GetZnS();
   //LogicalZnSLG = theScint->GetZnSLG();
-  LogicalLens = theScint->GetLens();
-  LogicalLens2 = theScint->GetLens();
+  // LogicalLens = theScint->GetLens();
+  // LogicalLens2 = theScint->GetLens();
 
   //  LogicalZnS = theScint->GetZnS();
   if(FiberGeometry ==0)
@@ -318,8 +318,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   //LogicalZnSLG->SetVisAttributes(gray);
   LogicalHolder->SetVisAttributes(invis);
   LogicalFibersHolder->SetVisAttributes(orange);
-  LogicalLens->SetVisAttributes(gray);
-  LogicalLens2->SetVisAttributes(gray);
+  // LogicalLens->SetVisAttributes(gray);
+  // LogicalLens2->SetVisAttributes(gray);
 
 
   // G4Region* RegEM = new G4Region("EMField");
@@ -335,92 +335,92 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   if(ActivationG4FAST==1) new FastSimModelOpFiber("FastSimModelOpFiber", FiberRegion, FiberMultiCladding);
 
 
-  //********************************************
-  // Build optical properties and skin surfaces*
-  //*********************** ********************
+  // //********************************************
+  // // Build optical properties and skin surfaces*
+  // //*********************** ********************
 
-  // Define Teflon properties
-  // Properties are read in from data file
-  std::ifstream Read_teflon;
-  G4String teflon_file = path+"teflon.dat";
-  std::vector<G4double> Teflon_Energy;
-  std::vector<G4double> Teflon_Reflectivity;
-  std::vector<G4double> Teflon_Zero;
-  G4double wavelength; // x values
-  G4double teflon_ref_coeff; // y values
-  Read_teflon.open(teflon_file);
-  if (Read_teflon.is_open()){
-    while(!Read_teflon.eof()){
-      G4String filler; // This just skips the coma and space in data files
-      Read_teflon >> wavelength >> filler >> teflon_ref_coeff;
-      Teflon_Energy.push_back((1240/wavelength)*eV);
-      Teflon_Reflectivity.push_back(1.*teflon_ref_coeff);
-      Teflon_Zero.push_back(1e-6);
-    }
-  }
-  else
-  G4cout << "Error opening file: " << teflon_file << G4endl; // throw an error if file is not found
-  Read_teflon.close();
+  // // Define Teflon properties
+  // // Properties are read in from data file
+  // std::ifstream Read_teflon;
+  // G4String teflon_file = path+"teflon.dat";
+  // std::vector<G4double> Teflon_Energy;
+  // std::vector<G4double> Teflon_Reflectivity;
+  // std::vector<G4double> Teflon_Zero;
+   G4double wavelength; // x values
+  // G4double teflon_ref_coeff; // y values
+  // Read_teflon.open(teflon_file);
+  // if (Read_teflon.is_open()){
+  //   while(!Read_teflon.eof()){
+  //     G4String filler; // This just skips the coma and space in data files
+  //     Read_teflon >> wavelength >> filler >> teflon_ref_coeff;
+  //     Teflon_Energy.push_back((1240/wavelength)*eV);
+  //     Teflon_Reflectivity.push_back(1.*teflon_ref_coeff);
+  //     Teflon_Zero.push_back(1e-6);
+  //   }
+  // }
+  // else
+  // G4cout << "Error opening file: " << teflon_file << G4endl; // throw an error if file is not found
+  // Read_teflon.close();
 
-  // Define Teflon optical boundary surface properties
-  OpticalTeflon = new G4OpticalSurface("OpticalTeflon");
-  OpticalTeflon->SetModel(unified); // Either glisur (GEANT3 model) or unified surface model: set references online
-  OpticalTeflon->SetPolish(0); // Set level of polish
-  OpticalTeflon->SetFinish(groundfrontpainted); // Sets finish to one of 6 options: see references online - based off polished or grounded
-  OpticalTeflon->SetType(dielectric_metal); // Sets boundary type: dielectric-dielectric or dielectric-metal
-  // Define Teflon material properties
-  TeflonMPT = new G4MaterialPropertiesTable(); // Creates table to populate with various material properties: reflectivity, ...
-  TeflonMPT->AddProperty("REFLECTIVITY",Teflon_Energy, Teflon_Reflectivity);
-  TeflonMPT->AddProperty("SPECULARLOBECONSTANT",Teflon_Energy, Teflon_Zero);
-  TeflonMPT->AddProperty("SPECULARSPIKECONSTANT", Teflon_Energy, Teflon_Zero);
-  TeflonMPT->AddProperty("BACKSCATTERCONSTANT", Teflon_Energy, Teflon_Zero);
-  // Geometrical implementation of boundary surface
-  OpticalTeflon->SetMaterialPropertiesTable(TeflonMPT);
-  //SSTeflon = new G4LogicalSkinSurface("b_Teflon",LogicalTeflon,OpticalTeflon); // Applies optical Teflon properties to ogical Teflon surface
+  // // Define Teflon optical boundary surface properties
+  // OpticalTeflon = new G4OpticalSurface("OpticalTeflon");
+  // OpticalTeflon->SetModel(unified); // Either glisur (GEANT3 model) or unified surface model: set references online
+  // OpticalTeflon->SetPolish(0); // Set level of polish
+  // OpticalTeflon->SetFinish(groundfrontpainted); // Sets finish to one of 6 options: see references online - based off polished or grounded
+  // OpticalTeflon->SetType(dielectric_metal); // Sets boundary type: dielectric-dielectric or dielectric-metal
+  // // Define Teflon material properties
+  // TeflonMPT = new G4MaterialPropertiesTable(); // Creates table to populate with various material properties: reflectivity, ...
+  // TeflonMPT->AddProperty("REFLECTIVITY",Teflon_Energy, Teflon_Reflectivity);
+  // TeflonMPT->AddProperty("SPECULARLOBECONSTANT",Teflon_Energy, Teflon_Zero);
+  // TeflonMPT->AddProperty("SPECULARSPIKECONSTANT", Teflon_Energy, Teflon_Zero);
+  // TeflonMPT->AddProperty("BACKSCATTERCONSTANT", Teflon_Energy, Teflon_Zero);
+  // // Geometrical implementation of boundary surface
+  // OpticalTeflon->SetMaterialPropertiesTable(TeflonMPT);
+  // //SSTeflon = new G4LogicalSkinSurface("b_Teflon",LogicalTeflon,OpticalTeflon); // Applies optical Teflon properties to ogical Teflon surface
 
 
-  // Define Mylar properties
-  std::ifstream Read_mylar;
-  G4String mylar_file = path+"mylar.dat";
-  std::vector<G4double> Mylar_Energy;
-  std::vector<G4double> Mylar_Reflectivity;
-  std::vector<G4double> Mylar_Zero;
-  std::vector<G4double> Mylar_Un;
-  G4double mylar_ref_coeff;
-  Read_mylar.open(mylar_file);
-  if (Read_mylar.is_open()){
-    while(!Read_mylar.eof()){
-      G4String filler;
-      Read_mylar >> wavelength >> filler >> mylar_ref_coeff;
-      Mylar_Energy.push_back((1240/wavelength)*eV);
-      Mylar_Reflectivity.push_back(1.*mylar_ref_coeff);
-      Mylar_Zero.push_back(0.0);
-      Mylar_Un.push_back(1.0);
-    }
-  }
-  else
-  G4cout << "Error opening file: " << mylar_file << G4endl;
-  Read_mylar.close();
+  // // Define Mylar properties
+  // std::ifstream Read_mylar;
+  // G4String mylar_file = path+"mylar.dat";
+  // std::vector<G4double> Mylar_Energy;
+  // std::vector<G4double> Mylar_Reflectivity;
+  // std::vector<G4double> Mylar_Zero;
+  // std::vector<G4double> Mylar_Un;
+  // G4double mylar_ref_coeff;
+  // Read_mylar.open(mylar_file);
+  // if (Read_mylar.is_open()){
+  //   while(!Read_mylar.eof()){
+  //     G4String filler;
+  //     Read_mylar >> wavelength >> filler >> mylar_ref_coeff;
+  //     Mylar_Energy.push_back((1240/wavelength)*eV);
+  //     Mylar_Reflectivity.push_back(1.*mylar_ref_coeff);
+  //     Mylar_Zero.push_back(0.0);
+  //     Mylar_Un.push_back(1.0);
+  //   }
+  // }
+  // else
+  // G4cout << "Error opening file: " << mylar_file << G4endl;
+  // Read_mylar.close();
 
-  // Define Mylar optical boundary surface properties
-  OpticalMylar = new G4OpticalSurface("OpticalMylar");
-  OpticalMylar->SetModel(glisur);
-  OpticalMylar->SetFinish(polished);
-  OpticalMylar->SetType(dielectric_metal);
+  // // Define Mylar optical boundary surface properties
+  // OpticalMylar = new G4OpticalSurface("OpticalMylar");
+  // OpticalMylar->SetModel(glisur);
+  // OpticalMylar->SetFinish(polished);
+  // OpticalMylar->SetType(dielectric_metal);
 
-  // Define Mylar material properties
-  MylarMPT = new G4MaterialPropertiesTable();
-  MylarMPT->AddProperty("REFLECTIVITY", Mylar_Energy, Mylar_Reflectivity);
-  MylarMPT->AddProperty("SPECULARLOBECONSTANT", Mylar_Energy, Mylar_Un);
-  MylarMPT->AddProperty("SPECULARSPIKECONSTANT", Mylar_Energy, Mylar_Un);
-  //MylarMPT->AddProperty("DIFFUSELOBECONSTANT",mylar_energy,realzero,mylar_entries);
-  MylarMPT->AddProperty("BACKSCATTERCONSTANT", Mylar_Energy, Mylar_Zero);
+  // // Define Mylar material properties
+  // MylarMPT = new G4MaterialPropertiesTable();
+  // MylarMPT->AddProperty("REFLECTIVITY", Mylar_Energy, Mylar_Reflectivity);
+  // MylarMPT->AddProperty("SPECULARLOBECONSTANT", Mylar_Energy, Mylar_Un);
+  // MylarMPT->AddProperty("SPECULARSPIKECONSTANT", Mylar_Energy, Mylar_Un);
+  // //MylarMPT->AddProperty("DIFFUSELOBECONSTANT",mylar_energy,realzero,mylar_entries);
+  // MylarMPT->AddProperty("BACKSCATTERCONSTANT", Mylar_Energy, Mylar_Zero);
 
-  // Geometrical implementation of boundary surface
-  OpticalMylar->SetMaterialPropertiesTable(MylarMPT);
+  // // Geometrical implementation of boundary surface
+  // OpticalMylar->SetMaterialPropertiesTable(MylarMPT);
 
-  //SSMylar = new G4LogicalSkinSurface("SSMylar", LogicalMylar,OpticalMylar); // Applies Mylar properties to logical mylar surface
-  SSAlu = new G4LogicalSkinSurface("SSAlu", LogicalBoitierAlu,OpticalMylar); // Applies Mylar properties to logical Alu surface
+  // //SSMylar = new G4LogicalSkinSurface("SSMylar", LogicalMylar,OpticalMylar); // Applies Mylar properties to logical mylar surface
+  // SSAlu = new G4LogicalSkinSurface("SSAlu", LogicalBoitierAlu,OpticalMylar); // Applies Mylar properties to logical Alu surface
 
 
   //***********************
@@ -514,8 +514,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
   // Set accuracy parameters
   G4double deltaChord        = 0.25*um; //3.0 mm by default
-  G4double epsMax            = 1.0e-1;  // Pure number -- maximum relative integration error
-  G4double epsMin            = 2.5e-2;  //
+  G4double epsMax            = 1.0e-2;  // Pure number -- maximum relative integration error
+  G4double epsMin            = 2.5e-4;  //
   G4double deltaOneStep      = 0.01*um;
   G4double deltaIntersection = 0.1*um;
 
@@ -563,15 +563,15 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
       // Various Positioning values
       //***********************
 
-      Z_Position_MFPlates = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates/2;
-      Z_Position_EFPlates = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates/2;
-      Z_Position_ZnS = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness/2;
-      Z_Position_ZnSLG = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ZnSLGThickness/2;
-      Z_Position_Sc = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness/2;
+      Z_Position_MFPlates = Dist_pinhole_MFPlates + MF_Length_plates/2;
+      Z_Position_EFPlates = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates/2;
+      Z_Position_ZnS = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness/2;
+      Z_Position_ZnSLG = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ZnSLGThickness/2;
+      Z_Position_Sc = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness/2;
       //Z_Position_ZnSLG = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness +ZnSLGThickness/2;
-      Z_Position_Fiber = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + FiberLength/2;
+      Z_Position_Fiber = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + FiberLength/2;
       //Z_Position_Photocathode = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + FiberLength + DetectorThickness/2;
-      Z_Position_Photocathode = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness+ZnSLGThickness+DetectorThickness/2;
+      Z_Position_Photocathode = Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + ZnSThickness + ScintillatorThickness+ZnSLGThickness+DetectorThickness/2;
       //Z_Position_Photocathode = FiberLength/2 + LensTranslation + DetectorTranslation + DetectorThickness/2 ;
       //Z_Position_Lens = PinholeThickness/2 + Dist_pinhole_MFPlates + MF_Length_plates + Dist_between_plates + EF_Length_plates + Dist_EFPlates_Detector + FiberLength + LensTranslation + LensThickness/2;
       Z_Position_Lens = FiberLength/2 + LensTranslation - LensThickness/2;
@@ -590,7 +590,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
 
       PhysicalPinhole = new G4PVPlacement(G4Transform3D
-        (DontRotate,G4ThreeVector(0*mm, 0*mm, 0*mm)), // Set at origin as basis of everything else
+        (DontRotate,G4ThreeVector(0*mm, 0*mm, -PinholeThickness/2)), // Set at origin as basis of everything else
         LogicalPinhole,"Pinhole",
         LogicalHolder,false,0);
 

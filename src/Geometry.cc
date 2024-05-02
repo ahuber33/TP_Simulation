@@ -488,7 +488,7 @@ G4LogicalVolume *Geometry::GetVolumeMFPlates(){
 G4LogicalVolume *Geometry::GetPinhole(){
 
   //Material = scintProp->GetMaterial("Carbon");
-  Material = scintProp->GetMaterial("Plomb_Antimoine");
+  Material = scintProp->GetMaterial("Alu");
 
   G4Tubs *Tubs = new G4Tubs   ("Tubs",             //its name
   //0., (38.1/2)*mm, (38.1/2)*mm, 0, 360*deg);    //its size
