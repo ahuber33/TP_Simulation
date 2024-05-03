@@ -83,6 +83,39 @@ private:
   G4LogicalVolume *LogicalFiber;
   G4LogicalVolume *LogicalLens;
   G4LogicalVolume *LogicalLens2;
+  G4LogicalVolume *LogicalRATP_Aimant1;
+  G4LogicalVolume *LogicalRATP_Aimant2;
+  G4LogicalVolume *LogicalRATP_CoteYokeAimant1;
+  G4LogicalVolume *LogicalRATP_CoteYokeAimant2;
+  G4LogicalVolume *LogicalRATP_EntreeYokeAimant1;
+  G4LogicalVolume *LogicalRATP_EntreeYokeAimant2;
+  G4LogicalVolume *LogicalRATP_FondYokeAimant1;
+  G4LogicalVolume *LogicalRATP_FondYokeAimant2;
+  G4LogicalVolume *LogicalRATP_CaleYokeAimant;
+  G4LogicalVolume *LogicalRATP_Electrode1;
+  G4LogicalVolume *LogicalRATP_Electrode2;
+  G4LogicalVolume *LogicalRATP_ColonneElectrode1;
+  G4LogicalVolume *LogicalRATP_ColonneElectrode2;
+  G4LogicalVolume *LogicalRATP_ColonneElectrode3;
+  G4LogicalVolume *LogicalRATP_ColonneElectrode4;
+  G4LogicalVolume *LogicalRATP_BaseElectrode1;
+  G4LogicalVolume *LogicalRATP_BaseElectrode2;
+  G4LogicalVolume *LogicalRATP_BaseElectrode3;
+  G4LogicalVolume *LogicalRATP_BaseElectrode4;
+  G4LogicalVolume *LogicalRATP_BaseBoite;
+  G4LogicalVolume *LogicalRATP_CoteBoite;
+  G4LogicalVolume *LogicalRATP_CapotBoite;
+  G4LogicalVolume *LogicalRATP_EntreeBoite;
+  G4LogicalVolume *LogicalRATP_SHV1;
+  G4LogicalVolume *LogicalRATP_SHV2;
+  G4LogicalVolume *LogicalRATP_SocleConnecteur;
+  G4LogicalVolume *LogicalRATP_BaseBoiteDetecteur;
+  G4LogicalVolume *LogicalRATP_EntreeBoiteDetecteur;
+  G4LogicalVolume *LogicalRATP_SortieBoiteDetecteur;
+  G4LogicalVolume *LogicalRATP_CoteBoiteDetecteur1;
+  G4LogicalVolume *LogicalRATP_CoteBoiteDetecteur2;
+  G4LogicalVolume *LogicalRATP_CouvercleBoiteDetecteur;
+  G4LogicalVolume *LogicalRATP_MontageIP;
 
 
   // Physical volumes
@@ -113,6 +146,40 @@ private:
   G4VPhysicalVolume *PhysicalOuterCladdingFiberBunch[1000000];
   G4VPhysicalVolume *PhysicalLens;
   G4VPhysicalVolume *PhysicalLens2;
+  G4VPhysicalVolume *PhysicalRATP_Aimant1;
+  G4VPhysicalVolume *PhysicalRATP_Aimant2;
+  G4VPhysicalVolume *PhysicalRATP_CoteYokeAimant1;
+  G4VPhysicalVolume *PhysicalRATP_CoteYokeAimant2;
+  G4VPhysicalVolume *PhysicalRATP_EntreeYokeAimant1;
+  G4VPhysicalVolume *PhysicalRATP_EntreeYokeAimant2;
+  G4VPhysicalVolume *PhysicalRATP_FondYokeAimant1;
+  G4VPhysicalVolume *PhysicalRATP_FondYokeAimant2;
+  G4VPhysicalVolume *PhysicalRATP_CaleYokeAimant;
+  G4VPhysicalVolume *PhysicalRATP_Electrode1;
+  G4VPhysicalVolume *PhysicalRATP_Electrode2;
+  G4VPhysicalVolume *PhysicalRATP_ColonneElectrode1;
+  G4VPhysicalVolume *PhysicalRATP_ColonneElectrode2;
+  G4VPhysicalVolume *PhysicalRATP_ColonneElectrode3;
+  G4VPhysicalVolume *PhysicalRATP_ColonneElectrode4;
+  G4VPhysicalVolume *PhysicalRATP_BaseElectrode1;
+  G4VPhysicalVolume *PhysicalRATP_BaseElectrode2;
+  G4VPhysicalVolume *PhysicalRATP_BaseElectrode3;
+  G4VPhysicalVolume *PhysicalRATP_BaseElectrode4;
+  G4VPhysicalVolume *PhysicalRATP_BaseBoite;
+  G4VPhysicalVolume *PhysicalRATP_CapotBoite;
+  G4VPhysicalVolume *PhysicalRATP_CoteBoite;
+  G4VPhysicalVolume *PhysicalRATP_EntreeBoite;
+  G4VPhysicalVolume *PhysicalRATP_SHV1;
+  G4VPhysicalVolume *PhysicalRATP_SHV2;
+  G4VPhysicalVolume *PhysicalRATP_SocleConnecteur;
+  G4VPhysicalVolume *PhysicalRATP_BaseBoiteDetecteur;
+  G4VPhysicalVolume *PhysicalRATP_EntreeBoiteDetecteur;
+  G4VPhysicalVolume *PhysicalRATP_SortieBoiteDetecteur;
+  G4VPhysicalVolume *PhysicalRATP_CoteBoiteDetecteur1;
+  G4VPhysicalVolume *PhysicalRATP_CoteBoiteDetecteur2;
+  G4VPhysicalVolume *PhysicalRATP_CouvercleBoiteDetecteur;
+  G4VPhysicalVolume *PhysicalRATP_MontageIP;
+
 
 
   // Optical surfaces

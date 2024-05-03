@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../XML schemas/gdml.xsd">
+  <define>
+    <constant name="HALFPI" value="pi/2."/>
+  	<constant name="PI" value="1.*pi"/>
+  	<constant name="TWOPI" value="2.*pi"/>
+  	<position name="aimant_40X40X10__Meshed_0" unit="mm" x="20.0" y="-5.0" z="27.0"/>
+	<position name="aimant_40X40X10__Meshed_1" unit="mm" x="-20.0" y="-15.0" z="27.0"/>
+	<position name="aimant_40X40X10__Meshed_2" unit="mm" x="20.0" y="-15.0" z="27.0"/>
+	<position name="aimant_40X40X10__Meshed_3" unit="mm" x="-20.0" y="-15.0" z="-13.0"/>
+	<position name="aimant_40X40X10__Meshed_4" unit="mm" x="20.0" y="-5.0" z="-13.0"/>
+	<position name="aimant_40X40X10__Meshed_5" unit="mm" x="-20.0" y="-5.0" z="27.0"/>
+	<position name="aimant_40X40X10__Meshed_6" unit="mm" x="20.0" y="-15.0" z="-13.0"/>
+	<position name="aimant_40X40X10__Meshed_7" unit="mm" x="-20.0" y="-5.0" z="-13.0"/>
+	<position name="center" x="0" y="0" z="0" unit="mm"/>
+	<rotation name="identity" x="0" y="0" z="0"/>
+</define>
+<materials/>
+<materials/>
+<solids>
+	<tessellated name="aimant_1Solid">
+		<triangular vertex1="aimant_40X40X10__Meshed_7" vertex2="aimant_40X40X10__Meshed_3" vertex3="aimant_40X40X10__Meshed_5" type="ABSOLUTE"/>
+		<triangular vertex1="aimant_40X40X10__Meshed_5" vertex2="aimant_40X40X10__Meshed_3" vertex3="aimant_40X40X10__Meshed_1" type="ABSOLUTE"/>
+		<triangular vertex1="aimant_40X40X10__Meshed_0" vertex2="aimant_40X40X10__Meshed_5" vertex3="aimant_40X40X10__Meshed_2" type="ABSOLUTE"/>
+		<triangular vertex1="aimant_40X40X10__Meshed_2" vertex2="aimant_40X40X10__Meshed_5" vertex3="aimant_40X40X10__Meshed_1" type="ABSOLUTE"/>
+		<triangular vertex1="aimant_40X40X10__Meshed_2" vertex2="aimant_40X40X10__Meshed_4" vertex3="aimant_40X40X10__Meshed_0" type="ABSOLUTE"/>
+		<triangular vertex1="aimant_40X40X10__Meshed_6" vertex2="aimant_40X40X10__Meshed_4" vertex3="aimant_40X40X10__Meshed_2" type="ABSOLUTE"/>
+		<triangular vertex1="aimant_40X40X10__Meshed_4" vertex2="aimant_40X40X10__Meshed_6" vertex3="aimant_40X40X10__Meshed_7" type="ABSOLUTE"/>
+		<triangular vertex1="aimant_40X40X10__Meshed_7" vertex2="aimant_40X40X10__Meshed_6" vertex3="aimant_40X40X10__Meshed_3" type="ABSOLUTE"/>
+		<triangular vertex1="aimant_40X40X10__Meshed_4" vertex2="aimant_40X40X10__Meshed_7" vertex3="aimant_40X40X10__Meshed_5" type="ABSOLUTE"/>
+		<triangular vertex1="aimant_40X40X10__Meshed_4" vertex2="aimant_40X40X10__Meshed_5" vertex3="aimant_40X40X10__Meshed_0" type="ABSOLUTE"/>
+		<triangular vertex1="aimant_40X40X10__Meshed_1" vertex2="aimant_40X40X10__Meshed_6" vertex3="aimant_40X40X10__Meshed_2" type="ABSOLUTE"/>
+		<triangular vertex1="aimant_40X40X10__Meshed_3" vertex2="aimant_40X40X10__Meshed_6" vertex3="aimant_40X40X10__Meshed_1" type="ABSOLUTE"/>
+	</tessellated>
+</solids>
+<structure>
+    <volume name="aimant_1">
+    	<solidref ref="aimant_1Solid"/>
+    </volume>
+  </structure>
+<setup name="Default" version="1.0">
+    <world ref="LV_aimant_40X40X10__Meshed"/>
+  </setup>
+</gdml>

@@ -63,6 +63,7 @@ private:
   G4Element* elementI;
   G4Element* elementGd;
   G4Element* elementGa;
+  G4Element* elementNd;
 
   G4Material *SiO2;
   G4Material *Silicium;
@@ -115,6 +116,7 @@ private:
   G4Material *LuAG;
   G4Material *GAGG;
   G4Material *YAG;
+  G4Material *Neodyme;
 
   G4MaterialPropertiesTable *bs_glassMPT;
   G4MaterialPropertiesTable *vacMPT;

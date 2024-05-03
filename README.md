@@ -1,7 +1,7 @@
 # TPSim for Thomson Parabola Simulation [huber@cenbg.in2p3.fr, huberarnaud@gmail.com]
 
 ## INSTRUCTIONS TO USE THE SIMULATION
-- Download the VMWare [Geant4.11.0.2](https://heberge.lp2ib.in2p3.fr/G4VM/index.html)
+- Download the VMWare [Geant4.11.2.1](https://heberge.lp2ib.in2p3.fr/G4VM/index.html)
 
 - Copy all the files from AIFIRA2023_Simulation folder [ici](https://github.com/ahuber33/TP_Simulation)
 
@@ -203,3 +203,7 @@ Personnaly, I used the vrml.mac but you can create another one. Just to remember
 
 ## Commit #22 le 09/01/2024 [TPSim.0.9.0]
 - Passage de la simulation sur la version 11.2.0 de GEANT4 (pas de problème de compilation)  
+
+## Commit #23 le 03/05/2024 [TPSim.0.10.0]
+- Passage de la simulation sur la version 11.2.1 de GEANT4 (à nouveau changement de référentiel pour la lecture des fichiers nécessaire pour la simulation optique). Teflon et Mylar ont été commentés car non nécessaire pour la simulation
+- Implémentation de la géométrie réelle de la TP RATP à partir des fichiers méca du labo d'études du CELIA.
