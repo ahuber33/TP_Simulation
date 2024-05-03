@@ -54,6 +54,39 @@ public:
   G4LogicalVolume *GetPhotocathode();
   G4LogicalVolume *GetRoundPhotocathode();
   G4LogicalVolume *GetLens();
+  G4LogicalVolume *GetRATP_Aimant1();
+  G4LogicalVolume *GetRATP_Aimant2();
+  G4LogicalVolume *GetRATP_CoteYokeAimant1();
+  G4LogicalVolume *GetRATP_CoteYokeAimant2();
+  G4LogicalVolume *GetRATP_EntreeYokeAimant1();
+  G4LogicalVolume *GetRATP_EntreeYokeAimant2();
+  G4LogicalVolume *GetRATP_FondYokeAimant1();
+  G4LogicalVolume *GetRATP_FondYokeAimant2();
+  G4LogicalVolume *GetRATP_CaleYokeAimant();
+  G4LogicalVolume *GetRATP_Electrode1();
+  G4LogicalVolume *GetRATP_Electrode2();
+  G4LogicalVolume *GetRATP_ColonneElectrode1();
+  G4LogicalVolume *GetRATP_ColonneElectrode2();
+  G4LogicalVolume *GetRATP_ColonneElectrode3();
+  G4LogicalVolume *GetRATP_ColonneElectrode4();
+  G4LogicalVolume *GetRATP_BaseElectrode1();
+  G4LogicalVolume *GetRATP_BaseElectrode2();
+  G4LogicalVolume *GetRATP_BaseElectrode3();
+  G4LogicalVolume *GetRATP_BaseElectrode4();
+  G4LogicalVolume *GetRATP_BaseBoite();
+  G4LogicalVolume *GetRATP_CapotBoite();
+  G4LogicalVolume *GetRATP_CoteBoite();
+  G4LogicalVolume *GetRATP_EntreeBoite();
+  G4LogicalVolume *GetRATP_SHV1();
+  G4LogicalVolume *GetRATP_SHV2();
+  G4LogicalVolume *GetRATP_SocleConnecteur();
+  G4LogicalVolume *GetRATP_BaseBoiteDetecteur();
+  G4LogicalVolume *GetRATP_EntreeBoiteDetecteur();
+  G4LogicalVolume *GetRATP_SortieBoiteDetecteur();
+  G4LogicalVolume *GetRATP_CoteBoiteDetecteur1();
+  G4LogicalVolume *GetRATP_CoteBoiteDetecteur2();
+  G4LogicalVolume *GetRATP_MontageIP();
+  G4LogicalVolume *GetRATP_CouvercleBoiteDetecteur();
 
 
   // Functions that can be called to return various scint dimensions

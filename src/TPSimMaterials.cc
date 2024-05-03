@@ -171,6 +171,7 @@ void TPSimMaterials::Construct()
 	elementI = new G4Element ("Iode", "Iode", 53., 126.90447*g/mole);
 	elementGd = new G4Element ("Gadolinium", "Gadolinium", 64., 157.25*g/mole);
 	elementGa = new G4Element ("Gallium", "Gallium", 31., 69.723*g/mole);
+	elementNd = new G4Element ("Neodyme", "Neodyme", 60., 144.242*g/mole);
 	// G4Isotope* N14 = new G4Isotope("N14", 7, 14);
 	// elementN = new G4Element("Azote", "Azote", 1);
 	// elementN->AddIsotope(N14, 100.*perCent);
@@ -179,6 +180,13 @@ void TPSimMaterials::Construct()
 	//***********************
 	// Build Materials      *
 	//***********************
+
+	// Neodyme
+	Neodyme = new G4Material("Neodyme", 7.5*g/cm3, 1);
+	Neodyme->AddElement(elementNd,1);
+
+	//#######################################################################################################################################
+	//#######################################################################################################################################
 
 	// DiAzote
 	G4double M_mole_N2 = 2*14; //en g/mole

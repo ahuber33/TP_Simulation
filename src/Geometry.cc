@@ -276,6 +276,490 @@ Geometry::~Geometry(){
   if(clear) { delete clear; clear = 0; }
 }
 
+G4LogicalVolume *Geometry::GetRATP_Aimant1(){
+
+  Material = scintProp->GetMaterial("Neodyme");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/aimant_1.gdml", false);
+  LogicalVolume = parser->GetVolume("aimant_1");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+G4LogicalVolume *Geometry::GetRATP_Aimant2(){
+
+  Material = scintProp->GetMaterial("Neodyme");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/aimant_2.gdml", false);
+  LogicalVolume = parser->GetVolume("aimant_2");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_CoteYokeAimant1(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/cote_YOKE_aimant_RATP.gdml", false);
+  LogicalVolume = parser->GetVolume("cote_YOKE_Aimant_RATP");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_CoteYokeAimant2(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/cote_YOKE_aimant_RATP_bis.gdml", false);
+  LogicalVolume = parser->GetVolume("cote_YOKE_Aimant_RATP_bis");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_EntreeYokeAimant1(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/entree_YOKE_aimant_RATP.gdml", false);
+  LogicalVolume = parser->GetVolume("entree_YOKE_aimant_RATP");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+G4LogicalVolume *Geometry::GetRATP_EntreeYokeAimant2(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/entree_YOKE_aimant_RATP_bis.gdml", false);
+  LogicalVolume = parser->GetVolume("entree_YOKE_aimant_RATP_bis");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_FondYokeAimant1(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/fond_YOKE_aimant_RATP.gdml", false);
+  LogicalVolume = parser->GetVolume("Fond_YOKE_Aimant");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+G4LogicalVolume *Geometry::GetRATP_FondYokeAimant2(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/fond_YOKE_aimant_RATP_bis.gdml", false);
+  LogicalVolume = parser->GetVolume("Fond_YOKE_Aimant_bis");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+G4LogicalVolume *Geometry::GetRATP_CaleYokeAimant(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/cale_YOKE_aimant_RATP.gdml", false);
+  LogicalVolume = parser->GetVolume("Cale_YOKE_Aimant");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_Electrode1(){
+
+  Material = scintProp->GetMaterial("Fer");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/electrode_RATP_1.gdml", false);
+  LogicalVolume = parser->GetVolume("Electrode1");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_Electrode2(){
+
+  Material = scintProp->GetMaterial("Fer");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/electrode_RATP_2.gdml", false);
+  LogicalVolume = parser->GetVolume("Electrode2");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_ColonneElectrode1(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/colonne_electrode_RATP_1.gdml", false);
+  LogicalVolume = parser->GetVolume("Colonne_electrode1");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+G4LogicalVolume *Geometry::GetRATP_ColonneElectrode2(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/colonne_electrode_RATP_2.gdml", false);
+  LogicalVolume = parser->GetVolume("Colonne_electrode2");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+G4LogicalVolume *Geometry::GetRATP_ColonneElectrode3(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/colonne_electrode_RATP_3.gdml", false);
+  LogicalVolume = parser->GetVolume("Colonne_electrode3");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+G4LogicalVolume *Geometry::GetRATP_ColonneElectrode4(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/colonne_electrode_RATP_4.gdml", false);
+  LogicalVolume = parser->GetVolume("Colonne_electrode4");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_BaseElectrode1(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/base_electrode_RATP_1.gdml", false);
+  LogicalVolume = parser->GetVolume("Base_electrode1");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+G4LogicalVolume *Geometry::GetRATP_BaseElectrode2(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/base_electrode_RATP_2.gdml", false);
+  LogicalVolume = parser->GetVolume("Base_electrode2");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+G4LogicalVolume *Geometry::GetRATP_BaseElectrode3(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/base_electrode_RATP_3.gdml", false);
+  LogicalVolume = parser->GetVolume("Base_electrode3");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+G4LogicalVolume *Geometry::GetRATP_BaseElectrode4(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/base_electrode_RATP_4.gdml", false);
+  LogicalVolume = parser->GetVolume("Base_electrode4");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_BaseBoite(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/base_boite_RATP.gdml", false);
+  LogicalVolume = parser->GetVolume("Base_boite");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_CapotBoite(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/capot_boite_RATP.gdml", false);
+  LogicalVolume = parser->GetVolume("Capot_boite");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_CoteBoite(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/cote_boite_RATP.gdml", false);
+  LogicalVolume = parser->GetVolume("Cote_boite");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_EntreeBoite(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/entree_boite_RATP.gdml", false);
+  LogicalVolume = parser->GetVolume("Entree_boite");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_SHV1(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/SHV_1.gdml", false);
+  LogicalVolume = parser->GetVolume("SHV1");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_SHV2(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/SHV_2.gdml", false);
+  LogicalVolume = parser->GetVolume("SHV2");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_SocleConnecteur(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/socle_connecteur_RATP.gdml", false);
+  LogicalVolume = parser->GetVolume("Socle_connecteur");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_BaseBoiteDetecteur(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/base_boite_detecteur_RATP.gdml", false);
+  LogicalVolume = parser->GetVolume("Base_boite_detecteur");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_EntreeBoiteDetecteur(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/entree_boite_detecteur_RATP.gdml", false);
+  LogicalVolume = parser->GetVolume("Entree_boite_detecteur");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_SortieBoiteDetecteur(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/sortie_boite_detecteur_RATP.gdml", false);
+  LogicalVolume = parser->GetVolume("Sortie_boite_detecteur");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_MontageIP(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/montage_IP_RATP.gdml", false);
+  LogicalVolume = parser->GetVolume("Montage_IP");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_CoteBoiteDetecteur1(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/cote_boite_detecteur_RATP.gdml", false);
+  LogicalVolume = parser->GetVolume("Cote_boite_detecteur1");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_CoteBoiteDetecteur2(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/cote_boite_detecteur_RATP_bis.gdml", false);
+  LogicalVolume = parser->GetVolume("Cote_boite_detecteur2");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRATP_CouvercleBoiteDetecteur(){
+
+  Material = scintProp->GetMaterial("Alu");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/couvercle_boite_detecteur_RATP.gdml", false);
+  LogicalVolume = parser->GetVolume("Couvercle_boite_detecteur");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
 
 G4LogicalVolume *Geometry::GetCoreRoundFiber(){
 
@@ -392,7 +876,8 @@ G4LogicalVolume *Geometry::GetScTest(){
   //scintillator = scintProp->GetMaterial("Alu");
 
   G4Box *Box = new G4Box   ("Box",             //its name
-  ScintillatorLength/2, 100./2, ScintillatorThickness/2);    //its size
+  //ScintillatorLength/2, 100./2, ScintillatorThickness/2);    //its size
+  ScintillatorThickness/2, 58/2*mm, ScintillatorLength/2);
 
   LogicalVolume = new G4LogicalVolume(Box, Material, "Sc_Test",0,0,0);
 
@@ -430,7 +915,8 @@ G4LogicalVolume *Geometry::GetVolumeEFPlates(){
   float L = EF_Dist_between_plates +2*EF_Thickness_plates;
 
   G4Box *Box1 = new G4Box   ("Box1",             //its name
-  EF_Width_plates/2, L/2, EF_Length_plates/2);    //its size
+  EF_Length_plates/2, EF_Dist_between_plates/2, EF_Width_plates/2);
+  //EF_Width_plates/2, L/2, EF_Length_plates/2);    //its size
 
   //G4Box *Box2 = new G4Box   ("Box2",             //its name
   //            (Width_plates+1)/2, Dist_between_plates/2, (Length_plates+1)/2);    //its size
@@ -472,7 +958,8 @@ G4LogicalVolume *Geometry::GetVolumeMFPlates(){
   float L = MF_Dist_between_plates +2*MF_Thickness_plates;
 
   G4Box *Box1 = new G4Box   ("Box1",             //its name
-  MF_Width_plates/2, L/2, MF_Length_plates/2);    //its size
+  MF_Length_plates/2, MF_Dist_between_plates/2, MF_Width_plates/2);
+  //MF_Width_plates/2, L/2, MF_Length_plates/2);    //its size
 
   //G4Box *Box2 = new G4Box   ("Box2",             //its name
   //            (Width_plates+1)/2, Dist_between_plates/2, (Length_plates+1)/2);    //its size

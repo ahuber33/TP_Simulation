@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../XML schemas/gdml.xsd">
+	<define>
+		<position name="v0" unit="mm" x="-0.500" y="29.000" z="38.000"/>
+		<position name="v1" unit="mm" x="-0.500" y="29.000" z="-38.000"/>
+		<position name="v2" unit="mm" x="-0.500" y="-29.000" z="38.000"/>
+		<position name="v3" unit="mm" x="-0.500" y="-29.000" z="38.000"/>
+		<position name="v4" unit="mm" x="-0.500" y="-29.000" z="-38.000"/>
+		<position name="v5" unit="mm" x="0.500" y="29.000" z="38.000"/>
+		<position name="v6" unit="mm" x="0.500" y="-29.000" z="38.000"/>
+		<position name="v7" unit="mm" x="0.500" y="-29.000" z="38.000"/>
+		<position name="v8" unit="mm" x="-0.500" y="-29.000" z="38.000"/>
+		<position name="v9" unit="mm" x="0.500" y="29.000" z="-38.000"/>
+		<position name="v10" unit="mm" x="0.500" y="-29.000" z="-38.000"/>
+		<position name="v11" unit="mm" x="0.500" y="-29.000" z="-38.000"/>
+		<position name="v12" unit="mm" x="0.500" y="-29.000" z="38.000"/>
+		<position name="v13" unit="mm" x="0.500" y="29.000" z="-38.000"/>
+		<position name="v14" unit="mm" x="0.500" y="29.000" z="-38.000"/>
+		<position name="v15" unit="mm" x="0.500" y="-29.000" z="-38.000"/>
+		<position name="v16" unit="mm" x="0.500" y="29.000" z="-38.000"/>
+		<position name="v17" unit="mm" x="0.500" y="29.000" z="-38.000"/>
+		<position name="v18" unit="mm" x="0.500" y="-29.000" z="-38.000"/>
+		<position name="v19" unit="mm" x="-0.500" y="-29.000" z="38.000"/>
+		<position name="v20" unit="mm" x="0.500" y="-29.000" z="-38.000"/>
+		<position name="v21" unit="mm" x="0.500" y="-29.000" z="38.000"/>
+		<position name="v22" unit="mm" x="-0.500" y="-29.000" z="38.000"/>
+	</define>
+	<materials>
+	</materials>
+	<solids>
+		<tessellated aunit="deg" lunit="mm" name="IP_detecteur_RATPSolid">
+			<triangular vertex1="v0" vertex2="v1" vertex3="v2"/>
+			<triangular vertex1="v3" vertex2="v1" vertex3="v4"/>
+			<triangular vertex1="v5" vertex2="v0" vertex3="v6"/>
+			<triangular vertex1="v7" vertex2="v0" vertex3="v8"/>
+			<triangular vertex1="v9" vertex2="v5" vertex3="v10"/>
+			<triangular vertex1="v11" vertex2="v5" vertex3="v12"/>
+			<triangular vertex1="v1" vertex2="v13" vertex3="v4"/>
+			<triangular vertex1="v4" vertex2="v14" vertex3="v15"/>
+			<triangular vertex1="v0" vertex2="v16" vertex3="v1"/>
+			<triangular vertex1="v5" vertex2="v17" vertex3="v0"/>
+			<triangular vertex1="v18" vertex2="v19" vertex3="v4"/>
+			<triangular vertex1="v20" vertex2="v21" vertex3="v22"/>
+		</tessellated>
+	</solids>
+	<structure>
+		<volume name="IP_detecteur_RATP">
+			<solidref ref="IP_detecteur_RATPSolid"/>
+		</volume>
+	</structure>
+	<setup name="Default" version="1.0">
+		<world ref="cad_logical00A09B88"/>
+	</setup>
+</gdml>
