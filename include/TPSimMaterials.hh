@@ -88,6 +88,7 @@ private:
   G4Material *Neoprene;
   G4Material *Mica;
   G4Material *Plomb_Antimoine;
+  G4Material *Plomb;
   G4Material *LaBr3;
   G4Material *bs_glass;
   G4Material *polysty;
