@@ -87,6 +87,8 @@ public:
   G4LogicalVolume *GetRATP_CoteBoiteDetecteur2();
   G4LogicalVolume *GetRATP_MontageIP();
   G4LogicalVolume *GetRATP_CouvercleBoiteDetecteur();
+  G4LogicalVolume *GetRATP_PlaquePb();
+  G4LogicalVolume *GetRoundObjective();
 
 
   // Functions that can be called to return various scint dimensions

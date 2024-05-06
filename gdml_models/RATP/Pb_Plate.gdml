@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../XML schemas/gdml.xsd">
+  <define>
+    <constant name="HALFPI" value="pi/2."/>
+  <constant name="PI" value="1.*pi"/>
+  <constant name="TWOPI" value="2.*pi"/>
+  <position name="v0" unit="mm" x="-25.5" y="2.796684980392456" z="22.136857986450195"/>
+  <position name="v1" unit="mm" x="-35.5" y="2.796684980392456" z="22.136857986450195"/>
+  <position name="v2" unit="mm" x="-35.5" y="2.032942771911621" z="20.29302215576172"/>
+  <position name="v3" unit="mm" x="-25.5" y="-32.0" z="50.0"/>
+  <position name="v4" unit="mm" x="-35.5" y="2.032942771911621" z="23.980695724487305"/>
+  <position name="v5" unit="mm" x="-25.5" y="-2.3296217918395996" z="22.811748504638672"/>
+  <position name="v6" unit="mm" x="-35.5" y="-2.3296217918395996" z="22.811748504638672"/>
+  <position name="v7" unit="mm" x="-25.5" y="-2.0691237449645996" z="20.83306884765625"/>
+  <position name="v8" unit="mm" x="-35.5" y="2.707834005355835" z="21.46196746826172"/>
+  <position name="v9" unit="mm" x="-25.5" y="2.707834005355835" z="21.46196746826172"/>
+  <position name="v10" unit="mm" x="-25.5" y="-1.1146835088729858" z="24.39508819580078"/>
+  <position name="v11" unit="mm" x="-25.5" y="-2.0691237449645996" z="23.44064712524414"/>
+  <position name="v12" unit="mm" x="-35.5" y="-1.1146835088729858" z="24.39508819580078"/>
+  <position name="v13" unit="mm" x="-35.5" y="-2.4184730052948" z="22.136857986450195"/>
+  <position name="v14" unit="mm" x="-25.5" y="-0.4857850968837738" z="19.61812973022461"/>
+  <position name="v15" unit="mm" x="-35.5" y="-0.4857850968837738" z="19.61812973022461"/>
+  <position name="v16" unit="mm" x="-25.5" y="0.18910600244998932" z="19.529279708862305"/>
+  <position name="v17" unit="mm" x="-25.5" y="-2.4184730052948" z="22.136857986450195"/>
+  <position name="v18" unit="mm" x="-35.5" y="-32.0" z="50.0"/>
+  <position name="v19" unit="mm" x="-25.5" y="-32.0" z="-48.0"/>
+  <position name="v20" unit="mm" x="-25.5" y="2.447335720062256" z="20.83306884765625"/>
+  <position name="v21" unit="mm" x="-25.5" y="1.492895483970642" z="19.87862777709961"/>
+  <position name="v22" unit="mm" x="-35.5" y="1.492895483970642" z="19.87862777709961"/>
+  <position name="v23" unit="mm" x="-25.5" y="2.447335720062256" z="23.44064712524414"/>
+  <position name="v24" unit="mm" x="-25.5" y="0.8639971017837524" z="19.61812973022461"/>
+  <position name="v25" unit="mm" x="-35.5" y="-2.0691237449645996" z="20.83306884765625"/>
+  <position name="v26" unit="mm" x="-35.5" y="0.8639971017837524" z="19.61812973022461"/>
+  <position name="v27" unit="mm" x="-35.5" y="-2.0691237449645996" z="23.44064712524414"/>
+  <position name="v28" unit="mm" x="-35.5" y="0.18910600244998932" z="19.529279708862305"/>
+  <position name="v29" unit="mm" x="-35.5" y="-32.0" z="-48.0"/>
+  <position name="v30" unit="mm" x="-35.5" y="2.447335720062256" z="20.83306884765625"/>
+  <position name="v31" unit="mm" x="-35.5" y="2.447335720062256" z="23.44064712524414"/>
+  <position name="v32" unit="mm" x="-35.5" y="-2.3296217918395996" z="21.46196746826172"/>
+  <position name="v33" unit="mm" x="-25.5" y="-2.3296217918395996" z="21.46196746826172"/>
+  <position name="v34" unit="mm" x="-25.5" y="40.0" z="50.0"/>
+  <position name="v35" unit="mm" x="-25.5" y="-0.4857850968837738" z="24.65558624267578"/>
+  <position name="v36" unit="mm" x="-25.5" y="0.18910600244998932" z="24.744436264038086"/>
+  <position name="v37" unit="mm" x="-35.5" y="-0.4857850968837738" z="24.65558624267578"/>
+  <position name="v38" unit="mm" x="-25.5" y="-1.6547307968139648" z="20.29302215576172"/>
+  <position name="v39" unit="mm" x="-25.5" y="-1.6547307968139648" z="23.980695724487305"/>
+  <position name="v40" unit="mm" x="-25.5" y="1.492895483970642" z="24.39508819580078"/>
+  <position name="v41" unit="mm" x="-35.5" y="1.492895483970642" z="24.39508819580078"/>
+  <position name="v42" unit="mm" x="-35.5" y="40.0" z="50.0"/>
+  <position name="v43" unit="mm" x="-25.5" y="40.0" z="-48.0"/>
+  <position name="v44" unit="mm" x="-25.5" y="0.8639971017837524" z="24.65558624267578"/>
+  <position name="v45" unit="mm" x="-35.5" y="0.8639971017837524" z="24.65558624267578"/>
+  <position name="v46" unit="mm" x="-35.5" y="0.18910600244998932" z="24.744436264038086"/>
+  <position name="v47" unit="mm" x="-35.5" y="-1.6547307968139648" z="20.29302215576172"/>
+  <position name="v48" unit="mm" x="-35.5" y="-1.6547307968139648" z="23.980695724487305"/>
+  <position name="v49" unit="mm" x="-35.5" y="40.0" z="-48.0"/>
+  <position name="v50" unit="mm" x="-35.5" y="-1.1146835088729858" z="19.87862777709961"/>
+  <position name="v51" unit="mm" x="-25.5" y="2.707834005355835" z="22.811748504638672"/>
+  <position name="v52" unit="mm" x="-35.5" y="2.707834005355835" z="22.811748504638672"/>
+  <position name="v53" unit="mm" x="-25.5" y="-1.1146835088729858" z="19.87862777709961"/>
+  <position name="v54" unit="mm" x="-25.5" y="2.032942771911621" z="20.29302215576172"/>
+  <position name="v55" unit="mm" x="-25.5" y="2.032942771911621" z="23.980695724487305"/>
+  <position name="center" x="0" y="0" z="0" unit="mm"/>
+  <rotation name="identity" x="0" y="0" z="0"/>
+  </define>
+<materials/>
+<solids>
+    <box name="WorldBox" x="1000" y="1000" z="1000" lunit="mm"/>
+  <tessellated name="Corps__Meshed">
+      <triangular vertex1="v49" vertex2="v22" vertex3="v2" type="ABSOLUTE"/>
+    <triangular vertex1="v49" vertex2="v30" vertex3="v42" type="ABSOLUTE"/>
+    <triangular vertex1="v2" vertex2="v30" vertex3="v49" type="ABSOLUTE"/>
+    <triangular vertex1="v49" vertex2="v26" vertex3="v22" type="ABSOLUTE"/>
+    <triangular vertex1="v30" vertex2="v8" vertex3="v42" type="ABSOLUTE"/>
+    <triangular vertex1="v29" vertex2="v28" vertex3="v49" type="ABSOLUTE"/>
+    <triangular vertex1="v49" vertex2="v28" vertex3="v26" type="ABSOLUTE"/>
+    <triangular vertex1="v8" vertex2="v1" vertex3="v42" type="ABSOLUTE"/>
+    <triangular vertex1="v1" vertex2="v52" vertex3="v42" type="ABSOLUTE"/>
+    <triangular vertex1="v29" vertex2="v15" vertex3="v28" type="ABSOLUTE"/>
+    <triangular vertex1="v52" vertex2="v31" vertex3="v42" type="ABSOLUTE"/>
+    <triangular vertex1="v29" vertex2="v50" vertex3="v15" type="ABSOLUTE"/>
+    <triangular vertex1="v31" vertex2="v4" vertex3="v42" type="ABSOLUTE"/>
+    <triangular vertex1="v29" vertex2="v47" vertex3="v50" type="ABSOLUTE"/>
+    <triangular vertex1="v4" vertex2="v41" vertex3="v42" type="ABSOLUTE"/>
+    <triangular vertex1="v29" vertex2="v25" vertex3="v47" type="ABSOLUTE"/>
+    <triangular vertex1="v41" vertex2="v45" vertex3="v42" type="ABSOLUTE"/>
+    <triangular vertex1="v45" vertex2="v46" vertex3="v42" type="ABSOLUTE"/>
+    <triangular vertex1="v37" vertex2="v18" vertex3="v46" type="ABSOLUTE"/>
+    <triangular vertex1="v12" vertex2="v18" vertex3="v37" type="ABSOLUTE"/>
+    <triangular vertex1="v48" vertex2="v18" vertex3="v12" type="ABSOLUTE"/>
+    <triangular vertex1="v27" vertex2="v18" vertex3="v48" type="ABSOLUTE"/>
+    <triangular vertex1="v6" vertex2="v18" vertex3="v27" type="ABSOLUTE"/>
+    <triangular vertex1="v13" vertex2="v18" vertex3="v6" type="ABSOLUTE"/>
+    <triangular vertex1="v32" vertex2="v18" vertex3="v13" type="ABSOLUTE"/>
+    <triangular vertex1="v25" vertex2="v18" vertex3="v32" type="ABSOLUTE"/>
+    <triangular vertex1="v29" vertex2="v18" vertex3="v25" type="ABSOLUTE"/>
+    <triangular vertex1="v46" vertex2="v18" vertex3="v42" type="ABSOLUTE"/>
+    <triangular vertex1="v19" vertex2="v3" vertex3="v29" type="ABSOLUTE"/>
+    <triangular vertex1="v29" vertex2="v3" vertex3="v18" type="ABSOLUTE"/>
+    <triangular vertex1="v34" vertex2="v42" vertex3="v18" type="ABSOLUTE"/>
+    <triangular vertex1="v34" vertex2="v18" vertex3="v3" type="ABSOLUTE"/>
+    <triangular vertex1="v49" vertex2="v43" vertex3="v29" type="ABSOLUTE"/>
+    <triangular vertex1="v29" vertex2="v43" vertex3="v19" type="ABSOLUTE"/>
+    <triangular vertex1="v34" vertex2="v43" vertex3="v49" type="ABSOLUTE"/>
+    <triangular vertex1="v34" vertex2="v49" vertex3="v42" type="ABSOLUTE"/>
+    <triangular vertex1="v52" vertex2="v1" vertex3="v0" type="ABSOLUTE"/>
+    <triangular vertex1="v52" vertex2="v0" vertex3="v51" type="ABSOLUTE"/>
+    <triangular vertex1="v31" vertex2="v51" vertex3="v23" type="ABSOLUTE"/>
+    <triangular vertex1="v31" vertex2="v52" vertex3="v51" type="ABSOLUTE"/>
+    <triangular vertex1="v4" vertex2="v23" vertex3="v55" type="ABSOLUTE"/>
+    <triangular vertex1="v4" vertex2="v31" vertex3="v23" type="ABSOLUTE"/>
+    <triangular vertex1="v41" vertex2="v55" vertex3="v40" type="ABSOLUTE"/>
+    <triangular vertex1="v41" vertex2="v4" vertex3="v55" type="ABSOLUTE"/>
+    <triangular vertex1="v45" vertex2="v40" vertex3="v44" type="ABSOLUTE"/>
+    <triangular vertex1="v45" vertex2="v41" vertex3="v40" type="ABSOLUTE"/>
+    <triangular vertex1="v46" vertex2="v44" vertex3="v36" type="ABSOLUTE"/>
+    <triangular vertex1="v46" vertex2="v45" vertex3="v44" type="ABSOLUTE"/>
+    <triangular vertex1="v37" vertex2="v35" vertex3="v10" type="ABSOLUTE"/>
+    <triangular vertex1="v37" vertex2="v36" vertex3="v35" type="ABSOLUTE"/>
+    <triangular vertex1="v37" vertex2="v46" vertex3="v36" type="ABSOLUTE"/>
+    <triangular vertex1="v12" vertex2="v37" vertex3="v10" type="ABSOLUTE"/>
+    <triangular vertex1="v48" vertex2="v39" vertex3="v11" type="ABSOLUTE"/>
+    <triangular vertex1="v48" vertex2="v10" vertex3="v39" type="ABSOLUTE"/>
+    <triangular vertex1="v48" vertex2="v12" vertex3="v10" type="ABSOLUTE"/>
+    <triangular vertex1="v27" vertex2="v11" vertex3="v5" type="ABSOLUTE"/>
+    <triangular vertex1="v27" vertex2="v48" vertex3="v11" type="ABSOLUTE"/>
+    <triangular vertex1="v6" vertex2="v27" vertex3="v5" type="ABSOLUTE"/>
+    <triangular vertex1="v13" vertex2="v6" vertex3="v5" type="ABSOLUTE"/>
+    <triangular vertex1="v13" vertex2="v17" vertex3="v33" type="ABSOLUTE"/>
+    <triangular vertex1="v13" vertex2="v5" vertex3="v17" type="ABSOLUTE"/>
+    <triangular vertex1="v32" vertex2="v13" vertex3="v33" type="ABSOLUTE"/>
+    <triangular vertex1="v25" vertex2="v32" vertex3="v33" type="ABSOLUTE"/>
+    <triangular vertex1="v25" vertex2="v7" vertex3="v38" type="ABSOLUTE"/>
+    <triangular vertex1="v25" vertex2="v33" vertex3="v7" type="ABSOLUTE"/>
+    <triangular vertex1="v47" vertex2="v25" vertex3="v38" type="ABSOLUTE"/>
+    <triangular vertex1="v47" vertex2="v38" vertex3="v53" type="ABSOLUTE"/>
+    <triangular vertex1="v50" vertex2="v47" vertex3="v53" type="ABSOLUTE"/>
+    <triangular vertex1="v50" vertex2="v53" vertex3="v14" type="ABSOLUTE"/>
+    <triangular vertex1="v15" vertex2="v50" vertex3="v14" type="ABSOLUTE"/>
+    <triangular vertex1="v28" vertex2="v15" vertex3="v14" type="ABSOLUTE"/>
+    <triangular vertex1="v28" vertex2="v16" vertex3="v24" type="ABSOLUTE"/>
+    <triangular vertex1="v28" vertex2="v14" vertex3="v16" type="ABSOLUTE"/>
+    <triangular vertex1="v26" vertex2="v28" vertex3="v24" type="ABSOLUTE"/>
+    <triangular vertex1="v22" vertex2="v21" vertex3="v54" type="ABSOLUTE"/>
+    <triangular vertex1="v22" vertex2="v24" vertex3="v21" type="ABSOLUTE"/>
+    <triangular vertex1="v22" vertex2="v26" vertex3="v24" type="ABSOLUTE"/>
+    <triangular vertex1="v2" vertex2="v22" vertex3="v54" type="ABSOLUTE"/>
+    <triangular vertex1="v30" vertex2="v20" vertex3="v9" type="ABSOLUTE"/>
+    <triangular vertex1="v30" vertex2="v54" vertex3="v20" type="ABSOLUTE"/>
+    <triangular vertex1="v30" vertex2="v2" vertex3="v54" type="ABSOLUTE"/>
+    <triangular vertex1="v8" vertex2="v30" vertex3="v9" type="ABSOLUTE"/>
+    <triangular vertex1="v1" vertex2="v9" vertex3="v0" type="ABSOLUTE"/>
+    <triangular vertex1="v1" vertex2="v8" vertex3="v9" type="ABSOLUTE"/>
+    <triangular vertex1="v20" vertex2="v43" vertex3="v34" type="ABSOLUTE"/>
+    <triangular vertex1="v20" vertex2="v54" vertex3="v43" type="ABSOLUTE"/>
+    <triangular vertex1="v21" vertex2="v43" vertex3="v54" type="ABSOLUTE"/>
+    <triangular vertex1="v9" vertex2="v20" vertex3="v34" type="ABSOLUTE"/>
+    <triangular vertex1="v24" vertex2="v43" vertex3="v21" type="ABSOLUTE"/>
+    <triangular vertex1="v16" vertex2="v19" vertex3="v43" type="ABSOLUTE"/>
+    <triangular vertex1="v16" vertex2="v43" vertex3="v24" type="ABSOLUTE"/>
+    <triangular vertex1="v0" vertex2="v9" vertex3="v34" type="ABSOLUTE"/>
+    <triangular vertex1="v51" vertex2="v0" vertex3="v34" type="ABSOLUTE"/>
+    <triangular vertex1="v14" vertex2="v19" vertex3="v16" type="ABSOLUTE"/>
+    <triangular vertex1="v23" vertex2="v51" vertex3="v34" type="ABSOLUTE"/>
+    <triangular vertex1="v53" vertex2="v19" vertex3="v14" type="ABSOLUTE"/>
+    <triangular vertex1="v55" vertex2="v23" vertex3="v34" type="ABSOLUTE"/>
+    <triangular vertex1="v38" vertex2="v19" vertex3="v53" type="ABSOLUTE"/>
+    <triangular vertex1="v40" vertex2="v55" vertex3="v34" type="ABSOLUTE"/>
+    <triangular vertex1="v7" vertex2="v19" vertex3="v38" type="ABSOLUTE"/>
+    <triangular vertex1="v44" vertex2="v40" vertex3="v34" type="ABSOLUTE"/>
+    <triangular vertex1="v36" vertex2="v44" vertex3="v34" type="ABSOLUTE"/>
+    <triangular vertex1="v3" vertex2="v7" vertex3="v33" type="ABSOLUTE"/>
+    <triangular vertex1="v3" vertex2="v33" vertex3="v17" type="ABSOLUTE"/>
+    <triangular vertex1="v3" vertex2="v17" vertex3="v5" type="ABSOLUTE"/>
+    <triangular vertex1="v3" vertex2="v5" vertex3="v11" type="ABSOLUTE"/>
+    <triangular vertex1="v3" vertex2="v11" vertex3="v39" type="ABSOLUTE"/>
+    <triangular vertex1="v3" vertex2="v39" vertex3="v10" type="ABSOLUTE"/>
+    <triangular vertex1="v3" vertex2="v10" vertex3="v35" type="ABSOLUTE"/>
+    <triangular vertex1="v3" vertex2="v35" vertex3="v36" type="ABSOLUTE"/>
+    <triangular vertex1="v3" vertex2="v19" vertex3="v7" type="ABSOLUTE"/>
+    <triangular vertex1="v3" vertex2="v36" vertex3="v34" type="ABSOLUTE"/>
+    </tessellated>
+  </solids>
+<structure>
+    <volume name="Pb_Plate">
+    <solidref ref="Corps__Meshed"/>
+    </volume>
+  </structure>
+<setup name="Default" version="1.0">
+    <world ref="LV_Corps__Meshed"/>
+  </setup>
+</gdml>

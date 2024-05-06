@@ -116,6 +116,8 @@ private:
   G4LogicalVolume *LogicalRATP_CoteBoiteDetecteur2;
   G4LogicalVolume *LogicalRATP_CouvercleBoiteDetecteur;
   G4LogicalVolume *LogicalRATP_MontageIP;
+  G4LogicalVolume *LogicalRATP_PlaquePb;
+  G4LogicalVolume *LogicalRoundObjective;
 
 
   // Physical volumes
@@ -179,6 +181,8 @@ private:
   G4VPhysicalVolume *PhysicalRATP_CoteBoiteDetecteur2;
   G4VPhysicalVolume *PhysicalRATP_CouvercleBoiteDetecteur;
   G4VPhysicalVolume *PhysicalRATP_MontageIP;
+  G4VPhysicalVolume *PhysicalRATP_PlaquePb;
+  G4VPhysicalVolume *PhysicalRoundObjective;
 
 
 

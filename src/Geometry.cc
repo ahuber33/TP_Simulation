@@ -761,6 +761,35 @@ G4LogicalVolume *Geometry::GetRATP_CouvercleBoiteDetecteur(){
 }
 
 
+G4LogicalVolume *Geometry::GetRATP_PlaquePb(){
+
+  Material = scintProp->GetMaterial("Plomb");
+
+  G4GDMLParser* parser = new G4GDMLParser();
+  //Create Tesselated volume of "Bouchon"
+  parser->Clear();
+  parser->Read("../gdml_models/RATP/Pb_Plate.gdml", false);
+  LogicalVolume = parser->GetVolume("Pb_Plate");
+  LogicalVolume->SetMaterial(Material);
+
+  return LogicalVolume;
+}
+
+
+G4LogicalVolume *Geometry::GetRoundObjective(){
+
+  Material = scintProp->GetMaterial("Silicium");
+
+  G4Tubs *Tubs = new G4Tubs   ("Tubs",             //its name
+  0., (11.5/2)*mm, (DetectorThickness/2)*mm, 0, 360*deg);    //its size
+
+  LogicalVolume = new G4LogicalVolume(Tubs, Material, "Photocathode",0,0,0);
+
+  return LogicalVolume;
+}
+
+
+
 G4LogicalVolume *Geometry::GetCoreRoundFiber(){
 
   Material = scintProp->GetMaterial("EJ212");

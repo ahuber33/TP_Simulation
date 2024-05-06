@@ -193,8 +193,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   DontRotate.rotateX(0.0*deg);
   G4RotationMatrix Flip;
   Flip.rotateZ(0*deg);
-  Flip.rotateX(180*deg);
-  Flip.rotateY(0*deg);
+  Flip.rotateX(0*deg);
+  Flip.rotateY(90*deg);
 
 
   // ***********************
@@ -313,6 +313,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalRATP_CoteBoiteDetecteur2 = theScint->GetRATP_CoteBoiteDetecteur2();
   LogicalRATP_MontageIP = theScint->GetRATP_MontageIP();
   LogicalRATP_CouvercleBoiteDetecteur = theScint->GetRATP_CouvercleBoiteDetecteur();
+  LogicalRATP_PlaquePb = theScint->GetRATP_PlaquePb();
   //LogicalZnS = theScint->GetZnS();
   //LogicalZnSLG = theScint->GetZnSLG();
   // LogicalLens = theScint->GetLens();
@@ -384,6 +385,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalRATP_CoteBoiteDetecteur2->SetVisAttributes(green);
   LogicalRATP_CouvercleBoiteDetecteur->SetVisAttributes(green);
   LogicalRATP_MontageIP->SetVisAttributes(red_hot);
+  LogicalRATP_PlaquePb->SetVisAttributes(black);
   // LogicalLens->SetVisAttributes(gray);
   // LogicalLens2->SetVisAttributes(gray);
 
@@ -495,7 +497,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
   // Build the PMT glass structure from PMT class
   //LogicalPhotocathode = theScint->GetPhotocathode(); // Call function for PMT glass
-  LogicalPhotocathode = theScint->GetRoundPhotocathode(); // Call function for PMT glass
+  LogicalPhotocathode = theScint->GetRoundObjective(); // Call function for PMT glass
   LogicalPhotocathode->SetVisAttributes(blue); // Set photocathode color to orange
 
 
@@ -681,6 +683,11 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
       //           (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
       //           LogicalEFPlates,"EF_Plates",
       //           LogicalVolumeEFPlates,false,0);
+
+                PhysicalRATP_PlaquePb = new G4PVPlacement(G4Transform3D
+                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                LogicalRATP_PlaquePb,"PlaquePb",
+                LogicalHolder,false,0);
 
                 PhysicalRATP_Aimant1 = new G4PVPlacement(G4Transform3D
                 (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
@@ -898,13 +905,13 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
       //       }
 
 
-            // PMT photocathode placement
-            // PhysicalPhotocathode = new G4PVPlacement(G4Transform3D
-            //   //(DontRotate,G4ThreeVector(FiberWidth/2 + FiberSpace - WidthBunchFibers/2, 0, Z_Position_Photocathode)), //USE THAT FOR TP
-            //   //(DontRotate,G4ThreeVector((60-10)*mm, (30-12.1)*mm, Z_Position_Photocathode+300)), //USE THAT FOR DEBUG
-            //   (DontRotate,G4ThreeVector(30*mm, 0*mm, Z_Position_Photocathode+300)), //USE THAT FOR DEBUG
-            //   LogicalPhotocathode,"ORCA",
-            //   LogicalHolder,true,0);
+            //PMT photocathode placement
+            PhysicalPhotocathode = new G4PVPlacement(G4Transform3D
+              //(DontRotate,G4ThreeVector(FiberWidth/2 + FiberSpace - WidthBunchFibers/2, 0, Z_Position_Photocathode)), //USE THAT FOR TP
+              //(DontRotate,G4ThreeVector((60-10)*mm, (30-12.1)*mm, Z_Position_Photocathode+300)), //USE THAT FOR DEBUG
+              (Flip,G4ThreeVector((280.6+7.44)*mm, 15*mm, 0)), //USE THAT FOR DEBUG
+              LogicalPhotocathode,"Objectif",
+              LogicalHolder,true,0);
 
 
               // Lens placement
