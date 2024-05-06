@@ -150,7 +150,7 @@ void TPSimEventAction::EndOfEventAction(const G4Event* evt){
 
   }
 
-if(Deposit>=0)
+if(Deposit>0)
 {
   runac->UpdateStatisticsOptical(StatsOptical);
   runac->UpdateStatisticsTP(StatsTP);
