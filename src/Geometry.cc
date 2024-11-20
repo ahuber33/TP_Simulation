@@ -905,8 +905,8 @@ G4LogicalVolume *Geometry::GetScTest(){
   //scintillator = scintProp->GetMaterial("Alu");
 
   G4Box *Box = new G4Box   ("Box",             //its name
-  //ScintillatorLength/2, 100./2, ScintillatorThickness/2);    //its size
-  ScintillatorThickness/2, 58/2*mm, ScintillatorLength/2);
+  ScintillatorLength/2, 100./2, ScintillatorThickness/2);    //its size
+  //ScintillatorThickness/2, 58/2*mm, ScintillatorLength/2);
 
   LogicalVolume = new G4LogicalVolume(Box, Material, "Sc_Test",0,0,0);
 
@@ -944,8 +944,8 @@ G4LogicalVolume *Geometry::GetVolumeEFPlates(){
   float L = EF_Dist_between_plates +2*EF_Thickness_plates;
 
   G4Box *Box1 = new G4Box   ("Box1",             //its name
-  EF_Length_plates/2, EF_Dist_between_plates/2, EF_Width_plates/2);
-  //EF_Width_plates/2, L/2, EF_Length_plates/2);    //its size
+  //EF_Length_plates/2, EF_Dist_between_plates/2, EF_Width_plates/2);
+  EF_Width_plates/2, L/2, EF_Length_plates/2);    //its size
 
   //G4Box *Box2 = new G4Box   ("Box2",             //its name
   //            (Width_plates+1)/2, Dist_between_plates/2, (Length_plates+1)/2);    //its size

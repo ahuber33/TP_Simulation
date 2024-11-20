@@ -496,8 +496,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   //***********************
 
   // Build the PMT glass structure from PMT class
-  //LogicalPhotocathode = theScint->GetPhotocathode(); // Call function for PMT glass
-  LogicalPhotocathode = theScint->GetRoundObjective(); // Call function for PMT glass
+  LogicalPhotocathode = theScint->GetPhotocathode(); // Call function for PMT glass
+  //LogicalPhotocathode = theScint->GetRoundObjective(); // Call function for PMT glass
   LogicalPhotocathode->SetVisAttributes(blue); // Set photocathode color to orange
 
 
@@ -507,8 +507,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   std::ifstream ReadPMT;
   //G4String PMTfile = path+"QE_ham_GA0124.txt";
   //G4String PMTfile = path+"9102B_ET_reverse.txt";
-  //G4String PMTfile = path+"ORCA_ENL_reverse.cfg";
-  G4String PMTfile = path+"CMOS_S11684_reverse.cfg";
+  G4String PMTfile = path+"ORCA_ENL_reverse.cfg";
+  //G4String PMTfile = path+"CMOS_S11684_reverse.cfg";
   std::vector<G4double> Photocathode_Energy;
   std::vector<G4double> Photocathode_Value;
   std::vector<G4double> Photocathode_Index;
@@ -556,7 +556,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   G4double fMinStep     = 1*um; // minimal step of 1 mm is default
 
   //G4MagneticField *magField = new G4UniformMagField(G4ThreeVector(0.0*tesla, 0.*tesla, 0.0*tesla));
-  G4MagneticField *localmagField = new G4UniformMagField(G4ThreeVector(0., -MF_Value, 0.0));
+  G4MagneticField *localmagField = new G4UniformMagField(G4ThreeVector(0., MF_Value, 0.0));
   //G4Mag_UsualEqRhs* fEquation = new G4Mag_UsualEqRhs(magField);
   G4Mag_UsualEqRhs* fEquationlocal = new G4Mag_UsualEqRhs(localmagField);
 
@@ -657,197 +657,197 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
       //PhysicalFibersHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector(0, 0, Z_Position_Fiber)),LogicalFibersHolder, "Holder_Fiber",LogicalHolder,false,0);//USE THAT FOR DEBUG
 
 
-      // PhysicalPinhole = new G4PVPlacement(G4Transform3D
-      //   (DontRotate,G4ThreeVector(0*mm, 0*mm, -PinholeThickness/2)), // Set at origin as basis of everything else
-      //   LogicalPinhole,"Pinhole",
-      //   LogicalHolder,false,0);
+      PhysicalPinhole = new G4PVPlacement(G4Transform3D
+        (DontRotate,G4ThreeVector(0*mm, 0*mm, -PinholeThickness/2)), // Set at origin as basis of everything else
+        LogicalPinhole,"Pinhole",
+        LogicalHolder,false,0);
 
         PhysicalVolumeMFPlates = new G4PVPlacement(G4Transform3D
-          //(DontRotate,G4ThreeVector(MF_Width_plates/2-2, 0*mm, Z_Position_MFPlates)), // Without GDML
-          (DontRotate,G4ThreeVector(0, 0, 7)), // GDML !!!!
+          (DontRotate,G4ThreeVector(MF_Width_plates/2-2, 0*mm, Z_Position_MFPlates)), // Without GDML
+          //(DontRotate,G4ThreeVector(0, 0, 7)), // GDML !!!!
           LogicalVolumeMFPlates,"Volume_MF_Plates",
           LogicalHolder,false,0);
 
-      //     PhysicalMFPlates = new G4PVPlacement(G4Transform3D
-      //       (DontRotate,G4ThreeVector(0*mm, 0*mm, 0)), // Set at origin as basis of everything else
-      //       LogicalMFPlates,"MF_Plates",
-      //       LogicalVolumeMFPlates,false,0);
+          PhysicalMFPlates = new G4PVPlacement(G4Transform3D
+            (DontRotate,G4ThreeVector(0*mm, 0*mm, 0)), // Set at origin as basis of everything else
+            LogicalMFPlates,"MF_Plates",
+            LogicalVolumeMFPlates,false,0);
 
             PhysicalVolumeEFPlates = new G4PVPlacement(G4Transform3D
-              //(DontRotate,G4ThreeVector(EF_Width_plates/2 - 2*mm, 4*mm, Z_Position_EFPlates)), // Without GDML
-              (DontRotate,G4ThreeVector(135.5, 4, -3.5)), // GDML
+              (DontRotate,G4ThreeVector(EF_Width_plates/2 - 2*mm, 4*mm, Z_Position_EFPlates)), // Without GDML
+              //(DontRotate,G4ThreeVector(135.5, 4, -3.5)), // GDML
               LogicalVolumeEFPlates,"Volume_EF_Plates",
               LogicalHolder,false,0);
 
-      //         PhysicalEFPlates = new G4PVPlacement(G4Transform3D
-      //           (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-      //           LogicalEFPlates,"EF_Plates",
-      //           LogicalVolumeEFPlates,false,0);
-
-                PhysicalRATP_PlaquePb = new G4PVPlacement(G4Transform3D
+              PhysicalEFPlates = new G4PVPlacement(G4Transform3D
                 (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_PlaquePb,"PlaquePb",
-                LogicalHolder,false,0);
+                LogicalEFPlates,"EF_Plates",
+                LogicalVolumeEFPlates,false,0);
 
-                PhysicalRATP_Aimant1 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_Aimant1,"Aimant1",
-                LogicalHolder,false,0);
+                // PhysicalRATP_PlaquePb = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_PlaquePb,"PlaquePb",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_Aimant2 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_Aimant2,"Aimant2",
-                LogicalHolder,false,0);
+                // PhysicalRATP_Aimant1 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_Aimant1,"Aimant1",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_CoteYokeAimant1 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_CoteYokeAimant1,"CoteYokeAimant1",
-                LogicalHolder,false,0);
+                // PhysicalRATP_Aimant2 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_Aimant2,"Aimant2",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_CoteYokeAimant2 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_CoteYokeAimant2,"CoteYokeAimant2",
-                LogicalHolder,false,0);
+                // PhysicalRATP_CoteYokeAimant1 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_CoteYokeAimant1,"CoteYokeAimant1",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_EntreeYokeAimant1 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_EntreeYokeAimant1,"EntreeYokeAimant1",
-                LogicalHolder,false,0);
+                // PhysicalRATP_CoteYokeAimant2 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_CoteYokeAimant2,"CoteYokeAimant2",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_EntreeYokeAimant2 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_EntreeYokeAimant2,"EntreeYokeAimant2",
-                LogicalHolder,false,0);
+                // PhysicalRATP_EntreeYokeAimant1 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_EntreeYokeAimant1,"EntreeYokeAimant1",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_FondYokeAimant1 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_FondYokeAimant1,"FondYokeAimant1",
-                LogicalHolder,false,0);
+                // PhysicalRATP_EntreeYokeAimant2 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_EntreeYokeAimant2,"EntreeYokeAimant2",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_FondYokeAimant2 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_FondYokeAimant2,"FondYokeAimant2",
-                LogicalHolder,false,0);
+                // PhysicalRATP_FondYokeAimant1 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_FondYokeAimant1,"FondYokeAimant1",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_CaleYokeAimant = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_CaleYokeAimant,"CaleYokeAimant",
-                LogicalHolder,false,0);
+                // PhysicalRATP_FondYokeAimant2 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_FondYokeAimant2,"FondYokeAimant2",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_Electrode1 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_Electrode1,"Electrode1",
-                LogicalHolder,false,0);
+                // PhysicalRATP_CaleYokeAimant = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_CaleYokeAimant,"CaleYokeAimant",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_Electrode2 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_Electrode2,"Electrode2",
-                LogicalHolder,false,0);
+                // PhysicalRATP_Electrode1 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_Electrode1,"Electrode1",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_ColonneElectrode1 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_ColonneElectrode1,"ColonneElectrode1",
-                LogicalHolder,false,0);
+                // PhysicalRATP_Electrode2 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_Electrode2,"Electrode2",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_ColonneElectrode2 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_ColonneElectrode2,"ColonneElectrode2",
-                LogicalHolder,false,0);
+                // PhysicalRATP_ColonneElectrode1 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_ColonneElectrode1,"ColonneElectrode1",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_ColonneElectrode3 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_ColonneElectrode3,"ColonneElectrode3",
-                LogicalHolder,false,0);
+                // PhysicalRATP_ColonneElectrode2 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_ColonneElectrode2,"ColonneElectrode2",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_ColonneElectrode4 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_ColonneElectrode4,"ColonneElectrode4",
-                LogicalHolder,false,0);
+                // PhysicalRATP_ColonneElectrode3 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_ColonneElectrode3,"ColonneElectrode3",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_BaseElectrode1 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_BaseElectrode1,"BaseElectrode1",
-                LogicalHolder,false,0);
+                // PhysicalRATP_ColonneElectrode4 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_ColonneElectrode4,"ColonneElectrode4",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_BaseElectrode2 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_BaseElectrode2,"BaseElectrode2",
-                LogicalHolder,false,0);
+                // PhysicalRATP_BaseElectrode1 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_BaseElectrode1,"BaseElectrode1",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_BaseElectrode3 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_BaseElectrode3,"BaseElectrode3",
-                LogicalHolder,false,0);
+                // PhysicalRATP_BaseElectrode2 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_BaseElectrode2,"BaseElectrode2",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_BaseElectrode4 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_BaseElectrode4,"BaseElectrode4",
-                LogicalHolder,false,0);
+                // PhysicalRATP_BaseElectrode3 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_BaseElectrode3,"BaseElectrode3",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_BaseBoite = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_BaseBoite,"BaseBoite",
-                LogicalHolder,false,0);
+                // PhysicalRATP_BaseElectrode4 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_BaseElectrode4,"BaseElectrode4",
+                // LogicalHolder,false,0);
+
+                // PhysicalRATP_BaseBoite = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_BaseBoite,"BaseBoite",
+                // LogicalHolder,false,0);
                 
-                PhysicalRATP_CapotBoite = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_CapotBoite,"CapotBoite",
-                LogicalHolder,false,0);
+                // PhysicalRATP_CapotBoite = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_CapotBoite,"CapotBoite",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_CoteBoite = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_CoteBoite,"CoteBoite",
-                LogicalHolder,false,0);
+                // PhysicalRATP_CoteBoite = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_CoteBoite,"CoteBoite",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_EntreeBoite = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_EntreeBoite,"EntreeBoite",
-                LogicalHolder,false,0);
+                // PhysicalRATP_EntreeBoite = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_EntreeBoite,"EntreeBoite",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_SocleConnecteur = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_SocleConnecteur,"SocleConnecteur",
-                LogicalHolder,false,0);
+                // PhysicalRATP_SocleConnecteur = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_SocleConnecteur,"SocleConnecteur",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_SHV1 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_SHV1,"SHV1",
-                LogicalHolder,false,0);
+                // PhysicalRATP_SHV1 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_SHV1,"SHV1",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_SHV2 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_SHV2,"SHV2",
-                LogicalHolder,false,0);
+                // PhysicalRATP_SHV2 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_SHV2,"SHV2",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_BaseBoiteDetecteur = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_BaseBoiteDetecteur,"BaseBoiteDetecteur",
-                LogicalHolder,false,0);
+                // PhysicalRATP_BaseBoiteDetecteur = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_BaseBoiteDetecteur,"BaseBoiteDetecteur",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_EntreeBoiteDetecteur = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_EntreeBoiteDetecteur,"EntreeBoiteDetecteur",
-                LogicalHolder,false,0);
+                // PhysicalRATP_EntreeBoiteDetecteur = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_EntreeBoiteDetecteur,"EntreeBoiteDetecteur",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_SortieBoiteDetecteur = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_SortieBoiteDetecteur,"SortieBoiteDetecteur",
-                LogicalHolder,false,0);
+                // PhysicalRATP_SortieBoiteDetecteur = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_SortieBoiteDetecteur,"SortieBoiteDetecteur",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_CoteBoiteDetecteur1 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_CoteBoiteDetecteur1,"CoteBoiteDetecteur1",
-                LogicalHolder,false,0);
+                // PhysicalRATP_CoteBoiteDetecteur1 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_CoteBoiteDetecteur1,"CoteBoiteDetecteur1",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_CoteBoiteDetecteur2 = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_CoteBoiteDetecteur2,"CoteBoiteDetecteur2",
-                LogicalHolder,false,0);
+                // PhysicalRATP_CoteBoiteDetecteur2 = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_CoteBoiteDetecteur2,"CoteBoiteDetecteur2",
+                // LogicalHolder,false,0);
 
-                PhysicalRATP_CouvercleBoiteDetecteur = new G4PVPlacement(G4Transform3D
-                (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
-                LogicalRATP_CouvercleBoiteDetecteur,"CouvercleBoiteDetecteur",
-                LogicalHolder,false,0);
+                // PhysicalRATP_CouvercleBoiteDetecteur = new G4PVPlacement(G4Transform3D
+                // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
+                // LogicalRATP_CouvercleBoiteDetecteur,"CouvercleBoiteDetecteur",
+                // LogicalHolder,false,0);
 
                 // PhysicalRATP_MontageIP = new G4PVPlacement(G4Transform3D
                 // (DontRotate,G4ThreeVector(0*mm, 0, 0)), // Set at origin as basis of everything else
@@ -861,8 +861,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
       //   LogicalHolder,false,0);
 
       PhysicalSc = new G4PVPlacement(G4Transform3D
-        //(DontRotate,G4ThreeVector((60-10)*mm, (30-12.1)*mm, Z_Position_Sc)), // Without GDML
-        (DontRotate,G4ThreeVector(280.55, 15, -3.1)), // GDML
+        (DontRotate,G4ThreeVector((60-10)*mm, (30-12.1)*mm, Z_Position_Sc)), // Without GDML
+        //(DontRotate,G4ThreeVector(280.55, 15, -3.1)), // GDML
         LogicalSc,"Scintillator",
         LogicalHolder,false,0);
 
@@ -908,8 +908,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
             //PMT photocathode placement
             PhysicalPhotocathode = new G4PVPlacement(G4Transform3D
               //(DontRotate,G4ThreeVector(FiberWidth/2 + FiberSpace - WidthBunchFibers/2, 0, Z_Position_Photocathode)), //USE THAT FOR TP
-              //(DontRotate,G4ThreeVector((60-10)*mm, (30-12.1)*mm, Z_Position_Photocathode+300)), //USE THAT FOR DEBUG
-              (Flip,G4ThreeVector((280.6+7.44)*mm, 15*mm, 0)), //USE THAT FOR DEBUG
+              (DontRotate,G4ThreeVector((60-10)*mm, (30-12.1)*mm, Z_Position_Photocathode)),//+300)), //USE THAT FOR DEBUG
+              //(Flip,G4ThreeVector((280.6+7.44)*mm, 15*mm, 0)), //USE THAT FOR DEBUG
               LogicalPhotocathode,"Objectif",
               LogicalHolder,true,0);
 
