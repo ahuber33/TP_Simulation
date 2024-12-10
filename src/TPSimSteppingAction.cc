@@ -67,6 +67,7 @@ TPSimSteppingAction::TPSimSteppingAction()
     G4int StepNo = aStep->GetTrack()->GetCurrentStepNumber();
 
     G4double x = aStep->GetTrack()->GetPosition().x();
+    G4double xpre = aStep->GetPreStepPoint()->GetPosition().x();
     G4double y = aStep->GetTrack()->GetPosition().y();
     G4double z = aStep->GetTrack()->GetPosition().z();
     G4double zpre = aStep->GetPreStepPoint()->GetPosition().z();
@@ -74,7 +75,7 @@ TPSimSteppingAction::TPSimSteppingAction()
     G4double py = aStep->GetPreStepPoint()->GetMomentumDirection().y();
     G4double pz = aStep->GetPreStepPoint()->GetMomentumDirection().z();
     G4double r = sqrt(x*x + y*y);
-    G4double angle = acos((z-zpre)/aStep->GetStepLength());
+    G4double angle = acos((x-xpre)/aStep->GetStepLength());
     G4String VolumeNamePreStep = aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName();
     G4String VolumeNamePostStep = aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName();
     //G4int CopyNo = theTrack->GetTouchableHandle()->GetCopyNumber();
@@ -142,8 +143,10 @@ TPSimSteppingAction::TPSimSteppingAction()
       evtac->SetPhotonCreationAngle(angle/deg);
       evtac->SetTrackLengthFastSimulated(0);
       //if(angle/deg>20.4 && angle/deg <20.7)G4cout << "HERE" << G4endl;
-      if (angle/deg >20 && angle/deg <160) theTrack->SetTrackStatus(fStopAndKill);
+      if (angle/deg >39 && angle/deg <141) theTrack->SetTrackStatus(fStopAndKill);
     }
+
+    if(StepNo>1000 && partname == "opticalphoton")theTrack->SetTrackStatus(fStopAndKill);
 
     if(0){                       //set to 1 to ignore generated photons
       if(theTrack->GetDefinition()->GetParticleName()=="opticalphoton")
@@ -246,13 +249,13 @@ G4cout << endproc << G4endl;
 
 if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
 
-  //G4cout << "Boundary Status = " << boundaryStatus << G4endl;
+//G4cout << "Boundary Status = " << boundaryStatus << G4endl;
 
   switch(boundaryStatus){
     case Detection:
     {
       evtac->CountDetected();
-      evtac->FillPhotonDetectorPositionX(x);
+      evtac->FillPhotonDetectorPositionX(z);
       evtac->FillPhotonDetectorPositionY(y);
       evtac->FillPhotonPositionZ(z);
       evtac->FillPhotonMomentumX(px);
@@ -292,7 +295,7 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
       case Absorption:    // used to get the number TRANSMITTED!!
 
       //if (theTrack->GetNextVolume()->GetName()=="Photocathode")
-      if (theTrack->GetNextVolume()->GetName()=="CMOS")
+      if (theTrack->GetNextVolume()->GetName()=="Objectif")
       {
         evtac->CountFailed();
         //G4cout << "Photon failed" << G4endl;

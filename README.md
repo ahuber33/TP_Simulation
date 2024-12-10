@@ -3,16 +3,16 @@
 ## INSTRUCTIONS TO USE THE SIMULATION
 - Download the VMWare [Geant4.11.2.1](https://heberge.lp2ib.in2p3.fr/G4VM/index.html)
 
-- Copy all the files from AIFIRA2023_Simulation folder [ici](https://github.com/ahuber33/TP_Simulation)
+```
+git clone https://github.com/ahuber33/TP_Simulation
+```
 
-- Create a build folder in the TP_Simulation folder and go inside.
-
-- Use this command :
+- Go to build Folder and use this command :
 ```
 cmake -DGeant4_DIR=$G4COMP ../
 make -j4
 ```  
-and compile it with make
+then compile it with make
 
 - The executable TPSim will be add to your bin folder
 
@@ -207,3 +207,7 @@ Personnaly, I used the vrml.mac but you can create another one. Just to remember
 ## Commit #23 le 03/05/2024 [TPSim.0.10.0]
 - Passage de la simulation sur la version 11.2.1 de GEANT4 (à nouveau changement de référentiel pour la lecture des fichiers nécessaire pour la simulation optique). Teflon et Mylar ont été commentés car non nécessaire pour la simulation
 - Implémentation de la géométrie réelle de la TP RATP à partir des fichiers méca du labo d'études du CELIA.
+
+## Commit #24 le 03/05/2024 [TPSim.0.10.1]
+- Ajout de la plaque de plomb 
+- Version utlisée pour analyse influence BdF sur la TP

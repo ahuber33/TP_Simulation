@@ -39,18 +39,18 @@ void TPSimRunAction::BeginOfRunAction(const G4Run* aRun){
   //*****************************INFORMATION FROM OPTICAL PART************************************
   RunBranch = Tree_Optical->Branch("IncidentE", &StatsOptical.IncidentE, "IncidentE/F");
   //RunBranch = Tree_Optical->Branch("DepositZnS", &StatsOptical.DepositZnS, "DepositZnS/F");
-  RunBranch = Tree_Optical->Branch("DepositSc", &StatsOptical.DepositSc, "DepositSc/F");
+  //RunBranch = Tree_Optical->Branch("DepositSc", &StatsOptical.DepositSc, "DepositSc/F");
   // RunBranch = Tree_Optical->Branch("ScintillationZnS", &StatsOptical.ScintillationZnS, "ScintillationZnS/I");
   // RunBranch = Tree_Optical->Branch("CerenkovZnS", &StatsOptical.CerenkovZnS, "CerenkovZnS/I");
-  RunBranch = Tree_Optical->Branch("ScintillationSc", &StatsOptical.ScintillationSc, "ScintillationSc/I");
+  //RunBranch = Tree_Optical->Branch("ScintillationSc", &StatsOptical.ScintillationSc, "ScintillationSc/I");
   // RunBranch = Tree_Optical->Branch("CerenkovSc", &StatsOptical.CerenkovSc, "CerenkovSc/I");
   // RunBranch = Tree_Optical->Branch("BulkAbsZnS", &StatsOptical.BulkAbsZnS, "BulkAbsZnS/I");
-   RunBranch = Tree_Optical->Branch("BulkAbsSc", &StatsOptical.BulkAbsSc, "BulkAbsSc/I");
+  //RunBranch = Tree_Optical->Branch("BulkAbsSc", &StatsOptical.BulkAbsSc, "BulkAbsSc/I");
   // RunBranch = Tree_Optical->Branch("Absorbed", &StatsOptical.Absorbed, "Absorbed/I");
-   RunBranch = Tree_Optical->Branch("Escaped", &StatsOptical.Escaped, "Escaped/I");
-   RunBranch = Tree_Optical->Branch("Failed", &StatsOptical.Failed, "Failed/I");
+  //RunBranch = Tree_Optical->Branch("Escaped", &StatsOptical.Escaped, "Escaped/I");
+  //RunBranch = Tree_Optical->Branch("Failed", &StatsOptical.Failed, "Failed/I");
   //RunBranch = Tree_Optical->Branch("WLS", &StatsOptical.WLS, "WLS/I");
-  RunBranch = Tree_Optical->Branch("Detected", &StatsOptical.Detected, "Detected/I");
+  //RunBranch = Tree_Optical->Branch("Detected", &StatsOptical.Detected, "Detected/I");
   //RunBranch = Tree_Optical->Branch("ExitLightPositionX", "vector<float>", &StatsOptical.ExitLightPositionX);
   //RunBranch = Tree_Optical->Branch("ExitLightPositionY", "vector<float>", &StatsOptical.ExitLightPositionY);
   //RunBranch = Tree_Optical->Branch("LensPositionX", "vector<float>", &StatsOptical.LensPositionX);
@@ -66,7 +66,7 @@ void TPSimRunAction::BeginOfRunAction(const G4Run* aRun){
   RunBranch = Tree_Optical->Branch("MomentumY", "vector<float>", &StatsOptical.MomentumY);
   RunBranch = Tree_Optical->Branch("MomentumZ", "vector<float>", &StatsOptical.MomentumZ);
   //RunBranch = Tree_Optical->Branch("BirthLambda", "vector<float>", &StatsOptical.BirthLambda);
-  RunBranch = Tree_Optical->Branch("Time", "vector<float>", &StatsOptical.Time);
+  //RunBranch = Tree_Optical->Branch("Time", "vector<float>", &StatsOptical.Time);
   //RunBranch = Tree_Optical->Branch("Energy_pe", "vector<float>", &StatsOptical.Energy_pe);
   // RunBranch = Tree_Optical->Branch("Rayleigh", "vector<float>", &StatsOptical.Rayleigh);
   // RunBranch = Tree_Optical->Branch("Total_Reflections", "vector<float>", &StatsOptical.Total_Reflections);
@@ -82,7 +82,7 @@ void TPSimRunAction::BeginOfRunAction(const G4Run* aRun){
   RunBranch = Tree_TP->Branch("E_start", &StatsTP.E_start, "E_start/F" );
   RunBranch = Tree_TP->Branch("E_dep", &StatsTP.E_dep, "E_dep/F" );
   //RunBranch = Tree_TP->Branch("Charge", &StatsTP.Charge, "Charge/F" );
-  RunBranch = Tree_TP->Branch("PositionX", &StatsTP.PositionX, "PositionX/F" );
+  //RunBranch = Tree_TP->Branch("PositionX", &StatsTP.PositionX, "PositionX/F" );
   RunBranch = Tree_TP->Branch("PositionY", &StatsTP.PositionY, "PositionY/F" );
   RunBranch = Tree_TP->Branch("PositionZ", &StatsTP.PositionZ, "PositionZ/F" );
   //RunBranch = Tree_TP->Branch("Time", &StatsTP.Time, "Time/F" );
@@ -95,7 +95,7 @@ void TPSimRunAction::BeginOfRunAction(const G4Run* aRun){
   //G4Random::setTheEngine(new CLHEP::HepJamesRandom);
   G4long seed = time(NULL);
   G4Random::setTheSeed(seed);
-  //G4Random::setTheSeed(1655805950);
+  //  G4Random::setTheSeed(1719241944);
   //G4Random::setTheSeed(1660746118);
   //G4Random::setTheSeed(1664459758);
   G4cout << "seed = " << seed << G4endl;

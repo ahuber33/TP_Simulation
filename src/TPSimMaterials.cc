@@ -1236,7 +1236,7 @@ void TPSimMaterials::Construct()
 			//ref_index_value[ref_index_Entries]=1.59;
 			YAG_Index_Energy.push_back((1240/pWavelength)*eV);
 			//EJ260_Index_Value.push_back(indexvalue);
-			YAG_Index_Value.push_back(1.82);
+			YAG_Index_Value.push_back(1.82);//1.82
 		}
 	}
 	else

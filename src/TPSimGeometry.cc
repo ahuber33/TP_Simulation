@@ -314,9 +314,9 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalRATP_MontageIP = theScint->GetRATP_MontageIP();
   LogicalRATP_CouvercleBoiteDetecteur = theScint->GetRATP_CouvercleBoiteDetecteur();
   LogicalRATP_PlaquePb = theScint->GetRATP_PlaquePb();
-  //LogicalZnS = theScint->GetZnS();
+  LogicalZnS = theScint->GetZnS();
   //LogicalZnSLG = theScint->GetZnSLG();
-  // LogicalLens = theScint->GetLens();
+  //LogicalLens = theScint->GetLens();
   // LogicalLens2 = theScint->GetLens();
 
   //  LogicalZnS = theScint->GetZnS();
@@ -348,7 +348,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalSc->SetVisAttributes(orange);
   LogicalCoreFiber->SetVisAttributes(cyan);
   LogicalInnerCladdingFiber->SetVisAttributes(yellow);
-  //LogicalZnS->SetVisAttributes(green);
+  LogicalZnS->SetVisAttributes(green);
   //LogicalZnSLG->SetVisAttributes(gray);
   LogicalHolder->SetVisAttributes(invis);
   LogicalFibersHolder->SetVisAttributes(orange);
@@ -386,7 +386,7 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   LogicalRATP_CouvercleBoiteDetecteur->SetVisAttributes(green);
   LogicalRATP_MontageIP->SetVisAttributes(red_hot);
   LogicalRATP_PlaquePb->SetVisAttributes(black);
-  // LogicalLens->SetVisAttributes(gray);
+  //LogicalLens->SetVisAttributes(gray);
   // LogicalLens2->SetVisAttributes(gray);
 
 
@@ -496,8 +496,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   //***********************
 
   // Build the PMT glass structure from PMT class
-  //LogicalPhotocathode = theScint->GetPhotocathode(); // Call function for PMT glass
-  LogicalPhotocathode = theScint->GetRoundObjective(); // Call function for PMT glass
+   //LogicalPhotocathode = theScint->GetPhotocathode(); // Call function for PMT glass
+   LogicalPhotocathode = theScint->GetRoundObjective(); // Call function for PMT glass
   LogicalPhotocathode->SetVisAttributes(blue); // Set photocathode color to orange
 
 
@@ -507,8 +507,8 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
   std::ifstream ReadPMT;
   //G4String PMTfile = path+"QE_ham_GA0124.txt";
   //G4String PMTfile = path+"9102B_ET_reverse.txt";
-  //G4String PMTfile = path+"ORCA_ENL_reverse.cfg";
-  G4String PMTfile = path+"CMOS_S11684_reverse.cfg";
+  G4String PMTfile = path+"ORCA_ENL_reverse.cfg";
+  //G4String PMTfile = path+"CMOS_S11684_reverse.cfg";
   std::vector<G4double> Photocathode_Energy;
   std::vector<G4double> Photocathode_Value;
   std::vector<G4double> Photocathode_Index;
@@ -653,14 +653,14 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
 
       PhysicalHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector(0, 0, 0)),LogicalHolder, "Vacuum", LogicalWorld,false,0);
 
-      //PhysicalFibersHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector(FiberWidth/2 + FiberSpace - WidthBunchFibers/2, 0, Z_Position_Fiber)),LogicalFibersHolder, "Holder_Fiber",LogicalHolder,false,0);//USE THAT FOR TP
+      //PhysicalFibersHolder = new G4PVPlacement(G4Transform3D(Flip,G4ThreeVector(280.5 + ZnSThickness + ScintillatorThickness + FiberLength/2, 15, -3.1)),LogicalFibersHolder, "Holder_Fiber",LogicalHolder,false,0);//USE THAT FOR TP
       //PhysicalFibersHolder = new G4PVPlacement(G4Transform3D(DontRotate,G4ThreeVector(0, 0, Z_Position_Fiber)),LogicalFibersHolder, "Holder_Fiber",LogicalHolder,false,0);//USE THAT FOR DEBUG
 
 
-      // PhysicalPinhole = new G4PVPlacement(G4Transform3D
-      //   (DontRotate,G4ThreeVector(0*mm, 0*mm, -PinholeThickness/2)), // Set at origin as basis of everything else
-      //   LogicalPinhole,"Pinhole",
-      //   LogicalHolder,false,0);
+      PhysicalPinhole = new G4PVPlacement(G4Transform3D
+        (Flip,G4ThreeVector(-45.5-PinholeThickness/2, 0*mm, 22*mm)), // Set at origin as basis of everything else
+        LogicalPinhole,"Pinhole",
+        LogicalHolder,false,0);
 
         PhysicalVolumeMFPlates = new G4PVPlacement(G4Transform3D
           //(DontRotate,G4ThreeVector(MF_Width_plates/2-2, 0*mm, Z_Position_MFPlates)), // Without GDML
@@ -855,14 +855,14 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
                 // LogicalHolder,false,0);
 
 
-      // PhysicalZnS = new G4PVPlacement(G4Transform3D
-      //   (DontRotate,G4ThreeVector((60-10)*mm, (30-12.1)*mm, Z_Position_ZnS)), // Set at origin as basis of everything else
-      //   LogicalZnS,"ZnS",
-      //   LogicalHolder,false,0);
+      PhysicalZnS = new G4PVPlacement(G4Transform3D
+        (DontRotate,G4ThreeVector(280.5 + ZnSThickness/2, 15*mm, -3.1)), // Set at origin as basis of everything else
+        LogicalZnS,"ZnS",
+        LogicalHolder,false,0);
 
       PhysicalSc = new G4PVPlacement(G4Transform3D
         //(DontRotate,G4ThreeVector((60-10)*mm, (30-12.1)*mm, Z_Position_Sc)), // Without GDML
-        (DontRotate,G4ThreeVector(280.55, 15, -3.1)), // GDML
+        (DontRotate,G4ThreeVector(280.5 + ZnSThickness + ScintillatorThickness/2, 15, -3.1)), // GDML
         LogicalSc,"Scintillator",
         LogicalHolder,false,0);
 
@@ -874,47 +874,49 @@ G4VPhysicalVolume* TPSimGeometry::Construct( ){
       // G4int n=0;
       // G4float translation_x=0;
       // G4float translation_y =0;
-      //
+      
       // for (int i=0; i<FiberNumberPerLine; i++)
-      // {
-      //   for (int j=0; j<FiberNumberPerLine; j++)
-      //   {
-      //     translation_x = (FiberSpace+FiberWidth/2-WidthBunchFibers/2)+j*(FiberWidth + FiberSpace);
-      //     translation_y = (FiberSpace+FiberWidth/2-WidthBunchFibers/2)+i*(FiberWidth + FiberSpace);
-      //
-      //     PhysicalCoreFiberBunch[n] = new G4PVPlacement(G4Transform3D
-      //       (DontRotate,G4ThreeVector(translation_x, translation_y, 0)), // Set at origin as basis of everything else
-      //       LogicalCoreFiber,"Core_Fiber",
-      //       LogicalFibersHolder,false,0);
-      //
-      //       PhysicalInnerCladdingFiberBunch[n] = new G4PVPlacement(G4Transform3D
-      //         (DontRotate,G4ThreeVector(translation_x, translation_y, 0)), // Set at origin as basis of everything else
-      //         LogicalInnerCladdingFiber,"Inner_Cladding_Fiber",
-      //         LogicalFibersHolder,false,0);
-      //
-      //         if(FiberMultiCladding  == 1)
-      //         {
-      //           PhysicalOuterCladdingFiberBunch[n] = new G4PVPlacement(G4Transform3D
-      //             (DontRotate,G4ThreeVector(translation_x, translation_y, 0)), // Set at origin as basis of everything else
-      //             LogicalOuterCladdingFiber,"Outer_Cladding_Fiber",
-      //             LogicalFibersHolder,false,0);
-      //           }
-      //
-      //           n++;
-      //         }
-      //       }
+      // 	{
+      // 	  for (int j=0; j<FiberNumberPerLine; j++)
+      // 	    {
+      // 	      translation_x = (FiberSpace+FiberWidth/2-WidthBunchFibers/2)+j*(FiberWidth + FiberSpace);
+      // 	      translation_y = (FiberSpace+FiberWidth/2-WidthBunchFibers/2)+i*(FiberWidth + FiberSpace);
+      
+      // 	      PhysicalCoreFiberBunch[n] = new G4PVPlacement(G4Transform3D
+      //        (DontRotate,G4ThreeVector(translation_x, translation_y, 0)), // Set at origin as basis of everything else
+      //        LogicalCoreFiber,"Core_Fiber",
+      //        LogicalFibersHolder,false,0);
+      
+      // 	      PhysicalInnerCladdingFiberBunch[n] = new G4PVPlacement(G4Transform3D
+      //          (DontRotate,G4ThreeVector(translation_x, translation_y, 0)), // Set at origin as basis of everything else
+      //          LogicalInnerCladdingFiber,"Inner_Cladding_Fiber",
+      //          LogicalFibersHolder,false,0);
+      
+      // 	      if(FiberMultiCladding  == 1)
+      // 		{
+      // 		  PhysicalOuterCladdingFiberBunch[n] = new G4PVPlacement(G4Transform3D
+      //              (DontRotate,G4ThreeVector(translation_x, translation_y, 0)), // Set at origin as basis of everything else
+      //              LogicalOuterCladdingFiber,"Outer_Cladding_Fiber",
+      //              LogicalFibersHolder,false,0);
+      // 		}
+      
+      // 	      n++;
+      // 	    }
+      // 	}
 
 
             //PMT photocathode placement
             PhysicalPhotocathode = new G4PVPlacement(G4Transform3D
               //(DontRotate,G4ThreeVector(FiberWidth/2 + FiberSpace - WidthBunchFibers/2, 0, Z_Position_Photocathode)), //USE THAT FOR TP
               //(DontRotate,G4ThreeVector((60-10)*mm, (30-12.1)*mm, Z_Position_Photocathode+300)), //USE THAT FOR DEBUG
-              (Flip,G4ThreeVector((280.6+7.44)*mm, 15*mm, 0)), //USE THAT FOR DEBUG
+	      //(Flip,G4ThreeVector((280.5 + ZnSThickness + ScintillatorThickness + DetectorThickness/2)*mm, 7*mm, -5*mm)), //7.44mm for AIFIRA lens
+	      (Flip,G4ThreeVector((280.5 + ZnSThickness + ScintillatorThickness + 300 + DetectorThickness/2)*mm, 7*mm, -5*mm)), //7.44mm for AIFIRA lens
+	      //(Flip,G4ThreeVector((280.5 + ZnSThickness + ScintillatorThickness + FiberLength + DetectorThickness/2)*mm, 15*mm, 0)), //7.44mm for AIFIRA lens
               LogicalPhotocathode,"Objectif",
               LogicalHolder,true,0);
 
 
-              // Lens placement
+	    //Lens placement
               // PhysicalLens = new G4PVPlacement(G4Transform3D
               //   (Flip,G4ThreeVector(-20, 50, Z_Position_Lens-115)), //USE THAT FOR DEBUG
               //   LogicalLens,"Lens",
