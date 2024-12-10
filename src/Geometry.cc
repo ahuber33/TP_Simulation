@@ -781,7 +781,7 @@ G4LogicalVolume *Geometry::GetRoundObjective(){
   Material = scintProp->GetMaterial("Silicium");
 
   G4Tubs *Tubs = new G4Tubs   ("Tubs",             //its name
-  0., (11.5/2)*mm, (DetectorThickness/2)*mm, 0, 360*deg);    //its size
+  0., (40/2)*mm, (DetectorThickness/2)*mm, 0, 360*deg);    //its size
 
   LogicalVolume = new G4LogicalVolume(Tubs, Material, "Photocathode",0,0,0);
 
@@ -898,15 +898,15 @@ G4LogicalVolume *Geometry::GetCladdingSquareFiber(){
 
 G4LogicalVolume *Geometry::GetScTest(){
 
-  Material = scintProp->GetMaterial("EJ262");
-  //Material = scintProp->GetMaterial("YAG");
+  Material = scintProp->GetMaterial("EJ212");
+  //  Material = scintProp->GetMaterial("YAG");
   //Material = scintProp->GetMaterial("ZnS");
 
   //scintillator = scintProp->GetMaterial("Alu");
 
   G4Box *Box = new G4Box   ("Box",             //its name
-  ScintillatorLength/2, 100./2, ScintillatorThickness/2);    //its size
-  //ScintillatorThickness/2, 58/2*mm, ScintillatorLength/2);
+  //ScintillatorLength/2, 100./2, ScintillatorThickness/2);    //its size
+  ScintillatorThickness/2, 58/2*mm, ScintillatorLength/2);
 
   LogicalVolume = new G4LogicalVolume(Box, Material, "Sc_Test",0,0,0);
 
@@ -944,8 +944,8 @@ G4LogicalVolume *Geometry::GetVolumeEFPlates(){
   float L = EF_Dist_between_plates +2*EF_Thickness_plates;
 
   G4Box *Box1 = new G4Box   ("Box1",             //its name
-  //EF_Length_plates/2, EF_Dist_between_plates/2, EF_Width_plates/2);
-  EF_Width_plates/2, L/2, EF_Length_plates/2);    //its size
+  EF_Length_plates/2, EF_Dist_between_plates/2, EF_Width_plates/2);
+  //EF_Width_plates/2, L/2, EF_Length_plates/2);    //its size
 
   //G4Box *Box2 = new G4Box   ("Box2",             //its name
   //            (Width_plates+1)/2, Dist_between_plates/2, (Length_plates+1)/2);    //its size
@@ -1004,7 +1004,7 @@ G4LogicalVolume *Geometry::GetVolumeMFPlates(){
 G4LogicalVolume *Geometry::GetPinhole(){
 
   //Material = scintProp->GetMaterial("Carbon");
-  Material = scintProp->GetMaterial("Alu");
+  Material = scintProp->GetMaterial("Plomb");
 
   G4Tubs *Tubs = new G4Tubs   ("Tubs",             //its name
   //0., (38.1/2)*mm, (38.1/2)*mm, 0, 360*deg);    //its size
@@ -1035,7 +1035,7 @@ G4LogicalVolume *Geometry::GetZnS(){
   Material = scintProp->GetMaterial("ZnS");
 
   G4Box *Box = new G4Box   ("Box",             //its name
-  ScintillatorLength/2, 60/2, ZnSThickness/2);    //its size
+  ZnSThickness/2, 60/2, ScintillatorLength/2);    //its size
   LogicalVolume = new G4LogicalVolume(Box, Material, "ZnS",0,0,0);
 
   return LogicalVolume;
@@ -1060,9 +1060,9 @@ G4LogicalVolume *Geometry::GetPhotocathode(){
   Material = scintProp->GetMaterial("Silicium");
 
   G4Box *Box = new G4Box   ("Box",             //its name
-  //ScintillatorLength/2, 60/2, DetectorThickness/2);    //its size
+  ScintillatorLength/2, 60/2, DetectorThickness/2);    //its size
   //(Fiber_number_per_line*Fiber_width + (Fiber_number_per_line+1)*Fiber_space)/2, (Fiber_number_per_line*Fiber_width + (Fiber_number_per_line+1)*Fiber_space)/2, DetectorThickness/2);    //its size
-  DetectorLength/2, DetectorWidth/2, DetectorThickness/2);    //its size
+  //DetectorLength/2, DetectorWidth/2, DetectorThickness/2);    //its size
 
   LogicalVolume = new G4LogicalVolume(Box, Material, "Photocathode",0,0,0);
 

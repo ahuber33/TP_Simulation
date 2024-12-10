@@ -21,7 +21,7 @@
 # To superimpose all of the events from a given run:
 /vis/scene/endOfEventAction accumulate
 
-/tracking/verbose 2
+/tracking/verbose 1
 /run/verbose 1
 
 
@@ -47,25 +47,33 @@
 /gps/number 1
 
 
-    # PART TO SIMULATE 1 MEV ELECTRON !!!!!!!!
-/gps/particle proton
-#/gps/particle geantino
+# PART TO SIMULATE 1 MEV ELECTRON !!!!!!!!
+#/gps/particle proton
+/gps/particle geantino
 /gps/pos/type Point
-#/gps/pos/centre 250.0 15.0 0. mm
-/gps/pos/centre 0.0 0.0 -300.0 mm
-#/gps/pos/centre 0.0 -100. 300 mm
+#/gps/pos/type Volume
+#/gps/pos/shape Cylinder
+#/gps/pos/centre 0.0 0.0 1104.9 mm
+/gps/pos/centre -350.5 7 -5 mm
+#/gps/pos/radius 0.5 mm
+#/gps/pos/halfz 0.00005 mm
+#/gps/pos/centre 0.0 -100. 200 mm
 #/gps/pos/centre 0.0 -100. 58.6 mm
-/gps/energy 2 MeV
-/gps/direction 0.0 0.0 1.0
+/gps/energy 1.5 MeV
+#/gps/ene/type Exp
+#/gps/ene/min 1 MeV
+#/gps/ene/max 130. MeV
+#/gps/ene/ezero 30 MeV
+/gps/direction 1.0 0.0 0.0
 #/gps/ang/type cos
-#/gps/ang/rot1 -1 0 0
+#/gps/ang/rot1 0 0 1
 #/gps/ang/rot2 1 0 0
 #/gps/ang/mintheta 37 deg
 #/gps/ang/maxtheta 37 deg
 #/gps/ang/minphi 0 deg
 #/gps/ang/maxphi 0 deg
-#/gps/ang/maxtheta 0.0004 rad
-#/gps/ang/maxtheta 0.1 rad
+#/gps/ang/maxtheta 0.001 rad
+/gps/ang/maxtheta 0.0005333 rad
 
 #/gps/ene/type Arb
 #/gps/hist/type arb

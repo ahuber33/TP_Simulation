@@ -146,6 +146,8 @@ TPSimSteppingAction::TPSimSteppingAction()
       if (angle/deg >39 && angle/deg <141) theTrack->SetTrackStatus(fStopAndKill);
     }
 
+    if(StepNo>1000 && partname == "opticalphoton")theTrack->SetTrackStatus(fStopAndKill);
+
     if(0){                       //set to 1 to ignore generated photons
       if(theTrack->GetDefinition()->GetParticleName()=="opticalphoton")
       theTrack->SetTrackStatus(fStopAndKill);
@@ -253,7 +255,7 @@ if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary){
     case Detection:
     {
       evtac->CountDetected();
-      evtac->FillPhotonDetectorPositionX(x);
+      evtac->FillPhotonDetectorPositionX(z);
       evtac->FillPhotonDetectorPositionY(y);
       evtac->FillPhotonPositionZ(z);
       evtac->FillPhotonMomentumX(px);
