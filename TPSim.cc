@@ -2,171 +2,164 @@
 /// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr>
 /// Copyright: 2022 (C) Projet RATP - ENL [LP2IB] - CELIA
 
-
-#include "G4LogicalSkinSurface.hh"
-#include "G4OpticalSurface.hh"
-#include "G4ThreeVector.hh"
-#include "G4MaterialPropertiesTable.hh"
-#include "Randomize.hh"
-#include "time.h"
-#include "G4Timer.hh"
 #include "G4UIterminal.hh"
-#include "TPSimSteppingAction.hh"
 #include "G4RunManager.hh"
 #include "G4UImanager.hh"
-//#include "G4UIGAG.hh"
-  #include "TPSimGeometry.hh"
-  #include "TPSimPhysics.hh"
-  #include "TPSimPrimaryGeneratorAction.hh"
-#include "TPSimRunAction.hh"
-#include "TPSimEventAction.hh"
-#include "TPSimTrackingAction.hh"
-//
+#include "TPSimPhysics.hh"
+#include "TPSimActionInitialization.hh"
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
-#include "G4SteppingVerbose.hh"
+#include "G4RunManagerFactory.hh"
 
 
-// #ifdef G4VIS_USE
-// #include "TPSimVisManager.hh"
- //#endif
+void CleanUp(TPSimGeometry *geom)
+{
+  // Nettoyage des champs et des gestionnaires de champs
+  geom->CleanFields();
+  G4GeometryManager::GetInstance()->OpenGeometry();
 
-int main(int argc,char** argv){
+  // Suppression manuelle si nécessaire
+  G4PhysicalVolumeStore::Clean();
+  G4LogicalVolumeStore::Clean();
+  G4SolidStore::Clean();
+  G4RegionStore::Clean();
+}
 
+int main(int argc, char **argv)
+{
+  G4RunManager *runManager;
+  const char *outputFile = argv[1];
+  size_t NEvents = 1;
+  size_t Nthreads = std::thread::hardware_concurrency();
+  bool flag_MT = false;
 
-  char* suff = argv[1];
+  if (argc == 2) // VISUALIZATION MODE
+  {
+    runManager = new G4RunManager;
+  }
 
-  //Use SteppingVerbose with Unit
-//G4int precision = 4;
-//G4SteppingVerbose::UseBestUnit(precision);
+  else if (argc > 4 && argc <= 6) // BATCH MODE
+  {
+    NEvents = std::stoul(argv[2]);
+    G4String pMT = argv[4];
 
+    if (pMT == "ON")
+    {
+      flag_MT = true;
+      runManager = G4RunManagerFactory::CreateRunManager();
+      if (argc == 6)
+        Nthreads = std::stoul(argv[5]);
+      runManager->SetNumberOfThreads(Nthreads);
+    }
 
-  // Construct the default run manager
-  G4RunManager* runManager = new G4RunManager;
+    else if (pMT == "OFF")
+    {
+      flag_MT = false;
+      runManager = new G4RunManager;
+    }
 
+    else
+    {
+      G4Exception("Main", "main0001", FatalException,
+                  "MT parameter (5th argument) must be ON or OFF.");
+    }
+  }
+
+  else
+  {
+    G4Exception("Main", "main0002", FatalException,
+                "Incorrect number of input parameters.");
+  }
 
   // set mandatory initialization classes
-  TPSimGeometry* OptGeom = new TPSimGeometry;
+  TPSimGeometry *OptGeom = new TPSimGeometry;
 
-  G4cout<<"Geometry given to TPSim.cc"<<G4endl;
+  G4cout << "Geometry given to TPSim.cc" << G4endl;
 
   // initialize the geometry
   runManager->SetUserInitialization(OptGeom);
-  G4cout<<"Geometry set in TPSim.cc given to Runman"<<G4endl;
+  G4cout << "Geometry set in TPSim.cc given to Runman" << G4endl;
 
   // initialize the physics
   runManager->SetUserInitialization(new TPSimPhysics);
 
-// #ifdef G4VIS_USE
-//   // visualization manager
-//   G4VisManager* visManager = new TPSimVisManager;
-//   visManager->Initialize();
-// #endif
-
-  // set mandatory user action class
-  runManager->SetUserAction(new TPSimPrimaryGeneratorAction);
+  // Initialize user actions
+  runManager->SetUserInitialization(new TPSimActionInitialization(outputFile, flag_MT));
 
 
-  // set Run Event and Stepping action classes
-  runManager->SetUserAction(new TPSimRunAction(suff));
-  G4cout<<"Initialized new Run Action"<<G4endl;
-
-  runManager->SetUserAction(new TPSimEventAction(suff));
-  G4cout<<"Initialized new EventAction"<<G4endl;
-  runManager->SetUserAction(new TPSimSteppingAction);
-  G4cout<<"Initialized new SteppingAction"<<G4endl;
-  runManager->SetUserAction(new TPSimTrackingAction);
-  G4cout<<"Initialized new Tracking Action"<<G4endl;
-
-
-//#ifdef G4VIS_USE
-      G4VisManager* visManager = new G4VisExecutive;
-      visManager->Initialize();
-//#endif
+  // #ifdef G4VIS_USE
+  G4VisManager *visManager = new G4VisExecutive;
+  visManager->Initialize();
+  // #endif
 
   // Initialize G4 kernel
   runManager->Initialize();
 
-
-  G4cout<<"Initialized new Run Manager"<<G4endl;
+  G4cout << "Initialized new Run Manager" << G4endl;
 
   // get the pointer to the User Interface manager
-  G4UImanager* UI = G4UImanager::GetUIpointer();
-  char movefile[100];
-
+  G4UImanager *UI = G4UImanager::GetUIpointer();
 
   G4UIExecutive *ui = 0;
 
-  if (argc==4)   // batch mode
-    {
-      G4cout << "Batch MODE" << G4endl;
-      G4String command = "/control/execute ";
-      G4String fileName = argv[3];
-      UI->ApplyCommand(command+fileName);
-      UI->ApplyCommand("control/suppressAbortion");
+  if (argc == 2)
+  {
+    G4cout << "Interactive MODE" << G4endl;
 
-      char startcommand[100];
-      sprintf(startcommand,"/run/beamOn %s",argv[2]);
-      UI->ApplyCommand(startcommand);
-      // G4cout << "3" << G4endl;
-      // sprintf(writefile,"/control/shell mv %s.root ../Resultats/",argv[2]);
-      // UI->ApplyCommand(writefile);
-
-      sprintf(movefile,"/control/shell mv %s.root ../Resultats", argv[1]);
-      UI->ApplyCommand(movefile);
-      G4cout << "Output saved to file " << argv[1] << ".root" << G4endl;
-
-    }
-
-  else           //define visualization and UI terminal for interactive mode
-    {
-
-      G4cout << "Interactive MODE" << G4endl;
-
-//#ifdef G4UI_USE
-      ui = new G4UIExecutive(argc,argv);
-      UI->ApplyCommand("/control/execute vis.mac");
-      ui->SessionStart();
-      delete ui;
-//#endif
-
-      sprintf(movefile,"/control/shell mv %s.root ../Resultats", argv[1]);
-      UI->ApplyCommand(movefile);
-      G4cout << "Output saved to file " << argv[1] << ".root" << G4endl;
-    }
-
-#ifdef G4VIS_USE
-      delete visManager;
-#endif
-
-
-  /*
-  //execute visualization macro
-  UI->ApplyCommand("/control/execute vis.mac");
-  UI->ApplyCommand("/control/execute vrml.mac");
-
-  UI->ApplyCommand("/control/suppressAbortion");
-  G4UIsession *session = new G4UIterminal();
-  if(argc == 1)
-    //starts G4Terminal
-    session->SessionStart();
-
-  else if(argc == 3){
-    //automatically executes the specified number of runs and saves to output
-    char writefile[100],startcommand[100], movefile[100];
-    sprintf(startcommand,"/run/beamOn %s",argv[1]);
-      UI->ApplyCommand(startcommand);
-      sprintf(writefile,"/control/shell mv %s.root ../Resultats/",argv[2]);
-      UI->ApplyCommand(writefile);
-      //sprintf(movefile,"/control/shell mv %s.root ../Resultats", argv[2]);
-      //UI->ApplyCommand(movefile);
-      G4cout << "Output saved to file " << argv[2] << ".root" << G4endl;
+    // #ifdef G4UI_USE
+    ui = new G4UIExecutive(argc, argv);
+    UI->ApplyCommand("/control/execute vis.mac");
+    ui->SessionStart();
+    delete ui;
+    // #endif
   }
 
-  delete session;
-  */
+  else if (argc > 4) // batch mode
+  {
+    G4cout << "Batch MODE" << G4endl;
 
+    G4String command = "/control/execute ";
+    G4String macroName = argv[3];
+    UI->ApplyCommand(command + macroName);
+    UI->ApplyCommand("control/suppressAbortion");
 
-  delete runManager;
+    std::string runCommand = "/run/beamOn " + std::string(argv[2]);
+    UI->ApplyCommand(runCommand);
+
+    if (flag_MT)
+    {
+      std::string mergeCommand = "/control/shell hadd -k -f " + std::string(outputFile) + ".root";
+      for (size_t i = 0; i < Nthreads; ++i)
+      {
+        mergeCommand += " " + std::string(outputFile) + "_" + std::to_string(i) + ".root";
+      }
+      UI->ApplyCommand(mergeCommand);
+
+      // Clean up temporary files
+      for (size_t i = 0; i < Nthreads; ++i)
+      {
+        std::string removeCommand = "/control/shell rm -f " + std::string(outputFile) + "_" + std::to_string(i) + ".root";
+        UI->ApplyCommand(removeCommand);
+      }
+    }
+  }
+
+  else // define visualization and UI terminal for interactive mode
+  {
+    G4Exception("Main", "main0003", FatalException,
+                "Problem with launch command");
+  }
+
+#ifdef G4VIS_USE
+  delete visManager;
+#endif
+
+  std::string movefile = "/control/shell mv " + std::string(outputFile) + ".root ../Resultats";
+  UI->ApplyCommand(movefile);
+  G4cout << "Output saved in Resultats folder to file " << outputFile << ".root" << G4endl;
+
+  // Appel de la fonction de nettoyage avant de quitter le programme
+  CleanUp(OptGeom);
+
   return 0;
 }

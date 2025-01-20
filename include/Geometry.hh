@@ -8,10 +8,6 @@
 #define Geometry_h
 
 #include "G4LogicalVolume.hh"
-#include "G4MaterialPropertiesTable.hh"
-#include "G4LogicalBorderSurface.hh"
-#include "G4LogicalSkinSurface.hh"
-#include "CLHEP/Units/SystemOfUnits.h"
 #include "G4Tubs.hh"
 #include "G4Box.hh"
 #include "G4Cons.hh"
@@ -21,8 +17,14 @@
 #include "G4Trap.hh"
 #include "G4Trd.hh"
 #include "G4SubtractionSolid.hh"
+#include "G4UnionSolid.hh"
+#include "G4UnitsTable.hh"
 
-class TPSimMaterials;
+//#ifndef disable_gdml
+#include "G4GDMLParser.hh"
+//#endif
+
+//class TPSimMaterials;
 class Geometry
 
 {
@@ -36,71 +38,29 @@ public:
 public:
 
   // Functions to call this geometry in x_blockGeometry.cc
-
-  G4LogicalVolume *GetCoreRoundFiber();
-  G4LogicalVolume *GetInnerCladdingRoundFiber();
-  G4LogicalVolume *GetOuterCladdingRoundFiber();
-  G4LogicalVolume *GetCoreSquareFiber();
-  G4LogicalVolume *GetCladdingSquareFiber();
-  G4LogicalVolume *GetScTest();
-  G4LogicalVolume *GetEFPlates();
-  G4LogicalVolume *GetVolumeEFPlates();
-  G4LogicalVolume *GetMFPlates();
-  G4LogicalVolume *GetVolumeMFPlates();
-  G4LogicalVolume *GetPinhole();
-  G4LogicalVolume *GetLaBr3();
-  G4LogicalVolume *GetZnS();
-  G4LogicalVolume *GetZnSLG();
-  G4LogicalVolume *GetPhotocathode();
-  G4LogicalVolume *GetRoundPhotocathode();
-  G4LogicalVolume *GetLens();
-  G4LogicalVolume *GetRATP_Aimant1();
-  G4LogicalVolume *GetRATP_Aimant2();
-  G4LogicalVolume *GetRATP_CoteYokeAimant1();
-  G4LogicalVolume *GetRATP_CoteYokeAimant2();
-  G4LogicalVolume *GetRATP_EntreeYokeAimant1();
-  G4LogicalVolume *GetRATP_EntreeYokeAimant2();
-  G4LogicalVolume *GetRATP_FondYokeAimant1();
-  G4LogicalVolume *GetRATP_FondYokeAimant2();
-  G4LogicalVolume *GetRATP_CaleYokeAimant();
-  G4LogicalVolume *GetRATP_Electrode1();
-  G4LogicalVolume *GetRATP_Electrode2();
-  G4LogicalVolume *GetRATP_ColonneElectrode1();
-  G4LogicalVolume *GetRATP_ColonneElectrode2();
-  G4LogicalVolume *GetRATP_ColonneElectrode3();
-  G4LogicalVolume *GetRATP_ColonneElectrode4();
-  G4LogicalVolume *GetRATP_BaseElectrode1();
-  G4LogicalVolume *GetRATP_BaseElectrode2();
-  G4LogicalVolume *GetRATP_BaseElectrode3();
-  G4LogicalVolume *GetRATP_BaseElectrode4();
-  G4LogicalVolume *GetRATP_BaseBoite();
-  G4LogicalVolume *GetRATP_CapotBoite();
-  G4LogicalVolume *GetRATP_CoteBoite();
-  G4LogicalVolume *GetRATP_EntreeBoite();
-  G4LogicalVolume *GetRATP_SHV1();
-  G4LogicalVolume *GetRATP_SHV2();
-  G4LogicalVolume *GetRATP_SocleConnecteur();
-  G4LogicalVolume *GetRATP_BaseBoiteDetecteur();
-  G4LogicalVolume *GetRATP_EntreeBoiteDetecteur();
-  G4LogicalVolume *GetRATP_SortieBoiteDetecteur();
-  G4LogicalVolume *GetRATP_CoteBoiteDetecteur1();
-  G4LogicalVolume *GetRATP_CoteBoiteDetecteur2();
-  G4LogicalVolume *GetRATP_MontageIP();
-  G4LogicalVolume *GetRATP_CouvercleBoiteDetecteur();
-  G4LogicalVolume *GetRATP_PlaquePb();
-  G4LogicalVolume *GetRoundObjective();
+  G4LogicalVolume *GetGDMLVolume(const char*, const char*, G4Material*);
+  G4LogicalVolume *GetCoreRoundFiber(G4Material*);
+  G4LogicalVolume *GetInnerCladdingRoundFiber(G4Material*);
+  G4LogicalVolume *GetOuterCladdingRoundFiber(G4Material*);
+  G4LogicalVolume *GetCoreSquareFiber(G4Material*);
+  G4LogicalVolume *GetCladdingSquareFiber(G4Material*);
+  G4LogicalVolume *GetScintillator(G4Material*);
+  G4LogicalVolume *GetEFPlates(G4Material*);
+  G4LogicalVolume *GetVolumeEFPlates(G4Material*);
+  G4LogicalVolume *GetMFPlates(G4Material*);
+  G4LogicalVolume *GetVolumeMFPlates(G4Material*);
+  G4LogicalVolume *GetPinhole(G4Material*);
+  G4LogicalVolume *GetZnS(G4Material*);
+  G4LogicalVolume *GetZnSLG(G4Material*);
+  G4LogicalVolume *GetPhotocathode(G4Material*);
+  G4LogicalVolume *GetRoundPhotocathode(G4Material*);
+  G4LogicalVolume *GetLens(G4Material*);
+  G4LogicalVolume *GetRoundObjective(G4Material*);
 
 
   // Functions that can be called to return various scint dimensions
 
   //****************COMMON********************
-  // wrapping
-  G4double GetTeflonThickness(){return TeflonThickness;}
-  G4double GetAirGapTeflon(){return AirGapTeflon;}
-  G4double GetMylarThickness(){return MylarThickness;}
-  G4double GetAirGapMylar(){return AirGapMylar;}
-  // glue
-  G4double GetGlueThickness(){return GlueThickness;}
   // ElectricField Plates
   G4double GetEFValue(){return EF_Value;}
   G4double GetEFDistBetweenPlates(){return EF_Dist_between_plates;}
@@ -135,15 +95,14 @@ public:
   G4int GetFiberMultiCladdingOption(){return Fiber_multi_cladding;}
   G4int GetFiberGeometry(){return Fiber_geometry;}
   G4int GetActivationG4FAST(){return Activation_G4FAST;}
+  G4double GetLightyield(){return lightyield;}
+  G4double GetLightyieldZnS(){return lightyieldZnS;}
 
 private:
 
 
   Geometry *theScint;
-  TPSimMaterials* scintProp;
-
   static const G4String path_bin;
-
 
   // Materials
   G4Material *Material;
@@ -151,65 +110,58 @@ private:
   // Logical Volumes
   G4LogicalVolume *LogicalVolume;
 
-  G4double ScintillatorLength;
-  G4double ScintillatorThickness;
-  G4double ZnSThickness;
-  G4double ZnSLGThickness;
-  G4double DetectorLength;
-  G4double DetectorWidth;
-  G4double DetectorThickness;
-  G4double DetectorTranslation;
-  G4double LensTranslation;
-  G4double LensThickness;
-  // Physical Dimensions
-  // wrapping
-  G4double AirGapTeflon;
-  G4double TeflonThickness;
-  G4double AirGapMylar;
-  G4double MylarThickness;
-  // glue
-  G4double GlueThickness;
-
+  G4double ScintillatorLength=0.0;
+  G4double ScintillatorWidth=0.0;
+  G4double ScintillatorThickness=0.0;
+  G4double ZnSThickness=0.0;
+  G4double ZnSLGThickness=0.0;
+  G4double DetectorLength=0.0;
+  G4double DetectorWidth=0.0;
+  G4double DetectorThickness=0.0;
+  G4double DetectorTranslation=0.0;
+  G4double LensTranslation=0.0;
+  G4double LensThickness=0.0;
+  
   //ElectricField Plates
-  G4double EF_Value;
-  G4double EF_Dist_between_plates;
-  G4double EF_Thickness_plates;
-  G4double EF_Length_plates;
-  G4double EF_Width_plates;
+  G4double EF_Value=0.0;
+  G4double EF_Dist_between_plates=0.0;
+  G4double EF_Thickness_plates=0.0;
+  G4double EF_Length_plates=0.0;
+  G4double EF_Width_plates=0.0;
 
   //MagneticField Plates
-  G4double MF_Value;
-  G4double MF_Dist_between_plates;
-  G4double MF_Thickness_plates;
+  G4double MF_Value=0.0;
+  G4double MF_Dist_between_plates=0.0;
+  G4double MF_Thickness_plates=0.0;
   G4double MF_Length_plates;
-  G4double MF_Width_plates;
+  G4double MF_Width_plates=0.0;
 
   //Pinhole
-  G4double Pinhole_radius_ext;
-  G4double Pinhole_radius_int;
-  G4double Pinhole_thickness;
+  G4double Pinhole_radius_ext=0.0;
+  G4double Pinhole_radius_int=0.0;
+  G4double Pinhole_thickness=0.0;
 
   //Position of Plates
-  G4double Dist_between_plates;
-  G4double Dist_EFPlates_Detector;
-  G4double Dist_pinhole_MFPlates;
-  G4double translation_pinhole;
+  G4double Dist_between_plates=0.0;
+  G4double Dist_EFPlates_Detector=0.0;
+  G4double Dist_pinhole_MFPlates=0.0;
+  G4double translation_pinhole=0.0;
 
   //Fibers
-  G4int Fiber_geometry;
-  G4int Fiber_multi_cladding;
-  G4double Fiber_number_per_line;
-  G4double Fiber_cladding_ratio;
-  G4double Fiber_length;
-  G4double Fiber_width;
-  G4double Fiber_space;
+  G4int Fiber_geometry=0;
+  G4int Fiber_multi_cladding=0;
+  G4double Fiber_number_per_line=0.0;
+  G4double Fiber_cladding_ratio=0.0;
+  G4double Fiber_length=0.0;
+  G4double Fiber_width=0.0;
+  G4double Fiber_space=0.0;
 
   //G4FastTrack
-  G4int Activation_G4FAST;
+  G4int Activation_G4FAST=0;
 
-
-  // Other
-  G4VisAttributes *clear;
+  // Optical Parameters
+  G4double lightyield=0.0;
+  G4double lightyieldZnS=0.0;
 
 };
 #endif

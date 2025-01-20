@@ -4,20 +4,7 @@
 
 #include "TPSimMaterials.hh"
 #include "Geometry.hh"
-#include "G4Material.hh"
-#include "G4MaterialTable.hh"
-#include "G4LogicalBorderSurface.hh"
-#include "G4OpBoundaryProcess.hh"
-#include "G4ThreeVector.hh"
-#include "G4VisAttributes.hh"
-#include "G4Transform3D.hh"
-#include "G4UnionSolid.hh"
-#include <fstream>
-#include <iostream>
 
-#include "G4PVPlacement.hh"
-#include "G4UnitsTable.hh"
-#include <math.h>
 
 //#ifndef disable_gdml
 #include "G4GDMLParser.hh"
@@ -52,6 +39,10 @@ Geometry::Geometry(G4String buildfile){
       if(variable == "ScintillatorLength"){
         config >> value >> unit;
         ScintillatorLength = value*G4UnitDefinition::GetValueOf(unit);
+      }
+      else if(variable == "ScintillatorWidth"){
+        config >> value >> unit;
+        ScintillatorWidth = value*G4UnitDefinition::GetValueOf(unit);
       }
       else if(variable == "ScintillatorThickness"){
         config >> value >> unit;
@@ -88,34 +79,6 @@ Geometry::Geometry(G4String buildfile){
       else if(variable == "DetectorTranslation"){
         config >> value >> unit;
         DetectorTranslation = value*G4UnitDefinition::GetValueOf(unit);
-      }
-      if(variable == "TeflonThickness"){
-        config >> value >> unit;
-        TeflonThickness = value*G4UnitDefinition::GetValueOf(unit);
-      }
-      else if(variable == "AirGapTeflon"){
-        config >> value >> unit;
-        AirGapTeflon = value*G4UnitDefinition::GetValueOf(unit);
-      }
-      else if(variable == "MylarThickness"){
-        config >> value >> unit;
-        MylarThickness = value*G4UnitDefinition::GetValueOf(unit);
-      }
-      else if(variable == "AirGapMylar"){
-        config >> value >> unit;
-        AirGapMylar = value*G4UnitDefinition::GetValueOf(unit);
-      }
-      else if(variable == "MylarThickness"){
-        config >> value >> unit;
-        MylarThickness = value*G4UnitDefinition::GetValueOf(unit);
-      }
-      else if(variable == "AirGapMylar"){
-        config >> value >> unit;
-        AirGapMylar = value*G4UnitDefinition::GetValueOf(unit);
-      }
-      else if(variable == "GlueThickness"){
-        config >> value >> unit;
-        GlueThickness = value*G4UnitDefinition::GetValueOf(unit);
       }
       // ElectricField Plates dimensions
       else if(variable == "EF_Value"){
@@ -219,6 +182,14 @@ Geometry::Geometry(G4String buildfile){
         config >> value;
         Activation_G4FAST = value;
       }
+      else if(variable == "lightyield"){
+        config >> value;
+        lightyield = value;
+      }
+      else if(variable == "lightyieldZnS"){
+        config >> value;
+        lightyieldZnS = value;
+      }
     }
   }
   config.close();
@@ -235,11 +206,6 @@ Geometry::Geometry(G4String buildfile){
   << "\n LensThickness = " << LensThickness
   << "\n DetectorTranslation = " << DetectorTranslation
   << "\n LensTranslation = " << LensTranslation
-  << "\n Teflon thickness = " << TeflonThickness
-  << "\n Air gap Teflon = " << AirGapTeflon
-  << "\n Mylar thickness = " << MylarThickness
-  << "\n Air gap Mylar = " << AirGapMylar
-  << "\n Glue Thickness = " << GlueThickness
   << "\n EF Value = " << EF_Value
   << "\n EF Distance between plates = " << EF_Dist_between_plates
   << "\n EF Plates thickness = " << EF_Thickness_plates
@@ -265,520 +231,34 @@ Geometry::Geometry(G4String buildfile){
   << "\n Fiber cladding ratio = " << Fiber_cladding_ratio
   << "\n Fiber length = " << Fiber_length
   << "\n Activation G4FAST = " << Activation_G4FAST
+  << "\n Lightyield = " << lightyield
+  << "\n Lightyield ZnS = " << lightyieldZnS
   << "\n " << G4endl;
 
 }
 // ***********************
 // Destructor
 // ***********************
-Geometry::~Geometry(){
-  if(scintProp) { delete scintProp; scintProp = 0; }
-  if(clear) { delete clear; clear = 0; }
-}
+Geometry::~Geometry()
+{}
 
-G4LogicalVolume *Geometry::GetRATP_Aimant1(){
-
-  Material = scintProp->GetMaterial("Neodyme");
+G4LogicalVolume* Geometry::GetGDMLVolume(const char* path, const char* VName, G4Material* material)
+{
+  Material = material;
 
   G4GDMLParser* parser = new G4GDMLParser();
   //Create Tesselated volume of "Bouchon"
   parser->Clear();
-  parser->Read("../gdml_models/RATP/aimant_1.gdml", false);
-  LogicalVolume = parser->GetVolume("aimant_1");
+  parser->Read(G4String(path), false);
+  LogicalVolume = parser->GetVolume(G4String(VName));
   LogicalVolume->SetMaterial(Material);
 
   return LogicalVolume;
 }
 
-G4LogicalVolume *Geometry::GetRATP_Aimant2(){
+G4LogicalVolume *Geometry::GetRoundObjective(G4Material* material){
 
-  Material = scintProp->GetMaterial("Neodyme");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/aimant_2.gdml", false);
-  LogicalVolume = parser->GetVolume("aimant_2");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_CoteYokeAimant1(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/cote_YOKE_aimant_RATP.gdml", false);
-  LogicalVolume = parser->GetVolume("cote_YOKE_Aimant_RATP");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_CoteYokeAimant2(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/cote_YOKE_aimant_RATP_bis.gdml", false);
-  LogicalVolume = parser->GetVolume("cote_YOKE_Aimant_RATP_bis");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_EntreeYokeAimant1(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/entree_YOKE_aimant_RATP.gdml", false);
-  LogicalVolume = parser->GetVolume("entree_YOKE_aimant_RATP");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-G4LogicalVolume *Geometry::GetRATP_EntreeYokeAimant2(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/entree_YOKE_aimant_RATP_bis.gdml", false);
-  LogicalVolume = parser->GetVolume("entree_YOKE_aimant_RATP_bis");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_FondYokeAimant1(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/fond_YOKE_aimant_RATP.gdml", false);
-  LogicalVolume = parser->GetVolume("Fond_YOKE_Aimant");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-G4LogicalVolume *Geometry::GetRATP_FondYokeAimant2(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/fond_YOKE_aimant_RATP_bis.gdml", false);
-  LogicalVolume = parser->GetVolume("Fond_YOKE_Aimant_bis");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-G4LogicalVolume *Geometry::GetRATP_CaleYokeAimant(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/cale_YOKE_aimant_RATP.gdml", false);
-  LogicalVolume = parser->GetVolume("Cale_YOKE_Aimant");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_Electrode1(){
-
-  Material = scintProp->GetMaterial("Fer");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/electrode_RATP_1.gdml", false);
-  LogicalVolume = parser->GetVolume("Electrode1");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_Electrode2(){
-
-  Material = scintProp->GetMaterial("Fer");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/electrode_RATP_2.gdml", false);
-  LogicalVolume = parser->GetVolume("Electrode2");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_ColonneElectrode1(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/colonne_electrode_RATP_1.gdml", false);
-  LogicalVolume = parser->GetVolume("Colonne_electrode1");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-G4LogicalVolume *Geometry::GetRATP_ColonneElectrode2(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/colonne_electrode_RATP_2.gdml", false);
-  LogicalVolume = parser->GetVolume("Colonne_electrode2");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-G4LogicalVolume *Geometry::GetRATP_ColonneElectrode3(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/colonne_electrode_RATP_3.gdml", false);
-  LogicalVolume = parser->GetVolume("Colonne_electrode3");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-G4LogicalVolume *Geometry::GetRATP_ColonneElectrode4(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/colonne_electrode_RATP_4.gdml", false);
-  LogicalVolume = parser->GetVolume("Colonne_electrode4");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_BaseElectrode1(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/base_electrode_RATP_1.gdml", false);
-  LogicalVolume = parser->GetVolume("Base_electrode1");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-G4LogicalVolume *Geometry::GetRATP_BaseElectrode2(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/base_electrode_RATP_2.gdml", false);
-  LogicalVolume = parser->GetVolume("Base_electrode2");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-G4LogicalVolume *Geometry::GetRATP_BaseElectrode3(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/base_electrode_RATP_3.gdml", false);
-  LogicalVolume = parser->GetVolume("Base_electrode3");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-G4LogicalVolume *Geometry::GetRATP_BaseElectrode4(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/base_electrode_RATP_4.gdml", false);
-  LogicalVolume = parser->GetVolume("Base_electrode4");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_BaseBoite(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/base_boite_RATP.gdml", false);
-  LogicalVolume = parser->GetVolume("Base_boite");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_CapotBoite(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/capot_boite_RATP.gdml", false);
-  LogicalVolume = parser->GetVolume("Capot_boite");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_CoteBoite(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/cote_boite_RATP.gdml", false);
-  LogicalVolume = parser->GetVolume("Cote_boite");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_EntreeBoite(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/entree_boite_RATP.gdml", false);
-  LogicalVolume = parser->GetVolume("Entree_boite");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_SHV1(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/SHV_1.gdml", false);
-  LogicalVolume = parser->GetVolume("SHV1");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_SHV2(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/SHV_2.gdml", false);
-  LogicalVolume = parser->GetVolume("SHV2");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_SocleConnecteur(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/socle_connecteur_RATP.gdml", false);
-  LogicalVolume = parser->GetVolume("Socle_connecteur");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_BaseBoiteDetecteur(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/base_boite_detecteur_RATP.gdml", false);
-  LogicalVolume = parser->GetVolume("Base_boite_detecteur");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_EntreeBoiteDetecteur(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/entree_boite_detecteur_RATP.gdml", false);
-  LogicalVolume = parser->GetVolume("Entree_boite_detecteur");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_SortieBoiteDetecteur(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/sortie_boite_detecteur_RATP.gdml", false);
-  LogicalVolume = parser->GetVolume("Sortie_boite_detecteur");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_MontageIP(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/montage_IP_RATP.gdml", false);
-  LogicalVolume = parser->GetVolume("Montage_IP");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_CoteBoiteDetecteur1(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/cote_boite_detecteur_RATP.gdml", false);
-  LogicalVolume = parser->GetVolume("Cote_boite_detecteur1");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_CoteBoiteDetecteur2(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/cote_boite_detecteur_RATP_bis.gdml", false);
-  LogicalVolume = parser->GetVolume("Cote_boite_detecteur2");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_CouvercleBoiteDetecteur(){
-
-  Material = scintProp->GetMaterial("Alu");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/couvercle_boite_detecteur_RATP.gdml", false);
-  LogicalVolume = parser->GetVolume("Couvercle_boite_detecteur");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRATP_PlaquePb(){
-
-  Material = scintProp->GetMaterial("Plomb");
-
-  G4GDMLParser* parser = new G4GDMLParser();
-  //Create Tesselated volume of "Bouchon"
-  parser->Clear();
-  parser->Read("../gdml_models/RATP/Pb_Plate.gdml", false);
-  LogicalVolume = parser->GetVolume("Pb_Plate");
-  LogicalVolume->SetMaterial(Material);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetRoundObjective(){
-
-  Material = scintProp->GetMaterial("Silicium");
+  Material = material;
 
   G4Tubs *Tubs = new G4Tubs   ("Tubs",             //its name
   0., (40/2)*mm, (DetectorThickness/2)*mm, 0, 360*deg);    //its size
@@ -788,11 +268,9 @@ G4LogicalVolume *Geometry::GetRoundObjective(){
   return LogicalVolume;
 }
 
+G4LogicalVolume *Geometry::GetCoreRoundFiber(G4Material* material){
 
-
-G4LogicalVolume *Geometry::GetCoreRoundFiber(){
-
-  Material = scintProp->GetMaterial("EJ212");
+  Material = material;
 
   G4Tubs *Tubs= NULL;
 
@@ -814,12 +292,12 @@ G4LogicalVolume *Geometry::GetCoreRoundFiber(){
   return LogicalVolume;
 }
 
-G4LogicalVolume *Geometry::GetInnerCladdingRoundFiber(){
+G4LogicalVolume *Geometry::GetInnerCladdingRoundFiber(G4Material* material){
 
   G4RotationMatrix DontRotate;
   DontRotate.rotateX(0*deg);
 
-  Material = scintProp->GetMaterial("PMMA");
+  Material = material;
 
   G4Tubs *Tubs= NULL;
 
@@ -842,13 +320,12 @@ G4LogicalVolume *Geometry::GetInnerCladdingRoundFiber(){
   return LogicalVolume;
 }
 
-
-G4LogicalVolume *Geometry::GetOuterCladdingRoundFiber(){
+G4LogicalVolume *Geometry::GetOuterCladdingRoundFiber(G4Material* material){
 
   G4RotationMatrix DontRotate;
   DontRotate.rotateX(0*deg);
 
-  Material = scintProp->GetMaterial("FP");
+  Material = material;
 
 
   G4Tubs* Tubs = new G4Tubs   ("Tubs",             //its name
@@ -861,11 +338,9 @@ G4LogicalVolume *Geometry::GetOuterCladdingRoundFiber(){
   return LogicalVolume;
 }
 
+G4LogicalVolume *Geometry::GetCoreSquareFiber(G4Material* material){
 
-
-G4LogicalVolume *Geometry::GetCoreSquareFiber(){
-
-  Material = scintProp->GetMaterial("EJ212");
+  Material = material;
 
   G4Box *Box = new G4Box   ("Box",             //its name
   (Fiber_width-2*Fiber_cladding_ratio*Fiber_width)/2, (Fiber_width-2*Fiber_cladding_ratio*Fiber_width)/2, Fiber_length/2);    //its size
@@ -875,13 +350,12 @@ G4LogicalVolume *Geometry::GetCoreSquareFiber(){
   return LogicalVolume;
 }
 
-
-G4LogicalVolume *Geometry::GetCladdingSquareFiber(){
+G4LogicalVolume *Geometry::GetCladdingSquareFiber(G4Material* material){
 
   G4RotationMatrix DontRotate;
   DontRotate.rotateX(0*deg);
 
-  Material = scintProp->GetMaterial("PMMA");
+  Material = material;
 
   G4Box *Box1 = new G4Box   ("Box1",             //its name
   Fiber_width/2, Fiber_width/2, Fiber_length/2);    //its size
@@ -896,30 +370,25 @@ G4LogicalVolume *Geometry::GetCladdingSquareFiber(){
   return LogicalVolume;
 }
 
-G4LogicalVolume *Geometry::GetScTest(){
+G4LogicalVolume *Geometry::GetScintillator(G4Material* material){
 
-  Material = scintProp->GetMaterial("EJ212");
-  //  Material = scintProp->GetMaterial("YAG");
-  //Material = scintProp->GetMaterial("ZnS");
-
-  //scintillator = scintProp->GetMaterial("Alu");
-
-  G4Box *Box = new G4Box   ("Box",             //its name
+  Material = material;
+  
+  auto Box = new G4Box   ("Box",             //its name
   //ScintillatorLength/2, 100./2, ScintillatorThickness/2);    //its size
-  ScintillatorThickness/2, 58/2*mm, ScintillatorLength/2);
+  ScintillatorThickness/2, ScintillatorWidth/2*mm, ScintillatorLength/2);
 
-  LogicalVolume = new G4LogicalVolume(Box, Material, "Sc_Test",0,0,0);
+  LogicalVolume = new G4LogicalVolume(Box, Material, "Scintillator",0,0,0);
 
   return LogicalVolume;
 }
 
-
-G4LogicalVolume *Geometry::GetEFPlates(){
+G4LogicalVolume *Geometry::GetEFPlates(G4Material* material){
 
   G4RotationMatrix DontRotate;
   DontRotate.rotateX(0*deg);
 
-  Material = scintProp->GetMaterial("Alu");
+  Material = material;
 
   float L = EF_Dist_between_plates +2*EF_Thickness_plates;
 
@@ -936,10 +405,9 @@ G4LogicalVolume *Geometry::GetEFPlates(){
   return LogicalVolume;
 }
 
+G4LogicalVolume *Geometry::GetVolumeEFPlates(G4Material* material){
 
-G4LogicalVolume *Geometry::GetVolumeEFPlates(){
-
-  Material = scintProp->GetMaterial("Vacuum");
+  Material = material;
 
   float L = EF_Dist_between_plates +2*EF_Thickness_plates;
 
@@ -956,13 +424,12 @@ G4LogicalVolume *Geometry::GetVolumeEFPlates(){
   return LogicalVolume;
 }
 
-
-G4LogicalVolume *Geometry::GetMFPlates(){
+G4LogicalVolume *Geometry::GetMFPlates(G4Material* material){
 
   G4RotationMatrix DontRotate;
   DontRotate.rotateX(0*deg);
 
-  Material = scintProp->GetMaterial("Alu");
+  Material = material;
 
   float L = MF_Dist_between_plates +2*MF_Thickness_plates;
 
@@ -979,10 +446,9 @@ G4LogicalVolume *Geometry::GetMFPlates(){
   return LogicalVolume;
 }
 
+G4LogicalVolume *Geometry::GetVolumeMFPlates(G4Material* material){
 
-G4LogicalVolume *Geometry::GetVolumeMFPlates(){
-
-  Material = scintProp->GetMaterial("Vacuum");
+  Material = material;
 
   float L = MF_Dist_between_plates +2*MF_Thickness_plates;
 
@@ -999,12 +465,9 @@ G4LogicalVolume *Geometry::GetVolumeMFPlates(){
   return LogicalVolume;
 }
 
+G4LogicalVolume *Geometry::GetPinhole(G4Material* material){
 
-
-G4LogicalVolume *Geometry::GetPinhole(){
-
-  //Material = scintProp->GetMaterial("Carbon");
-  Material = scintProp->GetMaterial("Plomb");
+  Material = material;
 
   G4Tubs *Tubs = new G4Tubs   ("Tubs",             //its name
   //0., (38.1/2)*mm, (38.1/2)*mm, 0, 360*deg);    //its size
@@ -1014,25 +477,9 @@ G4LogicalVolume *Geometry::GetPinhole(){
   return LogicalVolume;
 }
 
+G4LogicalVolume *Geometry::GetZnS(G4Material* material){
 
-
-
-G4LogicalVolume *Geometry::GetLaBr3(){
-
-  Material = scintProp->GetMaterial("LaBr3");
-
-  G4Tubs *Tubs = new G4Tubs   ("Tubs",             //its name
-  //0., (38.1/2)*mm, (38.1/2)*mm, 0, 360*deg);    //its size
-  0., (38.1/2)*mm, (38.1/2)*mm, 0, 360*deg);    //its size
-  LogicalVolume = new G4LogicalVolume(Tubs, Material, "LaBr3",0,0,0);
-
-  return LogicalVolume;
-}
-
-
-G4LogicalVolume *Geometry::GetZnS(){
-
-  Material = scintProp->GetMaterial("ZnS");
+  Material = material;
 
   G4Box *Box = new G4Box   ("Box",             //its name
   ZnSThickness/2, 60/2, ScintillatorLength/2);    //its size
@@ -1041,10 +488,9 @@ G4LogicalVolume *Geometry::GetZnS(){
   return LogicalVolume;
 }
 
+G4LogicalVolume *Geometry::GetZnSLG(G4Material* material){
 
-G4LogicalVolume *Geometry::GetZnSLG(){
-
-  Material = scintProp->GetMaterial("PMMA");
+  Material = material;
 
   G4Box *Box = new G4Box   ("Box",             //its name
   ScintillatorLength/2, 60/2, ZnSLGThickness/2);    //its size
@@ -1053,11 +499,9 @@ G4LogicalVolume *Geometry::GetZnSLG(){
   return LogicalVolume;
 }
 
-
-G4LogicalVolume *Geometry::GetPhotocathode(){
+G4LogicalVolume *Geometry::GetPhotocathode(G4Material* material){
   // Materials properties for PMT
-  //Material = scintProp->GetMaterial("Vacuum");
-  Material = scintProp->GetMaterial("Silicium");
+  Material = material;
 
   G4Box *Box = new G4Box   ("Box",             //its name
   ScintillatorLength/2, 60/2, DetectorThickness/2);    //its size
@@ -1069,10 +513,9 @@ G4LogicalVolume *Geometry::GetPhotocathode(){
   return LogicalVolume;
 }
 
+G4LogicalVolume *Geometry::GetRoundPhotocathode(G4Material* material){
 
-G4LogicalVolume *Geometry::GetRoundPhotocathode(){
-
-  Material = scintProp->GetMaterial("Silicium");
+  Material = material;
 
   G4Tubs *Tubs = new G4Tubs   ("Tubs",             //its name
   0., (75/2)*mm, (0.1/2)*mm, 0, 360*deg);    //its size
@@ -1082,9 +525,9 @@ G4LogicalVolume *Geometry::GetRoundPhotocathode(){
   return LogicalVolume;
 }
 
-G4LogicalVolume *Geometry::GetLens(){
+G4LogicalVolume *Geometry::GetLens(G4Material* material){
 
-  Material = scintProp->GetMaterial("lens_glass");
+  Material = material;
 
 #ifndef disable_gdm
   //G4NistManager* nist = G4NistManager::Instance();
