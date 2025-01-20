@@ -5,32 +5,27 @@
 #ifndef  TPSimPhysics_h
 #define   TPSimPhysics_h  1
 
-//#include "G4VUserPhysicsList.hh"
 #include "G4VModularPhysicsList.hh"
 #include "CLHEP/Units/SystemOfUnits.h"
 #include "G4DecayPhysics.hh"
 #include "G4RadioactiveDecayPhysics.hh"
+#include "G4IonConstructor.hh"
+#include "G4EmStandardPhysics_option3.hh"
+#include "G4HadronElasticPhysicsHP.hh"
+#include "G4StoppingPhysics.hh"
+#include "G4NuclideTable.hh"
+#include "G4IonElasticPhysics.hh"
+#include "G4IonPhysicsXS.hh"
+#include "G4EmStandardPhysics_option3.hh"
+#include "G4OpticalPhysics.hh"
+
 class  TPSimPhysics:  public G4VModularPhysicsList
 {      public:
   TPSimPhysics();
   virtual ~TPSimPhysics();
 
 protected:
-  virtual void ConstructParticle();
-  virtual void ConstructProcess();
-  virtual void ConstructOp();
-  virtual void AddIonGasModels();
-  virtual void AddParameterisation();
   virtual void SetCuts();
-protected:
-  //virtual void ConstructBosons();
-  //virtual void ConstructLeptons();
-  //virtual void ConstructMesons();
-  //virtual void ConstructBaryons();
-protected:
-  //virtual void ConstructGeneral();
-  //virtual void ConstructEM();
-  //virtual void ConstructAllShortLiveds();
 
 private:
   G4VPhysicsConstructor*  emPhysicsList;

@@ -4,6 +4,9 @@
 cmake_minimum_required(VERSION 3.16...3.21)
 #set (CMAKE_CXX_STANDARD 11)
 
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=thread -g")
+#set(CMAKE_LINKER_FLAGS "$CMAKE_LINKER_FLAGS} -fsanitize=thread")
+
 #
 project(TPSim)
 
@@ -59,34 +62,32 @@ set(PROJECT_SRC
   ${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimPhysics.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/Geometry.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimEventAction.cc
-	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimTrackingAction.cc
+	#${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimTrackingAction.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimVisManager.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimGeometry.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimMaterials.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimPrimaryGeneratorAction.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimRunAction.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimSteppingAction.cc
-	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimTrackInformation.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/FiberParameterisation.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/FastSimModelOpFiber.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/SimG4FastSimOpFiberRegion.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimActionInitialization.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/src/TPSimMagneticField.cc
+  	${CMAKE_CURRENT_SOURCE_DIR}/src/FastSimModelOpFiber.cc
     )
 
 set(PROJECT_HEADER
   ${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimPhysics.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/Geometry.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimEventAction.hh
-	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimTrackingAction.hh
+	#${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimTrackingAction.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimVisManager.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimGeometry.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimMaterials.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimPrimaryGeneratorAction.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimRunAction.hh
 	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimSteppingAction.hh
-	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimTrackInformation.hh
-	${CMAKE_CURRENT_SOURCE_DIR}/include/FiberParameterisation.hh
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/FastSimModelOpFiber.hh
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/SimG4FastSimOpFiberRegion.hh
+	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimActionInitialization.hh
+	${CMAKE_CURRENT_SOURCE_DIR}/include/TPSimMagneticField.hh
+  	${CMAKE_CURRENT_SOURCE_DIR}/include/FastSimModelOpFiber.hh
     )
 
 #----------------------------------------------------------------------------

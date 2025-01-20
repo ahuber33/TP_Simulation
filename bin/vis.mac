@@ -40,7 +40,6 @@
 
 
 
-
 ######################################################
 ### PART TO SIMULATE PARTICLE WITH GPS (no setgun) ###
 ######################################################
@@ -48,17 +47,17 @@
 
 
 # PART TO SIMULATE 1 MEV ELECTRON !!!!!!!!
-#/gps/particle proton
-/gps/particle geantino
+/gps/particle proton
+#/gps/particle geantino
 /gps/pos/type Point
 #/gps/pos/type Volume
 #/gps/pos/shape Cylinder
 #/gps/pos/centre 0.0 0.0 1104.9 mm
-/gps/pos/centre -350.5 7 -5 mm
+#/gps/pos/centre -350.5 7 -5 mm
 #/gps/pos/radius 0.5 mm
 #/gps/pos/halfz 0.00005 mm
 #/gps/pos/centre 0.0 -100. 200 mm
-#/gps/pos/centre 0.0 -100. 58.6 mm
+/gps/pos/centre -350.5 0.0 22.0 mm
 /gps/energy 1.5 MeV
 #/gps/ene/type Exp
 #/gps/ene/min 1 MeV

@@ -2,28 +2,21 @@
 //// Auteur: Arnaud HUBER for ENL group <huber@cenbg.in2p3.fr>
 /// Copyright: 2017 (C) Projet BADGE - CARMELEC -P2R
 
-#include "G4SteppingManager.hh"
-#include "TPSimSteppingAction.hh"
-#include "G4Run.hh"
 #include "TPSimEventAction.hh"
-#include "G4RunManager.hh"
 #include "TPSimRunAction.hh"
-#include "G4Event.hh"
-#include "G4EventManager.hh"
-#include "G4TrajectoryContainer.hh"
-#include "G4Trajectory.hh"
-#include "G4VVisManager.hh"
-#include "G4ios.hh"
-#include <fstream>
-#include <iostream>
-#include "G4PrimaryVertex.hh"
-#include <math.h>
-#include "TRandom3.h"
-#include "TGraph.h"
+
 
 using namespace CLHEP;
 
-TPSimEventAction::TPSimEventAction(char* suff):suffixe(suff){}
+TPSimEventAction::TPSimEventAction(const char* suff):suffixe(suff)
+{
+  eMessenger = new G4GenericMessenger(this, "/EventAction/", "Control commands for my application");
+
+  eMessenger->DeclareProperty("SetVerbose", VerbosityResults)
+      .SetGuidance("Set the verbosity boolean.")
+      .SetParameterName("VerbosityResults", false)
+      .SetDefaultValue("false");
+}
 
 TPSimEventAction::~TPSimEventAction(){}
 
@@ -32,57 +25,13 @@ TPSimEventAction::~TPSimEventAction(){}
 // filling histograms with ROOT
 void TPSimEventAction::BeginOfEventAction(const G4Event* evt){
 
-  StatsOptical.IncidentE = 0;
-  StatsOptical.DepositZnS = 0;
-  StatsOptical.DepositSc = 0;
-  StatsOptical.ScintillationZnS = 0;
-  StatsOptical.CerenkovZnS = 0;
-  StatsOptical.ScintillationSc = 0;
-  StatsOptical.CerenkovSc = 0;
-  StatsOptical.Absorbed = 0;
-  StatsOptical.BulkAbsZnS = 0;
-  StatsOptical.BulkAbsSc = 0;
-  StatsOptical.Escaped = 0;
-  StatsOptical.Failed = 0;
-  //StatsOptical.WLS = 0;
-  StatsOptical.Detected = 0;
-  StatsOptical.ExitLightPositionX.clear();
-  StatsOptical.ExitLightPositionY.clear();
-  StatsOptical.LensPositionX.clear();
-  StatsOptical.LensPositionY.clear();
-  StatsOptical.DetectorPositionX.clear();
-  StatsOptical.DetectorPositionY.clear();
-  StatsOptical.PositionZ.clear();
-  StatsOptical.PhotonTrajectoryX.clear();
-  StatsOptical.PhotonTrajectoryY.clear();
-  StatsOptical.PhotonTrajectoryZ.clear();
-  StatsOptical.PhotonTrajectoryNStep.clear();
-  StatsOptical.MomentumX.clear();
-  StatsOptical.MomentumY.clear();
-  StatsOptical.MomentumZ.clear();
-  StatsOptical.BirthLambda.clear();
-  StatsOptical.Time.clear();
-  StatsOptical.Energy_pe.clear();
-  StatsOptical.Rayleigh.clear();
-  StatsOptical.Total_Reflections.clear();
-  StatsOptical.Wrap_Reflections.clear();
-  StatsOptical.TotalLength.clear();
-  StatsOptical.Angle_creation.clear();
-  StatsOptical.Angle_detection.clear();
+  StatsOptical = {};
+  
   TrackLengthFastSimulated=0;
   PhotonTrajectoryNStep=0;
   Air_Index=-1;
 
-  StatsTP.ParticuleID=0;
-  StatsTP.E_start=0;
-  StatsTP.E_dep=0;
-  StatsTP.Charge=0;
-  StatsTP.PositionX =0;
-  StatsTP.PositionY =0;
-  StatsTP.PositionZ =0;
-  StatsTP.Time =0;
-  StatsTP.TotalLength =0;
-  StatsTP.InteractionDepth =0;
+  StatsTP = {};
 
 }
 
@@ -93,23 +42,22 @@ void TPSimEventAction::EndOfEventAction(const G4Event* evt){
 
   TPSimRunAction *runac = (TPSimRunAction*)(G4RunManager::GetRunManager()->GetUserRunAction());
 
-  G4double Absfrac = 0;
-  G4double BulkfracZnS = 0;
-  G4double BulkfracSc = 0;
-  G4double Escfrac = 0;
-  G4double Failfrac = 0;
-  //G4double WLSfrac = 0;
-  //G4double Catfrac = 0;
-  G4double efficiency = 0;
-  G4int GeneratedSc = StatsOptical.ScintillationSc + StatsOptical.CerenkovSc;
-  G4int GeneratedZnS = StatsOptical.ScintillationZnS + StatsOptical.CerenkovZnS;
-  G4int Generated = GeneratedSc + GeneratedZnS;
-  G4int Scintillation = StatsOptical.ScintillationSc + StatsOptical.ScintillationZnS;
-  G4int Cerenkov = StatsOptical.CerenkovSc + StatsOptical.CerenkovZnS;
-  G4float Deposit = StatsOptical.DepositSc +  StatsOptical.DepositZnS;
+  Absfrac = 0;
+  BulkfracZnS = 0;
+  BulkfracSc = 0;
+  Escfrac = 0;
+  Failfrac = 0;
+
+  efficiency = 0;
+  GeneratedSc = StatsOptical.ScintillationSc + StatsOptical.CerenkovSc;
+  GeneratedZnS = StatsOptical.ScintillationZnS + StatsOptical.CerenkovZnS;
+  Generated = GeneratedSc + GeneratedZnS;
+  Scintillation = StatsOptical.ScintillationSc + StatsOptical.ScintillationZnS;
+  Cerenkov = StatsOptical.CerenkovSc + StatsOptical.CerenkovZnS;
+  Deposit = StatsOptical.DepositSc +  StatsOptical.DepositZnS;
 
 
-  if (Scintillation <0)
+  if (VerbosityResults == true)
   {
     efficiency = 100*(1.0*StatsOptical.Detected)/(1.0*Generated);
     Absfrac = 100*(1.0*StatsOptical.Absorbed)/(1.0*Generated);
